@@ -1,6 +1,5 @@
 package com.copycatsplus.copycats.content.copycat.fluid_pipe;
 
-import com.copycatsplus.copycats.CCPartialModels;
 import com.copycatsplus.copycats.content.copycat.base.model.SimpleCopycatPart;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
 import net.minecraft.core.Direction.Axis;
@@ -14,8 +13,6 @@ public class CopycatStraightPipeModel extends CopycatFluidPipeModel implements S
     @Override
     public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
         Axis axis = state.getValue(CopycatGlassFluidPipeBlock.AXIS);
-
-        assembleModel(CCPartialModels.GLASS_PIPES.get(axis).get(), context);
 
         int yRot = axis == Axis.X ? 90 : 0;
         int xRot = axis == Axis.Y ? 90 : 0;

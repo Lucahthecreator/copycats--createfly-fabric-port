@@ -16,6 +16,5 @@ public class CopycatsClient {
         LogicalSidedProvider.setClient(Minecraft::getInstance);
         CCPackets.PACKETS.registerS2CListener();
         BUFFER_CACHE.registerCompartment(FunctionalCopycatRenderHelper.KINETIC_COPYCAT, 60);
-        CCPartialModels.init();
     }
 }

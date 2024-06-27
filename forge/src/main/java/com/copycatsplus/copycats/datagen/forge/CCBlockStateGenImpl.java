@@ -1,0 +1,26 @@
+package com.copycatsplus.copycats.datagen.forge;
+
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatGlassFluidPipeBlock;
+import com.tterrag.registrate.providers.DataGenContext;
+import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
+
+public class CCBlockStateGenImpl {
+
+    public static void glassPipe(DataGenContext<Block, CopycatGlassFluidPipeBlock> c, RegistrateBlockstateProvider p) {
+        p.getVariantBuilder(c.getEntry())
+                .forAllStatesExcept(state -> {
+                    Direction.Axis axis = state.getValue(BlockStateProperties.AXIS);
+                    return ConfiguredModel.builder()
+                            .modelFile(p.models()
+                                    .getExistingFile(p.modLoc("block/fluid_pipe/window")))
+                            .uvLock(false)
+                            .rotationX(axis == Direction.Axis.Y ? 0 : 90)
+                            .rotationY(axis == Direction.Axis.X ? 90 : 0)
+                            .build();
+                }, BlockStateProperties.WATERLOGGED);
+    }
+}

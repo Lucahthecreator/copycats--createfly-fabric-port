@@ -67,6 +67,7 @@ import com.copycatsplus.copycats.content.copycat.vertical_step.CopycatVerticalSt
 import com.copycatsplus.copycats.content.copycat.wall.CopycatWallBlock;
 import com.copycatsplus.copycats.content.copycat.wall.CopycatWallModel;
 import com.copycatsplus.copycats.content.copycat.wall.WrappedWallBlock;
+import com.copycatsplus.copycats.datagen.CCBlockStateGen;
 import com.copycatsplus.copycats.datagen.CCLootGen;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
@@ -514,6 +515,7 @@ public class CCBlocks {
     public static final BlockEntry<CopycatGlassFluidPipeBlock> COPYCAT_GLASS_FLUID_PIPE =
             REGISTRATE.block("copycat_glass_fluid_pipe", CopycatGlassFluidPipeBlock::new)
                     .transform(CCBuilderTransformers.functionalCopycat())
+                    .blockstate(CCBlockStateGen::glassPipe)
                     .onRegister(CreateRegistrate.blockModel(() -> model -> getFluidPipeModel(model, new CopycatStraightPipeModel())))
                     .loot((p, b) -> p.dropOther(b, COPYCAT_FLUID_PIPE.get()))
                     .register();
