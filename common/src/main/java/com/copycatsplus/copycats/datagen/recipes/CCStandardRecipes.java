@@ -176,6 +176,8 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
 
     GeneratedRecipe COPYCAT_SHAFT = copycat(CCBlocks.COPYCAT_SHAFT, 4);
 
+    GeneratedRecipe COPYCAT_FLUID_PIPE = functionalCopycat(AllBlocks.FLUID_PIPE, CCBlocks.COPYCAT_FLUID_PIPE, 4);
+
 
     String currentFolder = "";
 
@@ -219,6 +221,25 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
                 .returns(resultCount)
                 .viaStonecuttingTag(TaggedIngredients.ZINC::getTag)
                 .create();
+    }
+
+    GeneratedRecipeBuilder.GeneratedRecipe functionalCopycat(ItemProviderEntry<? extends ItemLike> base, ItemProviderEntry<? extends ItemLike> result, int resultCount) {
+        if (result.get() instanceof CopycatBlock copycat) {
+            copycatsWithRecipes.add(copycat);
+        }
+
+        if (result.get() instanceof IFunctionalCopycatBlock) {
+            copycatsWithRecipes.add((Block) result.get());
+        }
+
+        if (result.get() instanceof MultiStateCopycatBlock copycat) {
+            copycatsWithRecipes.add(copycat);
+        }
+
+        return create(result)
+                .unlockedBy(base)
+                .returns(resultCount)
+                .viaShapeless(b -> b.requires(base, resultCount).requires(AllItems.ZINC_INGOT));
     }
 
     GeneratedRecipe conversionCycle(List<ItemProviderEntry<? extends ItemLike>> cycle) {

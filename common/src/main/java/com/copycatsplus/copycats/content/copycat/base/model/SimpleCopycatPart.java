@@ -20,4 +20,7 @@ public interface SimpleCopycatPart {
         throw new AssertionError("If this is appearing then a model isn't implemented correctly");
     }
 
+    interface WithData<T> extends SimpleCopycatPart {
+        void acceptData(T data);
+    }
 }

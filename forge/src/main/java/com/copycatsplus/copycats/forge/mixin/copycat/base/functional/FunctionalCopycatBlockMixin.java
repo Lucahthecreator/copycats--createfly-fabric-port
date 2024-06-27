@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.forge.mixin.copycat.base.functional;
 
 import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlock;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
 import com.simibubi.create.AllBlocks;
 import net.minecraft.core.BlockPos;
@@ -23,7 +24,7 @@ import org.spongepowered.asm.mixin.Mixin;
 
 import static com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock.getMaterial;
 
-@Mixin(CopycatShaftBlock.class)
+@Mixin({CopycatShaftBlock.class, CopycatFluidPipeBlock.class})
 public abstract class FunctionalCopycatBlockMixin extends Block implements IFunctionalCopycatBlock {
 
     public FunctionalCopycatBlockMixin(Properties properties) {

@@ -19,7 +19,7 @@ import static com.copycatsplus.copycats.content.copycat.base.model.assembly.fabr
 
 public class SimpleCopycatModel extends CopycatModel {
 
-    private final SimpleCopycatPart part;
+    protected final SimpleCopycatPart part;
 
     public SimpleCopycatModel(BakedModel originalModel, SimpleCopycatPart part) {
         super(originalModel);
@@ -34,8 +34,10 @@ public class SimpleCopycatModel extends CopycatModel {
         MeshBuilder meshBuilder = Objects.requireNonNull(RendererAccess.INSTANCE.getRenderer()).meshBuilder();
         QuadEmitter emitter = meshBuilder.getEmitter();
 
+        prepareCopycatPart(blockView, state, pos, randomSupplier, renderContext, material, cullFaceRemovalData, occlusionData);
+
         renderContext.pushTransform(quad -> {
-            CopycatRenderContextFabric context = new CopycatRenderContextFabric(quad, emitter);
+            CopycatRenderContextFabric context = new CopycatRenderContextFabric(quad, emitter, blockView, material, pos, randomSupplier, renderContext);
             if (cullFaceRemovalData.shouldRemove(quad.cullFace())) {
                 quad.cullFace(null);
             } else if (occlusionData.isOccluded(quad.cullFace())) {
@@ -51,5 +53,9 @@ public class SimpleCopycatModel extends CopycatModel {
         renderContext.popTransform();
 
         meshBuilder.build().outputTo(renderContext.getEmitter());
+    }
+
+    protected void prepareCopycatPart(BlockAndTintGetter blockView, BlockState state, BlockPos pos, Supplier<RandomSource> randomSupplier, RenderContext renderContext, BlockState material, CullFaceRemovalData cullFaceRemovalData, OcclusionData occlusionData) {
+
     }
 }

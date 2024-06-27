@@ -38,7 +38,7 @@ public abstract class CopycatModel extends BakedModelWrapperWithData {
     }
 
     @Override
-    protected ModelData.Builder gatherModelData(ModelData.Builder builder, BlockAndTintGetter world, BlockPos pos, BlockState state,
+    public ModelData.Builder gatherModelData(ModelData.Builder builder, BlockAndTintGetter world, BlockPos pos, BlockState state,
                                                 ModelData blockEntityData) {
         BlockState material = getMaterial(blockEntityData);
 
@@ -109,7 +109,7 @@ public abstract class CopycatModel extends BakedModelWrapperWithData {
                 .contains(renderType))
             return super.getQuads(state, side, rand, data, renderType);
 
-        List<BakedQuad> croppedQuads = getCroppedQuads(state, side, rand, material, wrappedData, renderType);
+        List<BakedQuad> croppedQuads = getCroppedQuads(state, data, side, rand, material, wrappedData, renderType);
 
         // Rubidium: render side!=null versions of the base material during side==null,
         // to avoid getting culled away
@@ -121,7 +121,7 @@ public abstract class CopycatModel extends BakedModelWrapperWithData {
                         croppedQuads = new ArrayList<>(croppedQuads);
                         immutable = false;
                     }
-                    croppedQuads.addAll(getCroppedQuads(state, nonOcclusionSide, rand, material, wrappedData, renderType));
+                    croppedQuads.addAll(getCroppedQuads(state, data, nonOcclusionSide, rand, material, wrappedData, renderType));
                 }
         }
 
@@ -131,7 +131,7 @@ public abstract class CopycatModel extends BakedModelWrapperWithData {
     /**
      * The returned list must not be mutated.
      */
-    public abstract List<BakedQuad> getCroppedQuads(BlockState state, Direction side, RandomSource rand,
+    public abstract List<BakedQuad> getCroppedQuads(BlockState state, ModelData data, Direction side, RandomSource rand,
                                                     BlockState material, ModelData wrappedData, RenderType renderType);
 
     @Override

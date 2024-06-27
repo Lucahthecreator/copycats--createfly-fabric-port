@@ -1,14 +1,19 @@
 package com.copycatsplus.copycats;
 
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlockEntity;
 import com.copycatsplus.copycats.content.copycat.ladder.CopycatLadderMultiStateBlockEntity;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlockEntity;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftInstance;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftRenderer;
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.decoration.copycat.CopycatBlockEntity;
+import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
 import com.tterrag.registrate.builders.BlockEntityBuilder;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+
+import static com.simibubi.create.Create.REGISTRATE;
 
 public class CCBlockEntityTypes {
     private static final CopycatRegistrate REGISTRATE = Copycats.getRegistrate();
@@ -62,6 +67,11 @@ public class CCBlockEntityTypes {
                     .renderer(() -> CopycatShaftRenderer::new)
                     .register();
 
+    public static final BlockEntityEntry<? extends CopycatFluidPipeBlockEntity> COPYCAT_FLUID_PIPE =
+            REGISTRATE.blockEntity("copycat_fluid_pipe", getPlatformFluidPipe())
+                    .validBlocks(CCBlocks.COPYCAT_FLUID_PIPE)
+                    .register();
+
     @ExpectPlatform
     public static BlockEntityBuilder.BlockEntityFactory<? extends MultiStateCopycatBlockEntity> getPlatformMultiState() {
         throw new AssertionError("This shouldn't appear");
@@ -74,6 +84,11 @@ public class CCBlockEntityTypes {
 
     @ExpectPlatform
     public static BlockEntityBuilder.BlockEntityFactory<? extends CopycatShaftBlockEntity> getPlatformShaft() {
+        throw new AssertionError("This shouldn't appear");
+    }
+
+    @ExpectPlatform
+    public static BlockEntityBuilder.BlockEntityFactory<? extends CopycatFluidPipeBlockEntity> getPlatformFluidPipe() {
         throw new AssertionError("This shouldn't appear");
     }
 

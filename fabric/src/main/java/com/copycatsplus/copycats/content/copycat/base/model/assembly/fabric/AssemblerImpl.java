@@ -2,19 +2,27 @@ package com.copycatsplus.copycats.content.copycat.base.model.assembly.fabric;
 
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.*;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.quad.QuadTransform;
+import com.jozufozu.flywheel.core.PartialModel;
 import com.simibubi.create.foundation.model.BakedModelHelper;
 import com.simibubi.create.foundation.model.BakedQuadHelper;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.SpriteFinder;
+import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Assembler.CopycatRenderContext;
 
@@ -42,6 +50,31 @@ public class AssemblerImpl {
             return;
         }
         assembleQuad(context.source(), context.destination(), select.toAABB(), offset.toVec3().subtract(select.minX, select.minY, select.minZ), globalTransform, transforms);
+    }
+
+    public static void assembleModel(BakedModel model, CopycatRenderContext<?, ?> context) {
+        CopycatRenderContextFabric ctx = (CopycatRenderContextFabric) context;
+        RenderContext subContext = new RenderContext() {
+            @Override
+            public QuadEmitter getEmitter() {
+                return ctx.destination();
+            }
+
+            @Override
+            public void pushTransform(QuadTransform transform) {
+            }
+
+            @Override
+            public void popTransform() {
+            }
+
+            @SuppressWarnings("removal")
+            @Override
+            public BakedModelConsumer bakedModelConsumer() {
+                return null;
+            }
+        };
+        model.emitBlockQuads(ctx.blockView, ctx.material, ctx.blockPos, ctx.random, subContext);
     }
 
     public static void assembleQuad(CopycatRenderContext<?, ?> ctx) {
@@ -101,8 +134,25 @@ public class AssemblerImpl {
     }
 
     public static class CopycatRenderContextFabric extends CopycatRenderContext<MutableQuadView, QuadEmitter> {
-        public CopycatRenderContextFabric(MutableQuadView source, QuadEmitter destination) {
+        public final BlockAndTintGetter blockView;
+        public final BlockState material;
+        public final BlockPos blockPos;
+        public final Supplier<RandomSource> random;
+        public final RenderContext context;
+
+        public CopycatRenderContextFabric(MutableQuadView source,
+                                          QuadEmitter destination,
+                                          BlockAndTintGetter blockView,
+                                          BlockState material,
+                                          BlockPos blockPos,
+                                          Supplier<RandomSource> random,
+                                          RenderContext context) {
             super(source, destination);
+            this.blockView = blockView;
+            this.material = material;
+            this.blockPos = blockPos;
+            this.random = random;
+            this.context = context;
         }
     }
 }
