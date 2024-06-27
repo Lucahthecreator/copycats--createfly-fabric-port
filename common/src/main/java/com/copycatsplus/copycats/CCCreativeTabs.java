@@ -25,8 +25,6 @@ public class CCCreativeTabs {
             CCBlocks.COPYCAT_WOODEN_BUTTON,
             CCBlocks.COPYCAT_STONE_BUTTON,
             CCBlocks.COPYCAT_WOODEN_PRESSURE_PLATE,
-            CCBlocks.COPYCAT_SLOPE,
-            CCBlocks.COPYCAT_SHAFT
             CCBlocks.COPYCAT_STONE_PRESSURE_PLATE,
             CCBlocks.COPYCAT_LIGHT_WEIGHTED_PRESSURE_PLATE,
             CCBlocks.COPYCAT_HEAVY_WEIGHTED_PRESSURE_PLATE,
@@ -49,7 +47,7 @@ public class CCCreativeTabs {
             CCBlocks.COPYCAT_VERTICAL_SLOPE,
             CCBlocks.COPYCAT_SLOPE_LAYER,
             /*Misc*/
-            CCBlocks.SHAFT
+            CCBlocks.COPYCAT_SHAFT
     );
 
     @ExpectPlatform

@@ -489,7 +489,7 @@ public class CCBlocks {
             REGISTRATE.block("copycat_slope", CopycatSlopeBlock::new)
                     .transform(BuilderTransformers.copycat())
                     .transform(FeatureToggle.register())
-                    .onRegister(CreateRegistrate.blockModel(() -> ToggleableCopycatModel.with(new CopycatSlopeModel(), new CopycatSlopeEnhancedModel())))
+                    .onRegister(CreateRegistrate.blockModel(() -> ToggleableCopycatModel.with(new CopycatSlopeModel(false), new CopycatSlopeModel(true))))
                     .item()
                     .transform(customItemModel("copycat_base", "slope"))
                     .register();
@@ -513,7 +513,8 @@ public class CCBlocks {
                     .transform(customItemModel("copycat_base", "slope_layer"))
                     .register();
 
-    public static final BlockEntry<CopycatShaftBlock> COPYCAT_SHAFT = REGISTRATE.block("copycat_shaft", CopycatShaftBlock::new)
+    public static final BlockEntry<CopycatShaftBlock> COPYCAT_SHAFT =
+            REGISTRATE.block("copycat_shaft", CopycatShaftBlock::new)
             .transform(CCBuilderTransformers.functionalCopycat())
             .transform(FeatureToggle.register())
             .transform(BlockStressDefaults.setNoImpact())
