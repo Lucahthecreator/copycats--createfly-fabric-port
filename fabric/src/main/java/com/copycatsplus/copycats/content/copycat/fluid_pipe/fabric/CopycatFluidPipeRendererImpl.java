@@ -25,7 +25,7 @@ public abstract class CopycatFluidPipeRendererImpl extends SafeBlockEntityRender
     public static void renderSafe(CopycatFluidPipeRenderer renderer, CopycatFluidPipeBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer,
                                   int light, int overlay) {
 
-        if (ItemBlockRenderTypes.getRenderType(be.getMaterial(), true) == RenderType.solid())
+        if (ItemBlockRenderTypes.getChunkRenderType(be.getMaterial()) == RenderType.solid())
             return;
 
         FluidTransportBehaviour pipe = be.getBehaviour(FluidTransportBehaviour.TYPE);
