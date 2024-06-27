@@ -3,9 +3,10 @@ package com.copycatsplus.copycats.content.copycat.base.model.fabric;
 
 import com.copycatsplus.copycats.content.copycat.base.CTCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.model.functional.fabric.WorldWithRenderData;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.decoration.copycat.FilteredBlockAndTintGetter;
 import com.simibubi.create.foundation.utility.Iterate;
+import com.simibubi.create.foundation.utility.Pair;
 import io.github.fabricators_of_create.porting_lib.models.CustomParticleIconModel;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
@@ -59,9 +60,17 @@ public abstract class CopycatModel extends ForwardingBakedModel implements Custo
     @Override
     public void emitBlockQuads(BlockAndTintGetter blockView, BlockState state, BlockPos pos, Supplier<RandomSource> randomSupplier, RenderContext context) {
         BlockState material;
-        if (blockView instanceof RenderAttachedBlockView attachmentView
-                && attachmentView.getBlockEntityRenderAttachment(pos) instanceof BlockState material1) {
-            material = material1;
+        Object remainingData = null;
+        if (blockView instanceof RenderAttachedBlockView attachmentView) {
+            Object attachment = attachmentView.getBlockEntityRenderAttachment(pos);
+            if (attachment instanceof BlockState material1) {
+                material = material1;
+            } else if (attachment instanceof Pair<?, ?> pair && pair.getSecond() instanceof BlockState material2) {
+                material = material2;
+                remainingData = pair.getFirst();
+            } else {
+                material = AllBlocks.COPYCAT_BASE.getDefaultState();
+            }
         } else {
             material = AllBlocks.COPYCAT_BASE.getDefaultState();
         }
@@ -80,20 +89,22 @@ public abstract class CopycatModel extends ForwardingBakedModel implements Custo
             }
         }
 
+        super.emitBlockQuads(blockView, state, pos, randomSupplier, context);
+
         // fabric: need to change the default render material
         context.pushTransform(MaterialFixer.create(material));
 
         if (state.getBlock() instanceof IFunctionalCopycatBlock copycatBlock) {
-            FilteredBlockAndTintGetter filteredBlockAndTintGetter = new FilteredBlockAndTintGetter(blockView, t -> {
+            FilteredBlockAndTintGetterFabric filteredBlockAndTintGetter = new FilteredBlockAndTintGetterFabric(blockView, t -> {
                 BlockEntity be = blockView.getBlockEntity(pos);
                 if (be instanceof CTCopycatBlockEntity ctbe)
                     if (!ctbe.isCTEnabled())
                         return false;
                 return copycatBlock.canConnectTexturesToward(blockView, pos, t, state);
             });
-            emitBlockQuadsInner(filteredBlockAndTintGetter, state, pos, randomSupplier, context, material, cullFaceRemovalData, occlusionData);
+            emitBlockQuadsInner(new WorldWithRenderData(filteredBlockAndTintGetter, remainingData), state, pos, randomSupplier, context, material, cullFaceRemovalData, occlusionData);
         } else {
-            emitBlockQuadsInner(blockView, state, pos, randomSupplier, context, material, cullFaceRemovalData, occlusionData);
+            emitBlockQuadsInner(new WorldWithRenderData(blockView, remainingData), state, pos, randomSupplier, context, material, cullFaceRemovalData, occlusionData);
         }
 
         // fabric: pop the material changer transform
@@ -108,6 +119,8 @@ public abstract class CopycatModel extends ForwardingBakedModel implements Custo
             BlockState material = getMaterial(state);
 
             return getIcon(getModelOf(material), null);
+        } else if (data instanceof Pair<?, ?> pair && pair.getSecond() instanceof BlockState material) {
+            return getIcon(getModelOf(material), pair.getFirst());
         }
 
         return CustomParticleIconModel.super.getParticleIcon(data);
