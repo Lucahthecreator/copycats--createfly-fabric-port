@@ -47,7 +47,8 @@ public class CCCreativeTabs {
             CCBlocks.COPYCAT_VERTICAL_SLOPE,
             CCBlocks.COPYCAT_SLOPE_LAYER,
             /*Misc*/
-            CCBlocks.COPYCAT_SHAFT
+            CCBlocks.COPYCAT_SHAFT,
+            CCBlocks.COPYCAT_FLUID_PIPE
     );
 
     @ExpectPlatform
