@@ -520,21 +520,22 @@ public class CCBlocks {
 
     public static final BlockEntry<CopycatShaftBlock> COPYCAT_SHAFT =
             REGISTRATE.block("copycat_shaft", CopycatShaftBlock::new)
-            .transform(CCBuilderTransformers.functionalCopycat())
-            .transform(FeatureToggle.register())
-            .transform(BlockStressDefaults.setNoImpact())
-            .onRegister(CreateRegistrate.blockModel(() -> model -> getShaftModel(model, SimpleCopycatPart.create(model, new CopycatShaftModel()))))
-            .item()
-            .transform(customItemModel("copycat_base", "shaft"))
-            .register();
+                    .transform(CCBuilderTransformers.functionalCopycat())
+                    .transform(FeatureToggle.register())
+                    .transform(BlockStressDefaults.setNoImpact())
+                    .onRegister(CreateRegistrate.blockModel(() -> model -> getShaftModel(model, SimpleCopycatPart.create(model, new CopycatShaftModel()))))
+                    .item()
+                    .transform(customItemModel("copycat_base", "shaft"))
+                    .register();
 
-    public static final BlockEntry<CopycatFluidPipeBlock> COPYCAT_FLUID_PIPE = REGISTRATE.block("copycat_fluid_pipe", CopycatFluidPipeBlock::new)
-            .transform(CCBuilderTransformers.functionalCopycat())
-            .transform(FeatureToggle.register())
-            .onRegister(CreateRegistrate.blockModel(() -> model -> getFluidPipeModel(model, new CopycatFluidPipeModel())))
-            .item()
-            .transform(customItemModel("copycat_base", "beam")) // TODO: Change to pipe
-            .register();
+    public static final BlockEntry<CopycatFluidPipeBlock> COPYCAT_FLUID_PIPE =
+            REGISTRATE.block("copycat_fluid_pipe", CopycatFluidPipeBlock::new)
+                    .transform(CCBuilderTransformers.functionalCopycat())
+                    .transform(FeatureToggle.register())
+                    .onRegister(CreateRegistrate.blockModel(() -> model -> getFluidPipeModel(model, new CopycatFluidPipeModel())))
+                    .item()
+                    .transform(customItemModel("copycat_base", "fluid_pipe"))
+                    .register();
 
     public static final BlockEntry<CopycatGlassFluidPipeBlock> COPYCAT_GLASS_FLUID_PIPE =
             REGISTRATE.block("copycat_glass_fluid_pipe", CopycatGlassFluidPipeBlock::new)
