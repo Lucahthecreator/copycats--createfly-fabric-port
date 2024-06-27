@@ -14,6 +14,7 @@ import com.google.common.collect.ImmutableList;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.decoration.copycat.CopycatBlock;
+import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import dev.architectury.injectables.annotations.ExpectPlatform;
@@ -256,12 +257,17 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
         return result;
     }
 
+    Set<RegistryEntry<? extends Block>> blocksWithoutRecipe = Set.of(
+            CCBlocks.COPYCAT_TEST_BLOCK,
+            CCBlocks.COPYCAT_GLASS_FLUID_PIPE
+    );
+
     public CCStandardRecipes(PackOutput output) {
         super(output);
 
         List<ResourceLocation> missingRecipes = new LinkedList<>();
-        for (RegistryEntry<Block> entry : CCBlocks.getAllRegisteredBlocksWithoutWrapped()) {
-            if (!entry.equals(CCBlocks.COPYCAT_TEST_BLOCK)) {
+        for (RegistryEntry<? extends Block> entry : CCBlocks.getAllRegisteredBlocksWithoutWrapped()) {
+            if (!blocksWithoutRecipe.contains(entry)) {
                 if (!copycatsWithRecipes.contains(entry.get()))
                     missingRecipes.add(entry.getId());
             }

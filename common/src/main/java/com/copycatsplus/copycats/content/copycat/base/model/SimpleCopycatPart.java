@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.base.model;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;

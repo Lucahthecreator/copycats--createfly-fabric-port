@@ -1,10 +1,14 @@
 package com.copycatsplus.copycats.content.copycat.fluid_pipe;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
+import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.decoration.bracket.BracketBlock;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlock;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
+import com.simibubi.create.content.fluids.pipes.GlassFluidPipeBlock;
+import com.simibubi.create.content.fluids.pipes.StraightPipeBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -16,14 +20,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CopycatFluidPipeBlock extends FluidPipeBlock implements IFunctionalCopycatBlock {
-    public CopycatFluidPipeBlock(Properties properties) {
+import java.util.Map;
+
+public class CopycatGlassFluidPipeBlock extends GlassFluidPipeBlock implements IFunctionalCopycatBlock {
+    public CopycatGlassFluidPipeBlock(Properties properties) {
         super(properties);
     }
 
@@ -38,7 +46,7 @@ public class CopycatFluidPipeBlock extends FluidPipeBlock implements IFunctional
     }
 
     @Override
-    public InteractionResult onWrenched(BlockState state, UseOnContext context) {
+    public @NotNull InteractionResult onWrenched(@NotNull BlockState state, @NotNull UseOnContext context) {
         InteractionResult result = IFunctionalCopycatBlock.super.onWrenched(state, context);
         if (result.consumesAction()) {
             return result;
@@ -95,7 +103,17 @@ public class CopycatFluidPipeBlock extends FluidPipeBlock implements IFunctional
     }
 
     @Override
-    public BlockEntityType<? extends FluidPipeBlockEntity> getBlockEntityType() {
-        return CCBlockEntityTypes.COPYCAT_FLUID_PIPE.get();
+    public BlockState toRegularPipe(LevelAccessor world, BlockPos pos, BlockState state) {
+        Direction side = Direction.get(Direction.AxisDirection.POSITIVE, state.getValue(AXIS));
+        Map<Direction, BooleanProperty> facingToPropertyMap = FluidPipeBlock.PROPERTY_BY_DIRECTION;
+        return CCBlocks.COPYCAT_FLUID_PIPE.get()
+                .updateBlockState(CCBlocks.COPYCAT_FLUID_PIPE.getDefaultState()
+                        .setValue(facingToPropertyMap.get(side), true)
+                        .setValue(facingToPropertyMap.get(side.getOpposite()), true), side, null, world, pos);
+    }
+
+    @Override
+    public @NotNull BlockEntityType<? extends StraightPipeBlockEntity> getBlockEntityType() {
+        return CCBlockEntityTypes.COPYCAT_GLASS_FLUID_PIPE.get();
     }
 }

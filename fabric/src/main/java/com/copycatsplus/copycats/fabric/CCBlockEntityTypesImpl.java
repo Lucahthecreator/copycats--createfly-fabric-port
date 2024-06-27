@@ -3,7 +3,9 @@ package com.copycatsplus.copycats.fabric;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.fabric.MultiStateCopycatBlockEntityFabric;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlockEntity;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatStraightPipeBlockEntity;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.fabric.CopycatFluidPipeBlockEntityFabric;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.fabric.CopycatStraightPipeBlockEntityFabric;
 import com.copycatsplus.copycats.content.copycat.ladder.CopycatLadderMultiStateBlockEntity;
 import com.copycatsplus.copycats.content.copycat.ladder.fabric.CopycatLadderMultiStateBlockEntityFabric;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlockEntity;
@@ -26,5 +28,9 @@ public class CCBlockEntityTypesImpl {
 
     public static BlockEntityBuilder.BlockEntityFactory<? extends CopycatFluidPipeBlockEntity> getPlatformFluidPipe() {
         return CopycatFluidPipeBlockEntityFabric::new;
+    }
+
+    public static BlockEntityBuilder.BlockEntityFactory<? extends CopycatStraightPipeBlockEntity> getPlatformStraightPipe() {
+        return CopycatStraightPipeBlockEntityFabric::new;
     }
 }

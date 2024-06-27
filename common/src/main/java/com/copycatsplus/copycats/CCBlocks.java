@@ -25,6 +25,8 @@ import com.copycatsplus.copycats.content.copycat.fence_gate.CopycatFenceGateMode
 import com.copycatsplus.copycats.content.copycat.fence_gate.WrappedFenceGateBlock;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlock;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeModel;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatGlassFluidPipeBlock;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatStraightPipeModel;
 import com.copycatsplus.copycats.content.copycat.ghost_block.CopycatGhostBlock;
 import com.copycatsplus.copycats.content.copycat.ghost_block.CopycatGhostBlockModel;
 import com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLayerBlock;
@@ -508,6 +510,13 @@ public class CCBlocks {
             .item()
             .transform(customItemModel("copycat_base", "beam")) // TODO: Change to pipe
             .register();
+
+    public static final BlockEntry<CopycatGlassFluidPipeBlock> COPYCAT_GLASS_FLUID_PIPE =
+            REGISTRATE.block("copycat_glass_fluid_pipe", CopycatGlassFluidPipeBlock::new)
+                    .transform(CCBuilderTransformers.functionalCopycat())
+                    .onRegister(CreateRegistrate.blockModel(() -> model -> getFluidPipeModel(model, new CopycatStraightPipeModel())))
+                    .loot((p, b) -> p.dropOther(b, COPYCAT_FLUID_PIPE.get()))
+                    .register();
 
     @ExpectPlatform
     public static BakedModel getShaftModel(BakedModel original, BakedModel copycat) {

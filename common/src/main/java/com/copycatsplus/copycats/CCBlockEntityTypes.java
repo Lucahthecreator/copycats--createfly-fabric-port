@@ -2,18 +2,17 @@ package com.copycatsplus.copycats;
 
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlockEntity;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeRenderer;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatStraightPipeBlockEntity;
 import com.copycatsplus.copycats.content.copycat.ladder.CopycatLadderMultiStateBlockEntity;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlockEntity;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftInstance;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftRenderer;
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.decoration.copycat.CopycatBlockEntity;
-import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
+import com.simibubi.create.content.fluids.pipes.TransparentStraightPipeRenderer;
 import com.tterrag.registrate.builders.BlockEntityBuilder;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import dev.architectury.injectables.annotations.ExpectPlatform;
-
-import static com.simibubi.create.Create.REGISTRATE;
 
 public class CCBlockEntityTypes {
     private static final CopycatRegistrate REGISTRATE = Copycats.getRegistrate();
@@ -70,6 +69,13 @@ public class CCBlockEntityTypes {
     public static final BlockEntityEntry<? extends CopycatFluidPipeBlockEntity> COPYCAT_FLUID_PIPE =
             REGISTRATE.blockEntity("copycat_fluid_pipe", getPlatformFluidPipe())
                     .validBlocks(CCBlocks.COPYCAT_FLUID_PIPE)
+                    .renderer(() -> CopycatFluidPipeRenderer::new)
+                    .register();
+
+    public static final BlockEntityEntry<? extends CopycatStraightPipeBlockEntity> COPYCAT_GLASS_FLUID_PIPE =
+            REGISTRATE.blockEntity("copycat_glass_fluid_pipe", getPlatformStraightPipe())
+                    .validBlocks(CCBlocks.COPYCAT_GLASS_FLUID_PIPE)
+                    .renderer(() -> TransparentStraightPipeRenderer::new)
                     .register();
 
     @ExpectPlatform
@@ -89,6 +95,11 @@ public class CCBlockEntityTypes {
 
     @ExpectPlatform
     public static BlockEntityBuilder.BlockEntityFactory<? extends CopycatFluidPipeBlockEntity> getPlatformFluidPipe() {
+        throw new AssertionError("This shouldn't appear");
+    }
+
+    @ExpectPlatform
+    public static BlockEntityBuilder.BlockEntityFactory<? extends CopycatStraightPipeBlockEntity> getPlatformStraightPipe() {
         throw new AssertionError("This shouldn't appear");
     }
 

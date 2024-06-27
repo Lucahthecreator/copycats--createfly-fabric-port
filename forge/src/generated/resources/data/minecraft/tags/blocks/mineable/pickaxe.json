@@ -27,6 +27,7 @@
     "copycats:copycat_wall",
     "copycats:copycat_slope",
     "copycats:copycat_shaft",
-    "copycats:copycat_fluid_pipe"
+    "copycats:copycat_fluid_pipe",
+    "copycats:copycat_glass_fluid_pipe"
   ]
 }
