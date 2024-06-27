@@ -3,7 +3,6 @@ package com.copycatsplus.copycats.content.copycat.fluid_pipe;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.decoration.copycat.CopycatBlock;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.renderer.MultiBufferSource;

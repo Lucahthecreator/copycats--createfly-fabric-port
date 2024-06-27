@@ -17,16 +17,45 @@ public class CopycatStraightPipeModel extends CopycatFluidPipeModel implements S
         int yRot = axis == Axis.X ? 90 : 0;
         int xRot = axis == Axis.Y ? 90 : 0;
         renderWindowCore(context, t -> t.rotateY(yRot).rotateX(xRot));
+        renderWindowCore(context, t -> t.rotateZ(90).rotateY(yRot).rotateX(xRot));
+        renderWindowCore(context, t -> t.rotateZ(180).rotateY(yRot).rotateX(xRot));
+        renderWindowCore(context, t -> t.rotateZ(270).rotateY(yRot).rotateX(xRot));
 
         assembleAccessories(context);
     }
 
+    private static final double EPSILON = 0.02;
+
     protected void renderWindowCore(CopycatRenderContext<?, ?> context, GlobalTransform transform) {
         assemblePiece(context,
                 transform,
-                vec3(4, 4, 4),
-                aabb(2, 2, 8).move(0, 0, 4),
+                vec3(4 + EPSILON, 4 + EPSILON, 0),
+                aabb(2, 2, 16).move(0, 0, 0),
                 cull(EAST | UP | NORTH | SOUTH)
+        );
+        assemblePiece(context,
+                transform,
+                vec3(5, 4, 0),
+                aabb(1, 1, 16).move(0, 0, 0),
+                cull(EAST | WEST | DOWN | NORTH | SOUTH)
+        );
+        assemblePiece(context,
+                transform,
+                vec3(4, 5, 0),
+                aabb(1, 1, 16).move(0, 0, 0),
+                cull( WEST | UP | DOWN | NORTH | SOUTH)
+        );
+        assemblePiece(context,
+                transform,
+                vec3(4 + EPSILON, 6 + EPSILON, 0),
+                aabb(1, 4 - 2 * EPSILON, 3).move(0, 6, 0),
+                cull( UP | DOWN | NORTH)
+        );
+        assemblePiece(context,
+                transform,
+                vec3(4 + EPSILON, 6 + EPSILON, 13),
+                aabb(1, 4 - 2 * EPSILON, 3).move(0, 6, 13),
+                cull( UP | DOWN | SOUTH)
         );
     }
 }
