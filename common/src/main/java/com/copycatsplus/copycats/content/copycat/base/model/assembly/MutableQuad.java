@@ -1,14 +1,18 @@
 package com.copycatsplus.copycats.content.copycat.base.model.assembly;
 
+import net.minecraft.core.Direction;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MutableQuad implements GlobalTransform.Transformable<MutableQuad> {
     public List<MutableVertex> vertices;
+    public Direction direction;
     List<Mutation> mutations = new ArrayList<>();
 
-    public MutableQuad(List<MutableVertex> vertices) {
+    public MutableQuad(List<MutableVertex> vertices, Direction direction) {
         this.vertices = vertices;
+        this.direction = direction;
     }
 
     public MutableQuad mutate() {
@@ -16,6 +20,7 @@ public class MutableQuad implements GlobalTransform.Transformable<MutableQuad> {
             for (MutableVertex vertex : vertices) {
                 mutation.mutate(vertex.xyz);
             }
+            direction = mutation.mutate(direction);
         }
         return this;
     }
@@ -26,6 +31,7 @@ public class MutableQuad implements GlobalTransform.Transformable<MutableQuad> {
             for (MutableVertex vertex : vertices) {
                 mutation.undoMutate(vertex.xyz);
             }
+            direction = mutation.undoMutate(direction);
         }
         return this;
     }

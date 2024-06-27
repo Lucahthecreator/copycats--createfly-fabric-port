@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class Assembler {
 
@@ -215,6 +216,13 @@ public class Assembler {
      */
     public static QuadUVUpdate updateUV(QuadTransform... transforms) {
         return new QuadUVUpdate(transforms);
+    }
+
+    /**
+     * Modify the lighting direction of the quad.
+     */
+    public static QuadLightDirection lightDirection(Function<Direction, Direction> directionMapper) {
+        return new QuadLightDirection(directionMapper);
     }
 
     public static class CopycatRenderContext<Source, Destination> {

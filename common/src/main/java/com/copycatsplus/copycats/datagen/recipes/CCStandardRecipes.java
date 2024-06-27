@@ -175,6 +175,10 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
 
     GeneratedRecipe COPYCAT_SLOPE = copycat(CCBlocks.COPYCAT_SLOPE, 2);
 
+    GeneratedRecipe COPYCAT_VERTICAL_SLOPE = copycat(CCBlocks.COPYCAT_VERTICAL_SLOPE, 2);
+
+    GeneratedRecipe COPYCAT_SLOPE_LAYER = copycat(CCBlocks.COPYCAT_SLOPE_LAYER, 8);
+
     GeneratedRecipe COPYCAT_SHAFT = copycat(CCBlocks.COPYCAT_SHAFT, 4);
 
     GeneratedRecipe COPYCAT_FLUID_PIPE = functionalCopycat(AllBlocks.FLUID_PIPE, CCBlocks.COPYCAT_FLUID_PIPE, 4);
