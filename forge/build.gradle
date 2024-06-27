@@ -3,13 +3,6 @@ plugins {
     id 'me.modmuss50.mod-publish-plugin' version "0.5.1"
 }
 
-def secrets = new Properties()
-if (file("./../secrets.properties").exists()) {
-    file("./../secrets.properties").withInputStream {
-        stream -> secrets.load(stream)
-    }
-}
-
 loom {
     forge {
         mixinConfig "copycats-common.mixins.json"
@@ -114,20 +107,6 @@ components.java {
     }
 }
 
-publishing {
-    publications {
-        mavenForge(MavenPublication) {
-            artifactId = archives_base_name + "-" + project.name
-            from components.java
-        }
-    }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-    }
-}
-
 tasks.publishMods.dependsOn(tasks.assemble)
 tasks.publishMods.mustRunAfter(tasks.build)
 
@@ -139,7 +118,7 @@ publishMods {
     modLoaders.add("forge")
 
     modrinth {
-        accessToken = secrets.MODRINTH_TOKEN
+        accessToken = project.findProperty("MODRINTH_TOKEN")
         projectId = "UT2M39wf"
         minecraftVersions.add(minecraft_version)
 
@@ -152,7 +131,7 @@ publishMods {
     }
 
     curseforge {
-        accessToken = secrets.CURSEFORGE_TOKEN
+        accessToken = project.findProperty("CURSEFORGE_TOKEN")
         projectId = "968398"
         minecraftVersions.add(minecraft_version)
     }
