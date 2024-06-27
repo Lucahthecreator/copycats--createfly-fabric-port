@@ -3,6 +3,7 @@ package com.copycatsplus.copycats.content.copycat.slab;
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatWithWrappedBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.multistate.WaterloggedMultiStateCopycatBlock;
@@ -281,12 +282,6 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock implemen
 
         return getFaceShape(state, dir) == FaceShape.FULL
                 && getMaterial(level, pos).skipRendering(neighborState, dir.getOpposite());
-    }
-
-    public static BlockState getMaterial(BlockGetter reader, BlockPos targetPos) {
-        BlockState state = CopycatBlock.getMaterial(reader, targetPos);
-        if (state.is(Blocks.AIR)) return reader.getBlockState(targetPos);
-        return state;
     }
 
     @Override

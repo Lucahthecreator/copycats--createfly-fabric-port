@@ -2,6 +2,7 @@ package com.copycatsplus.copycats.content.copycat.base.multistate;
 
 import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.config.CCConfigs;
+import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
 import com.simibubi.create.content.contraptions.ITransformableBlockEntity;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.decoration.copycat.CopycatBlockEntity;
@@ -31,7 +32,7 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class MultiStateCopycatBlockEntity extends SmartBlockEntity implements
-        ISpecialBlockEntityItemRequirement, ITransformableBlockEntity, IPartialSafeNBT {
+        IFunctionalCopycatBlockEntity, ISpecialBlockEntityItemRequirement, ITransformableBlockEntity, IPartialSafeNBT {
 
     private final MaterialItemStorage materialItemStorage;
 
@@ -42,6 +43,11 @@ public abstract class MultiStateCopycatBlockEntity extends SmartBlockEntity impl
         } else {
             materialItemStorage = MaterialItemStorage.create(1, Set.of("block"));
         }
+    }
+
+    @Override
+    public CopycatBlockEntity getCopycatBlockEntity() {
+        return null;
     }
 
     @Override
@@ -170,14 +176,14 @@ public abstract class MultiStateCopycatBlockEntity extends SmartBlockEntity impl
     }
 
     @Override
-    protected void write(CompoundTag tag, boolean clientPacket) {
+    public void write(CompoundTag tag, boolean clientPacket) {
         super.write(tag, clientPacket);
 
         tag.put("material_data", materialItemStorage.serialize());
     }
 
     @Override
-    protected void read(CompoundTag tag, boolean clientPacket) {
+    public void read(CompoundTag tag, boolean clientPacket) {
         super.read(tag, clientPacket);
         if (getBlockState().getBlock() instanceof MultiStateCopycatBlock mscb) {
             boolean anyUpdated = materialItemStorage.deserialize(tag.getCompound("material_data"));

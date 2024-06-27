@@ -1,5 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.base.model.multistate.forge;
 
+import com.copycatsplus.copycats.content.copycat.base.model.forge.CopycatModel.OcclusionData;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateTextureAtlasSprite;
@@ -187,23 +188,5 @@ public abstract class MultiStateCopycatModel extends BakedModelWrapperWithData {
         return Minecraft.getInstance()
                 .getBlockRenderer()
                 .getBlockModel(state);
-    }
-
-
-    //Copied from com.simibubi.create.content.decoration.copycat.CopycatModel.OcclusionData as it was private
-    private static class OcclusionData {
-        private final boolean[] occluded;
-
-        public OcclusionData() {
-            occluded = new boolean[6];
-        }
-
-        public void occlude(Direction face) {
-            occluded[face.get3DDataValue()] = true;
-        }
-
-        public boolean isOccluded(Direction face) {
-            return face == null ? false : occluded[face.get3DDataValue()];
-        }
     }
 }

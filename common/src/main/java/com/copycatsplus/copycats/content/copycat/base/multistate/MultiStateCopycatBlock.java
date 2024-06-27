@@ -5,6 +5,7 @@ import com.copycatsplus.copycats.CCBlockStateProperties;
 import com.copycatsplus.copycats.content.copycat.base.CTCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.copycatsplus.copycats.content.copycat.base.StateType;
+import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.decoration.copycat.CopycatBlock;
@@ -62,7 +63,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static net.minecraft.core.Direction.Axis;
 
-public abstract class MultiStateCopycatBlock extends Block implements IBE<MultiStateCopycatBlockEntity>, IWrenchable, ISpecialBlockItemRequirement, IStateType {
+public abstract class MultiStateCopycatBlock extends Block implements IFunctionalCopycatBlock, IBE<MultiStateCopycatBlockEntity>, IWrenchable, ISpecialBlockItemRequirement, IStateType {
 
     public static final EnumProperty<BlockStateTransform> TRANSFORM = CCBlockStateProperties.TRANSFORM;
 
@@ -131,8 +132,7 @@ public abstract class MultiStateCopycatBlock extends Block implements IBE<MultiS
 
     @Override
     public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
-        onWrenched(state, context);
-        return IWrenchable.super.onSneakWrenched(state, context);
+        return IFunctionalCopycatBlock.super.onSneakWrenched(state, context);
     }
 
     @Override
@@ -250,7 +250,7 @@ public abstract class MultiStateCopycatBlock extends Block implements IBE<MultiS
             return null;
 
         Block block = bi.getBlock();
-        if (block instanceof MultiStateCopycatBlock || block instanceof CopycatBlock)
+        if (block instanceof IFunctionalCopycatBlock || block instanceof CopycatBlock)
             return null;
 
         BlockState appliedState = block.defaultBlockState();

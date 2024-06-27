@@ -1,24 +1,18 @@
 package com.copycatsplus.copycats.content.copycat.base.model.multistate.fabric;
 
-import com.copycatsplus.copycats.Copycats;
-import com.copycatsplus.copycats.content.copycat.base.multistate.MaterialItemStorage;
+import com.copycatsplus.copycats.content.copycat.base.model.fabric.CopycatModel.CullFaceRemovalData;
+import com.copycatsplus.copycats.content.copycat.base.model.fabric.CopycatModel.MaterialFixer;
+import com.copycatsplus.copycats.content.copycat.base.model.fabric.CopycatModel.OcclusionData;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.ScaledBlockAndTintGetter;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.utility.Iterate;
 import io.github.fabricators_of_create.porting_lib.models.CustomParticleIconModel;
-import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
-import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
-import net.fabricmc.fabric.api.renderer.v1.material.MaterialFinder;
-import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
-import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.model.ForwardingBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachedBlockView;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
@@ -34,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 public abstract class MultiStateCopycatModel extends ForwardingBakedModel implements CustomParticleIconModel {
@@ -154,59 +147,5 @@ public abstract class MultiStateCopycatModel extends ForwardingBakedModel implem
         return Minecraft.getInstance()
                 .getBlockRenderer()
                 .getBlockModel(state);
-    }
-
-
-    //Copied from com.simibubi.create.content.decoration.copycat.CopycatModel.OcclusionData as it was private
-    static class OcclusionData {
-        private final boolean[] occluded;
-
-        public OcclusionData() {
-            occluded = new boolean[6];
-        }
-
-        public void occlude(Direction face) {
-            occluded[face.get3DDataValue()] = true;
-        }
-
-        public boolean isOccluded(Direction face) {
-            return face == null ? false : occluded[face.get3DDataValue()];
-        }
-    }
-
-    //Copied from fabric version of create as they were private classes
-    protected static class CullFaceRemovalData {
-        private final boolean[] shouldRemove;
-
-        public CullFaceRemovalData() {
-            shouldRemove = new boolean[6];
-        }
-
-        public void remove(Direction face) {
-            shouldRemove[face.get3DDataValue()] = true;
-        }
-
-        public boolean shouldRemove(Direction face) {
-            return face == null ? false : shouldRemove[face.get3DDataValue()];
-        }
-    }
-
-    private record MaterialFixer(RenderMaterial materialDefault) implements RenderContext.QuadTransform {
-        @Override
-        public boolean transform(MutableQuadView quad) {
-            if (quad.material().blendMode() == BlendMode.DEFAULT) {
-                // default needs to be changed from the Copycat's default (cutout) to the wrapped material's default.
-                quad.material(materialDefault);
-            }
-            return true;
-        }
-
-        public static MaterialFixer create(BlockState materialState) {
-            RenderType type = ItemBlockRenderTypes.getChunkRenderType(materialState);
-            BlendMode blendMode = BlendMode.fromRenderLayer(type);
-            MaterialFinder finder = Objects.requireNonNull(RendererAccess.INSTANCE.getRenderer()).materialFinder();
-            RenderMaterial renderMaterial = finder.blendMode(0, blendMode).find();
-            return new MaterialFixer(renderMaterial);
-        }
     }
 }

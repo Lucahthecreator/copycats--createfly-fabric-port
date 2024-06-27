@@ -7,10 +7,10 @@
   "mixins": [
     "HolderReferenceInvoker",
     "compat.registrate.CreateRegistrateMixin",
+    "copycat.base.functional.FunctionalCopycatBlockMixin",
     "copycat.base.multistate.MultiStateCopycatBlockCombinerMixin"
   ],
   "client": [
-    "copycat.base.CopycatModelMixin",
     "featuretoggle.SubMenuConfigScreenMixin"
   ],
   "injectors": {
