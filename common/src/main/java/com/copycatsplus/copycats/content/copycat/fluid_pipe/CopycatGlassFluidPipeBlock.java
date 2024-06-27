@@ -3,10 +3,8 @@ package com.copycatsplus.copycats.content.copycat.fluid_pipe;
 import com.copycatsplus.copycats.CCBlockEntityTypes;
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.decoration.bracket.BracketBlock;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlock;
-import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
 import com.simibubi.create.content.fluids.pipes.GlassFluidPipeBlock;
 import com.simibubi.create.content.fluids.pipes.StraightPipeBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -19,6 +17,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -90,6 +89,11 @@ public class CopycatGlassFluidPipeBlock extends GlassFluidPipeBlock implements I
     public void playerWillDestroy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
         super.playerWillDestroy(level, pos, state, player);
         IFunctionalCopycatBlock.super.playerWillDestroy(level, pos, state, player);
+    }
+
+    @Override
+    public @NotNull ItemStack getCloneItemStack(@NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull BlockState state) {
+        return CCBlocks.COPYCAT_FLUID_PIPE.asStack();
     }
 
     @Override

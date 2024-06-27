@@ -1,10 +1,8 @@
 package com.copycatsplus.copycats.content.copycat.base.functional;
 
-import com.copycatsplus.copycats.content.copycat.base.ICustomCTBlocking;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.decoration.copycat.CopycatBlock;
-import com.simibubi.create.content.decoration.copycat.CopycatModel;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
@@ -29,7 +27,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
 
 /**
  * Indicates that a block functions as a copycat but is not a subclass of {@link CopycatBlock}.

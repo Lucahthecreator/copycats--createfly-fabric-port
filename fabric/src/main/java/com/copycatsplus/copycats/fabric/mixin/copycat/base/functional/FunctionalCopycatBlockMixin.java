@@ -2,6 +2,7 @@ package com.copycatsplus.copycats.fabric.mixin.copycat.base.functional;
 
 import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlock;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatGlassFluidPipeBlock;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.decoration.copycat.CopycatModel;
@@ -34,7 +35,7 @@ import java.util.function.Function;
 
 import static com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock.getMaterial;
 
-@Mixin({CopycatShaftBlock.class, CopycatFluidPipeBlock.class})
+@Mixin({CopycatShaftBlock.class, CopycatFluidPipeBlock.class, CopycatGlassFluidPipeBlock.class})
 public abstract class FunctionalCopycatBlockMixin extends Block implements IFunctionalCopycatBlock,
         CustomFrictionBlock, CustomSoundTypeBlock, LightEmissiveBlock, ExplosionResistanceBlock,
         BlockPickInteractionAware, CustomLandingEffectsBlock, CustomRunningEffectsBlock, EnchantmentBonusBlock,
@@ -80,7 +81,7 @@ public abstract class FunctionalCopycatBlockMixin extends Block implements IFunc
     public ItemStack getPickedStack(BlockState state, BlockGetter level, BlockPos pos, @Nullable Player player, @Nullable HitResult result) {
         BlockState material = getMaterial(level, pos);
         if (AllBlocks.COPYCAT_BASE.has(material) || player != null && player.isShiftKeyDown())
-            return new ItemStack(this);
+            return this.getCloneItemStack(level, pos, state);
         return maybeMaterialAs(
                 level, pos, BlockPickInteractionAware.class,
                 (mat, block) -> block.getPickedStack(mat, level, pos, player, result),
