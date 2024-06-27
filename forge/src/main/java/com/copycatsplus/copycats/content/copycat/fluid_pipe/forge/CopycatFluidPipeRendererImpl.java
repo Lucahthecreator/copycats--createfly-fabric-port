@@ -10,7 +10,9 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 import com.simibubi.create.foundation.utility.Iterate;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,8 +22,13 @@ public abstract class CopycatFluidPipeRendererImpl extends SafeBlockEntityRender
     public CopycatFluidPipeRendererImpl(BlockEntityRendererProvider.Context context) {
     }
 
+    @SuppressWarnings("deprecation")
     public static void renderSafe(CopycatFluidPipeRenderer renderer, CopycatFluidPipeBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer,
                                   int light, int overlay) {
+
+        if (ItemBlockRenderTypes.getRenderLayers(be.getMaterial()).contains(RenderType.solid()))
+            return;
+
         FluidTransportBehaviour pipe = be.getBehaviour(FluidTransportBehaviour.TYPE);
         if (pipe == null)
             return;
