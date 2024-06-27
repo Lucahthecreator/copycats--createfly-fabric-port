@@ -1,17 +1,15 @@
-package com.copycatsplus.copycats.content.copycat.slope;
+package com.copycatsplus.copycats.content.copycat.vertical_slope;
 
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
 import com.copycatsplus.copycats.content.copycat.base.CTWaterloggedCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.ICustomCTBlocking;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
-import com.copycatsplus.copycats.utility.shape.NoneVoxelShape;
-import com.copycatsplus.copycats.utility.shape.VoxelCollection;
-import com.copycatsplus.copycats.utility.shape.VoxelUtils;
-import com.simibubi.create.content.equipment.extendoGrip.ExtendoGripItem;
 import com.simibubi.create.foundation.placement.IPlacementHelper;
 import com.simibubi.create.foundation.placement.PlacementHelpers;
 import com.simibubi.create.foundation.placement.PoleHelper;
+import com.simibubi.create.foundation.utility.Iterate;
+import com.simibubi.create.foundation.utility.Pair;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,34 +30,29 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public class CopycatSlopeBlock extends CTWaterloggedCopycatBlock implements IStateType, ICustomCTBlocking {
+import static net.minecraft.core.Direction.Axis;
+
+public class CopycatVerticalSlopeBlock extends CTWaterloggedCopycatBlock implements IStateType, ICustomCTBlocking {
 
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final EnumProperty<Half> HALF = BlockStateProperties.HALF;
 
     private static final int placementHelperId = PlacementHelpers.register(new PlacementHelper());
 
-    public CopycatSlopeBlock(Properties pProperties) {
+    public CopycatVerticalSlopeBlock(Properties pProperties) {
         super(pProperties);
         registerDefaultState(defaultBlockState()
-                .setValue(FACING, Direction.NORTH)
-                .setValue(HALF, Half.BOTTOM)
-        );
+                .setValue(FACING, Direction.NORTH));
     }
 
     @Override
@@ -83,7 +76,6 @@ public class CopycatSlopeBlock extends CTWaterloggedCopycatBlock implements ISta
     public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
                                              BlockPos fromPos, BlockPos toPos) {
         Direction direction = state.getValue(FACING);
-        Half half = state.getValue(HALF);
         BlockState toState = reader.getBlockState(toPos);
 
         BlockPos diff = toPos.subtract(fromPos);
@@ -96,10 +88,16 @@ public class CopycatSlopeBlock extends CTWaterloggedCopycatBlock implements ISta
         }
 
         if (toState.is(this)) {
-            if (toState.getValue(FACING) == direction && toState.getValue(HALF) == half) return false;
-            return !(direction == connectFace && connectFace == toState.getValue(FACING).getOpposite());
+            Direction toDirection = toState.getValue(FACING);
+            if (toDirection == direction) return false;
+
+            if (connectFace == direction.getOpposite() || connectFace == direction.getClockWise())
+                return true;
+            if (connectFace.getOpposite() == toDirection.getOpposite() || connectFace.getOpposite() == toDirection.getClockWise())
+                return true;
+            return false;
         } else {
-            return !(direction == connectFace || half == Half.TOP && connectFace == Direction.UP || half == Half.BOTTOM && connectFace == Direction.DOWN);
+            return !(direction == connectFace || direction.getCounterClockWise() == connectFace);
         }
     }
 
@@ -108,7 +106,6 @@ public class CopycatSlopeBlock extends CTWaterloggedCopycatBlock implements ISta
                                             BlockState state) {
         BlockState toState = reader.getBlockState(toPos);
         Direction facing = state.getValue(FACING);
-        Half half = state.getValue(HALF);
 
         BlockPos diff = toPos.subtract(fromPos);
         if (diff.equals(Vec3i.ZERO)) {
@@ -122,15 +119,22 @@ public class CopycatSlopeBlock extends CTWaterloggedCopycatBlock implements ISta
         if (toState.is(this)) {
             try {
                 return toState.getValue(FACING) == facing &&
-                        toState.getValue(HALF) == half &&
-                        face.getAxis().isHorizontal() && face.getAxis() != facing.getAxis() ||
-                        face == facing && face == toState.getValue(FACING).getOpposite();
+                        face.getAxis().isVertical() ||
+                        face.getAxis().isHorizontal();
             } catch (IllegalStateException ignored) {
                 return false;
             }
         } else {
-            return face == facing || half == Half.TOP && face == Direction.UP || half == Half.BOTTOM && face == Direction.DOWN;
+            return face == facing || face == facing.getCounterClockWise();
         }
+    }
+
+    @Override
+    public Optional<Boolean> blockCTTowards(BlockAndTintGetter reader, BlockState state, BlockPos pos, BlockPos ctPos, BlockPos connectingPos, Direction face) {
+        if (reader.getBlockState(ctPos).is(this)) {
+            return Optional.of(false);
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -150,11 +154,7 @@ public class CopycatSlopeBlock extends CTWaterloggedCopycatBlock implements ISta
     @Override
     public boolean canFaceBeOccluded(BlockState state, Direction face) {
         Direction facing = state.getValue(FACING);
-        Half half = state.getValue(HALF);
-        if (face == facing) return true;
-        if (face == facing.getOpposite()) return false;
-        if (half == Half.TOP) return face != Direction.DOWN;
-        else return face != Direction.UP;
+        return face.getAxis() == Axis.Y || face == facing || face == facing.getCounterClockWise();
     }
 
     @Override
@@ -162,88 +162,52 @@ public class CopycatSlopeBlock extends CTWaterloggedCopycatBlock implements ISta
         return !canFaceBeOccluded(state, face);
     }
 
+    private static final Map<Pair<Integer, Integer>, Direction> VERTICAL_POSITION_MAP = new HashMap<>();
+    private static final Map<Pair<Direction, Integer>, Direction> HORIZONTAL_POSITION_MAP = new HashMap<>();
+
+    static {
+        for (Direction main : Iterate.horizontalDirections) {
+            Direction cross = main.getCounterClockWise();
+
+            int mainOffset = main.getAxisDirection().getStep();
+            int crossOffset = cross.getAxisDirection().getStep();
+
+            if (main.getAxis() == Axis.X)
+                VERTICAL_POSITION_MAP.put(Pair.of(mainOffset, crossOffset), main);
+            else
+                VERTICAL_POSITION_MAP.put(Pair.of(crossOffset, mainOffset), main);
+
+            HORIZONTAL_POSITION_MAP.put(Pair.of(main.getOpposite(), crossOffset), main);
+            HORIZONTAL_POSITION_MAP.put(Pair.of(cross.getOpposite(), mainOffset), main);
+        }
+    }
+
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState stateForPlacement = super.getStateForPlacement(context);
         assert stateForPlacement != null;
-        Direction facing = context.getHorizontalDirection();
-        Half half = context.getClickedFace() == Direction.DOWN
-                ? Half.TOP
-                : context.getClickedFace() == Direction.UP
-                ? Half.BOTTOM
-                : context.getClickLocation().y - context.getClickedPos().getY() > 0.5
-                ? Half.TOP
-                : Half.BOTTOM;
-        return stateForPlacement.setValue(FACING, facing).setValue(HALF, half);
+
+        int xOffset = context.getClickLocation().x - context.getClickedPos().getX() > 0.5 ? 1 : -1;
+        int zOffset = context.getClickLocation().z - context.getClickedPos().getZ() > 0.5 ? 1 : -1;
+
+        if (context.getClickedFace().getAxis() == Axis.Y) {
+            return stateForPlacement.setValue(FACING, VERTICAL_POSITION_MAP.get(Pair.of(xOffset, zOffset)));
+        } else {
+            return stateForPlacement.setValue(FACING, HORIZONTAL_POSITION_MAP.get(
+                    Pair.of(context.getClickedFace(), context.getClickedFace().getAxis() == Axis.X ? zOffset : xOffset)
+            ));
+        }
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        super.createBlockStateDefinition(pBuilder.add(FACING, HALF));
+        super.createBlockStateDefinition(pBuilder.add(FACING));
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
-        Direction facing = pState.getValue(FACING);
-        boolean isBottom = pState.getValue(HALF) == Half.BOTTOM;
-        Vec3[] triangleVertices = switch (facing) {
-            case WEST -> new Vec3[]{
-                    new Vec3(0, (isBottom ? 0 : 1), 0),
-                    new Vec3(0, (isBottom ? 0 : 1), 0),
-                    new Vec3(1, (isBottom ? 0 : 1), 0),
-                    new Vec3(0, (isBottom ? 1 : 0), 0),
-                    new Vec3(0, (isBottom ? 0 : 1), 1),
-                    new Vec3(0, (isBottom ? 0 : 1), 1),
-                    new Vec3(1, (isBottom ? 0 : 1), 1),
-                    new Vec3(0, (isBottom ? 1 : 0), 1)
-            };
-            case EAST -> new Vec3[]{
-                    new Vec3(1, (isBottom ? 0 : 1), 1),
-                    new Vec3(1, (isBottom ? 0 : 1), 1),
-                    new Vec3(0, (isBottom ? 0 : 1), 1),
-                    new Vec3(1, (isBottom ? 1 : 0), 1),
-                    new Vec3(1, (isBottom ? 0 : 1), 0),
-                    new Vec3(1, (isBottom ? 0 : 1), 0),
-                    new Vec3(0, (isBottom ? 0 : 1), 0),
-                    new Vec3(1, (isBottom ? 1 : 0), 0)
-            };
-            case NORTH -> new Vec3[]{
-                    new Vec3(0, (isBottom ? 0 : 1), 0),
-                    new Vec3(0, (isBottom ? 0 : 1), 0),
-                    new Vec3(0, (isBottom ? 0 : 1), 1),
-                    new Vec3(0, (isBottom ? 1 : 0), 0),
-                    new Vec3(1, (isBottom ? 0 : 1), 0),
-                    new Vec3(1, (isBottom ? 0 : 1), 0),
-                    new Vec3(1, (isBottom ? 0 : 1), 1),
-                    new Vec3(1, (isBottom ? 1 : 0), 0)
-            };
-            case SOUTH -> new Vec3[]{
-                    new Vec3(1, (isBottom ? 0 : 1), 1),
-                    new Vec3(1, (isBottom ? 0 : 1), 1),
-                    new Vec3(1, (isBottom ? 0 : 1), 0),
-                    new Vec3(1, (isBottom ? 1 : 0), 1),
-                    new Vec3(0, (isBottom ? 0 : 1), 1),
-                    new Vec3(0, (isBottom ? 0 : 1), 1),
-                    new Vec3(0, (isBottom ? 0 : 1), 0),
-                    new Vec3(0, (isBottom ? 1 : 0), 1)
-            };
-            default -> throw new AssertionError("Direction shouldn't appear as this is a horizontal facing block only");
-        };
-
-        Vec3[] shape = VoxelUtils.create12Edges(triangleVertices);
-
-        //Accidentally made a corner version
-/*        new Vec3(0.0, (isBottom ? 0 : 1), -0.0),
-                new Vec3(0.0, (isBottom ? 0 : 1), -0.0),
-                new Vec3(0.0, (isBottom ? 0 : 1), -1),
-                new Vec3(1, (isBottom ? 1 : 0), 0),
-                new Vec3(1, (isBottom ? 0 : 1), -0.0),
-                new Vec3(1, (isBottom ? 0 : 1), -0.0),
-                new Vec3(1, (isBottom ? 0 : 1), -1),
-                new Vec3(1, (isBottom ? 1 : 0), 0)*/
-
-        return new NoneVoxelShape((isBottom ? CCShapes.SLOPE_BOTTOM.get(facing) : CCShapes.SLOPE_TOP.get(facing)), shape);
+        return CCShapes.SLOPE_LEFT.get(pState.getValue(FACING));
     }
 
 
@@ -256,11 +220,7 @@ public class CopycatSlopeBlock extends CTWaterloggedCopycatBlock implements ISta
                                      Direction dir) {
         if (state.is(this) == neighborState.is(this)) {
             if (getMaterial(level, pos).skipRendering(getMaterial(level, pos.relative(dir)), dir.getOpposite())) {
-                Direction facing = state.getValue(FACING);
-                Half half = state.getValue(HALF);
-                return neighborState.getValue(FACING) == facing &&
-                        neighborState.getValue(HALF) == half &&
-                        dir.getAxis().isHorizontal() && dir.getAxis() != facing.getAxis();
+                return dir.getAxis().isVertical() && neighborState.getValue(FACING) == state.getValue(FACING);
             }
         }
 
@@ -276,21 +236,37 @@ public class CopycatSlopeBlock extends CTWaterloggedCopycatBlock implements ISta
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull BlockState mirror(@NotNull BlockState pState, @NotNull Mirror pMirror) {
-        return pState.setValue(FACING, pMirror.mirror(pState.getValue(FACING)));
+        Axis mirrorAxis = null;
+        for (Axis axis : Iterate.axes) {
+            if (pMirror.rotation().inverts(axis)) {
+                mirrorAxis = axis;
+                break;
+            }
+        }
+        if (mirrorAxis == null || mirrorAxis.isVertical()) {
+            return super.mirror(pState, pMirror);
+        }
+        Direction facing = pState.getValue(FACING);
+        if (facing.getAxis() != mirrorAxis) {
+            return pState.setValue(FACING, facing.getClockWise());
+        } else {
+            return pState.setValue(FACING, facing.getCounterClockWise());
+        }
     }
 
     @MethodsReturnNonnullByDefault
     private static class PlacementHelper extends PoleHelper<Direction> {
 
         private PlacementHelper() {
-            super(CCBlocks.COPYCAT_SLOPE::has, state -> state.getValue(FACING).getClockWise().getAxis(), FACING);
+            super(CCBlocks.COPYCAT_VERTICAL_SLOPE::has, $ -> Axis.Y, FACING);
         }
 
         @Override
         public Predicate<ItemStack> getItemPredicate() {
             return i -> i.getItem() instanceof BlockItem
-                    && (((BlockItem) i.getItem()).getBlock() instanceof CopycatSlopeBlock);
+                    && (((BlockItem) i.getItem()).getBlock() instanceof CopycatVerticalSlopeBlock);
         }
 
     }
+
 }

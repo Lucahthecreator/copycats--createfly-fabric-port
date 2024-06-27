@@ -1,5 +1,6 @@
 package com.copycatsplus.copycats;
 
+import com.copycatsplus.copycats.config.FeatureCategory;
 import com.copycatsplus.copycats.config.FeatureToggle;
 import com.copycatsplus.copycats.content.copycat.base.model.SimpleCopycatPart;
 import com.copycatsplus.copycats.content.copycat.base.model.ToggleableCopycatModel;
@@ -40,8 +41,9 @@ import com.copycatsplus.copycats.content.copycat.slab.CopycatSlabBlock;
 import com.copycatsplus.copycats.content.copycat.slice.CopycatSliceBlock;
 import com.copycatsplus.copycats.content.copycat.slice.CopycatSliceModel;
 import com.copycatsplus.copycats.content.copycat.slope.CopycatSlopeBlock;
-import com.copycatsplus.copycats.content.copycat.slope.CopycatSlopeEnhancedModel;
 import com.copycatsplus.copycats.content.copycat.slope.CopycatSlopeModel;
+import com.copycatsplus.copycats.content.copycat.slope_layer.CopycatSlopeLayerBlock;
+import com.copycatsplus.copycats.content.copycat.slope_layer.CopycatSlopeLayerModel;
 import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsBlock;
 import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsEnhancedModel;
 import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsModel;
@@ -53,6 +55,8 @@ import com.copycatsplus.copycats.content.copycat.trapdoor.CopycatTrapdoorModel;
 import com.copycatsplus.copycats.content.copycat.trapdoor.WrappedTrapdoorBlock;
 import com.copycatsplus.copycats.content.copycat.vertical_slice.CopycatVerticalSliceBlock;
 import com.copycatsplus.copycats.content.copycat.vertical_slice.CopycatVerticalSliceModel;
+import com.copycatsplus.copycats.content.copycat.vertical_slope.CopycatVerticalSlopeBlock;
+import com.copycatsplus.copycats.content.copycat.vertical_slope.CopycatVerticalSlopeModel;
 import com.copycatsplus.copycats.content.copycat.vertical_stairs.CopycatVerticalStairBlock;
 import com.copycatsplus.copycats.content.copycat.vertical_stairs.CopycatVerticalStairsEnhancedModel;
 import com.copycatsplus.copycats.content.copycat.vertical_stairs.CopycatVerticalStairsModel;
@@ -117,7 +121,7 @@ public class CCBlocks {
     public static final BlockEntry<CopycatBoardBlock> COPYCAT_BOARD =
             REGISTRATE.block("copycat_board", CopycatBoardBlock::new)
                     .transform(CCBuilderTransformers.multiCopycat())
-                    .transform(FeatureToggle.register())
+                    .transform(FeatureToggle.register(FeatureCategory.MULTISTATES))
                     .onRegister(CreateRegistrate.blockModel(() -> model -> SimpleMultiStateCopycatPart.create(model, new CopycatMultiBoardModel())))
                     .loot(CCLootGen.build(CCLootGen.lootForDirections()))
                     .item()
@@ -132,7 +136,7 @@ public class CCBlocks {
                             .noCollission())
                     .tag(BlockTags.BUTTONS)
                     .tag(BlockTags.WOODEN_BUTTONS)
-                    .transform(FeatureToggle.register())
+                    .transform(FeatureToggle.register(FeatureCategory.REDSTONE))
                     .onRegister(CreateRegistrate.blockModel(() -> model -> SimpleCopycatPart.create(model, new CopycatButtonModel())))
                     .item()
                     .transform(customItemModel("copycat_base", "button"))
@@ -145,7 +149,7 @@ public class CCBlocks {
                             .noCollission())
                     .tag(BlockTags.BUTTONS)
                     .tag(BlockTags.STONE_BUTTONS)
-                    .transform(FeatureToggle.register())
+                    .transform(FeatureToggle.register(FeatureCategory.REDSTONE))
                     .onRegister(CreateRegistrate.blockModel(() -> model -> SimpleCopycatPart.create(model, new CopycatButtonModel())))
                     .item()
                     .transform(customItemModel("copycat_base", "button"))
@@ -172,7 +176,7 @@ public class CCBlocks {
     public static final BlockEntry<CopycatByteBlock> COPYCAT_BYTE =
             REGISTRATE.block("copycat_byte", CopycatByteBlock::new)
                     .transform(CCBuilderTransformers.multiCopycat())
-                    .transform(FeatureToggle.register())
+                    .transform(FeatureToggle.register(FeatureCategory.MULTISTATES))
                     .onRegister(CreateRegistrate.blockModel(() -> model -> SimpleMultiStateCopycatPart.create(model, new CopycatMultiByteModel())))
                     .loot(CCLootGen.build(CCLootGen.lootForBytes()))
                     .item()
@@ -232,7 +236,7 @@ public class CCBlocks {
     public static final BlockEntry<CopycatHalfLayerBlock> COPYCAT_HALF_LAYER =
             REGISTRATE.block("copycat_half_layer", CopycatHalfLayerBlock::new)
                     .transform(CCBuilderTransformers.multiCopycat())
-                    .transform(FeatureToggle.register())
+                    .transform(FeatureToggle.register(FeatureCategory.MULTISTATES, FeatureCategory.STACKABLES))
                     .onRegister(CreateRegistrate.blockModel(() -> model -> SimpleMultiStateCopycatPart.create(model, new CopycatMultiHalfLayerModel())))
                     .loot(CCLootGen.build(
                             CCLootGen.lootForLayers(CopycatHalfLayerBlock.NEGATIVE_LAYERS),
@@ -273,7 +277,7 @@ public class CCBlocks {
     public static final BlockEntry<CopycatLayerBlock> COPYCAT_LAYER =
             REGISTRATE.block("copycat_layer", CopycatLayerBlock::new)
                     .transform(BuilderTransformers.copycat())
-                    .transform(FeatureToggle.register())
+                    .transform(FeatureToggle.register(FeatureCategory.STACKABLES))
                     .onRegister(CreateRegistrate.blockModel(() -> model -> SimpleCopycatPart.create(model, new CopycatLayerModel())))
                     .loot(CCLootGen.build(CCLootGen.lootForLayers()))
                     .item()
@@ -296,7 +300,7 @@ public class CCBlocks {
                             .noCollission())
                     .tag(BlockTags.PRESSURE_PLATES)
                     .tag(BlockTags.WOODEN_PRESSURE_PLATES)
-                    .transform(FeatureToggle.register())
+                    .transform(FeatureToggle.register(FeatureCategory.REDSTONE))
                     .onRegister(CreateRegistrate.blockModel(() -> model -> SimpleCopycatPart.create(model, new CopycatPressurePlateModel())))
                     .item()
                     .transform(customItemModel("copycat_base", "pressure_plate"))
@@ -318,7 +322,7 @@ public class CCBlocks {
                             .noCollission())
                     .tag(BlockTags.PRESSURE_PLATES)
                     .tag(BlockTags.STONE_PRESSURE_PLATES)
-                    .transform(FeatureToggle.register())
+                    .transform(FeatureToggle.register(FeatureCategory.REDSTONE))
                     .onRegister(CreateRegistrate.blockModel(() -> model -> SimpleCopycatPart.create(model, new CopycatPressurePlateModel())))
                     .item()
                     .transform(customItemModel("copycat_base", "pressure_plate"))
@@ -338,7 +342,7 @@ public class CCBlocks {
                     .properties(p -> p.isValidSpawn((state, level, pos, entity) -> false)
                             .noCollission())
                     .tag(BlockTags.PRESSURE_PLATES)
-                    .transform(FeatureToggle.register())
+                    .transform(FeatureToggle.register(FeatureCategory.REDSTONE))
                     .onRegister(CreateRegistrate.blockModel(() -> model -> SimpleCopycatPart.create(model, new CopycatPressurePlateModel())))
                     .item()
                     .transform(customItemModel("copycat_base", "pressure_plate"))
@@ -358,7 +362,7 @@ public class CCBlocks {
                     .properties(p -> p.isValidSpawn((state, level, pos, entity) -> false)
                             .noCollission())
                     .tag(BlockTags.PRESSURE_PLATES)
-                    .transform(FeatureToggle.register())
+                    .transform(FeatureToggle.register(FeatureCategory.REDSTONE))
                     .onRegister(CreateRegistrate.blockModel(() -> model -> SimpleCopycatPart.create(model, new CopycatPressurePlateModel())))
                     .item()
                     .transform(customItemModel("copycat_base", "pressure_plate"))
@@ -368,7 +372,7 @@ public class CCBlocks {
             REGISTRATE.block("copycat_slab", CopycatSlabBlock::new)
                     .transform(CCBuilderTransformers.multiCopycat())
                     .tag(BlockTags.SLABS)
-                    .transform(FeatureToggle.register())
+                    .transform(FeatureToggle.register(FeatureCategory.MULTISTATES))
                     .loot((lt, block) -> lt.add(block, lt.createSlabItemTable(block)))
                     .onRegister(blockModel(() -> model -> SimpleMultiStateCopycatPart.create(model, new CopycatMultiSlabModel())))
                     .item()
@@ -379,7 +383,7 @@ public class CCBlocks {
     public static final BlockEntry<CopycatSliceBlock> COPYCAT_SLICE =
             REGISTRATE.block("copycat_slice", CopycatSliceBlock::new)
                     .transform(BuilderTransformers.copycat())
-                    .transform(FeatureToggle.register())
+                    .transform(FeatureToggle.register(FeatureCategory.STACKABLES))
                     .onRegister(CreateRegistrate.blockModel(() -> model -> SimpleCopycatPart.create(model, new CopycatSliceModel())))
                     .loot(CCLootGen.build(CCLootGen.lootForLayers()))
                     .item()
@@ -440,7 +444,7 @@ public class CCBlocks {
     public static final BlockEntry<CopycatVerticalSliceBlock> COPYCAT_VERTICAL_SLICE =
             REGISTRATE.block("copycat_vertical_slice", CopycatVerticalSliceBlock::new)
                     .transform(BuilderTransformers.copycat())
-                    .transform(FeatureToggle.register())
+                    .transform(FeatureToggle.register(FeatureCategory.STACKABLES))
                     .onRegister(CreateRegistrate.blockModel(() -> model -> SimpleCopycatPart.create(model, new CopycatVerticalSliceModel())))
                     .loot(CCLootGen.build(CCLootGen.lootForLayers()))
                     .item()
@@ -480,10 +484,29 @@ public class CCBlocks {
     public static final BlockEntry<CopycatSlopeBlock> COPYCAT_SLOPE =
             REGISTRATE.block("copycat_slope", CopycatSlopeBlock::new)
                     .transform(BuilderTransformers.copycat())
-                    .transform(FeatureToggle.register())
-                    .onRegister(CreateRegistrate.blockModel(() -> ToggleableCopycatModel.with(new CopycatSlopeModel(), new CopycatSlopeEnhancedModel())))
+                    .transform(FeatureToggle.register(FeatureCategory.SLOPES))
+                    .onRegister(CreateRegistrate.blockModel(() -> ToggleableCopycatModel.with(new CopycatSlopeModel(false), new CopycatSlopeModel(true))))
                     .item()
                     .transform(customItemModel("copycat_base", "slope"))
+                    .register();
+
+    public static final BlockEntry<CopycatVerticalSlopeBlock> COPYCAT_VERTICAL_SLOPE =
+            REGISTRATE.block("copycat_vertical_slope", CopycatVerticalSlopeBlock::new)
+                    .transform(BuilderTransformers.copycat())
+                    .transform(FeatureToggle.register(FeatureCategory.SLOPES))
+                    .onRegister(CreateRegistrate.blockModel(() -> ToggleableCopycatModel.with(new CopycatVerticalSlopeModel(false), new CopycatVerticalSlopeModel(true))))
+                    .item()
+                    .transform(customItemModel("copycat_base", "vertical_slope"))
+                    .register();
+
+    public static final BlockEntry<CopycatSlopeLayerBlock> COPYCAT_SLOPE_LAYER =
+            REGISTRATE.block("copycat_slope_layer", CopycatSlopeLayerBlock::new)
+                    .transform(BuilderTransformers.copycat())
+                    .transform(FeatureToggle.register(FeatureCategory.SLOPES, FeatureCategory.STACKABLES))
+                    .onRegister(CreateRegistrate.blockModel(() -> ToggleableCopycatModel.with(new CopycatSlopeLayerModel(false), new CopycatSlopeLayerModel(true))))
+                    .loot(CCLootGen.build(CCLootGen.lootForLayers()))
+                    .item()
+                    .transform(customItemModel("copycat_base", "slope_layer"))
                     .register();
 
     public static @Nullable BlockEntry<CopycatTestBlock> COPYCAT_TEST_BLOCK;

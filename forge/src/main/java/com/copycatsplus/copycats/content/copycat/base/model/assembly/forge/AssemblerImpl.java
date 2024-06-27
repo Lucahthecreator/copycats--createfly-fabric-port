@@ -78,7 +78,7 @@ public class AssemblerImpl {
 
     public static <Source extends BakedQuad, Destination extends List<BakedQuad>> void assembleQuad(Source src, Destination dest, AABB crop, Vec3 move, GlobalTransform globalTransform, QuadTransform... transforms) {
         int[] vertices = BakedModelHelper.cropAndMove(src.getVertices(), src.getSprite(), crop, move);
-        MutableQuad mutableQuad = getMutableQuad(vertices);
+        MutableQuad mutableQuad = getMutableQuad(new BakedQuad(vertices, src.getTintIndex(), src.getDirection(), src.getSprite(), src.isShade()));
         globalTransform.apply(mutableQuad);
         mutableQuad.undoMutate();
         for (QuadTransform transform : transforms) {
@@ -90,18 +90,19 @@ public class AssemblerImpl {
             BakedQuadHelper.setU(vertices, i, mutableQuad.vertices.get(i).uv.u);
             BakedQuadHelper.setV(vertices, i, mutableQuad.vertices.get(i).uv.v);
         }
-        dest.add(BakedQuadHelper.cloneWithCustomGeometry(src, vertices));
+        dest.add(new BakedQuad(vertices, src.getTintIndex(), mutableQuad.direction, src.getSprite(), src.isShade()));
     }
 
     public static <T> MutableQuad getMutableQuad(T data) {
-        int[] vertexData = (int[]) data;
+        BakedQuad quad = (BakedQuad) data;
+        int[] vertexData = quad.getVertices();
         List<MutableVertex> vertices = new ArrayList<>(4);
         for (int i = 0; i < 4; i++) {
             MutableVec3 xyz = new MutableVec3(BakedQuadHelper.getXYZ(vertexData, i));
             MutableUV uv = new MutableUV(BakedQuadHelper.getU(vertexData, i), BakedQuadHelper.getV(vertexData, i));
             vertices.add(new MutableVertex(xyz, uv));
         }
-        return new MutableQuad(vertices);
+        return new MutableQuad(vertices, quad.getDirection());
     }
 
     public static class CopycatRenderContextForge extends CopycatRenderContext<List<BakedQuad>, List<BakedQuad>> {

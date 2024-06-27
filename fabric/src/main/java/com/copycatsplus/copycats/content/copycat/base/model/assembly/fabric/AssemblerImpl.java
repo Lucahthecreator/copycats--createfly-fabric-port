@@ -86,6 +86,7 @@ public class AssemblerImpl {
             BakedQuadHelper.setXYZ(dest, i, mutableQuad.vertices.get(i).xyz.toVec3());
             dest.uv(i, mutableQuad.vertices.get(i).uv.u, mutableQuad.vertices.get(i).uv.v);
         }
+        // todo: assign lightFace
         dest.emit();
     }
 
@@ -97,7 +98,7 @@ public class AssemblerImpl {
             MutableUV uv = new MutableUV(vertexData.u(i), vertexData.v(i));
             vertices.add(new MutableVertex(xyz, uv));
         }
-        return new MutableQuad(vertices);
+        return new MutableQuad(vertices, vertexData.lightFace());
     }
 
     public static class CopycatRenderContextFabric extends CopycatRenderContext<MutableQuadView, QuadEmitter> {

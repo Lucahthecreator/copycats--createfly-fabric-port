@@ -171,6 +171,10 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
 
     GeneratedRecipe COPYCAT_SLOPE = copycat(CCBlocks.COPYCAT_SLOPE, 2);
 
+    GeneratedRecipe COPYCAT_VERTICAL_SLOPE = copycat(CCBlocks.COPYCAT_VERTICAL_SLOPE, 2);
+
+    GeneratedRecipe COPYCAT_SLOPE_LAYER = copycat(CCBlocks.COPYCAT_SLOPE_LAYER, 8);
+
 
     String currentFolder = "";
 
