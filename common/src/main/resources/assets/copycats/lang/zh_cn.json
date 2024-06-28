@@ -171,6 +171,7 @@
   "block.copycats.copycat_wooden_pressure_plate.tooltip.behaviour1": "如果可能，将根据_手持物品_改变_材质_。_再次点击_以循环切换_方向_或_充能_状态。使用_扳手_重置材质。",
   "block.copycats.copycat_wooden_pressure_plate.tooltip.condition1": "右击时",
   "block.copycats.copycat_wooden_pressure_plate.tooltip.summary": "将任意的_完整方块_转换为可交互的木质压力板。",
+  "block.copycats.wrapped_copycat": "包装伪装方块",
   "block.copycats.wrapped_copycat_fence": "包装伪装栅栏",
   "block.copycats.wrapped_copycat_fence_gate": "包装伪装栅栏门",
   "block.copycats.wrapped_copycat_heavy_weighted_pressure_plate": "包装伪装重质测重压力板",
