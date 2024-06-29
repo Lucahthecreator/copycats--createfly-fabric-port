@@ -1,5 +1,6 @@
 package com.copycatsplus.copycats;
 
+import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlockEntity;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeRenderer;
@@ -17,8 +18,8 @@ import dev.architectury.injectables.annotations.ExpectPlatform;
 public class CCBlockEntityTypes {
     private static final CopycatRegistrate REGISTRATE = Copycats.getRegistrate();
 
-    public static final BlockEntityEntry<CopycatBlockEntity> COPYCAT =
-            REGISTRATE.blockEntity("copycat", CopycatBlockEntity::new)
+    public static final BlockEntityEntry<? extends CCCopycatBlockEntity> COPYCAT =
+            REGISTRATE.blockEntity("copycat", getPlatformCopycat())
                     .validBlocks(
                             CCBlocks.COPYCAT_BLOCK,
                             CCBlocks.COPYCAT_BEAM,
@@ -80,6 +81,11 @@ public class CCBlockEntityTypes {
                     .validBlocks(CCBlocks.COPYCAT_GLASS_FLUID_PIPE)
                     .renderer(() -> TransparentStraightPipeRenderer::new)
                     .register();
+
+    @ExpectPlatform
+    public static BlockEntityBuilder.BlockEntityFactory<? extends CCCopycatBlockEntity> getPlatformCopycat() {
+        throw new AssertionError("This shouldn't appear");
+    }
 
     @ExpectPlatform
     public static BlockEntityBuilder.BlockEntityFactory<? extends MultiStateCopycatBlockEntity> getPlatformMultiState() {
