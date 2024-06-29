@@ -16,7 +16,7 @@ public interface SimpleMultiStateCopycatPart {
     }
 
 
-    default void emitCopycatQuads(String key, BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    default void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
         throw new AssertionError("If this is appearing then a model isn't implemented correctly");
     }
 }

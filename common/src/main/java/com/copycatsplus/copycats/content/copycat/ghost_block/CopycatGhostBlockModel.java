@@ -8,7 +8,7 @@ import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Asse
 public class CopycatGhostBlockModel implements SimpleCopycatPart {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         assembleQuad(context); // assemble without any modifications
     }
 }

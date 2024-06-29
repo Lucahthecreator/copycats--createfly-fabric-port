@@ -14,7 +14,7 @@ import static com.copycatsplus.copycats.content.copycat.ladder.CopycatLadderBloc
 public class CopycatMultiLadderModel implements SimpleMultiStateCopycatPart {
 
     @Override
-    public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
         if (Objects.equals(key, RAILS.getName()) && !state.getValue(RAILS))
             return;
         if (Objects.equals(key, STEPS.getName()) && !state.getValue(STEPS))

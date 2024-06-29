@@ -20,7 +20,7 @@ public class CopycatMultiBoardModel implements SimpleMultiStateCopycatPart {
     }
 
     @Override
-    public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
         Map<Direction, Boolean> sides = new HashMap<>();
         for (Direction direction : Iterate.directions) {
             sides.put(direction, state.getValue(byDirection(direction)));

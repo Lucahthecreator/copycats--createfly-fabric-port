@@ -12,7 +12,7 @@ import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Asse
 public class CopycatVerticalStairsModel implements SimpleCopycatPart {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         int facing = (int) state.getValue(CopycatVerticalStairBlock.FACING).toYRot();
         VerticalStairShape shape = state.getValue(CopycatVerticalStairBlock.SHAPE);
         CCBlockStateProperties.Side side = state.getValue(CopycatVerticalStairBlock.SIDE);

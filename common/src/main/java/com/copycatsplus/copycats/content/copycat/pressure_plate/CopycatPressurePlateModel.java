@@ -13,7 +13,7 @@ public class CopycatPressurePlateModel implements SimpleCopycatPart {
 
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         boolean powered = state.getOptionalValue(PressurePlateBlock.POWERED)
                 .or(() -> state.getOptionalValue(WeightedPressurePlateBlock.POWER).map(power -> power > 0))
                 .orElse(false);

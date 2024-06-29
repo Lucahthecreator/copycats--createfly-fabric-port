@@ -10,7 +10,7 @@ public class CopycatTestBlockModel implements SimpleMultiStateCopycatPart {
     private final CopycatMultiSlabModel model = new CopycatMultiSlabModel();
 
     @Override
-    public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
         model.emitCopycatQuads(key, state, context, material);
     }
 }

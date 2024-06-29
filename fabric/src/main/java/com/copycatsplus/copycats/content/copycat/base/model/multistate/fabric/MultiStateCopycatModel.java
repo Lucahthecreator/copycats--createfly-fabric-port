@@ -67,7 +67,7 @@ public abstract class MultiStateCopycatModel extends ForwardingBakedModel implem
     public void emitBlockQuads(BlockAndTintGetter blockView, BlockState state, BlockPos pos, Supplier<RandomSource> randomSupplier, RenderContext context) {
         Map<String, BlockState> materials;
         if (blockView instanceof RenderAttachedBlockView attachmentView
-                && attachmentView.getBlockEntityRenderAttachment(pos) instanceof Map<?, ?> mats) {
+                && attachmentView.getBlockEntityRenderAttachment(pos) instanceof Map mats) {
             synchronized (mats) {
                 materials = new HashMap<>((Map<? extends String, ? extends BlockState>) mats);
             }
@@ -128,7 +128,7 @@ public abstract class MultiStateCopycatModel extends ForwardingBakedModel implem
 
     @Override
     public @NotNull TextureAtlasSprite getParticleIcon(Object data) {
-        if (data instanceof Map<?, ?> mats) {
+        if (data instanceof Map mats) {
             if (mats.isEmpty())
                 return super.getParticleIcon();
             Map.Entry<String, BlockState> key = (Map.Entry<String, BlockState>) mats.entrySet().stream().findFirst().get();

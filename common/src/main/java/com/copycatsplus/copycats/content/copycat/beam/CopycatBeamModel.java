@@ -14,7 +14,7 @@ import static net.minecraft.core.Direction.Axis;
 public class CopycatBeamModel implements SimpleCopycatPart {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         Axis axis = state.getValue(CopycatBeamBlock.AXIS);
 
         GlobalTransform transform = t -> t.rotateX(axis == Axis.Y ? 90 : 0).rotateY(axis == Axis.Z ? 90 : 0);

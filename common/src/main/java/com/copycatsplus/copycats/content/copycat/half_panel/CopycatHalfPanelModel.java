@@ -12,7 +12,7 @@ import static com.copycatsplus.copycats.content.copycat.half_panel.CopycatHalfPa
 public class CopycatHalfPanelModel implements SimpleCopycatPart {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         Direction facing = state.getValue(FACING);
         Direction offset = state.getValue(OFFSET);
 

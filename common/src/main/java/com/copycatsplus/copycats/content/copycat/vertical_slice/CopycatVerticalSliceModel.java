@@ -11,7 +11,7 @@ import static com.copycatsplus.copycats.content.copycat.vertical_slice.CopycatVe
 public class CopycatVerticalSliceModel implements SimpleCopycatPart {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         int rot = (int) state.getValue(FACING).toYRot();
         int layers = state.getValue(LAYERS);
         GlobalTransform transform = t -> t.rotateY(rot);

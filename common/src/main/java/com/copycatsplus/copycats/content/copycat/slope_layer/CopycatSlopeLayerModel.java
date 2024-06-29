@@ -18,7 +18,7 @@ public class CopycatSlopeLayerModel implements SimpleCopycatPart {
     }
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         int layer = state.getValue(CopycatSlopeLayerBlock.LAYERS);
         Direction facing = state.getValue(CopycatSlopeLayerBlock.FACING);
         Half half = state.getValue(CopycatSlopeLayerBlock.HALF);

@@ -18,7 +18,7 @@ public class CopycatMultiByteModel implements SimpleMultiStateCopycatPart {
             .collect(Collectors.toMap(s -> CopycatByteBlock.byByte(s).getName(), s -> s));
 
     @Override
-    public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
         CopycatByteBlock.Byte bite = byteMap.get(key);
         if (!state.getValue(CopycatByteBlock.byByte(bite))) return;
 

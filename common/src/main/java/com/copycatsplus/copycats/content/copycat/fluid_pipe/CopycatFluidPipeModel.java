@@ -24,7 +24,7 @@ public class CopycatFluidPipeModel implements SimpleCopycatPart.WithData<Copycat
     protected final ThreadLocal<PipeModelData> data = new ThreadLocal<>();
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         List<Direction> directions = new ArrayList<>(6);
         for (Direction direction : Iterate.directions) {
             if (state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction)))
@@ -78,7 +78,7 @@ public class CopycatFluidPipeModel implements SimpleCopycatPart.WithData<Copycat
         assembleAccessories(context);
     }
 
-    protected void assembleAccessories(CopycatRenderContext<?, ?> context) {
+    protected void assembleAccessories(CopycatRenderContext context) {
         for (Direction direction : Iterate.directions) {
             for (FluidTransportBehaviour.AttachmentTypes.ComponentPartials partial : data.get().getAttachment(direction).partials) {
                 renderComponent(context, direction, partial);
@@ -112,7 +112,7 @@ public class CopycatFluidPipeModel implements SimpleCopycatPart.WithData<Copycat
         };
     }
 
-    protected void renderStraightCore(CopycatRenderContext<?, ?> context, GlobalTransform transform) {
+    protected void renderStraightCore(CopycatRenderContext context, GlobalTransform transform) {
         assemblePiece(context,
                 transform,
                 vec3(4, 4, 4),
@@ -139,7 +139,7 @@ public class CopycatFluidPipeModel implements SimpleCopycatPart.WithData<Copycat
         );
     }
 
-    protected void renderBend(CopycatRenderContext<?, ?> context, GlobalTransform transform) {
+    protected void renderBend(CopycatRenderContext context, GlobalTransform transform) {
         if (enhanced) {
             assemblePiece(context,
                     transform,
@@ -205,7 +205,7 @@ public class CopycatFluidPipeModel implements SimpleCopycatPart.WithData<Copycat
         }
     }
 
-    protected void renderCorner(CopycatRenderContext<?, ?> context, GlobalTransform transform) {
+    protected void renderCorner(CopycatRenderContext context, GlobalTransform transform) {
         if (enhanced) {
             assemblePiece(context,
                     transform,
@@ -238,7 +238,7 @@ public class CopycatFluidPipeModel implements SimpleCopycatPart.WithData<Copycat
         }
     }
 
-    protected void renderCornerPart(CopycatRenderContext<?, ?> context, GlobalTransform transform) {
+    protected void renderCornerPart(CopycatRenderContext context, GlobalTransform transform) {
         assemblePiece(context,
                 transform,
                 vec3(8, 8, 4),
@@ -265,7 +265,7 @@ public class CopycatFluidPipeModel implements SimpleCopycatPart.WithData<Copycat
         );
     }
 
-    protected void renderEncasing(CopycatRenderContext<?, ?> context) {
+    protected void renderEncasing(CopycatRenderContext context) {
         assemblePiece(context,
                 GlobalTransform.IDENTITY,
                 vec3(3, 3, 3),
@@ -316,7 +316,7 @@ public class CopycatFluidPipeModel implements SimpleCopycatPart.WithData<Copycat
         );
     }
 
-    protected void renderComponent(CopycatRenderContext<?, ?> context, Direction direction, FluidTransportBehaviour.AttachmentTypes.ComponentPartials component) {
+    protected void renderComponent(CopycatRenderContext context, Direction direction, FluidTransportBehaviour.AttachmentTypes.ComponentPartials component) {
         GlobalTransform transform = direction.getAxis().isVertical()
                 ? t -> t.rotateX(direction == Direction.DOWN ? 90 : -90)
                 : t -> t.rotateY((int) direction.toYRot() + 180);

@@ -17,7 +17,7 @@ import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Muta
 public class CopycatWallModel implements SimpleCopycatPart {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         boolean pole = state.getValue(WallBlock.UP);
         if (pole) {
             // Assemble piece by piece if the central pole exists

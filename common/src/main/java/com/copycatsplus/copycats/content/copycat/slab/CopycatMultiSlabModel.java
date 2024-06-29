@@ -17,7 +17,7 @@ import static net.minecraft.core.Direction.AxisDirection;
 public class CopycatMultiSlabModel implements SimpleMultiStateCopycatPart {
 
     @Override
-    public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
         if (Objects.equals(key, SlabType.TOP.getSerializedName()) && state.getValue(CopycatSlabBlock.SLAB_TYPE) == SlabType.BOTTOM)
             return;
         if (Objects.equals(key, SlabType.BOTTOM.getSerializedName()) && state.getValue(CopycatSlabBlock.SLAB_TYPE) == SlabType.TOP)

@@ -20,7 +20,7 @@ public class CopycatSlopeModel implements SimpleCopycatPart {
     }
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         Direction facing = state.getValue(CopycatSlopeBlock.FACING);
         Half half = state.getValue(CopycatSlopeBlock.HALF);
         int rot = (int) facing.toYRot();
@@ -29,7 +29,7 @@ public class CopycatSlopeModel implements SimpleCopycatPart {
         assembleSlope(context, transform, 0, 16, enhanced);
     }
 
-    public static void assembleSlope(CopycatRenderContext<?, ?> context, GlobalTransform transform, double minHeight, double maxHeight, boolean enhanced) {
+    public static void assembleSlope(CopycatRenderContext context, GlobalTransform transform, double minHeight, double maxHeight, boolean enhanced) {
         if (minHeight == 0) {
             if (enhanced) {
                 assembleTriangularSlope(context, transform, maxHeight, getMarginForHeight(maxHeight));
@@ -52,7 +52,7 @@ public class CopycatSlopeModel implements SimpleCopycatPart {
         return 3;
     }
 
-    public static void assembleTriangularSlope(CopycatRenderContext<?, ?> context, GlobalTransform transform, double maxHeight) {
+    public static void assembleTriangularSlope(CopycatRenderContext context, GlobalTransform transform, double maxHeight) {
         assemblePiece(context,
                 transform,
                 vec3(0, 0, 0),
@@ -62,7 +62,7 @@ public class CopycatSlopeModel implements SimpleCopycatPart {
         );
     }
 
-    public static void assembleTrapezoidSlope(CopycatRenderContext<?, ?> context, GlobalTransform transform, double minHeight, double maxHeight) {
+    public static void assembleTrapezoidSlope(CopycatRenderContext context, GlobalTransform transform, double minHeight, double maxHeight) {
         assemblePiece(context,
                 transform,
                 vec3(0, 0, 0),
@@ -72,7 +72,7 @@ public class CopycatSlopeModel implements SimpleCopycatPart {
         );
     }
 
-    public static void assembleTriangularSlope(CopycatRenderContext<?, ?> context, GlobalTransform transform, double maxHeight, double margin) {
+    public static void assembleTriangularSlope(CopycatRenderContext context, GlobalTransform transform, double maxHeight, double margin) {
         final double angleBottom = Math.toDegrees(Math.atan2(maxHeight, 16));
         final double marginAdjBottom = margin / Math.tan(Math.toRadians(angleBottom) / 2);
         final double angleTop = Math.toDegrees(Math.atan2(16, maxHeight));
@@ -190,7 +190,7 @@ public class CopycatSlopeModel implements SimpleCopycatPart {
         );
     }
 
-    public static void assembleTrapezoidSlope(CopycatRenderContext<?, ?> context, GlobalTransform transform, double minHeight, double maxHeight, double margin) {
+    public static void assembleTrapezoidSlope(CopycatRenderContext context, GlobalTransform transform, double minHeight, double maxHeight, double margin) {
         final double angleBottom = Math.toDegrees(Math.atan2(maxHeight - minHeight, 16)) + 90;
         final double marginAdjBottom = margin / Math.tan(Math.toRadians(angleBottom) / 2);
         final double angleTop = Math.toDegrees(Math.atan2(16, maxHeight - minHeight));

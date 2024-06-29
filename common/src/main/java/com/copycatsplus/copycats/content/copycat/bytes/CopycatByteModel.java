@@ -10,7 +10,7 @@ import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Muta
 public class CopycatByteModel implements SimpleCopycatPart {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         for (CopycatByteBlock.Byte bite : CopycatByteBlock.allBytes) {
             if (!state.getValue(CopycatByteBlock.byByte(bite))) continue;
 

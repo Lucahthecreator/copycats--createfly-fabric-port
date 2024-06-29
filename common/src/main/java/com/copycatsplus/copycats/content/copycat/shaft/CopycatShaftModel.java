@@ -14,7 +14,7 @@ import static com.copycatsplus.copycats.content.copycat.half_panel.CopycatHalfPa
 public class CopycatShaftModel implements SimpleCopycatPart {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         Axis axis = state.getValue(CopycatShaftBlock.AXIS);
 
         GlobalTransform transform = t -> t.rotateY(axis == Axis.X ? 90 : 0).rotateX(axis == Axis.Y ? 90 : 0);

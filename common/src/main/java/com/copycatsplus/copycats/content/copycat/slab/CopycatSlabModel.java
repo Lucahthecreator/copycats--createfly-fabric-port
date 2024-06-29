@@ -19,7 +19,7 @@ import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Muta
 public class CopycatSlabModel implements SimpleCopycatPart {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         Direction facing = state.getOptionalValue(CopycatSlabBlock.SLAB_TYPE).isPresent() ? CopycatSlabBlock.getApparentDirection(state) : Direction.UP;
         boolean isDouble = state.getOptionalValue(CopycatSlabBlock.SLAB_TYPE).orElse(SlabType.BOTTOM) == SlabType.DOUBLE;
 
@@ -28,7 +28,7 @@ public class CopycatSlabModel implements SimpleCopycatPart {
             assembleSlab(context, facing.getOpposite());
     }
 
-    private static void assembleSlab(CopycatRenderContext<?, ?> context, Direction facing) {
+    private static void assembleSlab(CopycatRenderContext context, Direction facing) {
         if (facing.getAxis().isHorizontal()) {
             GlobalTransform transform = t -> t.rotateY((int) facing.toYRot());
             assemblePiece(context,

@@ -11,7 +11,7 @@ import static net.minecraft.world.level.block.FenceGateBlock.*;
 
 public class CopycatFenceGateModel implements SimpleCopycatPart {
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         int offsetWall = state.getValue(IN_WALL) ? -3 : 0;
         int rot = (int) state.getValue(FACING).toYRot();
         GlobalTransform transform = t -> t.rotateY(rot);

@@ -14,15 +14,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.model.data.ModelData;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Assembler.*;
 
+@ApiStatus.Internal
 public class AssemblerImpl {
 
-    public static void assemblePiece(CopycatRenderContext<?, ?> ctx, GlobalTransform globalTransform, MutableVec3 offset, MutableAABB select, MutableCullFace cull) {
+    public static void assemblePiece(CopycatRenderContext ctx, GlobalTransform globalTransform, MutableVec3 offset, MutableAABB select, MutableCullFace cull) {
         CopycatRenderContextForge context = (CopycatRenderContextForge) ctx;
         globalTransform.apply(select);
         globalTransform.apply(offset);
@@ -37,7 +39,7 @@ public class AssemblerImpl {
         }
     }
 
-    public static void assemblePiece(CopycatRenderContext<?, ?> ctx, GlobalTransform globalTransform, MutableVec3 offset, MutableAABB select, MutableCullFace cull, QuadTransform... transforms) {
+    public static void assemblePiece(CopycatRenderContext ctx, GlobalTransform globalTransform, MutableVec3 offset, MutableAABB select, MutableCullFace cull, QuadTransform... transforms) {
         CopycatRenderContextForge context = (CopycatRenderContextForge) ctx;
         globalTransform.apply(select);
         globalTransform.apply(offset);
@@ -52,30 +54,30 @@ public class AssemblerImpl {
         }
     }
 
-    public static void assembleModel(BakedModel model, CopycatRenderContext<?, ?> context) {
+    public static void assembleModel(BakedModel model, CopycatRenderContext context) {
         CopycatRenderContextForge ctx = (CopycatRenderContextForge) context;
         ctx.destination().addAll(model.getQuads(ctx.material, ctx.side, ctx.random, ctx.wrappedData, ctx.renderType));
     }
 
-    public static void assembleQuad(CopycatRenderContext<?, ?> ctx) {
+    public static void assembleQuad(CopycatRenderContext ctx) {
         CopycatRenderContextForge context = (CopycatRenderContextForge) ctx;
         for (BakedQuad quad : context.source()) {
             assembleQuad(quad, context.destination());
         }
     }
 
-    public static <Source extends BakedQuad, Destination extends List<BakedQuad>> void assembleQuad(Source src, Destination dest) {
+    public static void assembleQuad(BakedQuad src, List<BakedQuad> dest) {
         dest.add(BakedQuadHelper.clone(src));
     }
 
-    public static void assembleQuad(CopycatRenderContext<?, ?> ctx, AABB crop, Vec3 move) {
+    public static void assembleQuad(CopycatRenderContext ctx, AABB crop, Vec3 move) {
         CopycatRenderContextForge context = (CopycatRenderContextForge) ctx;
         for (BakedQuad quad : context.source()) {
             assembleQuad(quad, context.destination(), crop, move);
         }
     }
 
-    public static void assembleQuad(CopycatRenderContext<?, ?> ctx, AABB crop, Vec3 move, QuadTransform... transforms) {
+    public static void assembleQuad(CopycatRenderContext ctx, AABB crop, Vec3 move, QuadTransform... transforms) {
         CopycatRenderContextForge context = (CopycatRenderContextForge) ctx;
         for (BakedQuad quad : context.source()) {
             assembleQuad(quad, context.destination(), crop, move, GlobalTransform.IDENTITY, transforms);
@@ -83,12 +85,12 @@ public class AssemblerImpl {
     }
 
 
-    public static <Source extends BakedQuad, Destination extends List<BakedQuad>> void assembleQuad(Source src, Destination dest, AABB crop, Vec3 move) {
+    public static void assembleQuad(BakedQuad src, List<BakedQuad> dest, AABB crop, Vec3 move) {
         dest.add(BakedQuadHelper.cloneWithCustomGeometry(src,
                 BakedModelHelper.cropAndMove(src.getVertices(), src.getSprite(), crop, move)));
     }
 
-    public static <Source extends BakedQuad, Destination extends List<BakedQuad>> void assembleQuad(Source src, Destination dest, AABB crop, Vec3 move, GlobalTransform globalTransform, QuadTransform... transforms) {
+    public static void assembleQuad(BakedQuad src, List<BakedQuad> dest, AABB crop, Vec3 move, GlobalTransform globalTransform, QuadTransform... transforms) {
         int[] vertices = BakedModelHelper.cropAndMove(src.getVertices(), src.getSprite(), crop, move);
         MutableQuad mutableQuad = getMutableQuad(new BakedQuad(vertices, src.getTintIndex(), src.getDirection(), src.getSprite(), src.isShade()));
         globalTransform.apply(mutableQuad);
@@ -117,7 +119,7 @@ public class AssemblerImpl {
         return new MutableQuad(vertices, quad.getDirection());
     }
 
-    public static class CopycatRenderContextForge extends CopycatRenderContext<List<BakedQuad>, List<BakedQuad>> {
+    public static class CopycatRenderContextForge extends CopycatRenderContextBase<List<BakedQuad>, List<BakedQuad>> {
         public final BlockState material;
         public final Direction side;
         public final RandomSource random;

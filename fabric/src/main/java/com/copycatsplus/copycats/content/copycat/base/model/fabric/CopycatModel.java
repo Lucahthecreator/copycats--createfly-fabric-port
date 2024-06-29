@@ -66,7 +66,7 @@ public abstract class CopycatModel extends ForwardingBakedModel implements Custo
             Object attachment = attachmentView.getBlockEntityRenderAttachment(pos);
             if (attachment instanceof BlockState material1) {
                 material = material1;
-            } else if (attachment instanceof Pair<?, ?> pair && pair.getSecond() instanceof BlockState material2) {
+            } else if (attachment instanceof Pair pair && pair.getSecond() instanceof BlockState material2) {
                 material = material2;
                 remainingData = pair.getFirst();
             } else {
@@ -120,7 +120,7 @@ public abstract class CopycatModel extends ForwardingBakedModel implements Custo
             BlockState material = getMaterial(state);
 
             return getIcon(getModelOf(material), null);
-        } else if (data instanceof Pair<?, ?> pair && pair.getSecond() instanceof BlockState material) {
+        } else if (data instanceof Pair pair && pair.getSecond() instanceof BlockState material) {
             return getIcon(getModelOf(material), pair.getFirst());
         }
 

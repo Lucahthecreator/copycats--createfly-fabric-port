@@ -3,16 +3,20 @@ package com.copycatsplus.copycats.content.copycat.base.model.assembly;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.quad.*;
 import com.jozufozu.flywheel.core.PartialModel;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class Assembler {
 
     /**
@@ -26,7 +30,7 @@ public class Assembler {
      */
     @ExpectPlatform
     public static void assemblePiece(
-            CopycatRenderContext<?, ?> context,
+            CopycatRenderContext context,
             @NotNull GlobalTransform globalTransform,
             MutableVec3 offset,
             MutableAABB select,
@@ -47,7 +51,7 @@ public class Assembler {
      */
     @ExpectPlatform
     public static void assemblePiece(
-            CopycatRenderContext<?, ?> context,
+            CopycatRenderContext context,
             @NotNull GlobalTransform globalTransform,
             MutableVec3 offset,
             MutableAABB select,
@@ -58,7 +62,7 @@ public class Assembler {
     }
 
     @ExpectPlatform
-    public static void assembleModel(BakedModel model, CopycatRenderContext<?, ?> context) {
+    public static void assembleModel(BakedModel model, CopycatRenderContext context) {
 
     }
 
@@ -66,15 +70,7 @@ public class Assembler {
      * Copy ALL quads from source to destination without modification.
      */
     @ExpectPlatform
-    public static void assembleQuad(CopycatRenderContext<?, ?> context) {
-
-    }
-
-    /**
-     * Copy a quad from source to destination without modification.
-     */
-    @ExpectPlatform
-    public static <Source, Destination> void assembleQuad(Source source, Destination destination) {
+    public static void assembleQuad(CopycatRenderContext context) {
 
     }
 
@@ -82,7 +78,7 @@ public class Assembler {
      * Copy ALL quads from source to destination while applying the specified crop and move.
      */
     @ExpectPlatform
-    public static void assembleQuad(CopycatRenderContext<?, ?> context, AABB crop, Vec3 move) {
+    public static void assembleQuad(CopycatRenderContext context, AABB crop, Vec3 move) {
 
     }
 
@@ -90,23 +86,7 @@ public class Assembler {
      * Copy ALL quads from source to destination while applying the specified transforms.
      */
     @ExpectPlatform
-    public static void assembleQuad(CopycatRenderContext<?, ?> context, AABB crop, Vec3 move, QuadTransform... transforms) {
-
-    }
-
-    /**
-     * Copy a quad from source to destination while applying the specified crop and move.
-     */
-    @ExpectPlatform
-    public static <Source, Destination> void assembleQuad(Source src, Destination dest, AABB crop, Vec3 move) {
-
-    }
-
-    /**
-     * Copy a quad from source to destination while applying the specified transforms.
-     */
-    @ExpectPlatform
-    public static <Source, Destination> void assembleQuad(Source src, Destination dest, AABB crop, Vec3 move, GlobalTransform globalTransform, QuadTransform... transforms) {
+    public static void assembleQuad(CopycatRenderContext context, AABB crop, Vec3 move, QuadTransform... transforms) {
 
     }
 
@@ -115,6 +95,7 @@ public class Assembler {
      */
     @ExpectPlatform
     public static <T> MutableQuad getMutableQuad(T vertexData) {
+        //noinspection DataFlowIssue
         return null;
     }
 
@@ -225,11 +206,17 @@ public class Assembler {
         return new QuadLightDirection(directionMapper);
     }
 
-    public static class CopycatRenderContext<Source, Destination> {
+    public interface CopycatRenderContext {
+        Object source();
+
+        Object destination();
+    }
+
+    public static class CopycatRenderContextBase<Source, Destination> implements CopycatRenderContext {
         private final Source source;
         private final Destination destination;
 
-        public CopycatRenderContext(Source source, Destination destination) {
+        public CopycatRenderContextBase(Source source, Destination destination) {
             this.source = source;
             this.destination = destination;
         }
@@ -240,26 +227,6 @@ public class Assembler {
 
         public Destination destination() {
             return destination;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == this) return true;
-            if (!(obj instanceof CopycatRenderContext<?, ?> that)) return false;
-            return Objects.equals(this.source, that.source) &&
-                    Objects.equals(this.destination, that.destination);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(source, destination);
-        }
-
-        @Override
-        public String toString() {
-            return "CopycatRenderContext[" +
-                    "source=" + source + ", " +
-                    "destination=" + destination + ']';
         }
     }
 }

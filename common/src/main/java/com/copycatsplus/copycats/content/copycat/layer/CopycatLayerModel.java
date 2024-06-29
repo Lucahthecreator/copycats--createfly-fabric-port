@@ -11,7 +11,7 @@ import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Muta
 public class CopycatLayerModel implements SimpleCopycatPart {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         int layer = state.getValue(CopycatLayerBlock.LAYERS);
         Direction facing = state.getValue(CopycatLayerBlock.FACING);
 

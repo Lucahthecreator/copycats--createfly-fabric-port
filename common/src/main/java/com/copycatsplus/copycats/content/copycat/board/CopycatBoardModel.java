@@ -20,7 +20,7 @@ public class CopycatBoardModel implements SimpleCopycatPart {
     }
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         Map<Direction, Boolean> sides = new HashMap<>();
         for (Direction direction : Iterate.directions) {
             sides.put(direction, state.getValue(byDirection(direction)));

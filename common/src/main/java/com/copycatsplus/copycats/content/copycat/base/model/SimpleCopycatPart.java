@@ -14,7 +14,7 @@ public interface SimpleCopycatPart {
     }
 
 
-    default void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    default void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         throw new AssertionError("If this is appearing then a model isn't implemented correctly");
     }
 

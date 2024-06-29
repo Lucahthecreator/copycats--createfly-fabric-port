@@ -12,7 +12,7 @@ import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Muta
 public class CopycatButtonModel implements SimpleCopycatPart {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         AttachFace face = state.getValue(ButtonBlock.FACE);
         int rot = (int) state.getValue(ButtonBlock.FACING).toYRot();
         boolean pressed = state.getValue(ButtonBlock.POWERED);

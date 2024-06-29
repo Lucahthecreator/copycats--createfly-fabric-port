@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.base.model.assembly.fabric;
 
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.*;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.Assembler.CopycatRenderContextBase;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.quad.QuadTransform;
 import com.jozufozu.flywheel.core.PartialModel;
 import com.simibubi.create.foundation.model.BakedModelHelper;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +28,12 @@ import java.util.function.Supplier;
 
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Assembler.CopycatRenderContext;
 
+@ApiStatus.Internal
 public class AssemblerImpl {
 
     static SpriteFinder spriteFinder = SpriteFinder.get(Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS));
 
-    public static void assemblePiece(CopycatRenderContext<?, ?> ctx, GlobalTransform globalTransform, MutableVec3 offset, MutableAABB select, MutableCullFace cull) {
+    public static void assemblePiece(CopycatRenderContext ctx, GlobalTransform globalTransform, MutableVec3 offset, MutableAABB select, MutableCullFace cull) {
         CopycatRenderContextFabric context = (CopycatRenderContextFabric) ctx;
         globalTransform.apply(select);
         globalTransform.apply(offset);
@@ -41,7 +44,7 @@ public class AssemblerImpl {
         assembleQuad(context.source(), context.destination(), select.toAABB(), offset.toVec3().subtract(select.minX, select.minY, select.minZ));
     }
 
-    public static void assemblePiece(CopycatRenderContext<?, ?> ctx, GlobalTransform globalTransform, MutableVec3 offset, MutableAABB select, MutableCullFace cull, QuadTransform... transforms) {
+    public static void assemblePiece(CopycatRenderContext ctx, GlobalTransform globalTransform, MutableVec3 offset, MutableAABB select, MutableCullFace cull, QuadTransform... transforms) {
         CopycatRenderContextFabric context = (CopycatRenderContextFabric) ctx;
         globalTransform.apply(select);
         globalTransform.apply(offset);
@@ -52,7 +55,7 @@ public class AssemblerImpl {
         assembleQuad(context.source(), context.destination(), select.toAABB(), offset.toVec3().subtract(select.minX, select.minY, select.minZ), globalTransform, transforms);
     }
 
-    public static void assembleModel(BakedModel model, CopycatRenderContext<?, ?> context) {
+    public static void assembleModel(BakedModel model, CopycatRenderContext context) {
         CopycatRenderContextFabric ctx = (CopycatRenderContextFabric) context;
         RenderContext subContext = new RenderContext() {
             @Override
@@ -77,34 +80,34 @@ public class AssemblerImpl {
         model.emitBlockQuads(ctx.blockView, ctx.material, ctx.blockPos, ctx.random, subContext);
     }
 
-    public static void assembleQuad(CopycatRenderContext<?, ?> ctx) {
+    public static void assembleQuad(CopycatRenderContext ctx) {
         CopycatRenderContextFabric context = (CopycatRenderContextFabric) ctx;
         assembleQuad(context.source(), context.destination());
     }
 
-    public static <Source extends MutableQuadView, Destination extends QuadEmitter> void assembleQuad(Source src, Destination dest) {
+    public static void assembleQuad(MutableQuadView src, QuadEmitter dest) {
         dest.copyFrom(src);
         dest.emit();
     }
 
-    public static void assembleQuad(CopycatRenderContext<?, ?> ctx, AABB crop, Vec3 move) {
+    public static void assembleQuad(CopycatRenderContext ctx, AABB crop, Vec3 move) {
         CopycatRenderContextFabric context = (CopycatRenderContextFabric) ctx;
         assembleQuad(context.source(), context.destination(), crop, move);
     }
 
-    public static void assembleQuad(CopycatRenderContext<?, ?> ctx, AABB crop, Vec3 move, QuadTransform... transforms) {
+    public static void assembleQuad(CopycatRenderContext ctx, AABB crop, Vec3 move, QuadTransform... transforms) {
         CopycatRenderContextFabric context = (CopycatRenderContextFabric) ctx;
         assembleQuad(context.source(), context.destination(), crop, move, GlobalTransform.IDENTITY, transforms);
     }
 
 
-    public static <Source extends MutableQuadView, Destination extends QuadEmitter> void assembleQuad(Source src, Destination dest, AABB crop, Vec3 move) {
+    public static void assembleQuad(MutableQuadView src, QuadEmitter dest, AABB crop, Vec3 move) {
         dest.copyFrom(src);
         BakedModelHelper.cropAndMove(dest, spriteFinder.find(src), crop, move);
         dest.emit();
     }
 
-    public static <Source extends MutableQuadView, Destination extends QuadEmitter> void assembleQuad(Source src, Destination dest, AABB crop, Vec3 move, GlobalTransform globalTransform, QuadTransform... transforms) {
+    public static void assembleQuad(MutableQuadView src, QuadEmitter dest, AABB crop, Vec3 move, GlobalTransform globalTransform, QuadTransform... transforms) {
         dest.copyFrom(src);
         TextureAtlasSprite sprite = spriteFinder.find(src);
         BakedModelHelper.cropAndMove(dest, sprite, crop, move);
@@ -134,7 +137,7 @@ public class AssemblerImpl {
         return new MutableQuad(vertices, vertexData.lightFace());
     }
 
-    public static class CopycatRenderContextFabric extends CopycatRenderContext<MutableQuadView, QuadEmitter> {
+    public static class CopycatRenderContextFabric extends CopycatRenderContextBase<MutableQuadView, QuadEmitter> {
         public final BlockAndTintGetter blockView;
         public final BlockState material;
         public final BlockPos blockPos;

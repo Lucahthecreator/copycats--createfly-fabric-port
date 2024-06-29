@@ -12,7 +12,7 @@ import static net.minecraft.world.level.block.TrapDoorBlock.*;
 public class CopycatTrapdoorModel implements SimpleCopycatPart {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         int rot = (int) state.getValue(FACING).toYRot();
         boolean flipY = state.getValue(HALF) == Half.TOP;
         boolean open = state.getValue(OPEN);

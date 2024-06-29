@@ -17,7 +17,7 @@ public class CopycatVerticalSlopeModel implements SimpleCopycatPart {
     }
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         Direction facing = state.getValue(CopycatVerticalSlopeBlock.FACING);
         int rot = (int) facing.toYRot();
         GlobalTransform transform = t -> t.rotateZ(-90).rotateY(rot);

@@ -11,7 +11,7 @@ import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Muta
 public class CopycatStraightPipeModel extends CopycatFluidPipeModel implements SimpleCopycatPart {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         Axis axis = state.getValue(CopycatGlassFluidPipeBlock.AXIS);
 
         int yRot = axis == Axis.X ? 90 : 0;
@@ -26,7 +26,7 @@ public class CopycatStraightPipeModel extends CopycatFluidPipeModel implements S
 
     private static final double EPSILON = 0.02;
 
-    protected void renderWindowCore(CopycatRenderContext<?, ?> context, GlobalTransform transform) {
+    protected void renderWindowCore(CopycatRenderContext context, GlobalTransform transform) {
         assemblePiece(context,
                 transform,
                 vec3(4 + EPSILON, 4 + EPSILON, 0),

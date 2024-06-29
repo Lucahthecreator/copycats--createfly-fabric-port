@@ -12,7 +12,7 @@ import static com.copycatsplus.copycats.content.copycat.slice.CopycatSliceBlock.
 public class CopycatSliceModel implements SimpleCopycatPart {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         boolean flipY = state.getValue(HALF) == Half.TOP;
         int rot = (int) state.getValue(FACING).toYRot();
         int layers = state.getValue(LAYERS);

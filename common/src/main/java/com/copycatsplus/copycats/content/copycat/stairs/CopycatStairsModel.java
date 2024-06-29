@@ -13,7 +13,7 @@ import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Muta
 public class CopycatStairsModel implements SimpleCopycatPart {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         int facing = (int) state.getValue(StairBlock.FACING).toYRot();
         boolean top = state.getValue(StairBlock.HALF) == Half.TOP;
         StairsShape shape = state.getValue(StairBlock.SHAPE);
@@ -36,7 +36,7 @@ public class CopycatStairsModel implements SimpleCopycatPart {
         }
     }
 
-    public static void assembleStraight(CopycatRenderContext<?, ?> context, GlobalTransform transform) {
+    public static void assembleStraight(CopycatRenderContext context, GlobalTransform transform) {
         assemblePiece(context,
                 transform,
                 vec3(0, 0, 0),
@@ -69,7 +69,7 @@ public class CopycatStairsModel implements SimpleCopycatPart {
         );
     }
 
-    public static void assembleInnerLeft(CopycatRenderContext<?, ?> context, GlobalTransform transform) {
+    public static void assembleInnerLeft(CopycatRenderContext context, GlobalTransform transform) {
         assemblePiece(context,
                 transform,
                 vec3(0, 0, 0),
@@ -126,7 +126,7 @@ public class CopycatStairsModel implements SimpleCopycatPart {
         );
     }
 
-    public static void assembleOuterLeft(CopycatRenderContext<?, ?> context, GlobalTransform transform) {
+    public static void assembleOuterLeft(CopycatRenderContext context, GlobalTransform transform) {
         assemblePiece(context,
                 transform,
                 vec3(0, 0, 0),

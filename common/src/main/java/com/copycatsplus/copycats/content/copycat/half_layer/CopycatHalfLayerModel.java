@@ -14,7 +14,7 @@ import static com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLa
 public class CopycatHalfLayerModel implements SimpleCopycatPart {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         boolean flipY = state.getValue(HALF) == Half.TOP;
         int rot = state.getValue(AXIS) == Direction.Axis.X ? 0 : 90;
         for (boolean positive : Iterate.falseAndTrue) {

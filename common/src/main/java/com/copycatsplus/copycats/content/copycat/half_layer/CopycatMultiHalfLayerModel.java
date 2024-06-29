@@ -15,7 +15,7 @@ import static com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLa
 public class CopycatMultiHalfLayerModel implements SimpleMultiStateCopycatPart {
 
     @Override
-    public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
+    public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
         if (Objects.equals(key, NEGATIVE_LAYERS.getName()) && state.getValue(NEGATIVE_LAYERS) == 0)
             return;
         if (Objects.equals(key, POSITIVE_LAYERS.getName()) && state.getValue(POSITIVE_LAYERS) == 0)
