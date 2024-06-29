@@ -15,7 +15,7 @@ public class CopycatBeamModelPart implements CopycatModelPart {
     public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
         Axis axis = state.getValue(CopycatBeamBlock.AXIS);
 
-        GlobalTransform transform = t -> t.rotateX(axis == Axis.Y ? 90 : 0).rotateY(axis == Axis.Z ? 90 : 0);
+        GlobalTransform transform = t -> t.rotateX(axis == Axis.Y ? 90 : 0).rotateY(axis == Axis.X ? 90 : 0);
 
         assemblePiece(context,
                 transform,
