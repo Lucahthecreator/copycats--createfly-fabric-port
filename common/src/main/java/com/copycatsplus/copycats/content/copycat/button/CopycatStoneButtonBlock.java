@@ -1,9 +1,9 @@
 package com.copycatsplus.copycats.content.copycat.button;
 
+import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatWithWrappedBlock;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.content.decoration.copycat.CopycatBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import static net.minecraft.world.level.block.ButtonBlock.*;
 
 @SuppressWarnings("deprecation")
-public class CopycatStoneButtonBlock extends CopycatBlock implements ICopycatWithWrappedBlock<WrappedButton.Stone>, IStateType {
+public class CopycatStoneButtonBlock extends CCCopycatBlock implements ICopycatWithWrappedBlock<WrappedButton.Stone>, IStateType {
 
     public static WrappedButton.Stone button;
 

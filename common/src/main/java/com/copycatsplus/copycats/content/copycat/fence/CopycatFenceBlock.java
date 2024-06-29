@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.fence;
 
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.copycatsplus.copycats.content.copycat.base.WaterloggedCopycatWrappedBlock;
-import com.simibubi.create.content.decoration.copycat.CopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
 import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -160,7 +160,7 @@ public class CopycatFenceBlock extends WaterloggedCopycatWrappedBlock<WrappedFen
     }
 
     public static BlockState getMaterial(BlockGetter reader, BlockPos targetPos) {
-        BlockState state = CopycatBlock.getMaterial(reader, targetPos);
+        BlockState state = IFunctionalCopycatBlock.getMaterial(reader, targetPos);
         if (state.is(Blocks.AIR)) return reader.getBlockState(targetPos);
         return state;
     }

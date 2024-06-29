@@ -1,8 +1,8 @@
 package com.copycatsplus.copycats.content.copycat.pressure_plate;
 
+import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatWithWrappedBlock;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
-import com.simibubi.create.content.decoration.copycat.CopycatBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import static net.minecraft.world.level.block.PressurePlateBlock.POWERED;
 
 @SuppressWarnings("deprecation")
-public class CopycatStonePressurePlate extends CopycatBlock implements ICopycatWithWrappedBlock<WrappedPressurePlate.Stone>, IStateType {
+public class CopycatStonePressurePlate extends CCCopycatBlock implements ICopycatWithWrappedBlock<WrappedPressurePlate.Stone>, IStateType {
 
     public static WrappedPressurePlate.Stone pressurePlate;
 

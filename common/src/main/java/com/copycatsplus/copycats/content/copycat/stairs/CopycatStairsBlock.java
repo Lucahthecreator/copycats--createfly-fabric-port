@@ -4,8 +4,8 @@ import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.content.copycat.base.ICustomCTBlocking;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.copycatsplus.copycats.content.copycat.base.WaterloggedCopycatWrappedBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.vertical_stairs.CopycatVerticalStairBlock;
-import com.simibubi.create.content.decoration.copycat.CopycatBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -86,11 +86,6 @@ public class CopycatStairsBlock extends WaterloggedCopycatWrappedBlock<WrappedSt
     @Override
     public void destroy(@NotNull LevelAccessor pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState) {
         stairs.destroy(pLevel, pPos, pState);
-    }
-
-    @Override
-    public float getExplosionResistance(BlockState state, BlockGetter level, BlockPos pos, Explosion explosion) {
-        return super.getExplosionResistance(state, level, pos, explosion);
     }
 
     @Override
@@ -251,7 +246,7 @@ public class CopycatStairsBlock extends WaterloggedCopycatWrappedBlock<WrappedSt
     }
 
     public static BlockState getMaterial(BlockGetter reader, BlockPos targetPos) {
-        BlockState state = CopycatBlock.getMaterial(reader, targetPos);
+        BlockState state = IFunctionalCopycatBlock.getMaterial(reader, targetPos);
         if (state.is(Blocks.AIR)) return reader.getBlockState(targetPos);
         return state;
     }

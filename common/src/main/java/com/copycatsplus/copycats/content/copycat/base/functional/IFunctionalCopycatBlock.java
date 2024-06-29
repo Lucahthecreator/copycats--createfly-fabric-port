@@ -1,8 +1,8 @@
 package com.copycatsplus.copycats.content.copycat.base.functional;
 
+import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.content.decoration.copycat.CopycatBlock;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -31,7 +31,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 
 /**
- * Indicates that a block functions as a copycat but is not a subclass of {@link CopycatBlock}.
+ * Indicates that a block functions as a copycat but is not a subclass of {@link CCCopycatBlock}.
  */
 public interface IFunctionalCopycatBlock extends IWrenchable {
 
@@ -78,7 +78,7 @@ public interface IFunctionalCopycatBlock extends IWrenchable {
             return null;
 
         Block block = bi.getBlock();
-        if (block instanceof CopycatBlock || block instanceof IFunctionalCopycatBlock)
+        if (block instanceof CCCopycatBlock || block instanceof IFunctionalCopycatBlock)
             return null;
 
         BlockState appliedState = block.defaultBlockState();
