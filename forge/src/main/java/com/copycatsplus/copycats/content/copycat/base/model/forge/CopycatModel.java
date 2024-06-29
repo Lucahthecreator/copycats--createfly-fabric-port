@@ -3,8 +3,8 @@ package com.copycatsplus.copycats.content.copycat.base.model.forge;
 
 import com.copycatsplus.copycats.content.copycat.base.CTCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.model.FilteredBlockAndTintGetter;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.decoration.copycat.FilteredBlockAndTintGetter;
 import com.simibubi.create.foundation.model.BakedModelWrapperWithData;
 import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.client.Minecraft;
@@ -59,7 +59,7 @@ public abstract class CopycatModel extends BakedModelWrapperWithData {
         builder.with(OCCLUSION_PROPERTY, occlusionData);
 
         ModelData wrappedData = getModelOf(material).getModelData(
-                new FilteredBlockAndTintGetter(world,
+                FilteredBlockAndTintGetter.create(world,
                         targetPos -> {
                             BlockEntity be = world.getBlockEntity(pos);
                             if (be instanceof CTCopycatBlockEntity ctbe)

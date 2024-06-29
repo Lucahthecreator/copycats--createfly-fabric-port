@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.mixin.copycat.base;
 
 import com.copycatsplus.copycats.content.copycat.base.ICustomCTBlocking;
+import com.copycatsplus.copycats.content.copycat.base.model.FilteredBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.multistate.ScaledBlockAndTintGetter;
 import com.simibubi.create.foundation.block.connected.ConnectedTextureBehaviour;
 import net.minecraft.core.BlockPos;
@@ -22,8 +23,8 @@ public class ConnectedTextureBehaviourMixin {
             cancellable = true
     )
     private void isCopycatBlockable(BlockState state, BlockAndTintGetter reader, BlockPos pos, BlockPos otherPos, Direction face, CallbackInfoReturnable<Boolean> cir) {
-        if (reader instanceof FilteredBlockAndTintGetterAccessor accessor) {
-            reader = accessor.getWrapped(); // get the true reader, not the one filtered by copycats
+        if (reader instanceof FilteredBlockAndTintGetter accessor) {
+            reader = accessor.wrapped; // get the true reader, not the one filtered by copycats
         }
         if (reader instanceof ScaledBlockAndTintGetter accessor) {
             reader = accessor.getWrapped();

@@ -3,6 +3,7 @@ package com.copycatsplus.copycats.content.copycat.base.model.fabric;
 
 import com.copycatsplus.copycats.content.copycat.base.CTCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.model.FilteredBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.model.functional.fabric.WorldWithRenderData;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.utility.Iterate;
@@ -95,7 +96,7 @@ public abstract class CopycatModel extends ForwardingBakedModel implements Custo
         context.pushTransform(MaterialFixer.create(material));
 
         if (state.getBlock() instanceof IFunctionalCopycatBlock copycatBlock) {
-            FilteredBlockAndTintGetterFabric filteredBlockAndTintGetter = new FilteredBlockAndTintGetterFabric(blockView, t -> {
+            FilteredBlockAndTintGetter filteredBlockAndTintGetter = FilteredBlockAndTintGetter.create(blockView, t -> {
                 BlockEntity be = blockView.getBlockEntity(pos);
                 if (be instanceof CTCopycatBlockEntity ctbe)
                     if (!ctbe.isCTEnabled())
