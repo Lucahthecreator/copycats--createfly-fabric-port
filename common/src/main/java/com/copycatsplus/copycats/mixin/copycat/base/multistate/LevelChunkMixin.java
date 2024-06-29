@@ -5,7 +5,7 @@ import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.config.CCConfigs;
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlockEntity;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.BlockPos;
@@ -49,7 +49,7 @@ public abstract class LevelChunkMixin {
                     newBlockEntity.load(oldTag);
 
                     // Migrate data from the old BlockEntity
-                    newBlockEntity.migrateData((IFunctionalCopycatBlockEntity) blockEntity);
+                    newBlockEntity.migrateData((ICopycatBlockEntity) blockEntity);
 
                     // Replace the old BlockEntity with the new one in the chunk
                     chunk.removeBlockEntity(pos);

@@ -5,21 +5,20 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
 
 public class WrappedCopycatBlock extends CopycatBlock {
 
-    private final ThreadLocal<IFunctionalCopycatBlock> wrapped = new ThreadLocal<>();
+    private final ThreadLocal<ICopycatBlock> wrapped = new ThreadLocal<>();
 
     public WrappedCopycatBlock(Properties pProperties) {
         super(pProperties);
     }
 
-    public IFunctionalCopycatBlock getWrapped() {
+    public ICopycatBlock getWrapped() {
         return wrapped.get();
     }
 
-    public void setWrapped(IFunctionalCopycatBlock wrapped) {
+    public void setWrapped(ICopycatBlock wrapped) {
         this.wrapped.set(wrapped);
     }
 

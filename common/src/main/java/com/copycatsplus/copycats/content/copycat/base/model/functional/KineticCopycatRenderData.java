@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.base.model.functional;
 
 import com.copycatsplus.copycats.config.CCConfigs;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
 import com.copycatsplus.copycats.utility.ChatUtils;
 import com.jozufozu.flywheel.backend.Backend;
 import com.jozufozu.flywheel.config.BackendType;
@@ -9,7 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.block.state.BlockState;
 
 public record KineticCopycatRenderData(BlockState state, BlockState material, boolean enableCT) {
-    public static KineticCopycatRenderData of(IFunctionalCopycatBlockEntity be) {
+    public static KineticCopycatRenderData of(ICopycatBlockEntity be) {
         if (!CCConfigs.client().disableGraphicsWarnings.get()) {
             if (Backend.getBackendType() != BackendType.INSTANCING &&
                     Minecraft.getInstance().getBlockColors().getColor(be.getMaterial(), null, null, 0) != -1) {

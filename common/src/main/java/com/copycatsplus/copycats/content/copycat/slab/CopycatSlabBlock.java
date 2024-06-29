@@ -3,7 +3,6 @@ package com.copycatsplus.copycats.content.copycat.slab;
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatWithWrappedBlock;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.multistate.WaterloggedMultiStateCopycatBlock;

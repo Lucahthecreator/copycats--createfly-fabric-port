@@ -2,8 +2,8 @@ package com.copycatsplus.copycats.mixin.copycat.base.multistate;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlockEntity;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.simibubi.create.AllBlockEntityTypes;
@@ -52,10 +52,10 @@ public class ContraptionMixin {
             CopycatBlockEntity be = new CopycatBlockEntity(AllBlockEntityTypes.COPYCAT.get(), pos, state);
             be.load(nbt);
             MultiStateCopycatBlockEntity multiBe = MultiStateCopycatBlockEntity.create(CCBlockEntityTypes.MULTI_STATE_COPYCAT_BLOCK_ENTITY.get(), pos, state);
-            multiBe.migrateData((IFunctionalCopycatBlockEntity) be);
+            multiBe.migrateData((ICopycatBlockEntity) be);
             nbt = multiBe.saveWithId();
             cir.setReturnValue(new StructureTemplate.StructureBlockInfo(pos, state, nbt));
-        } else if (state.getBlock() instanceof IFunctionalCopycatBlock &&
+        } else if (state.getBlock() instanceof ICopycatBlock &&
                 (state.getBlock() instanceof CopycatBlock) &&
                 nbt != null &&
                 nbt.contains("id") &&

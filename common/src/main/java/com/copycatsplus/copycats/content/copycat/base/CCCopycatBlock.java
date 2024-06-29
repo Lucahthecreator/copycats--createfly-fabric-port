@@ -3,10 +3,9 @@ package com.copycatsplus.copycats.content.copycat.base;
 import javax.annotation.Nullable;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
-import com.simibubi.create.AllBlockEntityTypes;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags.AllBlockTags;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
@@ -47,7 +46,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class CCCopycatBlock extends Block implements IBE<CCCopycatBlockEntity>, IWrenchable, IFunctionalCopycatBlock {
+public abstract class CCCopycatBlock extends Block implements IBE<CCCopycatBlockEntity>, IWrenchable, ICopycatBlock {
 
     public CCCopycatBlock(Properties pProperties) {
         super(pProperties);
@@ -63,7 +62,7 @@ public abstract class CCCopycatBlock extends Block implements IBE<CCCopycatBlock
     @Override
     public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
         onWrenched(state, context);
-        return IFunctionalCopycatBlock.super.onSneakWrenched(state, context);
+        return ICopycatBlock.super.onSneakWrenched(state, context);
     }
 
     @Override
@@ -163,7 +162,7 @@ public abstract class CCCopycatBlock extends Block implements IBE<CCCopycatBlock
             return null;
 
         Block block = bi.getBlock();
-        if (block instanceof IFunctionalCopycatBlock || block instanceof MultiStateCopycatBlock)
+        if (block instanceof ICopycatBlock || block instanceof MultiStateCopycatBlock)
             return null;
 
         BlockState appliedState = block.defaultBlockState();
@@ -253,7 +252,7 @@ public abstract class CCCopycatBlock extends Block implements IBE<CCCopycatBlock
     }
 
     @ExpectPlatform
-    public static BlockState multiPlatformGetAppearance(IFunctionalCopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
+    public static BlockState multiPlatformGetAppearance(ICopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
                                                         BlockState queryState, BlockPos queryPos) {
         return null;
     }
@@ -269,7 +268,7 @@ public abstract class CCCopycatBlock extends Block implements IBE<CCCopycatBlock
     //
 
     public static BlockState getMaterial(BlockGetter reader, BlockPos targetPos) {
-        if (reader.getBlockEntity(targetPos) instanceof IFunctionalCopycatBlockEntity cbe)
+        if (reader.getBlockEntity(targetPos) instanceof ICopycatBlockEntity cbe)
             return cbe.getMaterial();
         return Blocks.AIR.defaultBlockState();
     }

@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.base.model.functional.fabric;
 
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.model.functional.WrappedRenderWorld;
 import com.jozufozu.flywheel.core.model.ShadeSeparatedBufferedData;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FunctionalCopycatRenderHelperImpl {
-    public static ShadeSeparatedBufferedData getCopycatBuffer(BakedModel model, IFunctionalCopycatBlockEntity be, PoseStack ms) {
+    public static ShadeSeparatedBufferedData getCopycatBuffer(BakedModel model, ICopycatBlockEntity be, PoseStack ms) {
         return new BakedModelWithDataBuilder(model)
                 .withRenderWorld(new WrappedRenderWorldFabric(be).setCTMode(true))
                 .withRenderPos(be.getBlockPos())
@@ -22,7 +22,7 @@ public class FunctionalCopycatRenderHelperImpl {
 
     @SuppressWarnings("deprecation")
     private static class WrappedRenderWorldFabric extends WrappedRenderWorld implements RenderAttachedBlockView {
-        public WrappedRenderWorldFabric(IFunctionalCopycatBlockEntity be) {
+        public WrappedRenderWorldFabric(ICopycatBlockEntity be) {
             super(be);
         }
 

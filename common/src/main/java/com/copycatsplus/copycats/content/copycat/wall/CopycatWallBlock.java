@@ -2,12 +2,11 @@ package com.copycatsplus.copycats.content.copycat.wall;
 
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.copycatsplus.copycats.content.copycat.base.WaterloggedCopycatWrappedBlock;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
 import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -215,7 +214,7 @@ public class CopycatWallBlock extends WaterloggedCopycatWrappedBlock<WrappedWall
     }
 
     public static BlockState getMaterial(BlockGetter reader, BlockPos targetPos) {
-        BlockState state = IFunctionalCopycatBlock.getMaterial(reader, targetPos);
+        BlockState state = ICopycatBlock.getMaterial(reader, targetPos);
         if (state.is(Blocks.AIR)) return reader.getBlockState(targetPos);
         return state;
     }

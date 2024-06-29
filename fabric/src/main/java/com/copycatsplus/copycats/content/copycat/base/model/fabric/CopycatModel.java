@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.base.model.fabric;
 
 
 import com.copycatsplus.copycats.content.copycat.base.CTCopycatBlockEntity;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.model.FilteredBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.model.functional.fabric.WorldWithRenderData;
 import com.simibubi.create.AllBlocks;
@@ -41,7 +41,7 @@ public abstract class CopycatModel extends ForwardingBakedModel implements Custo
     }
 
     private void gatherOcclusionData(BlockAndTintGetter world, BlockPos pos, BlockState state, BlockState material,
-                                     OcclusionData occlusionData, IFunctionalCopycatBlock copycatBlock) {
+                                     OcclusionData occlusionData, ICopycatBlock copycatBlock) {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction face : Iterate.directions) {
             if (!copycatBlock.canFaceBeOccluded(state, face))
@@ -77,12 +77,12 @@ public abstract class CopycatModel extends ForwardingBakedModel implements Custo
         }
 
         OcclusionData occlusionData = new OcclusionData();
-        if (state.getBlock() instanceof IFunctionalCopycatBlock copycatBlock) {
+        if (state.getBlock() instanceof ICopycatBlock copycatBlock) {
             gatherOcclusionData(blockView, pos, state, material, occlusionData, copycatBlock);
         }
 
         CullFaceRemovalData cullFaceRemovalData = new CullFaceRemovalData();
-        if (state.getBlock() instanceof IFunctionalCopycatBlock copycatBlock) {
+        if (state.getBlock() instanceof ICopycatBlock copycatBlock) {
             for (Direction cullFace : Iterate.directions) {
                 if (copycatBlock.shouldFaceAlwaysRender(state, cullFace)) {
                     cullFaceRemovalData.remove(cullFace);
@@ -95,7 +95,7 @@ public abstract class CopycatModel extends ForwardingBakedModel implements Custo
         // fabric: need to change the default render material
         context.pushTransform(MaterialFixer.create(material));
 
-        if (state.getBlock() instanceof IFunctionalCopycatBlock copycatBlock) {
+        if (state.getBlock() instanceof ICopycatBlock copycatBlock) {
             FilteredBlockAndTintGetter filteredBlockAndTintGetter = FilteredBlockAndTintGetter.create(blockView, t -> {
                 BlockEntity be = blockView.getBlockEntity(pos);
                 if (be instanceof CTCopycatBlockEntity ctbe)

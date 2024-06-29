@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.base.model.functional.forge;
 
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.model.functional.WrappedRenderWorld;
 import com.jozufozu.flywheel.core.model.ModelUtil;
 import com.jozufozu.flywheel.core.model.ShadeSeparatedBufferedData;
@@ -11,7 +11,7 @@ import net.minecraftforge.client.model.data.ModelProperty;
 
 public class FunctionalCopycatRenderHelperImpl {
 
-    public static ShadeSeparatedBufferedData getCopycatBuffer(BakedModel model, IFunctionalCopycatBlockEntity be, PoseStack ms) {
+    public static ShadeSeparatedBufferedData getCopycatBuffer(BakedModel model, ICopycatBlockEntity be, PoseStack ms) {
         WrappedRenderWorld renderWorld = new WrappedRenderWorld(be).setCTMode(true);
         ModelData renderData = model.getModelData(renderWorld, be.getBlockPos(), be.getBlockState(), be.getCopycatBlockEntity().getModelData());
         ModelData.Builder builder = ModelData.builder();

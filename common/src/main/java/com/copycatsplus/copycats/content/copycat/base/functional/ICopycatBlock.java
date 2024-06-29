@@ -33,15 +33,15 @@ import javax.annotation.Nullable;
 /**
  * Indicates that a block functions as a copycat but is not a subclass of {@link CCCopycatBlock}.
  */
-public interface IFunctionalCopycatBlock extends IWrenchable {
+public interface ICopycatBlock extends IWrenchable {
 
     @Nullable
-    default IFunctionalCopycatBlockEntity getCopycatBlockEntity(BlockGetter worldIn, BlockPos pos) {
+    default ICopycatBlockEntity getCopycatBlockEntity(BlockGetter worldIn, BlockPos pos) {
         BlockEntity blockEntity = worldIn.getBlockEntity(pos);
 
         if (blockEntity == null)
             return null;
-        if (!(blockEntity instanceof IFunctionalCopycatBlockEntity functionalCopycatBlockEntity))
+        if (!(blockEntity instanceof ICopycatBlockEntity functionalCopycatBlockEntity))
             return null;
 
         return functionalCopycatBlockEntity;
@@ -55,7 +55,7 @@ public interface IFunctionalCopycatBlock extends IWrenchable {
 
     @Override
     default InteractionResult onWrenched(BlockState state, UseOnContext context) {
-        IFunctionalCopycatBlockEntity ufte = getCopycatBlockEntity(context.getLevel(), context.getClickedPos());
+        ICopycatBlockEntity ufte = getCopycatBlockEntity(context.getLevel(), context.getClickedPos());
         if (ufte == null)
             return InteractionResult.PASS;
         ItemStack consumedItem = ufte.getConsumedItem();
@@ -78,7 +78,7 @@ public interface IFunctionalCopycatBlock extends IWrenchable {
             return null;
 
         Block block = bi.getBlock();
-        if (block instanceof CCCopycatBlock || block instanceof IFunctionalCopycatBlock)
+        if (block instanceof CCCopycatBlock || block instanceof ICopycatBlock)
             return null;
 
         BlockState appliedState = block.defaultBlockState();
@@ -133,7 +133,7 @@ public interface IFunctionalCopycatBlock extends IWrenchable {
 
     default InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult ray) {
         if (player.isShiftKeyDown() && player.getItemInHand(hand).equals(ItemStack.EMPTY)) {
-            IFunctionalCopycatBlockEntity be = getCopycatBlockEntity(world, pos);
+            ICopycatBlockEntity be = getCopycatBlockEntity(world, pos);
             be.setCTEnabled(!be.isCTEnabled());
             be.callRedraw();
             return InteractionResult.SUCCESS;
@@ -152,7 +152,7 @@ public interface IFunctionalCopycatBlock extends IWrenchable {
             return InteractionResult.PASS;
 
         BlockState material = materialIn;
-        IFunctionalCopycatBlockEntity ufte = getCopycatBlockEntity(world, pos);
+        ICopycatBlockEntity ufte = getCopycatBlockEntity(world, pos);
         if (ufte == null)
             return InteractionResult.PASS;
         if (ufte.getMaterial()
@@ -193,7 +193,7 @@ public interface IFunctionalCopycatBlock extends IWrenchable {
 
         if (appliedState == null)
             return;
-        IFunctionalCopycatBlockEntity ufte = getCopycatBlockEntity(worldIn, pos);
+        ICopycatBlockEntity ufte = getCopycatBlockEntity(worldIn, pos);
         if (ufte == null)
             return;
         if (ufte.hasCustomMaterial())
@@ -213,7 +213,7 @@ public interface IFunctionalCopycatBlock extends IWrenchable {
         if (!state.hasBlockEntity() || state.getBlock() == newState.getBlock())
             return;
         if (!isMoving) {
-            IFunctionalCopycatBlockEntity ufte = getCopycatBlockEntity(world, pos);
+            ICopycatBlockEntity ufte = getCopycatBlockEntity(world, pos);
             if (ufte != null)
                 Block.popResource(world, pos, ufte.getConsumedItem());
         }
@@ -222,13 +222,13 @@ public interface IFunctionalCopycatBlock extends IWrenchable {
 
     default void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         if (player.isCreative()) {
-            IFunctionalCopycatBlockEntity ufte = getCopycatBlockEntity(level, pos);
+            ICopycatBlockEntity ufte = getCopycatBlockEntity(level, pos);
             if (ufte != null) ufte.setConsumedItem(ItemStack.EMPTY);
         }
     }
 
     static BlockState getMaterial(BlockGetter reader, BlockPos targetPos) {
-        if (reader.getBlockEntity(targetPos) instanceof IFunctionalCopycatBlockEntity cbe)
+        if (reader.getBlockEntity(targetPos) instanceof ICopycatBlockEntity cbe)
             return cbe.getMaterial();
         return Blocks.AIR.defaultBlockState();
     }

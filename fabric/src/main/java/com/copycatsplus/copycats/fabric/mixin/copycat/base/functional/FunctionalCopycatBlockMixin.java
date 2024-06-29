@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.fabric.mixin.copycat.base.functional;
 
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.model.fabric.CopycatModel;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlock;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatGlassFluidPipeBlock;
@@ -33,10 +33,10 @@ import javax.annotation.Nullable;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import static com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock.getMaterial;
+import static com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock.getMaterial;
 
 @Mixin({CCCopycatBlock.class, CopycatShaftBlock.class, CopycatFluidPipeBlock.class, CopycatGlassFluidPipeBlock.class})
-public abstract class FunctionalCopycatBlockMixin extends Block implements IFunctionalCopycatBlock,
+public abstract class FunctionalCopycatBlockMixin extends Block implements ICopycatBlock,
         CustomFrictionBlock, CustomSoundTypeBlock, LightEmissiveBlock, ExplosionResistanceBlock,
         BlockPickInteractionAware, CustomLandingEffectsBlock, CustomRunningEffectsBlock, EnchantmentBonusBlock,
         ValidSpawnBlock {

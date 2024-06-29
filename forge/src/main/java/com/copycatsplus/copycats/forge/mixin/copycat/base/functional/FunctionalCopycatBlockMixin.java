@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.forge.mixin.copycat.base.functional;
 
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlock;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatGlassFluidPipeBlock;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
@@ -24,10 +24,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
-import static com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock.getMaterial;
+import static com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock.getMaterial;
 
 @Mixin({CCCopycatBlock.class, CopycatShaftBlock.class, CopycatFluidPipeBlock.class, CopycatGlassFluidPipeBlock.class})
-public abstract class FunctionalCopycatBlockMixin extends Block implements IFunctionalCopycatBlock {
+public abstract class FunctionalCopycatBlockMixin extends Block implements ICopycatBlock {
 
     public FunctionalCopycatBlockMixin(Properties properties) {
         super(properties);

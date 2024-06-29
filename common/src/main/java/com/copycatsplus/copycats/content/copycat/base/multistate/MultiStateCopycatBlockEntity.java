@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.base.multistate;
 
 import com.copycatsplus.copycats.Copycats;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.ITransformableBlockEntity;
 import com.simibubi.create.content.contraptions.StructureTransform;
@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class MultiStateCopycatBlockEntity extends SmartBlockEntity implements
-        IFunctionalCopycatBlockEntity, ISpecialBlockEntityItemRequirement, ITransformableBlockEntity, IPartialSafeNBT {
+        ICopycatBlockEntity, ISpecialBlockEntityItemRequirement, ITransformableBlockEntity, IPartialSafeNBT {
 
     private final MaterialItemStorage materialItemStorage;
 
@@ -199,7 +199,7 @@ public abstract class MultiStateCopycatBlockEntity extends SmartBlockEntity impl
         }
     }
 
-    public void migrateData(IFunctionalCopycatBlockEntity copycatBlockEntity) {
+    public void migrateData(ICopycatBlockEntity copycatBlockEntity) {
         if (getBlockState().getBlock() instanceof MultiStateCopycatBlock mscb) {
             ResourceLocation blockId = copycatBlockEntity.getBlockState().getBlock().builtInRegistryHolder().key().location();
             Copycats.LOGGER.debug("Converting block({}) at @{} to a multistate copycat", blockId.toString(), copycatBlockEntity.getBlockPos().toShortString());

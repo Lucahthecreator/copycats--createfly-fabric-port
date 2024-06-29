@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.fluid_pipe;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
 import com.simibubi.create.content.decoration.bracket.BracketBlock;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlock;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
@@ -22,7 +22,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CopycatFluidPipeBlock extends FluidPipeBlock implements IFunctionalCopycatBlock {
+public class CopycatFluidPipeBlock extends FluidPipeBlock implements ICopycatBlock {
     public CopycatFluidPipeBlock(Properties properties) {
         super(properties);
     }
@@ -30,7 +30,7 @@ public class CopycatFluidPipeBlock extends FluidPipeBlock implements IFunctional
 
     @Override
     public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
-        InteractionResult result = IFunctionalCopycatBlock.super.onSneakWrenched(state, context);
+        InteractionResult result = ICopycatBlock.super.onSneakWrenched(state, context);
         if (result.consumesAction()) {
             return result;
         }
@@ -39,7 +39,7 @@ public class CopycatFluidPipeBlock extends FluidPipeBlock implements IFunctional
 
     @Override
     public InteractionResult onWrenched(BlockState state, UseOnContext context) {
-        InteractionResult result = IFunctionalCopycatBlock.super.onWrenched(state, context);
+        InteractionResult result = ICopycatBlock.super.onWrenched(state, context);
         if (result.consumesAction()) {
             return result;
         }
@@ -48,7 +48,7 @@ public class CopycatFluidPipeBlock extends FluidPipeBlock implements IFunctional
 
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult ray) {
-        InteractionResult result = IFunctionalCopycatBlock.super.use(state, world, pos, player, hand, ray);
+        InteractionResult result = ICopycatBlock.super.use(state, world, pos, player, hand, ray);
         if (result.consumesAction()) {
             return result;
         }
@@ -63,25 +63,25 @@ public class CopycatFluidPipeBlock extends FluidPipeBlock implements IFunctional
             if (bi.getBlock() instanceof BracketBlock) return null;
         }
 
-        return IFunctionalCopycatBlock.super.getAcceptedBlockState(pLevel, pPos, item, face);
+        return ICopycatBlock.super.getAcceptedBlockState(pLevel, pPos, item, face);
     }
 
     @Override
     public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(worldIn, pos, state, placer, stack);
-        IFunctionalCopycatBlock.super.setPlacedBy(worldIn, pos, state, placer, stack);
+        ICopycatBlock.super.setPlacedBy(worldIn, pos, state, placer, stack);
     }
 
     @Override
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         super.onRemove(state, world, pos, newState, isMoving);
-        IFunctionalCopycatBlock.super.onRemove(state, world, pos, newState, isMoving);
+        ICopycatBlock.super.onRemove(state, world, pos, newState, isMoving);
     }
 
     @Override
     public void playerWillDestroy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
         super.playerWillDestroy(level, pos, state, player);
-        IFunctionalCopycatBlock.super.playerWillDestroy(level, pos, state, player);
+        ICopycatBlock.super.playerWillDestroy(level, pos, state, player);
     }
 
     @Override

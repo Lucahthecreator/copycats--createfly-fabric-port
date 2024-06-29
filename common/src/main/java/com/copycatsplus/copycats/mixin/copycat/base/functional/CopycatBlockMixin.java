@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.mixin.copycat.base.functional;
 
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
 import com.simibubi.create.content.decoration.copycat.CopycatBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(CopycatBlock.class)
-public abstract class CopycatBlockMixin implements IFunctionalCopycatBlock {
+public abstract class CopycatBlockMixin implements ICopycatBlock {
     @Inject(
             method = "getAcceptedBlockState",
             at = @At("HEAD"),
@@ -28,7 +28,7 @@ public abstract class CopycatBlockMixin implements IFunctionalCopycatBlock {
             return;
 
         Block block = bi.getBlock();
-        if (block instanceof IFunctionalCopycatBlock)
+        if (block instanceof ICopycatBlock)
             cir.setReturnValue(null);
     }
 
@@ -38,7 +38,7 @@ public abstract class CopycatBlockMixin implements IFunctionalCopycatBlock {
             cancellable = true
     )
     private static void getMaterial(BlockGetter reader, BlockPos targetPos, CallbackInfoReturnable<BlockState> cir) {
-        if (reader.getBlockEntity(targetPos) instanceof IFunctionalCopycatBlockEntity cbe)
+        if (reader.getBlockEntity(targetPos) instanceof ICopycatBlockEntity cbe)
             cir.setReturnValue(cbe.getMaterial());
     }
 }

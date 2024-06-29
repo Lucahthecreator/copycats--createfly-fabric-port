@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.base;
 
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -25,7 +25,7 @@ public interface ICTCopycatBlock {
 
     default boolean allowCTAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
         Object be = getBlockEntity(level, queryPos);
-        if (!(be instanceof IFunctionalCopycatBlockEntity fbe))
+        if (!(be instanceof ICopycatBlockEntity fbe))
             return true;
         return fbe.isCTEnabled();
     }
@@ -33,7 +33,7 @@ public interface ICTCopycatBlock {
     default InteractionResult toggleCT(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (pPlayer.isShiftKeyDown() && pPlayer.getItemInHand(pHand).equals(ItemStack.EMPTY)) {
             Object be = getBlockEntity(pLevel, pPos);
-            if (!(be instanceof IFunctionalCopycatBlockEntity fbe))
+            if (!(be instanceof ICopycatBlockEntity fbe))
                 return InteractionResult.PASS;
             fbe.setCTEnabled(!fbe.isCTEnabled());
             fbe.callRedraw();

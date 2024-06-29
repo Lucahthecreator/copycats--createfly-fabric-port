@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.base.model.functional;
 
 
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
 import com.jozufozu.flywheel.core.virtual.VirtualEmptyBlockGetter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -32,7 +32,7 @@ public class WrappedRenderWorld implements VirtualEmptyBlockGetter {
 
     protected boolean ctMode = false;
 
-    public WrappedRenderWorld(IFunctionalCopycatBlockEntity be) {
+    public WrappedRenderWorld(ICopycatBlockEntity be) {
         this.level = be.getLevel();
         this.targetPos = be.getBlockPos();
         this.material = be.getMaterial();

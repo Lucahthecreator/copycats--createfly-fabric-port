@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.base.model.forge;
 
 
 import com.copycatsplus.copycats.content.copycat.base.CTCopycatBlockEntity;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.model.FilteredBlockAndTintGetter;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.model.BakedModelWrapperWithData;
@@ -51,7 +51,7 @@ public abstract class CopycatModel extends BakedModelWrapperWithData {
 
         builder.with(MATERIAL_PROPERTY, material);
 
-        if (!(state.getBlock() instanceof IFunctionalCopycatBlock copycatBlock))
+        if (!(state.getBlock() instanceof ICopycatBlock copycatBlock))
             return builder;
 
         CopycatModel.OcclusionData occlusionData = new CopycatModel.OcclusionData();
@@ -72,7 +72,7 @@ public abstract class CopycatModel extends BakedModelWrapperWithData {
     }
 
     private void gatherOcclusionData(BlockAndTintGetter world, BlockPos pos, BlockState state, BlockState material,
-                                     CopycatModel.OcclusionData occlusionData, IFunctionalCopycatBlock copycatBlock) {
+                                     CopycatModel.OcclusionData occlusionData, ICopycatBlock copycatBlock) {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction face : Iterate.directions) {
 
@@ -100,7 +100,7 @@ public abstract class CopycatModel extends BakedModelWrapperWithData {
             croppedQuads.addAll(super.getQuads(state, side, rand, data, renderType));
 
         // Rubidium: see below
-        if (side != null && state.getBlock() instanceof IFunctionalCopycatBlock ccb && ccb.shouldFaceAlwaysRender(state, side))
+        if (side != null && state.getBlock() instanceof ICopycatBlock ccb && ccb.shouldFaceAlwaysRender(state, side))
             return croppedQuads;
 
         BlockState material = getMaterial(data);
@@ -123,7 +123,7 @@ public abstract class CopycatModel extends BakedModelWrapperWithData {
 
         // Rubidium: render side!=null versions of the base material during side==null,
         // to avoid getting culled away
-        if (side == null && state.getBlock() instanceof IFunctionalCopycatBlock ccb) {
+        if (side == null && state.getBlock() instanceof ICopycatBlock ccb) {
             for (Direction nonOcclusionSide : Iterate.directions)
                 if (ccb.shouldFaceAlwaysRender(state, nonOcclusionSide)) {
                     croppedQuads.addAll(getCroppedQuads(state, data, nonOcclusionSide, rand, material, wrappedData, renderType));

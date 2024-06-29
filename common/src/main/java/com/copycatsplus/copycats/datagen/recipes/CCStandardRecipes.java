@@ -3,17 +3,14 @@ package com.copycatsplus.copycats.datagen.recipes;
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCItems;
 import com.copycatsplus.copycats.CCTags;
-import com.copycatsplus.copycats.content.copycat.base.ICopycatWithWrappedBlock;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
-import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
 import com.copycatsplus.copycats.datagen.recipes.gen.CopycatsRecipeProvider;
 import com.copycatsplus.copycats.datagen.recipes.gen.GeneratedRecipeBuilder;
 import com.copycatsplus.copycats.multiloader.Platform;
 import com.google.common.collect.ImmutableList;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
-import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import dev.architectury.injectables.annotations.ExpectPlatform;
@@ -208,7 +205,7 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
     }
 
     GeneratedRecipeBuilder.GeneratedRecipe copycat(ItemProviderEntry<? extends ItemLike> result, int resultCount) {
-        if (result.get() instanceof IFunctionalCopycatBlock) {
+        if (result.get() instanceof ICopycatBlock) {
             copycatsWithRecipes.add((Block) result.get());
         }
 
@@ -224,7 +221,7 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
     }
 
     GeneratedRecipeBuilder.GeneratedRecipe functionalCopycat(ItemProviderEntry<? extends ItemLike> base, ItemProviderEntry<? extends ItemLike> result, int resultCount) {
-        if (result.get() instanceof IFunctionalCopycatBlock) {
+        if (result.get() instanceof ICopycatBlock) {
             copycatsWithRecipes.add((Block) result.get());
         }
 

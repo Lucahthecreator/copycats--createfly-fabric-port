@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.shaft;
 
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.model.functional.IFunctionalCopycatBlockInstance;
 import com.copycatsplus.copycats.content.copycat.base.model.functional.KineticCopycatRenderData;
 import com.jozufozu.flywheel.api.Instancer;
@@ -33,8 +33,8 @@ public class CopycatShaftInstance extends BracketedKineticBlockEntityInstance im
     }
 
     @Override
-    public IFunctionalCopycatBlockEntity getBlockEntity() {
-        return (IFunctionalCopycatBlockEntity) blockEntity;
+    public ICopycatBlockEntity getBlockEntity() {
+        return (ICopycatBlockEntity) blockEntity;
     }
 
     @Override

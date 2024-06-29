@@ -4,7 +4,7 @@ import com.copycatsplus.copycats.CCBlockEntityTypes;
 import com.copycatsplus.copycats.CCBlockStateProperties;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.copycatsplus.copycats.content.copycat.base.StateType;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
@@ -25,7 +25,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -55,12 +54,10 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static net.minecraft.core.Direction.Axis;
 
-public abstract class MultiStateCopycatBlock extends Block implements IFunctionalCopycatBlock, IBE<MultiStateCopycatBlockEntity>, IWrenchable, ISpecialBlockItemRequirement, IStateType {
+public abstract class MultiStateCopycatBlock extends Block implements ICopycatBlock, IBE<MultiStateCopycatBlockEntity>, IWrenchable, ISpecialBlockItemRequirement, IStateType {
 
     public static final EnumProperty<BlockStateTransform> TRANSFORM = CCBlockStateProperties.TRANSFORM;
 
@@ -129,7 +126,7 @@ public abstract class MultiStateCopycatBlock extends Block implements IFunctiona
 
     @Override
     public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
-        return IFunctionalCopycatBlock.super.onSneakWrenched(state, context);
+        return ICopycatBlock.super.onSneakWrenched(state, context);
     }
 
     @Override
@@ -247,7 +244,7 @@ public abstract class MultiStateCopycatBlock extends Block implements IFunctiona
             return null;
 
         Block block = bi.getBlock();
-        if (block instanceof IFunctionalCopycatBlock)
+        if (block instanceof ICopycatBlock)
             return null;
 
         BlockState appliedState = block.defaultBlockState();

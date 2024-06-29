@@ -4,7 +4,7 @@ import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.content.copycat.base.ICustomCTBlocking;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.copycatsplus.copycats.content.copycat.base.WaterloggedCopycatWrappedBlock;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.vertical_stairs.CopycatVerticalStairBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -246,7 +246,7 @@ public class CopycatStairsBlock extends WaterloggedCopycatWrappedBlock<WrappedSt
     }
 
     public static BlockState getMaterial(BlockGetter reader, BlockPos targetPos) {
-        BlockState state = IFunctionalCopycatBlock.getMaterial(reader, targetPos);
+        BlockState state = ICopycatBlock.getMaterial(reader, targetPos);
         if (state.is(Blocks.AIR)) return reader.getBlockState(targetPos);
         return state;
     }

@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.base.model.functional;
 
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
 import com.copycatsplus.copycats.utility.ChatUtils;
 import com.jozufozu.flywheel.api.Instancer;
 import com.jozufozu.flywheel.api.Material;
@@ -24,7 +24,7 @@ public interface IFunctionalCopycatBlockInstance {
 
     void setRenderData(KineticCopycatRenderData renderData);
 
-    IFunctionalCopycatBlockEntity getBlockEntity();
+    ICopycatBlockEntity getBlockEntity();
 
     default Material<RotatingData> getRotatingMaterial() {
         RenderType type = ItemBlockRenderTypes.getChunkRenderType(getRenderData().material());

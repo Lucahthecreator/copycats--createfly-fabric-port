@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.mixin.copycat.base.functional;
 
 import com.copycatsplus.copycats.CCBlocks;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.simibubi.create.foundation.block.connected.CTModel;
@@ -17,7 +17,7 @@ public class CTModelMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getBlock()Lnet/minecraft/world/level/block/Block;")
     )
     private Block createCTData(BlockState instance, Operation<Block> original) {
-        if (instance.getBlock() instanceof IFunctionalCopycatBlock fcb) {
+        if (instance.getBlock() instanceof ICopycatBlock fcb) {
             CCBlocks.WRAPPED_COPYCAT.get().setWrapped(fcb);
             return CCBlocks.WRAPPED_COPYCAT.get();
         }

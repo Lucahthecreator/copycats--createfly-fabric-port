@@ -2,8 +2,8 @@ package com.copycatsplus.copycats.content.copycat.base;
 
 import java.util.List;
 
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.ITransformableBlockEntity;
 import com.simibubi.create.content.contraptions.StructureTransform;
@@ -27,7 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public abstract class CCCopycatBlockEntity extends SmartBlockEntity
-        implements ISpecialBlockEntityItemRequirement, ITransformableBlockEntity, IPartialSafeNBT, IFunctionalCopycatBlockEntity {
+        implements ISpecialBlockEntityItemRequirement, ITransformableBlockEntity, IPartialSafeNBT, ICopycatBlockEntity {
 
     protected BlockState material;
     protected ItemStack consumedItem;
@@ -157,7 +157,7 @@ public abstract class CCCopycatBlockEntity extends SmartBlockEntity
             BlockState blockState = getBlockState();
             if (blockState == null)
                 return;
-            if (!(blockState.getBlock() instanceof IFunctionalCopycatBlock cb))
+            if (!(blockState.getBlock() instanceof ICopycatBlock cb))
                 return;
             BlockState acceptedBlockState = cb.getAcceptedBlockState(level, worldPosition, consumedItem, null);
             if (acceptedBlockState != null && material.is(acceptedBlockState.getBlock()))
