@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.base.model.functional;
 
 
-import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
 import com.jozufozu.flywheel.core.virtual.VirtualEmptyBlockGetter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;

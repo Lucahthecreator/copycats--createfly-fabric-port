@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.forge.mixin.copycat.base.functional;
 
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlock;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatGlassFluidPipeBlock;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
-import static com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock.getMaterial;
+import static com.copycatsplus.copycats.content.copycat.base.ICopycatBlock.getMaterial;
 
 @Mixin({
         CCCopycatBlock.class,

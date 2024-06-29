@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.base.model.functional;
 
-import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
 import com.simibubi.create.foundation.render.SuperByteBuffer;
 import net.minecraft.world.level.block.state.BlockState;
 

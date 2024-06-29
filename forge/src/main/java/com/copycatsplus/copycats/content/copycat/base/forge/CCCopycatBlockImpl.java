@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.base.forge;
 
-import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.model.forge.CopycatModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

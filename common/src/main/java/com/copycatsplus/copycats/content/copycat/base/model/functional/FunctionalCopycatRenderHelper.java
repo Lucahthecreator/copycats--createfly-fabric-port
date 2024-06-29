@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.base.model.functional;
 
 import com.copycatsplus.copycats.CopycatsClient;
-import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
 import com.jozufozu.flywheel.core.model.BlockModel;
 import com.jozufozu.flywheel.core.model.ShadeSeparatedBufferedData;
 import com.mojang.blaze3d.vertex.PoseStack;

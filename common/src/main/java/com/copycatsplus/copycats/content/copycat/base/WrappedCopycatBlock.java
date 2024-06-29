@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.content.copycat.base.functional;
+package com.copycatsplus.copycats.content.copycat.base;
 
 import com.simibubi.create.content.decoration.copycat.CopycatBlock;
 import net.minecraft.core.BlockPos;

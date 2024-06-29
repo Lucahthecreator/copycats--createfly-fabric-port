@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.content.copycat.base.functional;
+package com.copycatsplus.copycats.content.copycat.base;
 
 import com.copycatsplus.copycats.utility.BlockEntityUtils;
 import com.copycatsplus.copycats.utility.ItemUtils;

@@ -1,6 +1,5 @@
-package com.copycatsplus.copycats.content.copycat.base.functional;
+package com.copycatsplus.copycats.content.copycat.base;
 
-import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;

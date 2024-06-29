@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.mixin.copycat.base.multistate;
 
-import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
 import com.simibubi.create.content.kinetics.fan.AirCurrent;
 import net.minecraft.core.BlockPos;

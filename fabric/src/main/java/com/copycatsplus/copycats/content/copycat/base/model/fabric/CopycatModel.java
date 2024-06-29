@@ -1,8 +1,8 @@
 package com.copycatsplus.copycats.content.copycat.base.model.fabric;
 
 
-import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.model.FilteredBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.model.functional.fabric.WorldWithRenderData;
 import com.simibubi.create.AllBlocks;

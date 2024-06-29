@@ -2,7 +2,7 @@ package com.copycatsplus.copycats;
 
 import com.copycatsplus.copycats.config.FeatureCategory;
 import com.copycatsplus.copycats.config.FeatureToggle;
-import com.copycatsplus.copycats.content.copycat.base.functional.WrappedCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.WrappedCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.model.SimpleCopycatPart;
 import com.copycatsplus.copycats.content.copycat.base.model.ToggleableCopycatModel;
 import com.copycatsplus.copycats.content.copycat.base.model.multistate.SimpleMultiStateCopycatPart;
@@ -74,7 +74,6 @@ import com.copycatsplus.copycats.content.copycat.wall.CopycatWallModel;
 import com.copycatsplus.copycats.content.copycat.wall.WrappedWallBlock;
 import com.copycatsplus.copycats.datagen.CCBlockStateGen;
 import com.copycatsplus.copycats.datagen.CCLootGen;
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.foundation.data.*;

@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.mixin.compat.additionalplacements;
 
-import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.pressure_plate.WrappedPressurePlate;
 import com.copycatsplus.copycats.content.copycat.stairs.WrappedStairsBlock;
 import com.firemerald.additionalplacements.block.AdditionalPlacementBlock;

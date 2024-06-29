@@ -2,29 +2,14 @@ package com.copycatsplus.copycats.content.copycat.base;
 
 import java.util.List;
 
-import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.contraptions.ITransformableBlockEntity;
-import com.simibubi.create.content.contraptions.StructureTransform;
-import com.simibubi.create.content.redstone.RoseQuartzLampBlock;
-import com.simibubi.create.content.schematics.requirement.ISpecialBlockEntityItemRequirement;
-import com.simibubi.create.content.schematics.requirement.ItemRequirement;
-import com.simibubi.create.content.schematics.requirement.ItemRequirement.ItemUseType;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.utility.IPartialSafeNBT;
-import com.simibubi.create.foundation.utility.Iterate;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public abstract class CCCopycatBlockEntity extends SmartBlockEntity implements ICopycatBlockEntity {
 

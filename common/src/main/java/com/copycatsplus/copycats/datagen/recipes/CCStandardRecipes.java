@@ -3,7 +3,7 @@ package com.copycatsplus.copycats.datagen.recipes;
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCItems;
 import com.copycatsplus.copycats.CCTags;
-import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
 import com.copycatsplus.copycats.datagen.recipes.gen.CopycatsRecipeProvider;
 import com.copycatsplus.copycats.datagen.recipes.gen.GeneratedRecipeBuilder;

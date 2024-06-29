@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.forge.mixin.compat.doubleslabs;
 
 import cjminecraft.doubleslabs.common.config.DSConfig;
-import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import net.minecraft.world.level.block.Block;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;

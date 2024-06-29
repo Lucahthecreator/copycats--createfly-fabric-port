@@ -1,7 +1,6 @@
 package com.copycatsplus.copycats.mixin.copycat.base.functional;
 
-import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.simibubi.create.content.decoration.copycat.CopycatBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

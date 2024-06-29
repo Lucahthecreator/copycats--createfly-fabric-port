@@ -5,7 +5,7 @@ import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.config.CCConfigs;
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlockEntity;
-import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.BlockPos;
