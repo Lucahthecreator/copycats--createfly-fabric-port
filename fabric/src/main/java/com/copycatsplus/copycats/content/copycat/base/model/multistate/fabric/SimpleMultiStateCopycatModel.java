@@ -21,6 +21,7 @@ import static com.copycatsplus.copycats.content.copycat.base.model.assembly.fabr
 public class SimpleMultiStateCopycatModel extends MultiStateCopycatModel {
 
     private final SimpleMultiStateCopycatPart part;
+
     public SimpleMultiStateCopycatModel(BakedModel originalModel, SimpleMultiStateCopycatPart part) {
         super(originalModel);
         this.part = part;
@@ -35,7 +36,7 @@ public class SimpleMultiStateCopycatModel extends MultiStateCopycatModel {
         QuadEmitter emitter = meshBuilder.getEmitter();
 
         renderContext.pushTransform(quad -> {
-            CopycatRenderContextFabric context = new CopycatRenderContextFabric(quad, emitter);
+            CopycatRenderContextFabric context = new CopycatRenderContextFabric(quad, emitter, blockView, material, pos, randomSupplier, renderContext);
             if (cullFaceRemovalData.shouldRemove(quad.cullFace())) {
                 quad.cullFace(null);
             } else if (occlusionData.isOccluded(quad.cullFace())) {

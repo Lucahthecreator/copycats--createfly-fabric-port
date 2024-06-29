@@ -18,6 +18,7 @@ import java.util.List;
 public class SimpleMultiStateCopycatModel extends MultiStateCopycatModel {
 
     private final SimpleMultiStateCopycatPart part;
+
     public SimpleMultiStateCopycatModel(BakedModel originalModel, SimpleMultiStateCopycatPart part) {
         super(originalModel);
         this.part = part;
@@ -27,7 +28,7 @@ public class SimpleMultiStateCopycatModel extends MultiStateCopycatModel {
     protected List<BakedQuad> getCroppedQuads(String key, BlockState state, Direction side, RandomSource rand, BlockState material, ModelData wrappedData, RenderType renderType) {
         List<BakedQuad> quads = new ArrayList<>();
         List<BakedQuad> templateQuads = getModelOf(material).getQuads(material, side, rand, wrappedData, renderType);
-        CopycatRenderContextForge context = new CopycatRenderContextForge(templateQuads, quads);
+        CopycatRenderContextForge context = new CopycatRenderContextForge(templateQuads, quads, material, side, rand, wrappedData, renderType);
 
         part.emitCopycatQuads(key, state, context, material);
 

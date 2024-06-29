@@ -19,12 +19,12 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.ChunkRenderTypeSet;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class CopycatModel extends BakedModelWrapperWithData {
@@ -33,13 +33,20 @@ public abstract class CopycatModel extends BakedModelWrapperWithData {
     private static final ModelProperty<CopycatModel.OcclusionData> OCCLUSION_PROPERTY = new ModelProperty<>();
     private static final ModelProperty<ModelData> WRAPPED_DATA_PROPERTY = new ModelProperty<>();
 
+    private static final ChunkRenderTypeSet allRenderTypes = ChunkRenderTypeSet.of(RenderType.solid(), RenderType.cutout(), RenderType.cutoutMipped(), RenderType.translucent());
+
     public CopycatModel(BakedModel originalModel) {
         super(originalModel);
     }
 
     @Override
-    protected ModelData.Builder gatherModelData(ModelData.Builder builder, BlockAndTintGetter world, BlockPos pos, BlockState state,
-                                                ModelData blockEntityData) {
+    public @NotNull ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
+        return ChunkRenderTypeSet.union(super.getRenderTypes(state, rand, data), allRenderTypes);
+    }
+
+    @Override
+    public ModelData.Builder gatherModelData(ModelData.Builder builder, BlockAndTintGetter world, BlockPos pos, BlockState state,
+                                             ModelData blockEntityData) {
         BlockState material = getMaterial(blockEntityData);
 
         builder.with(MATERIAL_PROPERTY, material);
@@ -88,16 +95,19 @@ public abstract class CopycatModel extends BakedModelWrapperWithData {
 
     @Override
     public @NotNull List<BakedQuad> getQuads(BlockState state, Direction side, @NotNull RandomSource rand, @NotNull ModelData data, RenderType renderType) {
+        List<BakedQuad> croppedQuads = new ArrayList<>();
+        if (renderType == null || super.getRenderTypes(state, rand, data).contains(renderType))
+            croppedQuads.addAll(super.getQuads(state, side, rand, data, renderType));
 
         // Rubidium: see below
         if (side != null && state.getBlock() instanceof IFunctionalCopycatBlock ccb && ccb.shouldFaceAlwaysRender(state, side))
-            return Collections.emptyList();
+            return croppedQuads;
 
         BlockState material = getMaterial(data);
 
         CopycatModel.OcclusionData occlusionData = data.get(OCCLUSION_PROPERTY);
         if (occlusionData != null && occlusionData.isOccluded(side))
-            return super.getQuads(state, side, rand, data, renderType);
+            return croppedQuads;
 
         ModelData wrappedData = data.get(WRAPPED_DATA_PROPERTY);
         if (wrappedData == null)
@@ -107,21 +117,16 @@ public abstract class CopycatModel extends BakedModelWrapperWithData {
                 .getBlockModel(material)
                 .getRenderTypes(material, rand, wrappedData)
                 .contains(renderType))
-            return super.getQuads(state, side, rand, data, renderType);
+            return croppedQuads;
 
-        List<BakedQuad> croppedQuads = getCroppedQuads(state, side, rand, material, wrappedData, renderType);
+        croppedQuads.addAll(getCroppedQuads(state, data, side, rand, material, wrappedData, renderType));
 
         // Rubidium: render side!=null versions of the base material during side==null,
         // to avoid getting culled away
         if (side == null && state.getBlock() instanceof IFunctionalCopycatBlock ccb) {
-            boolean immutable = true;
             for (Direction nonOcclusionSide : Iterate.directions)
                 if (ccb.shouldFaceAlwaysRender(state, nonOcclusionSide)) {
-                    if (immutable) {
-                        croppedQuads = new ArrayList<>(croppedQuads);
-                        immutable = false;
-                    }
-                    croppedQuads.addAll(getCroppedQuads(state, nonOcclusionSide, rand, material, wrappedData, renderType));
+                    croppedQuads.addAll(getCroppedQuads(state, data, nonOcclusionSide, rand, material, wrappedData, renderType));
                 }
         }
 
@@ -131,7 +136,7 @@ public abstract class CopycatModel extends BakedModelWrapperWithData {
     /**
      * The returned list must not be mutated.
      */
-    public abstract List<BakedQuad> getCroppedQuads(BlockState state, Direction side, RandomSource rand,
+    public abstract List<BakedQuad> getCroppedQuads(BlockState state, ModelData data, Direction side, RandomSource rand,
                                                     BlockState material, ModelData wrappedData, RenderType renderType);
 
     @Override

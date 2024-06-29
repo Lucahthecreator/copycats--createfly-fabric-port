@@ -2,11 +2,18 @@ package com.copycatsplus.copycats.content.copycat.base.model.assembly.forge;
 
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.*;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.quad.QuadTransform;
+import com.jozufozu.flywheel.core.PartialModel;
 import com.simibubi.create.foundation.model.BakedModelHelper;
 import com.simibubi.create.foundation.model.BakedQuadHelper;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.model.data.ModelData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +50,11 @@ public class AssemblerImpl {
             }
             assembleQuad(quad, context.destination(), aabb, vec3, globalTransform, transforms);
         }
+    }
+
+    public static void assembleModel(BakedModel model, CopycatRenderContext<?, ?> context) {
+        CopycatRenderContextForge ctx = (CopycatRenderContextForge) context;
+        ctx.destination().addAll(model.getQuads(ctx.material, ctx.side, ctx.random, ctx.wrappedData, ctx.renderType));
     }
 
     public static void assembleQuad(CopycatRenderContext<?, ?> ctx) {
@@ -106,8 +118,25 @@ public class AssemblerImpl {
     }
 
     public static class CopycatRenderContextForge extends CopycatRenderContext<List<BakedQuad>, List<BakedQuad>> {
-        public CopycatRenderContextForge(List<BakedQuad> source, List<BakedQuad> destination) {
+        public final BlockState material;
+        public final Direction side;
+        public final RandomSource random;
+        public final ModelData wrappedData;
+        public final RenderType renderType;
+
+        public CopycatRenderContextForge(List<BakedQuad> source,
+                                         List<BakedQuad> destination,
+                                         BlockState material,
+                                         Direction side,
+                                         RandomSource random,
+                                         ModelData wrappedData,
+                                         RenderType renderType) {
             super(source, destination);
+            this.material = material;
+            this.side = side;
+            this.random = random;
+            this.wrappedData = wrappedData;
+            this.renderType = renderType;
         }
     }
 }

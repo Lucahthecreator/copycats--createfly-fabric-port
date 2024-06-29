@@ -25,6 +25,10 @@ import com.copycatsplus.copycats.content.copycat.fence.WrappedFenceBlock;
 import com.copycatsplus.copycats.content.copycat.fence_gate.CopycatFenceGateBlock;
 import com.copycatsplus.copycats.content.copycat.fence_gate.CopycatFenceGateModel;
 import com.copycatsplus.copycats.content.copycat.fence_gate.WrappedFenceGateBlock;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlock;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeModel;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatGlassFluidPipeBlock;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatStraightPipeModel;
 import com.copycatsplus.copycats.content.copycat.ghost_block.CopycatGhostBlock;
 import com.copycatsplus.copycats.content.copycat.ghost_block.CopycatGhostBlockModel;
 import com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLayerBlock;
@@ -68,6 +72,7 @@ import com.copycatsplus.copycats.content.copycat.vertical_step.CopycatVerticalSt
 import com.copycatsplus.copycats.content.copycat.wall.CopycatWallBlock;
 import com.copycatsplus.copycats.content.copycat.wall.CopycatWallModel;
 import com.copycatsplus.copycats.content.copycat.wall.WrappedWallBlock;
+import com.copycatsplus.copycats.datagen.CCBlockStateGen;
 import com.copycatsplus.copycats.datagen.CCLootGen;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;
@@ -522,16 +527,38 @@ public class CCBlocks {
 
     public static final BlockEntry<CopycatShaftBlock> COPYCAT_SHAFT =
             REGISTRATE.block("copycat_shaft", CopycatShaftBlock::new)
-            .transform(CCBuilderTransformers.functionalCopycat())
-            .transform(FeatureToggle.register())
-            .transform(BlockStressDefaults.setNoImpact())
-            .onRegister(CreateRegistrate.blockModel(() -> model -> getShaftModel(model, SimpleCopycatPart.create(model, new CopycatShaftModel()))))
-            .item()
-            .transform(customItemModel("copycat_base", "shaft"))
-            .register();
+                    .transform(CCBuilderTransformers.functionalCopycat())
+                    .transform(FeatureToggle.register())
+                    .transform(BlockStressDefaults.setNoImpact())
+                    .onRegister(CreateRegistrate.blockModel(() -> model -> getShaftModel(model, SimpleCopycatPart.create(model, new CopycatShaftModel()))))
+                    .item()
+                    .transform(customItemModel("copycat_base", "shaft"))
+                    .register();
+
+    public static final BlockEntry<CopycatFluidPipeBlock> COPYCAT_FLUID_PIPE =
+            REGISTRATE.block("copycat_fluid_pipe", CopycatFluidPipeBlock::new)
+                    .transform(CCBuilderTransformers.functionalCopycat())
+                    .transform(FeatureToggle.register())
+                    .onRegister(CreateRegistrate.blockModel(() -> model -> getFluidPipeModel(model, new CopycatFluidPipeModel())))
+                    .item()
+                    .transform(customItemModel("copycat_base", "fluid_pipe"))
+                    .register();
+
+    public static final BlockEntry<CopycatGlassFluidPipeBlock> COPYCAT_GLASS_FLUID_PIPE =
+            REGISTRATE.block("copycat_glass_fluid_pipe", CopycatGlassFluidPipeBlock::new)
+                    .transform(CCBuilderTransformers.functionalCopycat())
+                    .blockstate(CCBlockStateGen::glassPipe)
+                    .onRegister(CreateRegistrate.blockModel(() -> model -> getFluidPipeModel(model, new CopycatStraightPipeModel())))
+                    .loot((p, b) -> p.dropOther(b, COPYCAT_FLUID_PIPE.get()))
+                    .register();
 
     @ExpectPlatform
     public static BakedModel getShaftModel(BakedModel original, BakedModel copycat) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static BakedModel getFluidPipeModel(BakedModel original, SimpleCopycatPart copycat) {
         throw new AssertionError();
     }
 

@@ -1,7 +1,9 @@
 package com.copycatsplus.copycats.content.copycat.base.model.assembly;
 
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.quad.*;
+import com.jozufozu.flywheel.core.PartialModel;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -52,6 +54,11 @@ public class Assembler {
             MutableCullFace cull,
             QuadTransform... transforms
     ) {
+
+    }
+
+    @ExpectPlatform
+    public static void assembleModel(BakedModel model, CopycatRenderContext<?, ?> context) {
 
     }
 

@@ -14,6 +14,7 @@ import com.google.common.collect.ImmutableList;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.decoration.copycat.CopycatBlock;
+import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import dev.architectury.injectables.annotations.ExpectPlatform;
@@ -180,6 +181,8 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
 
     GeneratedRecipe COPYCAT_SHAFT = copycat(CCBlocks.COPYCAT_SHAFT, 4);
 
+    GeneratedRecipe COPYCAT_FLUID_PIPE = functionalCopycat(AllBlocks.FLUID_PIPE, CCBlocks.COPYCAT_FLUID_PIPE, 4);
+
 
     String currentFolder = "";
 
@@ -225,6 +228,25 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
                 .create();
     }
 
+    GeneratedRecipeBuilder.GeneratedRecipe functionalCopycat(ItemProviderEntry<? extends ItemLike> base, ItemProviderEntry<? extends ItemLike> result, int resultCount) {
+        if (result.get() instanceof CopycatBlock copycat) {
+            copycatsWithRecipes.add(copycat);
+        }
+
+        if (result.get() instanceof IFunctionalCopycatBlock) {
+            copycatsWithRecipes.add((Block) result.get());
+        }
+
+        if (result.get() instanceof MultiStateCopycatBlock copycat) {
+            copycatsWithRecipes.add(copycat);
+        }
+
+        return create(result)
+                .unlockedBy(base)
+                .returns(resultCount)
+                .viaShapeless(b -> b.requires(base, resultCount).requires(AllItems.ZINC_INGOT));
+    }
+
     GeneratedRecipe conversionCycle(List<ItemProviderEntry<? extends ItemLike>> cycle) {
         GeneratedRecipe result = null;
         for (int i = 0; i < cycle.size(); i++) {
@@ -239,12 +261,17 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
         return result;
     }
 
+    Set<RegistryEntry<? extends Block>> blocksWithoutRecipe = Set.of(
+            CCBlocks.COPYCAT_TEST_BLOCK,
+            CCBlocks.COPYCAT_GLASS_FLUID_PIPE
+    );
+
     public CCStandardRecipes(PackOutput output) {
         super(output);
 
         List<ResourceLocation> missingRecipes = new LinkedList<>();
-        for (RegistryEntry<Block> entry : CCBlocks.getAllRegisteredBlocksWithoutWrapped()) {
-            if (!entry.equals(CCBlocks.COPYCAT_TEST_BLOCK)) {
+        for (RegistryEntry<? extends Block> entry : CCBlocks.getAllRegisteredBlocksWithoutWrapped()) {
+            if (!blocksWithoutRecipe.contains(entry)) {
                 if (!copycatsWithRecipes.contains(entry.get()))
                     missingRecipes.add(entry.getId());
             }

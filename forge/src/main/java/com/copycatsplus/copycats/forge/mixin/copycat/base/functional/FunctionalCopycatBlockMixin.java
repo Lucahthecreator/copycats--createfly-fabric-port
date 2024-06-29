@@ -1,6 +1,8 @@
 package com.copycatsplus.copycats.forge.mixin.copycat.base.functional;
 
 import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlock;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatGlassFluidPipeBlock;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
 import com.simibubi.create.AllBlocks;
 import net.minecraft.core.BlockPos;
@@ -23,7 +25,7 @@ import org.spongepowered.asm.mixin.Mixin;
 
 import static com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock.getMaterial;
 
-@Mixin(CopycatShaftBlock.class)
+@Mixin({CopycatShaftBlock.class, CopycatFluidPipeBlock.class, CopycatGlassFluidPipeBlock.class})
 public abstract class FunctionalCopycatBlockMixin extends Block implements IFunctionalCopycatBlock {
 
     public FunctionalCopycatBlockMixin(Properties properties) {
@@ -55,12 +57,13 @@ public abstract class FunctionalCopycatBlockMixin extends Block implements IFunc
         return getMaterial(level, pos).getExplosionResistance(level, pos, explosion);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos,
                                        Player player) {
         BlockState material = getMaterial(level, pos);
         if (AllBlocks.COPYCAT_BASE.has(material) || player != null && player.isShiftKeyDown())
-            return new ItemStack(this);
+            return this.getCloneItemStack(level, pos, state);
         return material.getCloneItemStack(target, level, pos, player);
     }
 
