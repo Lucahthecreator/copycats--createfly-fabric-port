@@ -1,10 +1,13 @@
-package com.copycatsplus.copycats.forge.mixin.copycat.base.functional;
+package com.copycatsplus.copycats.forge.mixin.copycat.base;
 
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
+import com.copycatsplus.copycats.content.copycat.button.CopycatStoneButtonBlock;
+import com.copycatsplus.copycats.content.copycat.button.CopycatWoodenButtonBlock;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlock;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatGlassFluidPipeBlock;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
+import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsBlock;
 import com.simibubi.create.AllBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -28,13 +31,16 @@ import static com.copycatsplus.copycats.content.copycat.base.ICopycatBlock.getMa
 
 @Mixin({
         CCCopycatBlock.class,
+        CopycatStairsBlock.class,
+        CopycatStoneButtonBlock.class,
+        CopycatWoodenButtonBlock.class,
         CopycatShaftBlock.class,
         CopycatFluidPipeBlock.class,
         CopycatGlassFluidPipeBlock.class
 })
-public abstract class FunctionalCopycatBlockMixin extends Block implements ICopycatBlock {
+public abstract class CopycatBlockMixin extends Block implements ICopycatBlock {
 
-    public FunctionalCopycatBlockMixin(Properties properties) {
+    public CopycatBlockMixin(Properties properties) {
         super(properties);
     }
 

@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.forge.mixin.copycat.base.functional;
+package com.copycatsplus.copycats.forge.mixin.copycat.base;
 
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
@@ -21,9 +21,9 @@ import org.spongepowered.asm.mixin.Mixin;
         CopycatStraightPipeBlockEntity.class,
         CopycatShaftBlockEntity.class
 })
-public abstract class FunctionalCopycatBlockEntityMixin extends SmartBlockEntity implements ICopycatBlockEntity {
+public abstract class CopycatBlockEntityMixin extends SmartBlockEntity implements ICopycatBlockEntity {
 
-    public FunctionalCopycatBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public CopycatBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 

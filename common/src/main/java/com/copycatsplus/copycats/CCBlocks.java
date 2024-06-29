@@ -16,7 +16,6 @@ import com.copycatsplus.copycats.content.copycat.board.CopycatMultiBoardModel;
 import com.copycatsplus.copycats.content.copycat.button.CopycatButtonModel;
 import com.copycatsplus.copycats.content.copycat.button.CopycatStoneButtonBlock;
 import com.copycatsplus.copycats.content.copycat.button.CopycatWoodenButtonBlock;
-import com.copycatsplus.copycats.content.copycat.button.WrappedButton;
 import com.copycatsplus.copycats.content.copycat.bytes.CopycatByteBlock;
 import com.copycatsplus.copycats.content.copycat.bytes.CopycatMultiByteModel;
 import com.copycatsplus.copycats.content.copycat.fence.CopycatFenceBlock;
@@ -167,24 +166,6 @@ public class CCBlocks {
                     .onRegister(CreateRegistrate.blockModel(() -> model -> SimpleCopycatPart.create(model, new CopycatButtonModel())))
                     .item()
                     .transform(customItemModel("copycat_base", "button"))
-                    .register();
-
-    public static final BlockEntry<WrappedButton.Wood> WRAPPED_COPYCAT_WOODEN_BUTTON =
-            REGISTRATE.block("wrapped_copycat_wooden_button", p -> new WrappedButton().wood(p, BlockSetType.OAK, 30, true))
-                    .initialProperties(() -> Blocks.OAK_BUTTON)
-                    .onRegister(b -> CopycatWoodenButtonBlock.button = b)
-                    .tag(BlockTags.BUTTONS)
-                    .tag(BlockTags.WOODEN_BUTTONS)
-                    .blockstate((c, p) -> getWrappedBlockState(c, p, "wrapped_copycat_wooden_button"))
-                    .register();
-
-    public static final BlockEntry<WrappedButton.Stone> WRAPPED_COPYCAT_STONE_BUTTON =
-            REGISTRATE.block("wrapped_copycat_stone_button", p -> new WrappedButton().stone(p, BlockSetType.STONE, 20, false))
-                    .initialProperties(() -> Blocks.STONE_BUTTON)
-                    .onRegister(b -> CopycatStoneButtonBlock.button = b)
-                    .tag(BlockTags.BUTTONS)
-                    .tag(BlockTags.STONE_BUTTONS)
-                    .blockstate((c, p) -> getWrappedBlockState(c, p, "wrapped_copycat_stone_button"))
                     .register();
 
     public static final BlockEntry<CopycatByteBlock> COPYCAT_BYTE =

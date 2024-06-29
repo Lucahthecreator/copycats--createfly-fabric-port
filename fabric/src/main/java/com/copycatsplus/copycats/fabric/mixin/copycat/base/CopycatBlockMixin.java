@@ -1,11 +1,14 @@
-package com.copycatsplus.copycats.fabric.mixin.copycat.base.functional;
+package com.copycatsplus.copycats.fabric.mixin.copycat.base;
 
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.model.fabric.CopycatModel;
+import com.copycatsplus.copycats.content.copycat.button.CopycatStoneButtonBlock;
+import com.copycatsplus.copycats.content.copycat.button.CopycatWoodenButtonBlock;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlock;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatGlassFluidPipeBlock;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
+import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsBlock;
 import com.simibubi.create.AllBlocks;
 import io.github.fabricators_of_create.porting_lib.block.*;
 import io.github.fabricators_of_create.porting_lib.enchant.EnchantmentBonusBlock;
@@ -35,13 +38,21 @@ import java.util.function.Function;
 
 import static com.copycatsplus.copycats.content.copycat.base.ICopycatBlock.getMaterial;
 
-@Mixin({CCCopycatBlock.class, CopycatShaftBlock.class, CopycatFluidPipeBlock.class, CopycatGlassFluidPipeBlock.class})
-public abstract class FunctionalCopycatBlockMixin extends Block implements ICopycatBlock,
+@Mixin({
+        CCCopycatBlock.class,
+        CopycatStairsBlock.class,
+        CopycatStoneButtonBlock.class,
+        CopycatWoodenButtonBlock.class,
+        CopycatShaftBlock.class,
+        CopycatFluidPipeBlock.class,
+        CopycatGlassFluidPipeBlock.class
+})
+public abstract class CopycatBlockMixin extends Block implements ICopycatBlock,
         CustomFrictionBlock, CustomSoundTypeBlock, LightEmissiveBlock, ExplosionResistanceBlock,
         BlockPickInteractionAware, CustomLandingEffectsBlock, CustomRunningEffectsBlock, EnchantmentBonusBlock,
         ValidSpawnBlock {
 
-    public FunctionalCopycatBlockMixin(Properties properties) {
+    public CopycatBlockMixin(Properties properties) {
         super(properties);
     }
 

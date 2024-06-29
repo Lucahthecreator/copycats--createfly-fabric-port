@@ -22,8 +22,6 @@
     "copycat.base.multistate.AirCurrentMixin",
     "copycat.base.multistate.ContraptionMixin",
     "copycat.base.multistate.LevelChunkMixin",
-    "copycat.button.ButtonBlockMixin",
-    "copycat.button.ContraptionMixin",
     "copycat.fence.FenceBlockMixin",
     "copycat.fence.ValueBoxRendererMixin",
     "copycat.fence_gate.BlockCanSurviveMixin",

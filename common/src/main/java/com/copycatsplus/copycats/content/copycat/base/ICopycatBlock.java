@@ -2,6 +2,7 @@ package com.copycatsplus.copycats.content.copycat.base;
 
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import net.fabricmc.api.EnvType;
@@ -163,6 +164,13 @@ public interface ICopycatBlock extends IWrenchable {
     }
 
     default InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult ray) {
+        // prioritize wrench interactions over others
+        if (player.getItemInHand(hand).is(AllTags.AllItemTags.WRENCH.tag)) {
+            InteractionResult result = AllItems.WRENCH.get().useOn(new UseOnContext(player, hand, ray));
+            if (result.consumesAction())
+                return result;
+        }
+
         InteractionResult result = toggleCT(state, world, pos, player, hand, ray);
         if (result.consumesAction())
             return result;

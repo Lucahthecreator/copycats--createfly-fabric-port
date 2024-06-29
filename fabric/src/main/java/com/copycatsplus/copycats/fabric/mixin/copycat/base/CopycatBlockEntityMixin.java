@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.fabric.mixin.copycat.base.functional;
+package com.copycatsplus.copycats.fabric.mixin.copycat.base;
 
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
 @SuppressWarnings("deprecation")
-public class FunctionalCopycatBlockEntityMixin {
+public class CopycatBlockEntityMixin {
     @Mixin({
             CCCopycatBlockEntity.class,
             CopycatShaftBlockEntity.class
