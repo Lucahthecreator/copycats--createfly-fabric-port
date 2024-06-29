@@ -1,10 +1,14 @@
 package com.copycatsplus.copycats.mixin.copycat.base.multistate;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
+import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.simibubi.create.AllBlockEntityTypes;
 import com.simibubi.create.content.contraptions.Contraption;
+import com.simibubi.create.content.decoration.copycat.CopycatBlock;
 import com.simibubi.create.content.decoration.copycat.CopycatBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderGetter;
@@ -48,8 +52,18 @@ public class ContraptionMixin {
             CopycatBlockEntity be = new CopycatBlockEntity(AllBlockEntityTypes.COPYCAT.get(), pos, state);
             be.load(nbt);
             MultiStateCopycatBlockEntity multiBe = MultiStateCopycatBlockEntity.create(CCBlockEntityTypes.MULTI_STATE_COPYCAT_BLOCK_ENTITY.get(), pos, state);
-            multiBe.migrateData(be);
+            multiBe.migrateData((IFunctionalCopycatBlockEntity) be);
             nbt = multiBe.saveWithId();
+            cir.setReturnValue(new StructureTemplate.StructureBlockInfo(pos, state, nbt));
+        } else if (state.getBlock() instanceof IFunctionalCopycatBlock &&
+                (state.getBlock() instanceof CopycatBlock) &&
+                nbt != null &&
+                nbt.contains("id") &&
+                nbt.getString("id").equals(AllBlockEntityTypes.COPYCAT.getId().toString())) {
+            BlockPos pos = cir.getReturnValue().pos();
+            CCCopycatBlockEntity be = CCBlockEntityTypes.COPYCAT.create(pos, state);
+            be.load(nbt);
+            nbt = be.saveWithId();
             cir.setReturnValue(new StructureTemplate.StructureBlockInfo(pos, state, nbt));
         }
     }

@@ -9,7 +9,6 @@ import com.copycatsplus.copycats.content.copycat.ladder.CopycatLadderMultiStateB
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlockEntity;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftInstance;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftRenderer;
-import com.simibubi.create.content.decoration.copycat.CopycatBlockEntity;
 import com.simibubi.create.content.fluids.pipes.TransparentStraightPipeRenderer;
 import com.tterrag.registrate.builders.BlockEntityBuilder;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;

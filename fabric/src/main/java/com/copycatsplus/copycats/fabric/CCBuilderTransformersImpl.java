@@ -3,7 +3,6 @@ package com.copycatsplus.copycats.fabric;
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
-import com.simibubi.create.content.decoration.copycat.CopycatBlock;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.builders.BlockBuilder;
@@ -23,7 +22,7 @@ public class CCBuilderTransformersImpl {
                         .mapColor(MapColor.NONE))
                 // fabric: only render base model on cutout. When rendering the wrapped model's material is copied.
                 .addLayer(() -> RenderType::cutout)
-                .color(() -> CopycatBlock::wrappedColor)
+                .color(() -> CCCopycatBlock::wrappedColor)
                 .transform(TagGen.axeOrPickaxe());
     }
 

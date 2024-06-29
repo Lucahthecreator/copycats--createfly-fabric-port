@@ -13,7 +13,6 @@ import com.copycatsplus.copycats.multiloader.Platform;
 import com.google.common.collect.ImmutableList;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
-import com.simibubi.create.content.decoration.copycat.CopycatBlock;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
@@ -209,10 +208,6 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
     }
 
     GeneratedRecipeBuilder.GeneratedRecipe copycat(ItemProviderEntry<? extends ItemLike> result, int resultCount) {
-        if (result.get() instanceof CopycatBlock copycat) {
-            copycatsWithRecipes.add(copycat);
-        }
-
         if (result.get() instanceof IFunctionalCopycatBlock) {
             copycatsWithRecipes.add((Block) result.get());
         }
@@ -229,10 +224,6 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
     }
 
     GeneratedRecipeBuilder.GeneratedRecipe functionalCopycat(ItemProviderEntry<? extends ItemLike> base, ItemProviderEntry<? extends ItemLike> result, int resultCount) {
-        if (result.get() instanceof CopycatBlock copycat) {
-            copycatsWithRecipes.add(copycat);
-        }
-
         if (result.get() instanceof IFunctionalCopycatBlock) {
             copycatsWithRecipes.add((Block) result.get());
         }

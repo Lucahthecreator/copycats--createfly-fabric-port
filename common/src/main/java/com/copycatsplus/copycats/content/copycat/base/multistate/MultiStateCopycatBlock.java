@@ -2,14 +2,11 @@ package com.copycatsplus.copycats.content.copycat.base.multistate;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
 import com.copycatsplus.copycats.CCBlockStateProperties;
-import com.copycatsplus.copycats.content.copycat.base.CTCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.copycatsplus.copycats.content.copycat.base.StateType;
 import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.content.decoration.copycat.CopycatBlock;
-import com.simibubi.create.content.decoration.copycat.CopycatBlockEntity;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.schematics.requirement.ISpecialBlockItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
@@ -250,7 +247,7 @@ public abstract class MultiStateCopycatBlock extends Block implements IFunctiona
             return null;
 
         Block block = bi.getBlock();
-        if (block instanceof IFunctionalCopycatBlock || block instanceof CopycatBlock)
+        if (block instanceof IFunctionalCopycatBlock)
             return null;
 
         BlockState appliedState = block.defaultBlockState();

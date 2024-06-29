@@ -2,12 +2,13 @@ package com.copycatsplus.copycats.content.copycat.base;
 
 import javax.annotation.Nullable;
 
+import com.copycatsplus.copycats.CCBlockEntityTypes;
 import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
 import com.simibubi.create.AllBlockEntityTypes;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags.AllBlockTags;
-import com.simibubi.create.content.decoration.copycat.CopycatBlockEntity;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
 
@@ -46,7 +47,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class CCCopycatBlock extends Block implements IBE<CopycatBlockEntity>, IWrenchable, IFunctionalCopycatBlock {
+public abstract class CCCopycatBlock extends Block implements IBE<CCCopycatBlockEntity>, IWrenchable, IFunctionalCopycatBlock {
 
     public CCCopycatBlock(Properties pProperties) {
         super(pProperties);
@@ -162,7 +163,7 @@ public abstract class CCCopycatBlock extends Block implements IBE<CopycatBlockEn
             return null;
 
         Block block = bi.getBlock();
-        if (block instanceof com.simibubi.create.content.decoration.copycat.CopycatBlock || block instanceof IFunctionalCopycatBlock || block instanceof MultiStateCopycatBlock)
+        if (block instanceof IFunctionalCopycatBlock || block instanceof MultiStateCopycatBlock)
             return null;
 
         BlockState appliedState = block.defaultBlockState();
@@ -232,13 +233,13 @@ public abstract class CCCopycatBlock extends Block implements IBE<CopycatBlockEn
     }
 
     @Override
-    public Class<CopycatBlockEntity> getBlockEntityClass() {
-        return CopycatBlockEntity.class;
+    public Class<CCCopycatBlockEntity> getBlockEntityClass() {
+        return CCCopycatBlockEntity.class;
     }
 
     @Override
-    public BlockEntityType<? extends CopycatBlockEntity> getBlockEntityType() {
-        return AllBlockEntityTypes.COPYCAT.get();
+    public BlockEntityType<? extends CCCopycatBlockEntity> getBlockEntityType() {
+        return CCBlockEntityTypes.COPYCAT.get();
     }
 
     // Connected Textures
@@ -268,7 +269,7 @@ public abstract class CCCopycatBlock extends Block implements IBE<CopycatBlockEn
     //
 
     public static BlockState getMaterial(BlockGetter reader, BlockPos targetPos) {
-        if (reader.getBlockEntity(targetPos) instanceof CopycatBlockEntity cbe)
+        if (reader.getBlockEntity(targetPos) instanceof IFunctionalCopycatBlockEntity cbe)
             return cbe.getMaterial();
         return Blocks.AIR.defaultBlockState();
     }

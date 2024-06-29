@@ -6,9 +6,11 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class CTWaterloggedCopycatBlock extends CCWaterloggedCopycatBlock implements ICTCopycatBlock {
     public CTWaterloggedCopycatBlock(Properties pProperties) {
@@ -27,5 +29,11 @@ public abstract class CTWaterloggedCopycatBlock extends CCWaterloggedCopycatBloc
         InteractionResult toggleResult = ICTCopycatBlock.super.toggleCT(pState, pLevel, pPos, pPlayer, pHand, pHit);
         if (toggleResult.consumesAction()) return toggleResult;
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+    }
+
+    @Nullable
+    @Override
+    public CCCopycatBlockEntity getBlockEntity(BlockGetter worldIn, BlockPos pos) {
+        return super.getBlockEntity(worldIn, pos);
     }
 }

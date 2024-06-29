@@ -1,7 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.base.multistate;
 
 import com.copycatsplus.copycats.Copycats;
-import com.copycatsplus.copycats.config.CCConfigs;
 import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.ITransformableBlockEntity;
@@ -21,8 +20,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -202,7 +199,7 @@ public abstract class MultiStateCopycatBlockEntity extends SmartBlockEntity impl
         }
     }
 
-    public void migrateData(CopycatBlockEntity copycatBlockEntity) {
+    public void migrateData(IFunctionalCopycatBlockEntity copycatBlockEntity) {
         if (getBlockState().getBlock() instanceof MultiStateCopycatBlock mscb) {
             ResourceLocation blockId = copycatBlockEntity.getBlockState().getBlock().builtInRegistryHolder().key().location();
             Copycats.LOGGER.debug("Converting block({}) at @{} to a multistate copycat", blockId.toString(), copycatBlockEntity.getBlockPos().toShortString());

@@ -4,7 +4,6 @@ import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopy
 import com.copycatsplus.copycats.content.copycat.pressure_plate.WrappedPressurePlate;
 import com.copycatsplus.copycats.content.copycat.stairs.WrappedStairsBlock;
 import com.firemerald.additionalplacements.block.AdditionalPlacementBlock;
-import com.simibubi.create.content.decoration.copycat.CopycatBlock;
 import net.minecraft.world.level.block.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,7 +36,6 @@ public class PlacementBlockMixin {
                 block instanceof WrappedPressurePlate.LightWeighted ||
                 block instanceof WrappedPressurePlate.HeavyWeighted ||
                 block instanceof WrappedStairsBlock ||
-                block instanceof CopycatBlock ||
                 block instanceof IFunctionalCopycatBlock)
             cir.setReturnValue(false);
     }

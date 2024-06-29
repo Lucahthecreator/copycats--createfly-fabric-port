@@ -2,11 +2,11 @@ package com.copycatsplus.copycats.fabric.mixin.copycat.base.functional;
 
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.model.fabric.CopycatModel;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlock;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatGlassFluidPipeBlock;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.decoration.copycat.CopycatModel;
 import io.github.fabricators_of_create.porting_lib.block.*;
 import io.github.fabricators_of_create.porting_lib.enchant.EnchantmentBonusBlock;
 import net.fabricmc.fabric.api.block.BlockPickInteractionAware;

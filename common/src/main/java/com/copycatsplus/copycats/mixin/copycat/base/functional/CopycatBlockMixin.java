@@ -3,7 +3,6 @@ package com.copycatsplus.copycats.mixin.copycat.base.functional;
 import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
 import com.simibubi.create.content.decoration.copycat.CopycatBlock;
-import com.simibubi.create.content.decoration.copycat.CopycatBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;

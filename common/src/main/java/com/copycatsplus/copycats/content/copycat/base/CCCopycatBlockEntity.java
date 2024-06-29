@@ -2,11 +2,11 @@ package com.copycatsplus.copycats.content.copycat.base;
 
 import java.util.List;
 
+import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.ITransformableBlockEntity;
 import com.simibubi.create.content.contraptions.StructureTransform;
-import com.simibubi.create.content.decoration.copycat.CopycatBlock;
 import com.simibubi.create.content.redstone.RoseQuartzLampBlock;
 import com.simibubi.create.content.schematics.requirement.ISpecialBlockEntityItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
@@ -157,7 +157,7 @@ public abstract class CCCopycatBlockEntity extends SmartBlockEntity
             BlockState blockState = getBlockState();
             if (blockState == null)
                 return;
-            if (!(blockState.getBlock() instanceof CopycatBlock cb))
+            if (!(blockState.getBlock() instanceof IFunctionalCopycatBlock cb))
                 return;
             BlockState acceptedBlockState = cb.getAcceptedBlockState(level, worldPosition, consumedItem, null);
             if (acceptedBlockState != null && material.is(acceptedBlockState.getBlock()))

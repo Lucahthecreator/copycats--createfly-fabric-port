@@ -1,7 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.base;
 
-import com.simibubi.create.content.decoration.copycat.CopycatBlockEntity;
-import com.simibubi.create.foundation.block.IBE;
+import com.copycatsplus.copycats.content.copycat.base.functional.IFunctionalCopycatBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -9,31 +8,36 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
+import javax.annotation.Nullable;
+
 /**
  * Copycat blocks that support toggling connected textures should implement this interface.
  */
-public interface ICTCopycatBlock extends IBE<CopycatBlockEntity> {
+public interface ICTCopycatBlock {
+
+    @Nullable
+    Object getBlockEntity(BlockGetter worldIn, BlockPos pos);
 
     default boolean allowCTAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
-        CopycatBlockEntity be = getBlockEntity(level, queryPos);
-        if (be instanceof CTCopycatBlockEntity ctbe) {
-            return ctbe.isCTEnabled();
-        }
-        return true;
+        Object be = getBlockEntity(level, queryPos);
+        if (!(be instanceof IFunctionalCopycatBlockEntity fbe))
+            return true;
+        return fbe.isCTEnabled();
     }
 
     default InteractionResult toggleCT(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (pPlayer.isShiftKeyDown() && pPlayer.getItemInHand(pHand).equals(ItemStack.EMPTY)) {
-            CopycatBlockEntity be = getBlockEntity(pLevel, pPos);
-            if (be instanceof CTCopycatBlockEntity ctbe) {
-                ctbe.setCTEnabled(!ctbe.isCTEnabled());
-                ctbe.callRedraw();
-                return InteractionResult.SUCCESS;
-            }
+            Object be = getBlockEntity(pLevel, pPos);
+            if (!(be instanceof IFunctionalCopycatBlockEntity fbe))
+                return InteractionResult.PASS;
+            fbe.setCTEnabled(!fbe.isCTEnabled());
+            fbe.callRedraw();
+            return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
     }
