@@ -6,6 +6,7 @@ import com.jozufozu.flywheel.core.model.ModelUtil;
 import com.jozufozu.flywheel.core.model.ShadeSeparatedBufferedData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
 
@@ -13,7 +14,7 @@ public class FunctionalCopycatRenderHelperImpl {
 
     public static ShadeSeparatedBufferedData getCopycatBuffer(BakedModel model, ICopycatBlockEntity be, PoseStack ms) {
         WrappedRenderWorld renderWorld = new WrappedRenderWorld(be).setCTMode(true);
-        ModelData renderData = model.getModelData(renderWorld, be.getBlockPos(), be.getBlockState(), be.getCopycatBlockEntity().getModelData());
+        ModelData renderData = model.getModelData(renderWorld, be.getBlockPos(), be.getBlockState(), ((BlockEntity) be).getModelData());
         ModelData.Builder builder = ModelData.builder();
         copyModelData(renderData, builder);
         builder.with(ModelUtil.VIRTUAL_PROPERTY, true);

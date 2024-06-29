@@ -38,7 +38,6 @@ public abstract class CopycatBlockMixin implements ICopycatBlock {
             cancellable = true
     )
     private static void getMaterial(BlockGetter reader, BlockPos targetPos, CallbackInfoReturnable<BlockState> cir) {
-        if (reader.getBlockEntity(targetPos) instanceof ICopycatBlockEntity cbe)
-            cir.setReturnValue(cbe.getMaterial());
+        cir.setReturnValue(ICopycatBlock.getMaterial(reader, targetPos));
     }
 }

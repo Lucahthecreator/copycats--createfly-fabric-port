@@ -1,8 +1,8 @@
 package com.copycatsplus.copycats.content.copycat.base.model.forge;
 
 
-import com.copycatsplus.copycats.content.copycat.base.CTCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.model.FilteredBlockAndTintGetter;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.model.BakedModelWrapperWithData;
@@ -62,7 +62,7 @@ public abstract class CopycatModel extends BakedModelWrapperWithData {
                 FilteredBlockAndTintGetter.create(world,
                         targetPos -> {
                             BlockEntity be = world.getBlockEntity(pos);
-                            if (be instanceof CTCopycatBlockEntity ctbe)
+                            if (be instanceof ICopycatBlockEntity ctbe)
                                 if (!ctbe.isCTEnabled())
                                     return false;
                             return copycatBlock.canConnectTexturesToward(world, pos, targetPos, state);

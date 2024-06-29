@@ -26,7 +26,12 @@ import org.spongepowered.asm.mixin.Mixin;
 
 import static com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock.getMaterial;
 
-@Mixin({CCCopycatBlock.class, CopycatShaftBlock.class, CopycatFluidPipeBlock.class, CopycatGlassFluidPipeBlock.class})
+@Mixin({
+        CCCopycatBlock.class,
+        CopycatShaftBlock.class,
+        CopycatFluidPipeBlock.class,
+        CopycatGlassFluidPipeBlock.class
+})
 public abstract class FunctionalCopycatBlockMixin extends Block implements ICopycatBlock {
 
     public FunctionalCopycatBlockMixin(Properties properties) {

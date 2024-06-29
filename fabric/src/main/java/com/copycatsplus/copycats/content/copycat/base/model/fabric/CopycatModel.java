@@ -1,8 +1,8 @@
 package com.copycatsplus.copycats.content.copycat.base.model.fabric;
 
 
-import com.copycatsplus.copycats.content.copycat.base.CTCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.model.FilteredBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.model.functional.fabric.WorldWithRenderData;
 import com.simibubi.create.AllBlocks;
@@ -98,7 +98,7 @@ public abstract class CopycatModel extends ForwardingBakedModel implements Custo
         if (state.getBlock() instanceof ICopycatBlock copycatBlock) {
             FilteredBlockAndTintGetter filteredBlockAndTintGetter = FilteredBlockAndTintGetter.create(blockView, t -> {
                 BlockEntity be = blockView.getBlockEntity(pos);
-                if (be instanceof CTCopycatBlockEntity ctbe)
+                if (be instanceof ICopycatBlockEntity ctbe)
                     if (!ctbe.isCTEnabled())
                         return false;
                 return copycatBlock.canConnectTexturesToward(blockView, pos, t, state);

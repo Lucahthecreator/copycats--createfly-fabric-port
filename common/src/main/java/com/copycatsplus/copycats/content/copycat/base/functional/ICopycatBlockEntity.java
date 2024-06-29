@@ -1,98 +1,199 @@
 package com.copycatsplus.copycats.content.copycat.base.functional;
 
-import com.copycatsplus.copycats.content.copycat.base.CTCopycatBlockEntity;
-import com.copycatsplus.copycats.mixin.copycat.base.CopycatBlockEntityAccessor;
+import com.copycatsplus.copycats.utility.BlockEntityUtils;
+import com.copycatsplus.copycats.utility.ItemUtils;
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.ITransformableBlockEntity;
 import com.simibubi.create.content.contraptions.StructureTransform;
-import com.simibubi.create.content.decoration.copycat.CopycatBlockEntity;
+import com.simibubi.create.content.redstone.RoseQuartzLampBlock;
 import com.simibubi.create.content.schematics.requirement.ISpecialBlockEntityItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.foundation.utility.IPartialSafeNBT;
+import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.jetbrains.annotations.ApiStatus;
 
-public interface ICopycatBlockEntity extends CTCopycatBlockEntity, ISpecialBlockEntityItemRequirement, ITransformableBlockEntity, IPartialSafeNBT {
-    default CopycatBlockEntity getCopycatBlockEntity() {
-        return this instanceof CopycatBlockEntity be ? be : null;
-    }
+public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement, ITransformableBlockEntity, IPartialSafeNBT {
 
-    default Level getLevel() {
-        return getCopycatBlockEntity().getLevel();
-    }
+    void notifyUpdate();
 
-    default BlockPos getBlockPos() {
-        return getCopycatBlockEntity().getBlockPos();
-    }
+    Level getLevel();
 
-    default BlockState getBlockState() {
-        return getCopycatBlockEntity().getBlockState();
-    }
+    BlockPos getBlockPos();
 
-    default void setLevel(Level level) {
-        getCopycatBlockEntity().setLevel(level);
-    }
+    BlockState getBlockState();
 
-    default BlockState getMaterial() {
-        return getCopycatBlockEntity().getMaterial();
+    HolderGetter<Block> blockHolderGetter();
+
+    void setBlockState(BlockState blockState);
+
+    void setLevel(Level level);
+
+    BlockState getMaterial();
+
+    ItemStack getConsumedItem();
+
+    boolean isCTEnabled();
+
+    @ApiStatus.Internal
+    void setMaterialInternal(BlockState material);
+
+    @ApiStatus.Internal
+    void setConsumedItemInternal(ItemStack consumedItem);
+
+    @ApiStatus.Internal
+    void setCTEnabledInternal(boolean value);
+
+    default void init() {
+        setMaterialInternal(AllBlocks.COPYCAT_BASE.getDefaultState());
+        setConsumedItemInternal(ItemStack.EMPTY);
+        setCTEnabledInternal(true);
     }
 
     default boolean hasCustomMaterial() {
-        return getCopycatBlockEntity().hasCustomMaterial();
+        return !AllBlocks.COPYCAT_BASE.has(getMaterial());
     }
 
-    default void setMaterial(BlockState material) {
-        getCopycatBlockEntity().setMaterial(material);
+    default void setMaterial(BlockState blockState) {
+        BlockState wrapperState = getBlockState();
+
+        if (!getMaterial().is(blockState.getBlock()))
+            for (Direction side : Iterate.directions) {
+                BlockPos neighbour = getBlockPos().relative(side);
+                BlockState neighbourState = getLevel().getBlockState(neighbour);
+                if (neighbourState != wrapperState)
+                    continue;
+                if (!(getLevel().getBlockEntity(neighbour) instanceof ICopycatBlockEntity cbe))
+                    continue;
+                BlockState otherMaterial = cbe.getMaterial();
+                if (!otherMaterial.is(blockState.getBlock()))
+                    continue;
+                blockState = otherMaterial;
+                break;
+            }
+
+        setMaterialInternal(blockState);
+        if (!getLevel().isClientSide()) {
+            notifyUpdate();
+            return;
+        }
+        redraw();
     }
 
     default boolean cycleMaterial() {
-        return getCopycatBlockEntity().cycleMaterial();
+        BlockState material = getMaterial();
+        if (material.hasProperty(TrapDoorBlock.HALF) && material.getOptionalValue(TrapDoorBlock.OPEN)
+                .orElse(false))
+            setMaterial(material.cycle(TrapDoorBlock.HALF));
+        else if (material.hasProperty(BlockStateProperties.FACING))
+            setMaterial(material.cycle(BlockStateProperties.FACING));
+        else if (material.hasProperty(BlockStateProperties.HORIZONTAL_FACING))
+            setMaterial(material.setValue(BlockStateProperties.HORIZONTAL_FACING,
+                    material.getValue(BlockStateProperties.HORIZONTAL_FACING)
+                            .getClockWise()));
+        else if (material.hasProperty(BlockStateProperties.AXIS))
+            setMaterial(material.cycle(BlockStateProperties.AXIS));
+        else if (material.hasProperty(BlockStateProperties.HORIZONTAL_AXIS))
+            setMaterial(material.cycle(BlockStateProperties.HORIZONTAL_AXIS));
+        else if (material.hasProperty(BlockStateProperties.LIT))
+            setMaterial(material.cycle(BlockStateProperties.LIT));
+        else if (material.hasProperty(RoseQuartzLampBlock.POWERING))
+            setMaterial(material.cycle(RoseQuartzLampBlock.POWERING));
+        else
+            return false;
+
+        return true;
     }
 
-    default ItemStack getConsumedItem() {
-        return getCopycatBlockEntity().getConsumedItem();
+    default void setConsumedItem(ItemStack stack) {
+        setConsumedItemInternal(ItemUtils.copyStackWithSize(stack, 1));
+        notifyUpdate();
     }
 
-    default void setConsumedItem(ItemStack consumedItem) {
-        getCopycatBlockEntity().setConsumedItem(consumedItem);
+    default void setCTEnabled(boolean value) {
+        setCTEnabledInternal(value);
+        notifyUpdate();
     }
 
     @Override
     default ItemRequirement getRequiredItems(BlockState state) {
-        return getCopycatBlockEntity().getRequiredItems(state);
+        if (getConsumedItem().isEmpty())
+            return ItemRequirement.NONE;
+        return new ItemRequirement(ItemRequirement.ItemUseType.CONSUME, getConsumedItem());
     }
 
     @Override
     default void transform(StructureTransform transform) {
-        getCopycatBlockEntity().transform(transform);
+        setMaterialInternal(transform.apply(getMaterial()));
+        notifyUpdate();
     }
 
-    default void read(CompoundTag compound, boolean clientPacket) {
-        ((CopycatBlockEntityAccessor) getCopycatBlockEntity()).callRead(compound, clientPacket);
+    @ApiStatus.Internal
+    static void read(ICopycatBlockEntity self, CompoundTag tag, boolean clientPacket) {
+        if (tag.contains("EnableCT")) // need to check because copycats migrated from C:Connected don't have this tag
+            self.setCTEnabled(tag.getBoolean("EnableCT"));
+        else
+            self.setCTEnabled(true);
+
+        self.setConsumedItem(ItemStack.of(tag.getCompound("Item")));
+
+        BlockState prevMaterial = self.getMaterial();
+        if (!tag.contains("Material")) {
+            self.setConsumedItem(ItemStack.EMPTY);
+            return;
+        }
+
+        self.setMaterialInternal(NbtUtils.readBlockState(self.blockHolderGetter(), tag.getCompound("Material")));
+
+        // Validate Material
+        if (self.getMaterial() != null && !clientPacket) {
+            BlockState blockState = self.getBlockState();
+            if (blockState == null)
+                return;
+            if (!(blockState.getBlock() instanceof ICopycatBlock cb))
+                return;
+            BlockState acceptedBlockState = cb.getAcceptedBlockState(self.getLevel(), self.getBlockPos(), self.getConsumedItem(), null);
+            if (acceptedBlockState != null && self.getMaterial().is(acceptedBlockState.getBlock()))
+                return;
+            self.setConsumedItem(ItemStack.EMPTY);
+            self.setMaterialInternal(AllBlocks.COPYCAT_BASE.getDefaultState());
+        }
+
+        if (clientPacket && prevMaterial != self.getMaterial())
+            self.redraw();
     }
 
-    default void writeSafe(CompoundTag tag) {
-        getCopycatBlockEntity().writeSafe(tag);
+    @ApiStatus.Internal
+    static void writeSafe(ICopycatBlockEntity self, CompoundTag tag) {
+        ItemStack stackWithoutNBT = self.getConsumedItem().copy();
+        stackWithoutNBT.setTag(null);
+        write(tag, stackWithoutNBT, self.getMaterial(), self.isCTEnabled());
     }
 
-    default void write(CompoundTag compound, boolean clientPacket) {
-        ((CopycatBlockEntityAccessor) getCopycatBlockEntity()).callWrite(compound, clientPacket);
+    @ApiStatus.Internal
+    static void write(ICopycatBlockEntity self, CompoundTag tag, boolean clientPacket) {
+        write(tag, self.getConsumedItem(), self.getMaterial(), self.isCTEnabled());
     }
 
-    @Override
-    default boolean isCTEnabled() {
-        return ((CTCopycatBlockEntity) getCopycatBlockEntity()).isCTEnabled();
+    @ApiStatus.Internal
+    static void write(CompoundTag tag, ItemStack stack, BlockState material, boolean enableCT) {
+        tag.put("Item", ItemUtils.serializeNBT(stack));
+        tag.put("Material", NbtUtils.writeBlockState(material));
+        tag.putBoolean("EnableCT", enableCT);
     }
 
-    @Override
-    default void setCTEnabled(boolean value) {
-        ((CTCopycatBlockEntity) getCopycatBlockEntity()).setCTEnabled(value);
-    }
-
-    @Override
     default void redraw() {
-        ((CopycatBlockEntityAccessor) getCopycatBlockEntity()).callRedraw();
+        BlockEntityUtils.redraw((BlockEntity) this);
     }
 }

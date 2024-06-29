@@ -63,20 +63,20 @@ public class CCBlockEntityTypes {
                     .register();
 
     public static final BlockEntityEntry<? extends CopycatShaftBlockEntity> COPYCAT_SHAFT =
-            REGISTRATE.blockEntity("copycat_shaft", getPlatformShaft())
+            REGISTRATE.blockEntity("copycat_shaft", CopycatShaftBlockEntity::new)
                     .instance(() -> CopycatShaftInstance::new, false)
                     .validBlocks(CCBlocks.COPYCAT_SHAFT)
                     .renderer(() -> CopycatShaftRenderer::new)
                     .register();
 
     public static final BlockEntityEntry<? extends CopycatFluidPipeBlockEntity> COPYCAT_FLUID_PIPE =
-            REGISTRATE.blockEntity("copycat_fluid_pipe", getPlatformFluidPipe())
+            REGISTRATE.blockEntity("copycat_fluid_pipe", CopycatFluidPipeBlockEntity::new)
                     .validBlocks(CCBlocks.COPYCAT_FLUID_PIPE)
                     .renderer(() -> CopycatFluidPipeRenderer::new)
                     .register();
 
     public static final BlockEntityEntry<? extends CopycatStraightPipeBlockEntity> COPYCAT_GLASS_FLUID_PIPE =
-            REGISTRATE.blockEntity("copycat_glass_fluid_pipe", getPlatformStraightPipe())
+            REGISTRATE.blockEntity("copycat_glass_fluid_pipe", CopycatStraightPipeBlockEntity::new)
                     .validBlocks(CCBlocks.COPYCAT_GLASS_FLUID_PIPE)
                     .renderer(() -> TransparentStraightPipeRenderer::new)
                     .register();
@@ -93,21 +93,6 @@ public class CCBlockEntityTypes {
 
     @ExpectPlatform
     public static BlockEntityBuilder.BlockEntityFactory<? extends CopycatLadderMultiStateBlockEntity> getPlatformMultiStateLadder() {
-        throw new AssertionError("This shouldn't appear");
-    }
-
-    @ExpectPlatform
-    public static BlockEntityBuilder.BlockEntityFactory<? extends CopycatShaftBlockEntity> getPlatformShaft() {
-        throw new AssertionError("This shouldn't appear");
-    }
-
-    @ExpectPlatform
-    public static BlockEntityBuilder.BlockEntityFactory<? extends CopycatFluidPipeBlockEntity> getPlatformFluidPipe() {
-        throw new AssertionError("This shouldn't appear");
-    }
-
-    @ExpectPlatform
-    public static BlockEntityBuilder.BlockEntityFactory<? extends CopycatStraightPipeBlockEntity> getPlatformStraightPipe() {
         throw new AssertionError("This shouldn't appear");
     }
 

@@ -29,8 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Set;
 
-public abstract class MultiStateCopycatBlockEntity extends SmartBlockEntity implements
-        ICopycatBlockEntity, ISpecialBlockEntityItemRequirement, ITransformableBlockEntity, IPartialSafeNBT {
+public abstract class MultiStateCopycatBlockEntity extends SmartBlockEntity implements ICopycatBlockEntity {
 
     private final MaterialItemStorage materialItemStorage;
 
@@ -41,11 +40,6 @@ public abstract class MultiStateCopycatBlockEntity extends SmartBlockEntity impl
         } else {
             materialItemStorage = MaterialItemStorage.create(1, Set.of("block"));
         }
-    }
-
-    @Override
-    public CopycatBlockEntity getCopycatBlockEntity() {
-        return null;
     }
 
     @Override
@@ -96,6 +90,31 @@ public abstract class MultiStateCopycatBlockEntity extends SmartBlockEntity impl
             return false;
 
         return true;
+    }
+
+    @Override
+    public ItemStack getConsumedItem() {
+        return materialItemStorage.getAllConsumedItems().stream().findFirst().orElse(ItemStack.EMPTY);
+    }
+
+    @Override
+    public boolean isCTEnabled() {
+        return materialItemStorage.getMaterialItem(materialItemStorage.getAllProperties().stream().findFirst().orElseThrow()).enableCT();
+    }
+
+    @Override
+    public void setMaterialInternal(BlockState material) {
+        // no-op
+    }
+
+    @Override
+    public void setConsumedItemInternal(ItemStack consumedItem) {
+        // no-op
+    }
+
+    @Override
+    public void setCTEnabledInternal(boolean value) {
+        // no-op
     }
 
     public MaterialItemStorage getMaterialItemStorage() {

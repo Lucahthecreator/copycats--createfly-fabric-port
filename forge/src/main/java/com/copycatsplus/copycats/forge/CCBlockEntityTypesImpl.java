@@ -4,14 +4,8 @@ import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.forge.CCCopycatBlockEntityForge;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.forge.MultiStateCopycatBlockEntityForge;
-import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlockEntity;
-import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatStraightPipeBlockEntity;
-import com.copycatsplus.copycats.content.copycat.fluid_pipe.forge.CopycatFluidPipeBlockEntityForge;
-import com.copycatsplus.copycats.content.copycat.fluid_pipe.forge.CopycatStraightPipeBlockEntityForge;
 import com.copycatsplus.copycats.content.copycat.ladder.CopycatLadderMultiStateBlockEntity;
 import com.copycatsplus.copycats.content.copycat.ladder.forge.CopycatLadderMultiStateBlockEntityForge;
-import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlockEntity;
-import com.copycatsplus.copycats.content.copycat.shaft.forge.CopycatShaftBlockEntityForge;
 import com.tterrag.registrate.builders.BlockEntityBuilder;
 
 public class CCBlockEntityTypesImpl {
@@ -27,20 +21,5 @@ public class CCBlockEntityTypesImpl {
 
     public static BlockEntityBuilder.BlockEntityFactory<? extends CopycatLadderMultiStateBlockEntity> getPlatformMultiStateLadder() {
         return CopycatLadderMultiStateBlockEntityForge::new;
-    }
-
-
-    public static BlockEntityBuilder.BlockEntityFactory<? extends CopycatShaftBlockEntity> getPlatformShaft() {
-        return CopycatShaftBlockEntityForge::new;
-    }
-
-
-    public static BlockEntityBuilder.BlockEntityFactory<? extends CopycatFluidPipeBlockEntity> getPlatformFluidPipe() {
-        return CopycatFluidPipeBlockEntityForge::new;
-    }
-
-
-    public static BlockEntityBuilder.BlockEntityFactory<? extends CopycatStraightPipeBlockEntity> getPlatformStraightPipe() {
-        return CopycatStraightPipeBlockEntityForge::new;
     }
 }

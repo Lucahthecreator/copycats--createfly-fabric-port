@@ -1,0 +1,39 @@
+package com.copycatsplus.copycats.forge.mixin.copycat.base.functional;
+
+import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.model.forge.CopycatModel;
+import com.copycatsplus.copycats.content.copycat.base.model.functional.forge.FunctionalCopycatRenderHelperImpl;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlockEntity;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatStraightPipeBlockEntity;
+import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlockEntity;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.model.data.ModelData;
+import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.Mixin;
+
+@Mixin({
+        CCCopycatBlockEntity.class,
+        CopycatFluidPipeBlockEntity.class,
+        CopycatStraightPipeBlockEntity.class,
+        CopycatShaftBlockEntity.class
+})
+public abstract class FunctionalCopycatBlockEntityMixin extends SmartBlockEntity implements ICopycatBlockEntity {
+
+    public FunctionalCopycatBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
+    }
+
+    @Override
+    public @NotNull ModelData getModelData() {
+        return FunctionalCopycatRenderHelperImpl.mergeData(
+                super.getModelData(),
+                ModelData.builder()
+                        .with(CopycatModel.MATERIAL_PROPERTY, getMaterial())
+                        .build()
+        ).build();
+    }
+}
