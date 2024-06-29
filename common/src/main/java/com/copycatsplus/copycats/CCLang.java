@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class Lang {
+public class CCLang {
     /**
      * legacy-ish. Use Lang.translate and other builder methods where possible
      */
