@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.base.model.multistate.fabric;
 
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.fabric.AssemblerImpl.CopycatRenderContextFabric;
 import com.copycatsplus.copycats.content.copycat.base.model.fabric.CopycatModel;
-import com.copycatsplus.copycats.content.copycat.base.model.multistate.SimpleMultiStateCopycatPart;
+import com.copycatsplus.copycats.content.copycat.base.model.multistate.MultiStateCopycatModelPart;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
@@ -20,9 +20,9 @@ import static com.copycatsplus.copycats.content.copycat.base.model.assembly.fabr
 
 public class SimpleMultiStateCopycatModel extends MultiStateCopycatModel {
 
-    private final SimpleMultiStateCopycatPart part;
+    private final MultiStateCopycatModelPart part;
 
-    public SimpleMultiStateCopycatModel(BakedModel originalModel, SimpleMultiStateCopycatPart part) {
+    public SimpleMultiStateCopycatModel(BakedModel originalModel, MultiStateCopycatModelPart part) {
         super(originalModel);
         this.part = part;
     }

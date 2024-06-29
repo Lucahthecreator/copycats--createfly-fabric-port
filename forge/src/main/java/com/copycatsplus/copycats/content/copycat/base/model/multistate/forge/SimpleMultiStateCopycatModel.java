@@ -1,9 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.base.model.multistate.forge;
 
-import com.copycatsplus.copycats.content.copycat.base.model.assembly.Assembler;
-import com.copycatsplus.copycats.content.copycat.base.model.assembly.forge.AssemblerImpl;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.forge.AssemblerImpl.CopycatRenderContextForge;
-import com.copycatsplus.copycats.content.copycat.base.model.multistate.SimpleMultiStateCopycatPart;
+import com.copycatsplus.copycats.content.copycat.base.model.multistate.MultiStateCopycatModelPart;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
@@ -17,9 +15,9 @@ import java.util.List;
 
 public class SimpleMultiStateCopycatModel extends MultiStateCopycatModel {
 
-    private final SimpleMultiStateCopycatPart part;
+    private final MultiStateCopycatModelPart part;
 
-    public SimpleMultiStateCopycatModel(BakedModel originalModel, SimpleMultiStateCopycatPart part) {
+    public SimpleMultiStateCopycatModel(BakedModel originalModel, MultiStateCopycatModelPart part) {
         super(originalModel);
         this.part = part;
     }

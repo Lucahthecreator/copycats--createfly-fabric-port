@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.base.model.forge;
 
-import com.copycatsplus.copycats.content.copycat.base.model.SimpleCopycatPart;
+import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelPart;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.forge.AssemblerImpl.CopycatRenderContextForge;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -15,9 +15,9 @@ import java.util.List;
 
 public class SimpleCopycatModel extends CopycatModel {
 
-    protected final SimpleCopycatPart part;
+    protected final CopycatModelPart part;
 
-    public SimpleCopycatModel(BakedModel originalModel, SimpleCopycatPart part) {
+    public SimpleCopycatModel(BakedModel originalModel, CopycatModelPart part) {
         super(originalModel);
         this.part = part;
     }

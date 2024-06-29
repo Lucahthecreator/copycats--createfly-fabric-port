@@ -1,8 +1,8 @@
 package com.copycatsplus.copycats.content.copycat.fluid_pipe.fabric;
 
-import com.copycatsplus.copycats.content.copycat.base.model.SimpleCopycatPart;
+import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelPart;
 import com.copycatsplus.copycats.content.copycat.base.model.fabric.SimpleCopycatModel;
-import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeModel;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeModelPart;
 import com.simibubi.create.content.decoration.bracket.BracketedBlockEntityBehaviour;
 import com.simibubi.create.content.fluids.FluidTransportBehaviour;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlock;
@@ -20,14 +20,14 @@ import java.util.function.Supplier;
 
 public class CopycatFluidPipeModelFabric extends SimpleCopycatModel {
 
-    public CopycatFluidPipeModelFabric(BakedModel originalModel, SimpleCopycatPart part) {
+    public CopycatFluidPipeModelFabric(BakedModel originalModel, CopycatModelPart part) {
         super(originalModel, part);
     }
 
     @SuppressWarnings("deprecation")
     @Override
     protected void prepareCopycatPart(BlockAndTintGetter blockView, BlockState state, BlockPos pos, Supplier<RandomSource> randomSupplier, RenderContext renderContext, BlockState material, CullFaceRemovalData cullFaceRemovalData, OcclusionData occlusionData) {
-        CopycatFluidPipeModel.PipeModelData data = new CopycatFluidPipeModel.PipeModelData();
+        CopycatFluidPipeModelPart.PipeModelData data = new CopycatFluidPipeModelPart.PipeModelData();
         BracketedBlockEntityBehaviour bracket = BlockEntityBehaviour.get(blockView, pos, BracketedBlockEntityBehaviour.TYPE);
 
         RenderAttachedBlockView attachmentView = (RenderAttachedBlockView) blockView;
@@ -43,9 +43,9 @@ public class CopycatFluidPipeModelFabric extends SimpleCopycatModel {
 
         data.setEncased(FluidPipeBlock.shouldDrawCasing(blockView, pos, state));
 
-        if (part instanceof SimpleCopycatPart.WithData<?>) {
+        if (part instanceof CopycatModelPart.WithData<?>) {
             @SuppressWarnings("unchecked")
-            SimpleCopycatPart.WithData<CopycatFluidPipeModel.PipeModelData> dataPart = (SimpleCopycatPart.WithData<CopycatFluidPipeModel.PipeModelData>) part;
+            CopycatModelPart.WithData<CopycatFluidPipeModelPart.PipeModelData> dataPart = (CopycatModelPart.WithData<CopycatFluidPipeModelPart.PipeModelData>) part;
             dataPart.acceptData(data);
         }
     }

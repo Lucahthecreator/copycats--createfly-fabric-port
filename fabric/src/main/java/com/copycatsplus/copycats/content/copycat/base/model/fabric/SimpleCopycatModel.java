@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.base.model.fabric;
 
-import com.copycatsplus.copycats.content.copycat.base.model.SimpleCopycatPart;
+import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelPart;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.fabric.AssemblerImpl.CopycatRenderContextFabric;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
@@ -19,9 +19,9 @@ import static com.copycatsplus.copycats.content.copycat.base.model.assembly.fabr
 
 public class SimpleCopycatModel extends CopycatModel {
 
-    protected final SimpleCopycatPart part;
+    protected final CopycatModelPart part;
 
-    public SimpleCopycatModel(BakedModel originalModel, SimpleCopycatPart part) {
+    public SimpleCopycatModel(BakedModel originalModel, CopycatModelPart part) {
         super(originalModel);
         this.part = part;
     }

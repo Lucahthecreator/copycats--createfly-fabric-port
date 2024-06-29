@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.fabric;
 
-import com.copycatsplus.copycats.content.copycat.base.model.SimpleCopycatPart;
+import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelPart;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.fabric.CopycatFluidPipeModelFabric;
 import com.copycatsplus.copycats.content.copycat.shaft.fabric.CopycatShaftModelFabric;
 import com.tterrag.registrate.providers.DataGenContext;
@@ -18,7 +18,7 @@ public class CCBlocksImpl {
         return new CopycatShaftModelFabric(original, copycat);
     }
 
-    public static BakedModel getFluidPipeModel(BakedModel original, SimpleCopycatPart copycat) {
+    public static BakedModel getFluidPipeModel(BakedModel original, CopycatModelPart copycat) {
         return new CopycatFluidPipeModelFabric(original, copycat);
     }
 }

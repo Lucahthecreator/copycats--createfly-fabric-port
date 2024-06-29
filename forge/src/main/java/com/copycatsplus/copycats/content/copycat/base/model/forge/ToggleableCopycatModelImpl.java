@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.base.model.forge;
 
 import com.copycatsplus.copycats.config.CCConfigs;
-import com.copycatsplus.copycats.content.copycat.base.model.SimpleCopycatPart;
+import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelPart;
 import com.copycatsplus.copycats.content.copycat.base.model.ToggleableCopycatModel;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.client.renderer.RenderType;
@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelData;
 
 import java.util.List;
-import java.util.function.Function;
 
 public class ToggleableCopycatModelImpl extends CopycatModel implements ToggleableCopycatModel {
 
@@ -26,8 +25,8 @@ public class ToggleableCopycatModelImpl extends CopycatModel implements Toggleab
         this.enhanced = enhanced;
     }
 
-    public static NonNullFunction<BakedModel, ? extends BakedModel> with(SimpleCopycatPart base, SimpleCopycatPart enhanced) {
-        return model -> new ToggleableCopycatModelImpl(model, SimpleCopycatPart.create(model, base), SimpleCopycatPart.create(model, enhanced));
+    public static NonNullFunction<BakedModel, ? extends BakedModel> with(CopycatModelPart base, CopycatModelPart enhanced) {
+        return model -> new ToggleableCopycatModelImpl(model, CopycatModelPart.create(model, base), CopycatModelPart.create(model, enhanced));
     }
 
     @Override

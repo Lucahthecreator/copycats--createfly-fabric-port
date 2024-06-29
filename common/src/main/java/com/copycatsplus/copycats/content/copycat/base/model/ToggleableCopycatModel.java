@@ -7,7 +7,7 @@ import net.minecraft.client.resources.model.BakedModel;
 public interface ToggleableCopycatModel {
 
     @ExpectPlatform
-    public static NonNullFunction<BakedModel, ? extends BakedModel> with(SimpleCopycatPart base, SimpleCopycatPart enhanced) {
+    public static NonNullFunction<BakedModel, ? extends BakedModel> with(CopycatModelPart base, CopycatModelPart enhanced) {
         throw new AssertionError();
     }
 }
