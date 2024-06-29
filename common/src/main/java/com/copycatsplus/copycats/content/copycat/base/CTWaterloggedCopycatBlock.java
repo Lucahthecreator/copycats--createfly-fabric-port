@@ -30,10 +30,4 @@ public abstract class CTWaterloggedCopycatBlock extends CCWaterloggedCopycatBloc
         if (toggleResult.consumesAction()) return toggleResult;
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
     }
-
-    @Nullable
-    @Override
-    public CCCopycatBlockEntity getBlockEntity(BlockGetter worldIn, BlockPos pos) {
-        return super.getBlockEntity(worldIn, pos);
-    }
 }

@@ -8,23 +8,18 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-
-import javax.annotation.Nullable;
 
 /**
  * Copycat blocks that support toggling connected textures should implement this interface.
  */
 public interface ICTCopycatBlock {
 
-    @Nullable
-    Object getBlockEntity(BlockGetter worldIn, BlockPos pos);
-
     default boolean allowCTAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
-        Object be = getBlockEntity(level, queryPos);
+        BlockEntity be = level.getBlockEntity(queryPos);
         if (!(be instanceof ICopycatBlockEntity fbe))
             return true;
         return fbe.isCTEnabled();
@@ -32,7 +27,7 @@ public interface ICTCopycatBlock {
 
     default InteractionResult toggleCT(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (pPlayer.isShiftKeyDown() && pPlayer.getItemInHand(pHand).equals(ItemStack.EMPTY)) {
-            Object be = getBlockEntity(pLevel, pPos);
+            BlockEntity be = pLevel.getBlockEntity(pPos);
             if (!(be instanceof ICopycatBlockEntity fbe))
                 return InteractionResult.PASS;
             fbe.setCTEnabled(!fbe.isCTEnabled());
