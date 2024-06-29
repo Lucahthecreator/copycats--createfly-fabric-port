@@ -2,7 +2,6 @@ package com.copycatsplus.copycats.mixin.compat.additionalplacements;
 
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.pressure_plate.WrappedPressurePlate;
-import com.copycatsplus.copycats.content.copycat.stairs.WrappedStairsBlock;
 import com.firemerald.additionalplacements.block.AdditionalPlacementBlock;
 import net.minecraft.world.level.block.*;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,7 +34,6 @@ public class PlacementBlockMixin {
                 block instanceof WrappedPressurePlate.Stone ||
                 block instanceof WrappedPressurePlate.LightWeighted ||
                 block instanceof WrappedPressurePlate.HeavyWeighted ||
-                block instanceof WrappedStairsBlock ||
                 block instanceof ICopycatBlock)
             cir.setReturnValue(false);
     }

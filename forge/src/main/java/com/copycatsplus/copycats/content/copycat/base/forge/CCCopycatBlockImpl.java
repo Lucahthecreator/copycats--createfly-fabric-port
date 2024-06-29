@@ -11,8 +11,11 @@ import net.minecraftforge.client.model.data.ModelDataManager;
 public class CCCopycatBlockImpl {
 
     @SuppressWarnings("UnstableApiUsage")
-    public static BlockState multiPlatformGetAppearance(ICopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
-                                                        BlockState queryState, BlockPos queryPos) {
+    public static BlockState getCopycatAppearance(ICopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
+                                                  BlockState queryState, BlockPos queryPos) {
+
+        if (block.isIgnoredConnectivitySide(level, state, side, pos, queryPos))
+            return state;
 
         ModelDataManager modelDataManager = level.getModelDataManager();
         if (modelDataManager == null)

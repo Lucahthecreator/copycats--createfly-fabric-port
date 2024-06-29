@@ -32,7 +32,7 @@ import net.minecraft.world.phys.BlockHitResult;
 @SuppressWarnings("deprecation")
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public abstract class CCCopycatBlock extends Block implements IBE<CCCopycatBlockEntity>, IWrenchable, ICopycatBlock {
+public abstract class CCCopycatBlock extends Block implements IBE<CCCopycatBlockEntity>, ICopycatBlock {
 
     public CCCopycatBlock(Properties pProperties) {
         super(pProperties);
@@ -40,8 +40,7 @@ public abstract class CCCopycatBlock extends Block implements IBE<CCCopycatBlock
 
     @Nullable
     @Override
-    public <S extends BlockEntity> BlockEntityTicker<S> getTicker(Level p_153212_, BlockState p_153213_,
-                                                                  BlockEntityType<S> p_153214_) {
+    public <S extends BlockEntity> BlockEntityTicker<S> getTicker(Level level, BlockState state, BlockEntityType<S> type) {
         return null;
     }
 
@@ -84,19 +83,14 @@ public abstract class CCCopycatBlock extends Block implements IBE<CCCopycatBlock
         return ICopycatBlock.getMaterial(level, pos);
     }
 
-    // Connected Textures
-
     public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
                                     BlockState queryState, BlockPos queryPos) {
-        if (isIgnoredConnectivitySide(level, state, side, pos, queryPos))
-            return state;
-
-        return multiPlatformGetAppearance(this, state, level, pos, side, queryState, queryPos);
+        return getCopycatAppearance(this, state, level, pos, side, queryState, queryPos);
     }
 
     @ExpectPlatform
-    public static BlockState multiPlatformGetAppearance(ICopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
-                                                        BlockState queryState, BlockPos queryPos) {
+    public static BlockState getCopycatAppearance(ICopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
+                                           BlockState queryState, BlockPos queryPos) {
         //noinspection DataFlowIssue
         return null;
     }

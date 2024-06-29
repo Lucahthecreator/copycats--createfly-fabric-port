@@ -34,8 +34,6 @@
     "copycat.pressure_plate.BlockMovementChecksMixin",
     "copycat.pressure_plate.ContraptionMixin",
     "copycat.slab.SeatMovementBehaviourMixin",
-    "copycat.stairs.StairBlockMixin",
-    "copycat.stairs.StructureTransformMixin",
     "copycat.step.CopycatStepBlockMixin",
     "copycat.trapdoor.DismountHelperMixin",
     "copycat.trapdoor.RedStoneWireBlockMixin",

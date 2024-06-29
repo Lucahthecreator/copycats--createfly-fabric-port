@@ -54,7 +54,6 @@ import com.copycatsplus.copycats.content.copycat.slope_layer.CopycatSlopeLayerMo
 import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsBlock;
 import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsEnhancedModel;
 import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsModel;
-import com.copycatsplus.copycats.content.copycat.stairs.WrappedStairsBlock;
 import com.copycatsplus.copycats.content.copycat.test_block.CopycatTestBlock;
 import com.copycatsplus.copycats.content.copycat.test_block.CopycatTestBlockModel;
 import com.copycatsplus.copycats.content.copycat.trapdoor.CopycatTrapdoorBlock;
@@ -427,14 +426,6 @@ public class CCBlocks {
                     .transform(customItemModel("copycat_base", "vertical_stairs"))
                     .register();
 
-    public static final BlockEntry<WrappedStairsBlock> WRAPPED_COPYCAT_STAIRS =
-            REGISTRATE.block("wrapped_copycat_stairs", p -> new WrappedStairsBlock(Blocks.STONE.defaultBlockState(), p))
-                    .initialProperties(() -> Blocks.STONE_STAIRS)
-                    .onRegister(b -> CopycatStairsBlock.stairs = b)
-                    .tag(BlockTags.STAIRS)
-                    .blockstate((c, p) -> getWrappedBlockState(c, p, "wrapped_copycat_stairs"))
-                    .register();
-
     public static final BlockEntry<CopycatTrapdoorBlock> COPYCAT_TRAPDOOR =
             REGISTRATE.block("copycat_trapdoor", CopycatTrapdoorBlock::new)
                     .transform(CCBuilderTransformers.copycat())
@@ -526,7 +517,7 @@ public class CCBlocks {
 
     public static final BlockEntry<CopycatShaftBlock> COPYCAT_SHAFT =
             REGISTRATE.block("copycat_shaft", CopycatShaftBlock::new)
-                    .transform(CCBuilderTransformers.functionalCopycat())
+                    .transform(CCBuilderTransformers.copycat())
                     .transform(FeatureToggle.register())
                     .transform(BlockStressDefaults.setNoImpact())
                     .onRegister(CreateRegistrate.blockModel(() -> model -> getShaftModel(model, SimpleCopycatPart.create(model, new CopycatShaftModel()))))
@@ -536,7 +527,7 @@ public class CCBlocks {
 
     public static final BlockEntry<CopycatFluidPipeBlock> COPYCAT_FLUID_PIPE =
             REGISTRATE.block("copycat_fluid_pipe", CopycatFluidPipeBlock::new)
-                    .transform(CCBuilderTransformers.functionalCopycat())
+                    .transform(CCBuilderTransformers.copycat())
                     .transform(FeatureToggle.register())
                     .onRegister(CreateRegistrate.blockModel(() -> model -> getFluidPipeModel(model, new CopycatFluidPipeModel())))
                     .item()
@@ -545,7 +536,7 @@ public class CCBlocks {
 
     public static final BlockEntry<CopycatGlassFluidPipeBlock> COPYCAT_GLASS_FLUID_PIPE =
             REGISTRATE.block("copycat_glass_fluid_pipe", CopycatGlassFluidPipeBlock::new)
-                    .transform(CCBuilderTransformers.functionalCopycat())
+                    .transform(CCBuilderTransformers.copycat())
                     .blockstate(CCBlockStateGen::glassPipe)
                     .onRegister(CreateRegistrate.blockModel(() -> model -> getFluidPipeModel(model, new CopycatStraightPipeModel())))
                     .loot((p, b) -> p.dropOther(b, COPYCAT_FLUID_PIPE.get()))

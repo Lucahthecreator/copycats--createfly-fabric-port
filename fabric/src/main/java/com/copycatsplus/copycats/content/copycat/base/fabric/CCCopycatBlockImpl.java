@@ -9,8 +9,10 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class CCCopycatBlockImpl {
 
-    public static BlockState multiPlatformGetAppearance(ICopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
+    public static BlockState getCopycatAppearance(ICopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
                                                         BlockState queryState, BlockPos queryPos) {
+        if (block.isIgnoredConnectivitySide(level, state, side, pos, queryPos))
+            return state;
 
         return CopycatModel.getMaterial(ICopycatBlock.getMaterial(level, pos));
     }

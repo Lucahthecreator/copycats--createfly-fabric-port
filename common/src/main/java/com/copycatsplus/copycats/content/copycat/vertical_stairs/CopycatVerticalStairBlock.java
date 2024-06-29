@@ -9,7 +9,6 @@ import com.copycatsplus.copycats.content.copycat.base.ICustomCTBlocking;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsBlock;
 import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsBlock.FaceShape;
-import com.copycatsplus.copycats.content.copycat.stairs.WrappedStairsBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -184,7 +183,7 @@ public class CopycatVerticalStairBlock extends CCWaterloggedCopycatBlock impleme
     }
 
     public static boolean isStairs(BlockState state) {
-        return state.getBlock() instanceof StairBlock || state.getBlock() instanceof CopycatVerticalStairBlock || state.getBlock() instanceof WrappedStairsBlock || state.getBlock() instanceof CopycatStairsBlock;
+        return state.getBlock() instanceof StairBlock || state.getBlock() instanceof CopycatVerticalStairBlock;
     }
 
     @Override

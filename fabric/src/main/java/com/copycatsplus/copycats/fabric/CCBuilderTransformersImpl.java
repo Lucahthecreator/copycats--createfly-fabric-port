@@ -13,7 +13,7 @@ import net.minecraft.world.level.material.MapColor;
 
 public class CCBuilderTransformersImpl {
 
-    public static <B extends CCCopycatBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> copycat() {
+    public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> copycat() {
         return b -> b.initialProperties(SharedProperties::softMetal)
                 .blockstate((c, p) -> p.simpleBlock(c.get(), p.models()
                         .getExistingFile(p.mcLoc("air"))))
@@ -53,18 +53,5 @@ public class CCBuilderTransformersImpl {
                 .addLayer(() -> RenderType::cutoutMipped)
                 .addLayer(() -> RenderType::translucent)
                 .color(() -> MultiStateCopycatBlock::wrappedColor);
-    }
-
-    public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> functionalCopycat() {
-        return b -> b.initialProperties(SharedProperties::softMetal)
-                .blockstate((c, p) -> p.simpleBlock(c.get(), p.models()
-                        .getExistingFile(p.mcLoc("air"))))
-                .initialProperties(SharedProperties::softMetal)
-                .properties(p -> p.noOcclusion()
-                        .mapColor(MapColor.NONE))
-                // fabric: only render base model on cutout. When rendering the wrapped model's material is copied.
-                .addLayer(() -> RenderType::cutout)
-                .color(() -> ICopycatBlock::wrappedColor)
-                .transform(TagGen.axeOrPickaxe());
     }
 }

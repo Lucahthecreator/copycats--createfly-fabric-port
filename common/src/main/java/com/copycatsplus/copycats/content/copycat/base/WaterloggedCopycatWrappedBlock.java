@@ -1,5 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.base;
 
+import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.simibubi.create.AllTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -22,11 +23,10 @@ public abstract class WaterloggedCopycatWrappedBlock<W extends Block> extends CC
 
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull Player pPlayer, @NotNull InteractionHand pHand, @NotNull BlockHitResult pHit) {
-        InteractionResult result = super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
-        if (result == InteractionResult.PASS && !pPlayer.getItemInHand(pHand).is(AllTags.AllItemTags.WRENCH.tag)) {
-            return getWrappedBlock().use(pState, pLevel, pPos, pPlayer, pHand, pHit);
-        }
-        return result;
+        return InteractionUtils.sequential(
+                () -> super.use(pState, pLevel, pPos, pPlayer, pHand, pHit),
+                () -> getWrappedBlock().use(pState, pLevel, pPos, pPlayer, pHand, pHit)
+        );
     }
 
     @Nullable

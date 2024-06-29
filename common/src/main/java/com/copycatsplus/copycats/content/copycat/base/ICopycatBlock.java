@@ -212,7 +212,7 @@ public interface ICopycatBlock extends IWrenchable {
         return InteractionResult.SUCCESS;
     }
 
-    default void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    default void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         if (placer == null)
             return;
         ItemStack offhandItem = placer.getItemInHand(InteractionHand.OFF_HAND);

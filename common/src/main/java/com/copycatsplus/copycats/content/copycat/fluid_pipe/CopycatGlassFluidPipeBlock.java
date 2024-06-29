@@ -3,6 +3,7 @@ package com.copycatsplus.copycats.content.copycat.fluid_pipe;
 import com.copycatsplus.copycats.CCBlockEntityTypes;
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
+import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.simibubi.create.content.decoration.bracket.BracketBlock;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlock;
 import com.simibubi.create.content.fluids.pipes.GlassFluidPipeBlock;
@@ -37,30 +38,26 @@ public class CopycatGlassFluidPipeBlock extends GlassFluidPipeBlock implements I
 
     @Override
     public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
-        InteractionResult result = ICopycatBlock.super.onSneakWrenched(state, context);
-        if (result.consumesAction()) {
-            return result;
-        }
-        return super.onSneakWrenched(state, context);
+        return InteractionUtils.sequential(
+                () -> ICopycatBlock.super.onSneakWrenched(state, context),
+                () -> super.onSneakWrenched(state, context)
+        );
     }
 
     @Override
-    public @NotNull InteractionResult onWrenched(@NotNull BlockState state, @NotNull UseOnContext context) {
-        InteractionResult result = ICopycatBlock.super.onWrenched(state, context);
-        if (result.consumesAction()) {
-            return result;
-        }
-        return super.onWrenched(state, context);
+    public InteractionResult onWrenched(BlockState state, UseOnContext context) {
+        return InteractionUtils.sequential(
+                () -> ICopycatBlock.super.onWrenched(state, context),
+                () -> super.onWrenched(state, context)
+        );
     }
 
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult ray) {
-        InteractionResult result = ICopycatBlock.super.use(state, world, pos, player, hand, ray);
-        if (result.consumesAction()) {
-            return result;
-        }
-
-        return super.use(state, world, pos, player, hand, ray);
+        return InteractionUtils.sequential(
+                () -> ICopycatBlock.super.use(state, world, pos, player, hand, ray),
+                () -> super.use(state, world, pos, player, hand, ray)
+        );
     }
 
     @Nullable

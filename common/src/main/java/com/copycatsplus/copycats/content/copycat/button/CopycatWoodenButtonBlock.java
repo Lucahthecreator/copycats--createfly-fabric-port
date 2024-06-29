@@ -3,6 +3,7 @@ package com.copycatsplus.copycats.content.copycat.button;
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatWithWrappedBlock;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
+import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.simibubi.create.AllTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -88,11 +89,10 @@ public class CopycatWoodenButtonBlock extends CCCopycatBlock implements ICopycat
 
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull Player pPlayer, @NotNull InteractionHand pHand, @NotNull BlockHitResult pHit) {
-        InteractionResult result = super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
-        if (result == InteractionResult.PASS && !pPlayer.getItemInHand(pHand).is(AllTags.AllItemTags.WRENCH.tag)) {
-            return button.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
-        }
-        return result;
+        return InteractionUtils.sequential(
+                () -> super.use(pState, pLevel, pPos, pPlayer, pHand, pHit),
+                () -> getWrappedBlock().use(pState, pLevel, pPos, pPlayer, pHand, pHit)
+        );
     }
 
     @Nullable
