@@ -1,50 +1,36 @@
-package com.copycatsplus.copycats.content.copycat.button;
+package com.copycatsplus.copycats.content.copycat.pressure_plate;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
 import com.copycatsplus.copycats.content.copycat.base.*;
 import com.copycatsplus.copycats.utility.InteractionUtils;
-import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.ButtonBlock;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static net.minecraft.world.level.block.ButtonBlock.*;
-
+@SuppressWarnings("deprecation")
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class CopycatWoodenButtonBlock extends ButtonBlock implements ICopycatBlock, IBE<CCCopycatBlockEntity>, IStateType {
+public class CopycatPressurePlateBlock extends PressurePlateBlock implements ICopycatBlock, IBE<CCCopycatBlockEntity>, IStateType {
 
-    public CopycatWoodenButtonBlock(Properties pProperties) {
-        super(pProperties, BlockSetType.OAK, 30, true);
+    public CopycatPressurePlateBlock(PressurePlateBlock.Sensitivity sensitivity, Properties properties, BlockSetType type) {
+        super(sensitivity, properties, type);
     }
 
     @Nullable
@@ -98,7 +84,6 @@ public class CopycatWoodenButtonBlock extends ButtonBlock implements ICopycatBlo
                                     BlockState queryState, BlockPos queryPos) {
         return CCCopycatBlock.getCopycatAppearance(this, state, level, pos, side, queryState, queryPos);
     }
-
 
     @Override
     public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos) {

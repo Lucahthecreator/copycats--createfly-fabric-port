@@ -3,12 +3,18 @@ package com.copycatsplus.copycats.fabric.mixin.copycat.base;
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.model.fabric.CopycatModel;
-import com.copycatsplus.copycats.content.copycat.button.CopycatStoneButtonBlock;
-import com.copycatsplus.copycats.content.copycat.button.CopycatWoodenButtonBlock;
+import com.copycatsplus.copycats.content.copycat.button.CopycatButtonBlock;
+import com.copycatsplus.copycats.content.copycat.fence.CopycatFenceBlock;
+import com.copycatsplus.copycats.content.copycat.fence_gate.CopycatFenceGateBlock;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlock;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatGlassFluidPipeBlock;
+import com.copycatsplus.copycats.content.copycat.ladder.CopycatLadderBlock;
+import com.copycatsplus.copycats.content.copycat.pressure_plate.CopycatPressurePlateBlock;
+import com.copycatsplus.copycats.content.copycat.pressure_plate.CopycatWeightedPressurePlate;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
 import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsBlock;
+import com.copycatsplus.copycats.content.copycat.trapdoor.CopycatTrapdoorBlock;
+import com.copycatsplus.copycats.content.copycat.wall.CopycatWallBlock;
 import com.simibubi.create.AllBlocks;
 import io.github.fabricators_of_create.porting_lib.block.*;
 import io.github.fabricators_of_create.porting_lib.enchant.EnchantmentBonusBlock;
@@ -40,9 +46,15 @@ import static com.copycatsplus.copycats.content.copycat.base.ICopycatBlock.getMa
 
 @Mixin({
         CCCopycatBlock.class,
+        CopycatButtonBlock.class,
+        CopycatFenceBlock.class,
+        CopycatFenceGateBlock.class,
+        CopycatLadderBlock.class,
+        CopycatPressurePlateBlock.class,
+        CopycatWeightedPressurePlate.class,
         CopycatStairsBlock.class,
-        CopycatStoneButtonBlock.class,
-        CopycatWoodenButtonBlock.class,
+        CopycatTrapdoorBlock.class,
+        CopycatWallBlock.class,
         CopycatShaftBlock.class,
         CopycatFluidPipeBlock.class,
         CopycatGlassFluidPipeBlock.class

@@ -20,8 +20,7 @@ public class CCTagGen {
     private static void genBlockTags(RegistrateTagsProvider<Block> provIn) {
         TagGen.CreateTagsProvider<Block> prov = new TagGen.CreateTagsProvider<>(provIn, Block::builtInRegistryHolder);
         prov.tag(TagKey.create(BuiltInRegistries.BLOCK.key(), Mods.DIAGONAL_FENCES.rl("non_diagonal_fences")))
-                .add(CCBlocks.COPYCAT_FENCE.get())
-                .add(CCBlocks.WRAPPED_COPYCAT_FENCE.get());
+                .add(CCBlocks.COPYCAT_FENCE.get());
 //        prov.tag(AllTags.AllBlockTags.COPYCAT_DENY.tag)
 //                .addTag(AllTags.AllBlockTags.TRACKS.tag);
     }

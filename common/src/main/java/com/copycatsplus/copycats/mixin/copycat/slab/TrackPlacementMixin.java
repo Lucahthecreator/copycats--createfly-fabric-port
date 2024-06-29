@@ -1,6 +1,6 @@
-package com.copycatsplus.copycats.mixin.copycat;
+package com.copycatsplus.copycats.mixin.copycat.slab;
 
-import com.copycatsplus.copycats.content.copycat.base.ICopycatWithWrappedBlock;
+import com.copycatsplus.copycats.content.copycat.slab.CopycatSlabBlock;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -9,6 +9,7 @@ import com.simibubi.create.content.trains.track.TrackPlacement;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -21,7 +22,9 @@ public class TrackPlacementMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/BlockItem;getBlock()Lnet/minecraft/world/level/block/Block;")
     )
     private static Block getInnerBlock(BlockItem instance, Operation<Block> original) {
-        return ICopycatWithWrappedBlock.unwrap(original.call(instance));
+        if (instance.getBlock() instanceof CopycatSlabBlock)
+            return Blocks.SMOOTH_STONE_SLAB;
+        return original.call(instance);
     }
 
     @Inject(

@@ -1,14 +1,11 @@
 package com.copycatsplus.copycats.content.copycat.ghost_block;
 
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.ICopycatWithWrappedBlock;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -16,15 +13,10 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
-public class CopycatGhostBlock extends CCCopycatBlock implements ICopycatWithWrappedBlock<Block>, IStateType {
+public class CopycatGhostBlock extends CCCopycatBlock implements IStateType {
 
     public CopycatGhostBlock(Properties pProperties) {
         super(pProperties);
-    }
-
-    @Override
-    public Block getWrappedBlock() {
-        return Blocks.STONE;
     }
 
     @Override

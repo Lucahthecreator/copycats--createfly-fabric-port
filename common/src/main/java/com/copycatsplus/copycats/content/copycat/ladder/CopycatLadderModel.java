@@ -13,7 +13,11 @@ public class CopycatLadderModel implements SimpleCopycatPart {
     public void emitCopycatQuads(BlockState state, CopycatRenderContext<?, ?> context, BlockState material) {
         int rot = (int) state.getValue(LadderBlock.FACING).toYRot();
         GlobalTransform transform = t -> t.rotateY(rot);
-        //Poles
+        assemblePoles(context, transform);
+        assembleSteps(context, transform);
+    }
+
+    public static void assemblePoles(CopycatRenderContext<?, ?> context, GlobalTransform transform) {
         assemblePiece(context,
                 transform,
                 vec3(2, 0, 0),
@@ -24,8 +28,9 @@ public class CopycatLadderModel implements SimpleCopycatPart {
                 vec3(12, 0, 0),
                 aabb(2, 16, 1).move(14, 0, 0),
                 cull(0));
+    }
 
-        //Steps
+    public static void assembleSteps(CopycatRenderContext<?, ?> context, GlobalTransform transform) {
         assemblePiece(context,
                 transform,
                 vec3(1, 1, 0.1),

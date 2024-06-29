@@ -2,7 +2,6 @@ package com.copycatsplus.copycats.content.copycat.slab;
 
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
-import com.copycatsplus.copycats.content.copycat.base.ICopycatWithWrappedBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.multistate.WaterloggedMultiStateCopycatBlock;
@@ -21,7 +20,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
@@ -47,7 +45,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
-public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock implements ICopycatWithWrappedBlock<Block> {
+public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock {
 
     public static final EnumProperty<Axis> AXIS = BlockStateProperties.AXIS;
     public static final EnumProperty<SlabType> SLAB_TYPE = BlockStateProperties.SLAB_TYPE;
@@ -107,11 +105,6 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock implemen
     @Override
     public Set<String> storageProperties() {
         return Set.of(SlabType.BOTTOM.getSerializedName(), SlabType.TOP.getSerializedName());
-    }
-
-    @Override
-    public Block getWrappedBlock() {
-        return Blocks.SMOOTH_STONE_SLAB;
     }
 
     @Override

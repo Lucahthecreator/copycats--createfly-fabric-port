@@ -23,41 +23,11 @@ public class CopycatMultiLadderModel implements SimpleMultiStateCopycatPart {
         int rot = (int) state.getValue(LadderBlock.FACING).toYRot();
         GlobalTransform transform = t -> t.rotateY(rot);
         if (state.getValue(RAILS)) {
-            //Poles
-            assemblePiece(context,
-                    transform,
-                    vec3(2, 0, 0),
-                    aabb(2, 16, 1),
-                    cull(0));
-            assemblePiece(context,
-                    transform,
-                    vec3(12, 0, 0),
-                    aabb(2, 16, 1).move(14, 0, 0),
-                    cull(0));
+            CopycatLadderModel.assemblePoles(context, transform);
         }
 
         if (state.getValue(STEPS)) {
-            //Steps
-            assemblePiece(context,
-                    transform,
-                    vec3(1, 1, 0.1),
-                    aabb(14, 2, 0.8),
-                    cull(0));
-            assemblePiece(context,
-                    transform,
-                    vec3(1, 5, 0.1),
-                    aabb(14, 2, 0.8),
-                    cull(0));
-            assemblePiece(context,
-                    transform,
-                    vec3(1, 9, 0.1),
-                    aabb(14, 2, 0.8),
-                    cull(0));
-            assemblePiece(context,
-                    transform,
-                    vec3(1, 13, 0.1),
-                    aabb(14, 2, 0.8),
-                    cull(0));
+            CopycatLadderModel.assembleSteps(context, transform);
         }
     }
 }

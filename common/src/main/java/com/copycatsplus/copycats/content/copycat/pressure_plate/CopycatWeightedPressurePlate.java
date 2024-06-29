@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.content.copycat.trapdoor;
+package com.copycatsplus.copycats.content.copycat.pressure_plate;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
 import com.copycatsplus.copycats.content.copycat.base.*;
@@ -13,32 +13,26 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.WeightedPressurePlateBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
-import net.minecraft.world.level.block.state.properties.Half;
-import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static net.minecraft.world.level.block.TrapDoorBlock.*;
-
 @SuppressWarnings("deprecation")
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class CopycatTrapdoorBlock extends TrapDoorBlock implements ICopycatBlock, IBE<CCCopycatBlockEntity>, IStateType {
+public class CopycatWeightedPressurePlate extends WeightedPressurePlateBlock implements ICopycatBlock, IBE<CCCopycatBlockEntity>, IStateType {
 
-    public CopycatTrapdoorBlock(Properties properties, BlockSetType type) {
-        super(properties, type);
+    public CopycatWeightedPressurePlate(int maxWeight, Properties pProperties, BlockSetType type) {
+        super(maxWeight, pProperties, type);
     }
 
     @Nullable
@@ -94,8 +88,7 @@ public class CopycatTrapdoorBlock extends TrapDoorBlock implements ICopycatBlock
     }
 
     @Override
-    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
-                                             BlockPos fromPos, BlockPos toPos) {
+    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos) {
         return true;
     }
 
@@ -106,11 +99,6 @@ public class CopycatTrapdoorBlock extends TrapDoorBlock implements ICopycatBlock
 
     @Override
     public boolean shouldFaceAlwaysRender(BlockState state, Direction face) {
-        return true;
-    }
-
-
-    public boolean supportsExternalFaceHiding(BlockState state) {
         return true;
     }
 }

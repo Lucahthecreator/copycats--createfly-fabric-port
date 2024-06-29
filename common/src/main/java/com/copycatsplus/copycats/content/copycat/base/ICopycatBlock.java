@@ -98,7 +98,7 @@ public interface ICopycatBlock extends IWrenchable {
             player.getInventory()
                     .placeItemBackInInventory(consumedItem);
         context.getLevel()
-                .levelEvent(2001, context.getClickedPos(), Block.getId(ufte.getBlockState()));
+                .levelEvent(2001, context.getClickedPos(), Block.getId(getMaterial(context.getLevel(), context.getClickedPos())));
         ufte.setMaterial(AllBlocks.COPYCAT_BASE.getDefaultState());
         ufte.setConsumedItem(ItemStack.EMPTY);
         return InteractionResult.SUCCESS;

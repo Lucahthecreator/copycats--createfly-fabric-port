@@ -26,10 +26,10 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class CopycatStoneButtonBlock extends ButtonBlock implements ICopycatBlock, IBE<CCCopycatBlockEntity>, IStateType {
+public class CopycatButtonBlock extends ButtonBlock implements ICopycatBlock, IBE<CCCopycatBlockEntity>, IStateType {
 
-    public CopycatStoneButtonBlock(Properties pProperties) {
-        super(pProperties, BlockSetType.STONE, 20, false);
+    public CopycatButtonBlock(Properties properties, BlockSetType type, int ticksToStayPressed, boolean arrowsCanPress) {
+        super(properties, type, ticksToStayPressed, arrowsCanPress);
     }
 
     @Nullable

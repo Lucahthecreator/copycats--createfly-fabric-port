@@ -1,7 +1,6 @@
 package com.copycatsplus.copycats.mixin.compat.diagonalfences;
 
-import com.copycatsplus.copycats.content.copycat.base.ICopycatWithWrappedBlock;
-import com.copycatsplus.copycats.content.copycat.fence.WrappedFenceBlock;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import net.minecraft.world.level.block.CrossCollisionBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,6 +29,6 @@ public abstract class FenceBlockMixin extends CrossCollisionBlock {
             require = 0, expect = 0
     )
     public void hasProperties(CallbackInfoReturnable<Boolean> cir) {
-        if (ICopycatWithWrappedBlock.unwrap(this) instanceof WrappedFenceBlock) cir.setReturnValue(false);
+        if (this instanceof ICopycatBlock) cir.setReturnValue(false);
     }
 }

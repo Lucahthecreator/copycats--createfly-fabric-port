@@ -1,9 +1,10 @@
-package com.copycatsplus.copycats.mixin.copycat.fence_gate;
+package com.copycatsplus.copycats.mixin.copycat.slab;
 
-import com.copycatsplus.copycats.content.copycat.base.ICopycatWithWrappedBlock;
+import com.copycatsplus.copycats.content.copycat.slab.CopycatSlabBlock;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,6 +19,8 @@ public class WalkNodeEvaluatorMixin {
             require = 0 // Fail silently if target is overwritten by optimization mods
     )
     private static Block getWrappedBlock(BlockState instance, Operation<Block> original) {
-        return ICopycatWithWrappedBlock.unwrap(original.call(instance));
+        if (instance.getBlock() instanceof CopycatSlabBlock)
+            return Blocks.SMOOTH_STONE_SLAB;
+        return original.call(instance);
     }
 }
