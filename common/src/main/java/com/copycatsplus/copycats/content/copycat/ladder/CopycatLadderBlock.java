@@ -178,8 +178,8 @@ public class CopycatLadderBlock extends CCCopycatBlock implements ICopycatWithWr
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
-                                 BlockHitResult ray) {
+    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand,
+                                          @NotNull BlockHitResult ray) {
         InteractionResult result = super.use(state, world, pos, player, hand, ray);
         if (player.isShiftKeyDown() || !player.mayBuild())
             return result;

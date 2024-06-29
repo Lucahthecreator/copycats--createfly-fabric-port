@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.half_panel;
 
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
-import com.copycatsplus.copycats.content.copycat.base.CTWaterloggedCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.CCWaterloggedCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.simibubi.create.content.equipment.extendoGrip.ExtendoGripItem;
 import com.simibubi.create.foundation.placement.IPlacementHelper;
@@ -46,7 +46,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-public class CopycatHalfPanelBlock extends CTWaterloggedCopycatBlock implements IStateType {
+public class CopycatHalfPanelBlock extends CCWaterloggedCopycatBlock implements IStateType {
 
     /**
      * The direction where the base of the half panel is facing.
@@ -77,8 +77,8 @@ public class CopycatHalfPanelBlock extends CTWaterloggedCopycatBlock implements 
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
-                                 BlockHitResult ray) {
+    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand,
+                                          @NotNull BlockHitResult ray) {
 
         if (!player.isShiftKeyDown() && player.mayBuild()) {
             ItemStack heldItem = player.getItemInHand(hand);

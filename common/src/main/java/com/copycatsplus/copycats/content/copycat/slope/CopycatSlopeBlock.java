@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.slope;
 
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
-import com.copycatsplus.copycats.content.copycat.base.CTWaterloggedCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.CCWaterloggedCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.ICustomCTBlocking;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.copycatsplus.copycats.utility.shape.NoneVoxelShape;
@@ -47,7 +47,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public class CopycatSlopeBlock extends CTWaterloggedCopycatBlock implements IStateType, ICustomCTBlocking {
+public class CopycatSlopeBlock extends CCWaterloggedCopycatBlock implements IStateType, ICustomCTBlocking {
 
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<Half> HALF = BlockStateProperties.HALF;
@@ -63,8 +63,8 @@ public class CopycatSlopeBlock extends CTWaterloggedCopycatBlock implements ISta
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
-                                 BlockHitResult ray) {
+    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand,
+                                          @NotNull BlockHitResult ray) {
 
         if (!player.isShiftKeyDown() && player.mayBuild()) {
             ItemStack heldItem = player.getItemInHand(hand);

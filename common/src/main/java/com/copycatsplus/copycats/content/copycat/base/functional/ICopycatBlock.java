@@ -1,11 +1,13 @@
 package com.copycatsplus.copycats.content.copycat.base.functional;
 
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.core.BlockPos;
@@ -29,10 +31,13 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
  * Indicates that a block functions as a copycat but is not a subclass of {@link CCCopycatBlock}.
  */
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public interface ICopycatBlock extends IWrenchable {
 
     @Nullable
@@ -45,6 +50,33 @@ public interface ICopycatBlock extends IWrenchable {
             return null;
 
         return functionalCopycatBlockEntity;
+    }
+
+    default boolean canToggleCT(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+        return true;
+    }
+
+    default boolean isCTEnabled(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (!(be instanceof ICopycatBlockEntity fbe))
+            return true;
+        if (!canToggleCT(state, level, pos))
+            return true;
+        return fbe.isCTEnabled();
+    }
+
+    default InteractionResult toggleCT(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        if (pPlayer.isShiftKeyDown() && pPlayer.getItemInHand(pHand).equals(ItemStack.EMPTY)) {
+            BlockEntity be = pLevel.getBlockEntity(pPos);
+            if (!(be instanceof ICopycatBlockEntity fbe))
+                return InteractionResult.PASS;
+            if (!canToggleCT(pState, pLevel, pPos))
+                return InteractionResult.PASS;
+            fbe.setCTEnabled(!fbe.isCTEnabled());
+            fbe.redraw();
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
     }
 
     @Override
@@ -78,7 +110,7 @@ public interface ICopycatBlock extends IWrenchable {
             return null;
 
         Block block = bi.getBlock();
-        if (block instanceof CCCopycatBlock || block instanceof ICopycatBlock)
+        if (block instanceof ICopycatBlock || block instanceof MultiStateCopycatBlock)
             return null;
 
         BlockState appliedState = block.defaultBlockState();
@@ -132,14 +164,11 @@ public interface ICopycatBlock extends IWrenchable {
     }
 
     default InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult ray) {
-        if (player.isShiftKeyDown() && player.getItemInHand(hand).equals(ItemStack.EMPTY)) {
-            ICopycatBlockEntity be = getCopycatBlockEntity(world, pos);
-            be.setCTEnabled(!be.isCTEnabled());
-            be.callRedraw();
-            return InteractionResult.SUCCESS;
-        }
+        InteractionResult result = toggleCT(state, world, pos, player, hand, ray);
+        if (result.consumesAction())
+            return result;
 
-        if (player == null || player != null && !player.mayBuild() && !player.isSpectator())
+        if (player == null || !player.mayBuild())
             return InteractionResult.PASS;
 
         Direction face = ray.getDirection();

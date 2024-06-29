@@ -50,8 +50,8 @@ public abstract class CopycatStraightPipeBlockEntity extends StraightPipeBlockEn
     }
 
     @Override
-    public void callRedraw() {
-        ICopycatBlockEntity.super.callRedraw();
+    public void redraw() {
+        ICopycatBlockEntity.super.redraw();
     }
 }
 

@@ -50,8 +50,8 @@ public abstract class CopycatFluidPipeBlockEntity extends FluidPipeBlockEntity i
     }
 
     @Override
-    public void callRedraw() {
-        ICopycatBlockEntity.super.callRedraw();
+    public void redraw() {
+        ICopycatBlockEntity.super.redraw();
     }
 }
 

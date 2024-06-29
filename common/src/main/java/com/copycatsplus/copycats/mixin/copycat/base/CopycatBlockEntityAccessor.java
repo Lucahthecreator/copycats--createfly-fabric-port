@@ -12,4 +12,7 @@ public interface CopycatBlockEntityAccessor {
 
     @Invoker
     void callWrite(CompoundTag tag, boolean clientPacket);
+
+    @Invoker
+    void callRedraw();
 }

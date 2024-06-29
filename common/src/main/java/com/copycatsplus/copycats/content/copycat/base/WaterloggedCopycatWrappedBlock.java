@@ -14,14 +14,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public abstract class WaterloggedCopycatWrappedBlock<W extends Block> extends CTWaterloggedCopycatBlock implements ICopycatWithWrappedBlock<W> {
+public abstract class WaterloggedCopycatWrappedBlock<W extends Block> extends CCWaterloggedCopycatBlock implements ICopycatWithWrappedBlock<W> {
 
     public WaterloggedCopycatWrappedBlock(Properties properties) {
         super(properties);
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public @NotNull InteractionResult use(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull Player pPlayer, @NotNull InteractionHand pHand, @NotNull BlockHitResult pHit) {
         InteractionResult result = super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
         if (result == InteractionResult.PASS && !pPlayer.getItemInHand(pHand).is(AllTags.AllItemTags.WRENCH.tag)) {
             return getWrappedBlock().use(pState, pLevel, pPos, pPlayer, pHand, pHit);

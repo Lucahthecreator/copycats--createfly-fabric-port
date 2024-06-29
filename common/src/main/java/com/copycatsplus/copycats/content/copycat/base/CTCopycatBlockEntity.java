@@ -5,5 +5,5 @@ public interface CTCopycatBlockEntity {
 
     void setCTEnabled(boolean value);
 
-    void callRedraw();
+    void redraw();
 }

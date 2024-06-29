@@ -114,6 +114,7 @@ public abstract class CCCopycatBlockEntity extends SmartBlockEntity
 
     public abstract void setConsumedItem(ItemStack stack);
 
+    @Override
     public abstract void redraw();
 
     @Override

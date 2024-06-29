@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.mixin.copycat.panel;
 
-import com.copycatsplus.copycats.content.copycat.base.ICTCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.functional.ICopycatBlock;
 import com.simibubi.create.content.decoration.copycat.CopycatBlockEntity;
 import com.simibubi.create.content.decoration.copycat.CopycatPanelBlock;
 import com.simibubi.create.content.decoration.copycat.WaterloggedCopycatBlock;
@@ -21,14 +21,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(CopycatPanelBlock.class)
-public abstract class CopycatPanelBlockMixin extends WaterloggedCopycatBlock implements ICTCopycatBlock {
+public abstract class CopycatPanelBlockMixin extends WaterloggedCopycatBlock implements ICopycatBlock {
     public CopycatPanelBlockMixin(Properties pProperties) {
         super(pProperties);
     }
 
     @Override
     public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
-        if (!allowCTAppearance(state, level, pos, side, queryState, queryPos))
+        if (!this.isCTEnabled(state, level, queryPos))
             return state;
         return super.getAppearance(state, level, pos, side, queryState, queryPos);
     }

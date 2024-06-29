@@ -4,7 +4,7 @@ import com.copycatsplus.copycats.CCBlockStateProperties;
 import com.copycatsplus.copycats.CCBlockStateProperties.Side;
 import com.copycatsplus.copycats.CCBlockStateProperties.VerticalStairShape;
 import com.copycatsplus.copycats.CCShapes;
-import com.copycatsplus.copycats.content.copycat.base.CTWaterloggedCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.CCWaterloggedCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.ICustomCTBlocking;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsBlock;
@@ -36,7 +36,7 @@ import static net.minecraft.core.Direction.*;
 import static net.minecraft.world.level.block.StairBlock.HALF;
 
 @SuppressWarnings("deprecation")
-public class CopycatVerticalStairBlock extends CTWaterloggedCopycatBlock implements ICustomCTBlocking, IStateType {
+public class CopycatVerticalStairBlock extends CCWaterloggedCopycatBlock implements ICustomCTBlocking, IStateType {
 
     // Facing refers to the direction of the base of the stairs
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;

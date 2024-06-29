@@ -87,7 +87,7 @@ public class CopycatWoodenButtonBlock extends CCCopycatBlock implements ICopycat
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public @NotNull InteractionResult use(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull Player pPlayer, @NotNull InteractionHand pHand, @NotNull BlockHitResult pHit) {
         InteractionResult result = super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
         if (result == InteractionResult.PASS && !pPlayer.getItemInHand(pHand).is(AllTags.AllItemTags.WRENCH.tag)) {
             return button.use(pState, pLevel, pPos, pPlayer, pHand, pHit);

@@ -49,7 +49,7 @@ public abstract class CopycatShaftBlockEntity extends BracketedKineticBlockEntit
     }
 
     @Override
-    public void callRedraw() {
-        ICopycatBlockEntity.super.callRedraw();
+    public void redraw() {
+        ICopycatBlockEntity.super.redraw();
     }
 }

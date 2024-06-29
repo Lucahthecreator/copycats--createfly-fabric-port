@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.ghost_block;
 
-import com.copycatsplus.copycats.content.copycat.base.CTCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatWithWrappedBlock;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import net.minecraft.core.BlockPos;
@@ -16,7 +16,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
-public class CopycatGhostBlock extends CTCopycatBlock implements ICopycatWithWrappedBlock<Block>, IStateType {
+public class CopycatGhostBlock extends CCCopycatBlock implements ICopycatWithWrappedBlock<Block>, IStateType {
 
     public CopycatGhostBlock(Properties pProperties) {
         super(pProperties);

@@ -92,7 +92,7 @@ public interface ICopycatBlockEntity extends CTCopycatBlockEntity, ISpecialBlock
     }
 
     @Override
-    default void callRedraw() {
-        ((CTCopycatBlockEntity) getCopycatBlockEntity()).callRedraw();
+    default void redraw() {
+        ((CopycatBlockEntityAccessor) getCopycatBlockEntity()).callRedraw();
     }
 }

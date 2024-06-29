@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.vertical_slope;
 
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
-import com.copycatsplus.copycats.content.copycat.base.CTWaterloggedCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.CCWaterloggedCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.ICustomCTBlocking;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.simibubi.create.foundation.placement.IPlacementHelper;
@@ -43,7 +43,7 @@ import java.util.function.Predicate;
 
 import static net.minecraft.core.Direction.Axis;
 
-public class CopycatVerticalSlopeBlock extends CTWaterloggedCopycatBlock implements IStateType, ICustomCTBlocking {
+public class CopycatVerticalSlopeBlock extends CCWaterloggedCopycatBlock implements IStateType, ICustomCTBlocking {
 
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
@@ -56,8 +56,8 @@ public class CopycatVerticalSlopeBlock extends CTWaterloggedCopycatBlock impleme
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
-                                 BlockHitResult ray) {
+    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand,
+                                          @NotNull BlockHitResult ray) {
 
         if (!player.isShiftKeyDown() && player.mayBuild()) {
             ItemStack heldItem = player.getItemInHand(hand);
