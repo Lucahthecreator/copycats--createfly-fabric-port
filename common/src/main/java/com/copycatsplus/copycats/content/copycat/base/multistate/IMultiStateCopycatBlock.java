@@ -318,11 +318,9 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
             Vec3i inner = scaledLevel.getInner(pos);
             property = block.getPropertyFromRender(scaledLevel.getRenderingProperty(), state, scaledLevel, inner, truePos, side, queryState, queryPos);
         } else {
-            property = block.storageProperties().stream().findFirst().get();
+            property = block.defaultProperty();
         }
         IMultiStateCopycatBlockEntity be = block.getCopycatBlockEntity(level, queryPos);
-        if (be != null && be.getMaterialItemStorage().getMaterialItem(property) != null && !be.getMaterialItemStorage().getMaterialItem(property).enableCT())
-            return state;
         if (block.isIgnoredConnectivitySide(property, level, state, side, pos, queryPos))
             return state;
 

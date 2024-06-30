@@ -22,8 +22,7 @@ public class CopycatBlockBlock extends CCCopycatBlock implements IStateType {
     @Override
     public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
         BlockState toState = reader.getBlockState(toPos);
-        if (!toState.is(this)) return false;
-        return true;
+        return toState.is(this);
     }
 
     @Override

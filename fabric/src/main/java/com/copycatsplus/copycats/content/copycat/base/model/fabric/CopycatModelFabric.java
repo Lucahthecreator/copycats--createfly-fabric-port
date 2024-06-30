@@ -6,6 +6,7 @@ import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.fabric.CopycatRenderContextFabric;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.utility.Iterate;
@@ -142,13 +143,11 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                 BlockAndTintGetter renderWorld;
                 if (state.getBlock() instanceof IMultiStateCopycatBlock multiStateBlock) {
                     Vec3i inner = multiStateBlock.getVectorFromProperty(state, entry.key());
+                    boolean enableCT = !(blockView.getBlockEntity(pos) instanceof IMultiStateCopycatBlockEntity multiStateBE) || multiStateBE.isCTEnabled();
                     ScaledBlockAndTintGetter scaledWorld = new ScaledBlockAndTintGetterFabric(entry.key(), remainingData, blockView, pos, inner, multiStateBlock.vectorScale(state), p -> true);
                     renderWorld = new ScaledBlockAndTintGetterFabric(entry.key(), remainingData, blockView, pos, inner, multiStateBlock.vectorScale(state),
                             targetPos -> {
-                                BlockEntity be = blockView.getBlockEntity(pos);
-                                if (be instanceof MultiStateCopycatBlockEntity copycatBE)
-                                    if (!copycatBE.getMaterialItemStorage().getMaterialItem(entry.key()).enableCT())
-                                        return false;
+                                if (!enableCT) return false;
                                 return multiStateBlock.canConnectTexturesToward(entry.key(), scaledWorld, pos, targetPos, state);
                             });
                 } else if (state.getBlock() instanceof ICopycatBlock copycatBlock) {

@@ -6,6 +6,7 @@ import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.FilteredBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.forge.CopycatRenderContextForge;
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.simibubi.create.AllBlocks;
@@ -118,13 +119,11 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
         if (copycatBlock instanceof MultiStateCopycatBlock multiStateBlock) {
             Map<String, ModelData> wrappedDataMap = materials.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, s -> {
                 Vec3i inner = multiStateBlock.getVectorFromProperty(state, s.getKey());
+                boolean enableCT = !(world.getBlockEntity(pos) instanceof IMultiStateCopycatBlockEntity multiStateBE) || multiStateBE.getMaterialItemStorage().getMaterialItem(s.getKey()).enableCT();
                 ScaledBlockAndTintGetter scaledWorld = new ScaledBlockAndTintGetterForge(s.getKey(), world, pos, inner, multiStateBlock.vectorScale(state), p -> true);
                 ScaledBlockAndTintGetter filteredWorld = new ScaledBlockAndTintGetterForge(s.getKey(), world, pos, inner, multiStateBlock.vectorScale(state),
                         targetPos -> {
-                            BlockEntity be = world.getBlockEntity(pos);
-                            if (be instanceof MultiStateCopycatBlockEntity mscbe)
-                                if (!mscbe.getMaterialItemStorage().getMaterialItem(s.getKey()).enableCT())
-                                    return false;
+                            if (!enableCT) return false;
                             return multiStateBlock.canConnectTexturesToward(s.getKey(), scaledWorld, pos, targetPos, state);
                         });
                 return getModelOf(s.getValue()).getModelData(
