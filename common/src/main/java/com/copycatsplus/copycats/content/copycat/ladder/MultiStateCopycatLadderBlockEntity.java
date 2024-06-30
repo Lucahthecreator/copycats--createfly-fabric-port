@@ -3,15 +3,14 @@ package com.copycatsplus.copycats.content.copycat.ladder;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
-public abstract class CopycatLadderMultiStateBlockEntity extends MultiStateCopycatBlockEntity {
+public class MultiStateCopycatLadderBlockEntity extends MultiStateCopycatBlockEntity {
 
-    public CopycatLadderMultiStateBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public MultiStateCopycatLadderBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 

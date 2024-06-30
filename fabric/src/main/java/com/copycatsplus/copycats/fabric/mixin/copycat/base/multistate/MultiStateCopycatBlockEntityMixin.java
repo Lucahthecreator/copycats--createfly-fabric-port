@@ -1,0 +1,34 @@
+package com.copycatsplus.copycats.fabric.mixin.copycat.base.multistate;
+
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Mixin;
+
+import java.util.Collections;
+
+@SuppressWarnings("deprecation")
+public class MultiStateCopycatBlockEntityMixin {
+    @Mixin({
+            MultiStateCopycatBlockEntity.class
+    })
+    public static abstract class BlockEntityWithoutAttachmentData extends SmartBlockEntity implements IMultiStateCopycatBlockEntity, RenderAttachmentBlockEntity {
+
+        public BlockEntityWithoutAttachmentData(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+            super(type, pos, state);
+        }
+
+        @Override
+        public @Nullable Object getRenderAttachmentData() {
+            synchronized (getMaterialItemStorage()) {
+                return Collections.synchronizedMap(getMaterialItemStorage().getMaterialMap());
+            }
+        }
+    }
+}
+

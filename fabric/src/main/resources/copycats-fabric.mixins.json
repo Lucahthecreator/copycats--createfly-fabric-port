@@ -11,6 +11,7 @@
     "copycat.base.CopycatBlockEntityMixin$FluidPipeData",
     "copycat.base.CopycatBlockEntityMixin$StraightPipeData",
     "copycat.base.CopycatBlockMixin",
+    "copycat.base.multistate.MultiStateCopycatBlockEntityMixin$BlockEntityWithoutAttachmentData",
     "copycat.base.multistate.MultiStateCopycatBlockMixin"
   ],
   "client": [

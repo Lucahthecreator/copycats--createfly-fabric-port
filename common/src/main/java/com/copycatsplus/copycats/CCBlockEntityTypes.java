@@ -5,20 +5,18 @@ import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopyc
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlockEntity;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeRenderer;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatStraightPipeBlockEntity;
-import com.copycatsplus.copycats.content.copycat.ladder.CopycatLadderMultiStateBlockEntity;
+import com.copycatsplus.copycats.content.copycat.ladder.MultiStateCopycatLadderBlockEntity;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlockEntity;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftInstance;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftRenderer;
 import com.simibubi.create.content.fluids.pipes.TransparentStraightPipeRenderer;
-import com.tterrag.registrate.builders.BlockEntityBuilder;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
-import dev.architectury.injectables.annotations.ExpectPlatform;
 
 public class CCBlockEntityTypes {
     private static final CopycatRegistrate REGISTRATE = Copycats.getRegistrate();
 
     public static final BlockEntityEntry<? extends CCCopycatBlockEntity> COPYCAT =
-            REGISTRATE.blockEntity("copycat", getPlatformCopycat())
+            REGISTRATE.blockEntity("copycat", CCCopycatBlockEntity::new)
                     .validBlocks(
                             CCBlocks.COPYCAT_BLOCK,
                             CCBlocks.COPYCAT_BEAM,
@@ -48,7 +46,7 @@ public class CCBlockEntityTypes {
                     .register();
 
     public static final BlockEntityEntry<? extends MultiStateCopycatBlockEntity> MULTI_STATE_COPYCAT_BLOCK_ENTITY =
-            REGISTRATE.blockEntity("multistate_copycat", getPlatformMultiState())
+            REGISTRATE.blockEntity("multistate_copycat", MultiStateCopycatBlockEntity::new)
                     .validBlocks(
                             CCBlocks.COPYCAT_SLAB,
                             CCBlocks.COPYCAT_BYTE,
@@ -58,7 +56,7 @@ public class CCBlockEntityTypes {
                     .register();
 
     public static final BlockEntityEntry<? extends MultiStateCopycatBlockEntity> MULTI_STATE_COPYCAT_LADDER_BLOCK_ENTITY =
-            REGISTRATE.blockEntity("multistate_ladder_copycat", getPlatformMultiStateLadder())
+            REGISTRATE.blockEntity("multistate_ladder_copycat", MultiStateCopycatLadderBlockEntity::new)
                     .validBlocks(/*CCBlocks.COPYCAT_LADDER*/)
                     .register();
 
@@ -80,21 +78,6 @@ public class CCBlockEntityTypes {
                     .validBlocks(CCBlocks.COPYCAT_GLASS_FLUID_PIPE)
                     .renderer(() -> TransparentStraightPipeRenderer::new)
                     .register();
-
-    @ExpectPlatform
-    public static BlockEntityBuilder.BlockEntityFactory<? extends CCCopycatBlockEntity> getPlatformCopycat() {
-        throw new AssertionError("This shouldn't appear");
-    }
-
-    @ExpectPlatform
-    public static BlockEntityBuilder.BlockEntityFactory<? extends MultiStateCopycatBlockEntity> getPlatformMultiState() {
-        throw new AssertionError("This shouldn't appear");
-    }
-
-    @ExpectPlatform
-    public static BlockEntityBuilder.BlockEntityFactory<? extends CopycatLadderMultiStateBlockEntity> getPlatformMultiStateLadder() {
-        throw new AssertionError("This shouldn't appear");
-    }
 
     public static void register() {
     }

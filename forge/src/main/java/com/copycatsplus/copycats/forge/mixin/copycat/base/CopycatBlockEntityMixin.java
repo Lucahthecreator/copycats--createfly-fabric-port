@@ -28,6 +28,13 @@ public abstract class CopycatBlockEntityMixin extends SmartBlockEntity implement
     }
 
     @Override
+    public void redraw() {
+        if (!isVirtual())
+            requestModelDataUpdate();
+        ICopycatBlockEntity.super.redraw();
+    }
+
+    @Override
     public @NotNull ModelData getModelData() {
         return KineticCopycatRendererImpl.mergeData(
                 super.getModelData(),

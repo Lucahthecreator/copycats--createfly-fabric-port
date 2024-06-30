@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class CCCopycatBlockEntity extends SmartBlockEntity implements ICopycatBlockEntity {
+public class CCCopycatBlockEntity extends SmartBlockEntity implements ICopycatBlockEntity {
 
     protected BlockState material;
     protected ItemStack consumedItem;
