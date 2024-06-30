@@ -1,6 +1,5 @@
 package com.copycatsplus.copycats.content.copycat.base.multistate;
 
-import com.copycatsplus.copycats.CCBlockStateProperties;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.copycatsplus.copycats.content.copycat.base.StateType;
@@ -8,6 +7,7 @@ import com.copycatsplus.copycats.content.copycat.base.model.ScaledBlockAndTintGe
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
+import com.simibubi.create.content.contraptions.StructureTransform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -16,10 +16,8 @@ import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,18 +27,13 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.ticks.TickPriority;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -49,8 +42,6 @@ import java.util.Set;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
-
-    EnumProperty<BlockStateTransform> TRANSFORM = CCBlockStateProperties.TRANSFORM;
 
     @Override
     default StateType stateType() {
@@ -335,38 +326,7 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
         return Blocks.AIR.defaultBlockState();
     }
 
-    default BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
-        level.scheduleTick(pos, (Block) this, 0, TickPriority.EXTREMELY_HIGH);
-        return state;
-    }
-
-    default void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        IMultiStateCopycatBlockEntity copycatBE = getCopycatBlockEntity(level, pos);
-        if (copycatBE == null)
-            return;
-        copycatBE.updateTransform();
-    }
-
-    default BlockState rotate(BlockState state, Rotation rotation) {
-        return switch (rotation) {
-            case CLOCKWISE_180 -> state.setValue(TRANSFORM, state.getValue(TRANSFORM).getClockwise().getClockwise());
-            case COUNTERCLOCKWISE_90 -> state.setValue(TRANSFORM, state.getValue(TRANSFORM).getCounterClockwise());
-            case CLOCKWISE_90 -> state.setValue(TRANSFORM, state.getValue(TRANSFORM).getClockwise());
-            default -> state;
-        };
-    }
-
-    void rotate(BlockState state, IMultiStateCopycatBlockEntity be, Rotation rotation);
-
-    default BlockState mirror(BlockState state, Mirror mirror) {
-        return switch (mirror) {
-            case FRONT_BACK -> state.setValue(TRANSFORM, state.getValue(TRANSFORM).flipZ());
-            case LEFT_RIGHT -> state.setValue(TRANSFORM, state.getValue(TRANSFORM).flipX());
-            default -> state;
-        };
-    }
-
-    void mirror(BlockState state, IMultiStateCopycatBlockEntity be, Mirror mirror);
+    void transformStorage(BlockState state, IMultiStateCopycatBlockEntity be, StructureTransform transform);
 
     @Override
     default boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,

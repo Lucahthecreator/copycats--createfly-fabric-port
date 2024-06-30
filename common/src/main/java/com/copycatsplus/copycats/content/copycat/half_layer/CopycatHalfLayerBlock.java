@@ -9,6 +9,7 @@ import com.copycatsplus.copycats.content.copycat.base.model.ScaledBlockAndTintGe
 import com.copycatsplus.copycats.content.copycat.base.multistate.WaterloggedMultiStateCopycatBlock;
 import com.google.common.collect.ImmutableMap;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -256,7 +257,6 @@ public class CopycatHalfLayerBlock extends WaterloggedMultiStateCopycatBlock {
 
     @Override
     public @NotNull BlockState rotate(@NotNull BlockState state, Rotation rot) {
-        state = super.rotate(state, rot);
         Function<Axis, Axis> swap = axis -> axis == Axis.Z ? Axis.X : Axis.Z;
         return switch (rot) {
             case NONE -> state;
@@ -287,25 +287,21 @@ public class CopycatHalfLayerBlock extends WaterloggedMultiStateCopycatBlock {
     }
 
     @Override
-    public void rotate(@NotNull BlockState state, @NotNull IMultiStateCopycatBlockEntity be, Rotation rotation) {
-        Axis axis = state.getValue(AXIS);
-        if (rotation == Rotation.CLOCKWISE_90 && axis == Axis.X ||
-                rotation == Rotation.CLOCKWISE_180 ||
-                rotation == Rotation.COUNTERCLOCKWISE_90 && axis == Axis.Z) {
-            be.getMaterialItemStorage().remapStorage(s -> s.equals(POSITIVE_LAYERS.getName()) ? NEGATIVE_LAYERS.getName() : POSITIVE_LAYERS.getName());
-        }
-    }
-
-    @Override
     public @NotNull BlockState mirror(@NotNull BlockState state, Mirror mirrorIn) {
-        state = super.mirror(state, mirrorIn);
         return state.rotate(mirrorIn.getRotation(Direction.get(AxisDirection.POSITIVE, state.getValue(AXIS))));
     }
 
     @Override
-    public void mirror(@NotNull BlockState state, @NotNull IMultiStateCopycatBlockEntity be, Mirror mirror) {
+    public void transformStorage(BlockState state, IMultiStateCopycatBlockEntity be, StructureTransform transform) {
         Axis axis = state.getValue(AXIS);
-        if (mirror == Mirror.FRONT_BACK && axis == Axis.Z || mirror == Mirror.LEFT_RIGHT && axis == Axis.X) {
+        if (transform.rotationAxis.isVertical()) {
+            if (transform.rotation == Rotation.CLOCKWISE_90 && axis == Axis.X ||
+                    transform.rotation == Rotation.CLOCKWISE_180 ||
+                    transform.rotation == Rotation.COUNTERCLOCKWISE_90 && axis == Axis.Z) {
+                be.getMaterialItemStorage().remapStorage(s -> s.equals(POSITIVE_LAYERS.getName()) ? NEGATIVE_LAYERS.getName() : POSITIVE_LAYERS.getName());
+            }
+        }
+        if (transform.mirror == Mirror.FRONT_BACK && axis == Axis.Z || transform.mirror == Mirror.LEFT_RIGHT && axis == Axis.X) {
             be.getMaterialItemStorage().remapStorage(s -> s.equals(POSITIVE_LAYERS.getName()) ? NEGATIVE_LAYERS.getName() : POSITIVE_LAYERS.getName());
         }
     }

@@ -10,6 +10,7 @@ import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.utility.Iterate;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -22,9 +23,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Set;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class MultiStateCopycatBlockEntity extends SmartBlockEntity implements IMultiStateCopycatBlockEntity {
 
     private MaterialItemStorage materialItemStorage;
@@ -86,12 +90,5 @@ public class MultiStateCopycatBlockEntity extends SmartBlockEntity implements IM
             }
             redraw();
         }
-    }
-
-    @ExpectPlatform
-    @NotNull
-    public static MultiStateCopycatBlockEntity create(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-        //noinspection DataFlowIssue
-        return null;
     }
 }

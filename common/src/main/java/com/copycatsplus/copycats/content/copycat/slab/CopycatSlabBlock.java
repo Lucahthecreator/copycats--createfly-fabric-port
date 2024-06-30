@@ -10,6 +10,7 @@ import com.copycatsplus.copycats.content.copycat.base.model.ScaledBlockAndTintGe
 import com.copycatsplus.copycats.content.copycat.base.multistate.WaterloggedMultiStateCopycatBlock;
 import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.foundation.placement.IPlacementHelper;
 import com.simibubi.create.foundation.placement.PlacementHelpers;
 import com.simibubi.create.foundation.placement.PlacementOffset;
@@ -273,32 +274,27 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock {
 
     @Override
     public @NotNull BlockState rotate(@NotNull BlockState state, Rotation rot) {
-        state = super.rotate(state, rot);
         return setApparentDirection(state, rot.rotate(getApparentDirection(state)));
     }
 
     @Override
-    public void rotate(@NotNull BlockState state, @NotNull IMultiStateCopycatBlockEntity be, Rotation rotation) {
-        Axis axis = state.getValue(AXIS);
-        if (axis == Axis.Y) return;
-        if (rotation == Rotation.CLOCKWISE_90 && axis == Axis.X ||
-                rotation == Rotation.CLOCKWISE_180 ||
-                rotation == Rotation.COUNTERCLOCKWISE_90 && axis == Axis.Z) {
-            be.getMaterialItemStorage().remapStorage(s -> s.equals(Half.BOTTOM.getSerializedName()) ? Half.TOP.getSerializedName() : Half.BOTTOM.getSerializedName());
-        }
-    }
-
-    @Override
     public @NotNull BlockState mirror(@NotNull BlockState state, Mirror mirrorIn) {
-        state = super.mirror(state, mirrorIn);
         return state.rotate(mirrorIn.getRotation(getApparentDirection(state)));
     }
 
     @Override
-    public void mirror(@NotNull BlockState state, @NotNull IMultiStateCopycatBlockEntity be, Mirror mirror) {
+    public void transformStorage(BlockState state, IMultiStateCopycatBlockEntity be, StructureTransform transform) {
         Axis axis = state.getValue(AXIS);
+        if (transform.rotationAxis.isVertical()) {
+            if (axis == Axis.Y) return;
+            if (transform.rotation == Rotation.CLOCKWISE_90 && axis == Axis.X ||
+                    transform.rotation == Rotation.CLOCKWISE_180 ||
+                    transform.rotation == Rotation.COUNTERCLOCKWISE_90 && axis == Axis.Z) {
+                be.getMaterialItemStorage().remapStorage(s -> s.equals(Half.BOTTOM.getSerializedName()) ? Half.TOP.getSerializedName() : Half.BOTTOM.getSerializedName());
+            }
+        }
         if (axis == Axis.Y) return;
-        if (mirror == Mirror.FRONT_BACK && axis == Axis.Z || mirror == Mirror.LEFT_RIGHT && axis == Axis.X) {
+        if (transform.mirror == Mirror.FRONT_BACK && axis == Axis.Z || transform.mirror == Mirror.LEFT_RIGHT && axis == Axis.X) {
             be.getMaterialItemStorage().remapStorage(s -> s.equals(Half.BOTTOM.getSerializedName()) ? Half.TOP.getSerializedName() : Half.BOTTOM.getSerializedName());
         }
     }
@@ -336,7 +332,7 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock {
         }
     }
 
-    private enum FaceShape {
+    public enum FaceShape {
         FULL,
         TOP,
         BOTTOM,

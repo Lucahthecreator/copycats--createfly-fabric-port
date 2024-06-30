@@ -9,6 +9,7 @@ import com.copycatsplus.copycats.content.copycat.base.model.ScaledBlockAndTintGe
 import com.copycatsplus.copycats.content.copycat.base.multistate.WaterloggedMultiStateCopycatBlock;
 import com.google.common.collect.ImmutableMap;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -43,8 +44,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock.getMaterial;
 
 public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock implements ICustomCTBlocking {
     public static BooleanProperty UP = BlockStateProperties.UP;
@@ -293,13 +292,19 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
 
     @Override
     public @NotNull BlockState rotate(@NotNull BlockState pState, Rotation pRotation) {
-        pState = super.rotate(pState, pRotation);
         return mapDirections(pState, pRotation::rotate);
     }
 
     @Override
-    public void rotate(@NotNull BlockState state, @NotNull IMultiStateCopycatBlockEntity be, Rotation rotation) {
-        be.getMaterialItemStorage().remapStorage(key -> directionToProperty(rotation.rotate(propertyToDirection(key))));
+    public @NotNull BlockState mirror(@NotNull BlockState pState, Mirror pMirror) {
+        return mapDirections(pState, pMirror::mirror);
+    }
+
+    @Override
+    public void transformStorage(BlockState state, IMultiStateCopycatBlockEntity be, StructureTransform transform) {
+        if (transform.rotationAxis.isVertical())
+            be.getMaterialItemStorage().remapStorage(key -> directionToProperty(transform.rotation.rotate(propertyToDirection(key))));
+        be.getMaterialItemStorage().remapStorage(key -> directionToProperty(transform.mirror.mirror(propertyToDirection(key))));
     }
 
     private static Direction propertyToDirection(String property) {
@@ -316,17 +321,6 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
 
     public static String directionToProperty(Direction direction) {
         return direction.getName().toLowerCase();
-    }
-
-    @Override
-    public @NotNull BlockState mirror(@NotNull BlockState pState, Mirror pMirror) {
-        pState = super.mirror(pState, pMirror);
-        return mapDirections(pState, pMirror::mirror);
-    }
-
-    @Override
-    public void mirror(@NotNull BlockState state, @NotNull IMultiStateCopycatBlockEntity be, Mirror mirror) {
-        be.getMaterialItemStorage().remapStorage(key -> directionToProperty(mirror.mirror(propertyToDirection(key))));
     }
 
     private BlockState mapDirections(BlockState pState, Function<Direction, Direction> pDirectionalFunction) {

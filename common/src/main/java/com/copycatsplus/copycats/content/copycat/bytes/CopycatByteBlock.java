@@ -7,6 +7,7 @@ import com.copycatsplus.copycats.content.copycat.base.multistate.WaterloggedMult
 import com.google.common.collect.ImmutableMap;
 import com.mojang.math.OctahedralGroup;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -256,24 +257,19 @@ public class CopycatByteBlock extends WaterloggedMultiStateCopycatBlock {
 
     @Override
     public @NotNull BlockState rotate(@NotNull BlockState pState, @NotNull Rotation pRotation) {
-        pState = super.rotate(pState, pRotation);
         return mapBytes(pState, bite -> bite.rotate(pRotation));
     }
 
     @Override
-    public void rotate(@NotNull BlockState state, @NotNull IMultiStateCopycatBlockEntity be, Rotation rotation) {
-        be.getMaterialItemStorage().remapStorage(key -> byByte(byteMap.get(key).rotate(rotation)).getName());
-    }
-
-    @Override
     public @NotNull BlockState mirror(@NotNull BlockState pState, Mirror pMirror) {
-        pState = super.mirror(pState, pMirror);
         return mapBytes(pState, bite -> bite.mirror(pMirror));
     }
 
     @Override
-    public void mirror(@NotNull BlockState state, @NotNull IMultiStateCopycatBlockEntity be, Mirror mirror) {
-        be.getMaterialItemStorage().remapStorage(key -> byByte(byteMap.get(key).mirror(mirror)).getName());
+    public void transformStorage(BlockState state, IMultiStateCopycatBlockEntity be, StructureTransform transform) {
+        if (transform.rotationAxis.isVertical())
+            be.getMaterialItemStorage().remapStorage(key -> byByte(byteMap.get(key).rotate(transform.rotation)).getName());
+        be.getMaterialItemStorage().remapStorage(key -> byByte(byteMap.get(key).mirror(transform.mirror)).getName());
     }
 
     public static Vec3 clampToBlockPos(Vec3 vec, BlockPos pos) {

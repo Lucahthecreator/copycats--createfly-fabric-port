@@ -32,12 +32,6 @@ public abstract class MultiStateCopycatBlock extends Block implements IMultiStat
 
     public MultiStateCopycatBlock(Properties properties) {
         super(properties);
-        registerDefaultState(defaultBlockState().setValue(TRANSFORM, BlockStateTransform.ABCD));
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder.add(TRANSFORM));
     }
 
     @Nullable
@@ -77,34 +71,5 @@ public abstract class MultiStateCopycatBlock extends Block implements IMultiStat
     @Override
     public BlockEntityType<? extends MultiStateCopycatBlockEntity> getBlockEntityType() {
         return CCBlockEntityTypes.MULTI_STATE_COPYCAT_BLOCK_ENTITY.get();
-    }
-
-    @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
-        return IMultiStateCopycatBlock.super.updateShape(
-                super.updateShape(state, direction, neighborState, level, pos, neighborPos),
-                direction, neighborState, level, pos, neighborPos
-        );
-    }
-
-    @Override
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        IMultiStateCopycatBlock.super.tick(state, level, pos, random);
-    }
-
-    @Override
-    public BlockState rotate(BlockState state, Rotation rotation) {
-        return IMultiStateCopycatBlock.super.rotate(
-                super.rotate(state, rotation),
-                rotation
-        );
-    }
-
-    @Override
-    public BlockState mirror(BlockState state, Mirror mirror) {
-        return IMultiStateCopycatBlock.super.mirror(
-                super.mirror(state, mirror),
-                mirror
-        );
     }
 }

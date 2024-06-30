@@ -49,9 +49,9 @@ public class ContraptionMixin {
         CompoundTag nbt = cir.getReturnValue().nbt();
         if (state.getBlock() instanceof MultiStateCopycatBlock && nbt != null && nbt.contains("Material")) {
             BlockPos pos = cir.getReturnValue().pos();
-            CopycatBlockEntity be = new CopycatBlockEntity(AllBlockEntityTypes.COPYCAT.get(), pos, state);
+            CopycatBlockEntity be = AllBlockEntityTypes.COPYCAT.create(pos, state);
             be.load(nbt);
-            MultiStateCopycatBlockEntity multiBe = MultiStateCopycatBlockEntity.create(CCBlockEntityTypes.MULTI_STATE_COPYCAT_BLOCK_ENTITY.get(), pos, state);
+            MultiStateCopycatBlockEntity multiBe = CCBlockEntityTypes.MULTI_STATE_COPYCAT_BLOCK_ENTITY.create(pos, state);
             multiBe.migrateData((ICopycatBlockEntity) be);
             nbt = multiBe.saveWithId();
             cir.setReturnValue(new StructureTemplate.StructureBlockInfo(pos, state, nbt));

@@ -135,21 +135,9 @@ public interface IMultiStateCopycatBlockEntity extends ICopycatBlockEntity {
         notifyUpdate();
     }
 
-    default void updateTransform() {
-        BlockStateTransform transform = getBlockState().getValue(MultiStateCopycatBlock.TRANSFORM);
-        if (transform != BlockStateTransform.ABCD) {
-            MultiStateCopycatBlock block = (MultiStateCopycatBlock) getBlockState().getBlock();
-            transform.undoTransform(
-                    r -> block.rotate(getBlockState(), this, r),
-                    m -> block.mirror(getBlockState(), this, m)
-            );
-        }
-        getLevel().setBlock(getBlockPos(), getBlockState().setValue(MultiStateCopycatBlock.TRANSFORM, BlockStateTransform.ABCD), 2 | 4 | 16 | 32);
-    }
-
     @Override
     default void transform(StructureTransform transform) {
-        // TODO: probably need additional logic
+        getBlock().transformStorage(this.getBlockState(), this, transform);
         for (String key : getMaterialItemStorage().getAllProperties()) {
             getMaterialItemStorage().getMaterialItem(key).setMaterial(transform.apply(getMaterialItemStorage().getMaterialItem(key).material()));
         }

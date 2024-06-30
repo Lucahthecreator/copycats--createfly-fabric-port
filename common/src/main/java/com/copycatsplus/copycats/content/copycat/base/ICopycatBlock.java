@@ -4,6 +4,8 @@ import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopyc
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
+import com.simibubi.create.content.contraptions.ITransformableBlock;
+import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -25,7 +27,7 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -33,12 +35,15 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
+
 /**
  * Indicates that a block functions as a copycat but is not a subclass of {@link CCCopycatBlock}.
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public interface ICopycatBlock extends IWrenchable, IStateType {
+public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBlock {
 
     @Nullable
     default ICopycatBlockEntity getCopycatBlockEntity(BlockGetter worldIn, BlockPos pos) {
@@ -264,7 +269,7 @@ public interface ICopycatBlock extends IWrenchable, IStateType {
     }
 
     static BlockState getAppearance(ICopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
-                                     BlockState queryState, BlockPos queryPos) {
+                                    BlockState queryState, BlockPos queryPos) {
         if (block.isIgnoredConnectivitySide(level, state, side, pos, queryPos))
             return state;
 
@@ -276,6 +281,103 @@ public interface ICopycatBlock extends IWrenchable, IStateType {
         if (reader.getBlockEntity(targetPos) instanceof ICopycatBlockEntity cbe)
             return cbe.getMaterial();
         return Blocks.AIR.defaultBlockState();
+    }
+
+    @Override
+    default BlockState transform(BlockState state, StructureTransform transform) {
+        Direction.Axis rotationAxis = transform.rotationAxis;
+        Rotation rotation = transform.rotation;
+        Mirror mirror = transform.mirror;
+
+        Block block = state.getBlock();
+
+        if (mirror != null)
+            state = state.mirror(mirror);
+
+        if (rotationAxis == Direction.Axis.Y) {
+            if (block instanceof BellBlock) {
+                if (state.getValue(BlockStateProperties.BELL_ATTACHMENT) == BellAttachType.DOUBLE_WALL)
+                    state = state.setValue(BlockStateProperties.BELL_ATTACHMENT, BellAttachType.SINGLE_WALL);
+                return state.setValue(BellBlock.FACING,
+                        rotation.rotate(state.getValue(BellBlock.FACING)));
+            }
+
+            return state.rotate(rotation);
+        }
+
+        if (block instanceof FaceAttachedHorizontalDirectionalBlock) {
+            DirectionProperty facingProperty = FaceAttachedHorizontalDirectionalBlock.FACING;
+            EnumProperty<AttachFace> faceProperty = FaceAttachedHorizontalDirectionalBlock.FACE;
+            Direction stateFacing = state.getValue(facingProperty);
+            AttachFace stateFace = state.getValue(faceProperty);
+            boolean z = rotationAxis == Direction.Axis.Z;
+            Direction forcedAxis = z ? Direction.WEST : Direction.SOUTH;
+
+            if (stateFacing.getAxis() == rotationAxis && stateFace == AttachFace.WALL)
+                return state;
+
+            for (int i = 0; i < rotation.ordinal(); i++) {
+                stateFace = state.getValue(faceProperty);
+                stateFacing = state.getValue(facingProperty);
+
+                boolean b = state.getValue(faceProperty) == AttachFace.CEILING;
+                state = state.setValue(facingProperty, b ? forcedAxis : forcedAxis.getOpposite());
+
+                if (stateFace != AttachFace.WALL) {
+                    state = state.setValue(faceProperty, AttachFace.WALL);
+                    continue;
+                }
+
+                if (stateFacing.getAxisDirection() == (z ? Direction.AxisDirection.NEGATIVE : Direction.AxisDirection.POSITIVE)) {
+                    state = state.setValue(faceProperty, AttachFace.FLOOR);
+                    continue;
+                }
+                state = state.setValue(faceProperty, AttachFace.CEILING);
+            }
+
+            return state;
+        }
+
+        boolean halfTurn = rotation == Rotation.CLOCKWISE_180;
+        if (block instanceof StairBlock) {
+            if (state.getValue(StairBlock.FACING)
+                    .getAxis() != rotationAxis) {
+                for (int i = 0; i < rotation.ordinal(); i++) {
+                    Direction direction = state.getValue(StairBlock.FACING);
+                    Half half = state.getValue(StairBlock.HALF);
+                    if (direction.getAxisDirection() == Direction.AxisDirection.POSITIVE ^ half == Half.BOTTOM
+                            ^ direction.getAxis() == Direction.Axis.Z)
+                        state = state.cycle(StairBlock.HALF);
+                    else
+                        state = state.setValue(StairBlock.FACING, direction.getOpposite());
+                }
+            } else {
+                if (halfTurn) {
+                    state = state.cycle(StairBlock.HALF);
+                }
+            }
+            return state;
+        }
+
+        if (state.hasProperty(FACING)) {
+            state = state.setValue(FACING, transform.rotateFacing(state.getValue(FACING)));
+        } else if (state.hasProperty(AXIS)) {
+            state = state.setValue(AXIS, transform.rotateAxis(state.getValue(AXIS)));
+        } else if (halfTurn) {
+            if (state.hasProperty(HORIZONTAL_FACING)) {
+                Direction stateFacing = state.getValue(HORIZONTAL_FACING);
+                if (stateFacing.getAxis() == rotationAxis)
+                    return state;
+            }
+
+            state = state.rotate(rotation);
+
+            if (state.hasProperty(SlabBlock.TYPE) && state.getValue(SlabBlock.TYPE) != SlabType.DOUBLE)
+                state = state.setValue(SlabBlock.TYPE,
+                        state.getValue(SlabBlock.TYPE) == SlabType.BOTTOM ? SlabType.TOP : SlabType.BOTTOM);
+        }
+
+        return state;
     }
 
     default boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
