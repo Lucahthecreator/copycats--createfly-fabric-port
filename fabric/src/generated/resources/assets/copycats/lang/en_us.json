@@ -126,7 +126,6 @@
   "block.copycats.copycat_stone_pressure_plate.tooltip.behaviour1": "Applies _held item_ as its _material_ if possible. _Click again_ to cycle _orientation_ or _powered_ state. Use a _Wrench_ to _reset_ the material.",
   "block.copycats.copycat_stone_pressure_plate.tooltip.condition1": "When R-Clicked",
   "block.copycats.copycat_stone_pressure_plate.tooltip.summary": "_Converts_ any _full block_ into a functional stone pressure plate.",
-  "block.copycats.copycat_test_block": "Copycat Test Block",
   "block.copycats.copycat_trapdoor": "Copycat Trapdoor",
   "block.copycats.copycat_trapdoor.tooltip.behaviour1": "Applies _held item_ as its _material_ if possible. _Click again_ to cycle _orientation_ or _powered_ state. Use a _Wrench_ to _reset_ the material.",
   "block.copycats.copycat_trapdoor.tooltip.behaviour2": "Toggles _connected textures_ on its _material_.",

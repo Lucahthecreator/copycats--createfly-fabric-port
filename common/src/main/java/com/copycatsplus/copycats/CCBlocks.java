@@ -34,7 +34,6 @@ import com.copycatsplus.copycats.content.copycat.layer.CopycatLayerBlock;
 import com.copycatsplus.copycats.content.copycat.layer.CopycatLayerModelPart;
 import com.copycatsplus.copycats.content.copycat.pressure_plate.*;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
-import com.copycatsplus.copycats.content.copycat.partial.CopycatShaftModelPart;
 import com.copycatsplus.copycats.content.copycat.slab.CopycatMultiSlabModelPart;
 import com.copycatsplus.copycats.content.copycat.slab.CopycatSlabBlock;
 import com.copycatsplus.copycats.content.copycat.slice.CopycatSliceBlock;
@@ -45,8 +44,6 @@ import com.copycatsplus.copycats.content.copycat.slope_layer.CopycatSlopeLayerBl
 import com.copycatsplus.copycats.content.copycat.slope_layer.CopycatSlopeLayerModelPart;
 import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsBlock;
 import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsModelPart;
-import com.copycatsplus.copycats.content.copycat.test_block.CopycatTestBlock;
-import com.copycatsplus.copycats.content.copycat.test_block.CopycatMultiTestBlockModelPart;
 import com.copycatsplus.copycats.content.copycat.trapdoor.CopycatTrapdoorBlock;
 import com.copycatsplus.copycats.content.copycat.trapdoor.CopycatTrapdoorModelPart;
 import com.copycatsplus.copycats.content.copycat.vertical_slice.CopycatVerticalSliceBlock;
@@ -65,7 +62,6 @@ import com.simibubi.create.AllTags;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
 import com.simibubi.create.foundation.data.*;
-import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -79,7 +75,6 @@ import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 
-import javax.annotation.Nullable;
 import java.util.HashSet;
 
 import java.util.Set;
@@ -441,23 +436,12 @@ public class CCBlocks {
         throw new AssertionError();
     }
 
-    public static @Nullable BlockEntry<CopycatTestBlock> COPYCAT_TEST_BLOCK;
-
     @ExpectPlatform
     public static void getWrappedBlockState(DataGenContext<Block, ? extends Block> c, RegistrateBlockstateProvider p, String name) {
         throw new AssertionError();
     }
 
     public static void register() {
-        if (AbstractRegistrate.isDevEnvironment()) {
-            COPYCAT_TEST_BLOCK = REGISTRATE.block("copycat_test_block", CopycatTestBlock::new)
-                    .transform(CCBuilderTransformers.testBlockMultiCopycat())
-                    .transform(FeatureToggle.register())
-                    .onRegister(CreateRegistrate.blockModel(() -> model -> CopycatModelCore.createModel(model, new CopycatMultiTestBlockModelPart())))
-                    .item()
-                    .transform(customItemModel("copycat_base", "test_block"))
-                    .register();
-        }
     }
 
     public static Set<RegistryEntry<Block>> getAllRegisteredBlocks() {

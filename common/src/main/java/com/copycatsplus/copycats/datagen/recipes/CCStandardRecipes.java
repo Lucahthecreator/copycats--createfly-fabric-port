@@ -179,6 +179,9 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
 
     GeneratedRecipe COPYCAT_FLUID_PIPE = functionalCopycat(AllBlocks.FLUID_PIPE, CCBlocks.COPYCAT_FLUID_PIPE, 4);
 
+    Set<RegistryEntry<? extends Block>> blocksWithoutRecipe = Set.of(
+            CCBlocks.COPYCAT_GLASS_FLUID_PIPE
+    );
 
     String currentFolder = "";
 
@@ -248,11 +251,6 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
         }
         return result;
     }
-
-    Set<RegistryEntry<? extends Block>> blocksWithoutRecipe = Set.of(
-            CCBlocks.COPYCAT_TEST_BLOCK,
-            CCBlocks.COPYCAT_GLASS_FLUID_PIPE
-    );
 
     public CCStandardRecipes(PackOutput output) {
         super(output);

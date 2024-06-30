@@ -41,18 +41,4 @@ public class CCBuilderTransformersImpl {
                 .color(() -> IMultiStateCopycatBlock::wrappedColor)
                 .transform(TagGen.axeOrPickaxe());
     }
-
-    public static <B extends MultiStateCopycatBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> testBlockMultiCopycat() {
-        return b -> b.initialProperties(SharedProperties::softMetal)
-                .blockstate((c, p) -> p.simpleBlock(c.get(), p.models()
-                        .getExistingFile(p.mcLoc("air"))))
-                .initialProperties(SharedProperties::softMetal)
-                .properties(p -> p.noOcclusion()
-                        .mapColor(MapColor.NONE).lightLevel(state -> state.getLightEmission()))
-                .addLayer(() -> RenderType::solid)
-                .addLayer(() -> RenderType::cutout)
-                .addLayer(() -> RenderType::cutoutMipped)
-                .addLayer(() -> RenderType::translucent)
-                .color(() -> IMultiStateCopycatBlock::wrappedColor);
-    }
 }
