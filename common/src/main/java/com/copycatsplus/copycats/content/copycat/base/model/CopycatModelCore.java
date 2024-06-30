@@ -25,7 +25,7 @@ public abstract class CopycatModelCore implements CopycatModelPart {
 
     protected void registerForMultiState(List<ModelEntry> entries, MultiStateCopycatBlock block) {
         for (String property : block.storageProperties()) {
-            entries.add(new ModelEntry(property, (state, mat) -> getModelOf(mat), this, false));
+            entries.add(new ModelEntry(property, (state, mat) -> getModelOf(mat), this, true));
         }
     }
 
