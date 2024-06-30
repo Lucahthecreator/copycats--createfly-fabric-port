@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.fabric.mixin.copycat.base;
 
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.model.fabric.CopycatModel;
+import com.copycatsplus.copycats.content.copycat.base.model.fabric.CopycatModelFabric;
 import com.copycatsplus.copycats.content.copycat.button.CopycatButtonBlock;
 import com.copycatsplus.copycats.content.copycat.fence.CopycatFenceBlock;
 import com.copycatsplus.copycats.content.copycat.fence_gate.CopycatFenceGateBlock;
@@ -176,6 +176,6 @@ public abstract class CopycatBlockMixin extends Block implements ICopycatBlock,
         if (isIgnoredConnectivitySide(level, state, side, pos, queryPos))
             return state;
 
-        return CopycatModel.getMaterial(getMaterial(level, pos));
+        return CopycatModelFabric.getMaterial(getMaterial(level, pos));
     }
 }

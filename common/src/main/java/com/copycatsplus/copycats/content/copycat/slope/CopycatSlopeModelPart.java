@@ -1,26 +1,21 @@
 package com.copycatsplus.copycats.content.copycat.slope;
 
-import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelPart;
+import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
 
-import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Assembler.*;
+import static com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext.*;
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableCullFace.*;
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableCullFace.SOUTH;
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.quad.QuadSlope.map;
 
-public class CopycatSlopeModelPart implements CopycatModelPart {
-
-    private final boolean enhanced;
-
-    public CopycatSlopeModelPart(boolean enhanced) {
-        this.enhanced = enhanced;
-    }
+public class CopycatSlopeModelPart extends CopycatModelCore {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
+    public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
         Direction facing = state.getValue(CopycatSlopeBlock.FACING);
         Half half = state.getValue(CopycatSlopeBlock.HALF);
         int rot = (int) facing.toYRot();
@@ -53,7 +48,7 @@ public class CopycatSlopeModelPart implements CopycatModelPart {
     }
 
     public static void assembleTriangularSlope(CopycatRenderContext context, GlobalTransform transform, double maxHeight) {
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(0, 0, 0),
                 aabb(16, 16, 16),
@@ -63,7 +58,7 @@ public class CopycatSlopeModelPart implements CopycatModelPart {
     }
 
     public static void assembleTrapezoidSlope(CopycatRenderContext context, GlobalTransform transform, double minHeight, double maxHeight) {
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(0, 0, 0),
                 aabb(16, 16, 16),
@@ -88,14 +83,14 @@ public class CopycatSlopeModelPart implements CopycatModelPart {
         final double alignedLengthBottom = Math.abs(Math.floor(midLengthBottom + marginAdjExcessBottom) - marginAdjExcessBottom);
         final double alignedLengthTop = Math.floor(midLengthTop + marginAdjExcessTop) - marginAdjExcessTop;
 
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(0, 0, 0),
                 aabb(16, 16, marginAdjBottom),
                 cull(UP | NORTH | SOUTH),
                 updateUV(slope(Direction.UP, (a, b) -> map(0, marginAdjBottom, 0, margin, b)))
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(0, 0, marginAdjBottom),
                 aabb(16, 16, 16 - margin - marginAdjBottom).move(0, 0, marginAdjBottom),
@@ -103,7 +98,7 @@ public class CopycatSlopeModelPart implements CopycatModelPart {
                 updateUV(slope(Direction.UP, (a, b) -> map(marginAdjBottom, 16 - margin, margin, maxHeight - marginAdjTop, b)))
         );
         if (maxHeight == 16) {
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(0, 0, 16 - margin),
                     aabb(16, 16, margin).move(0, 0, 16 - margin),
@@ -111,13 +106,13 @@ public class CopycatSlopeModelPart implements CopycatModelPart {
                     updateUV(slope(Direction.UP, (a, b) -> map(16 - margin, 16, maxHeight - marginAdjTop, maxHeight, b)))
             );
         } else {
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(0, 0, 16 - margin),
                     aabb(16, maxHeight / 2, margin).move(0, 0, 16 - margin),
                     cull(UP | NORTH)
             );
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(0, 16 - maxHeight / 2, 16 - margin),
                     aabb(16, maxHeight / 2, margin).move(0, 16 - maxHeight / 2, 16 - margin),
@@ -134,7 +129,7 @@ public class CopycatSlopeModelPart implements CopycatModelPart {
                     translate(0, -16 + maxHeight, 0)
             );
         }
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(0, 0, 0),
                 aabb(16, 16, marginAdjBottom),
@@ -146,7 +141,7 @@ public class CopycatSlopeModelPart implements CopycatModelPart {
                         angle(-angleBottom, 0, 0)
                 )
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(0, maxHeight - margin, 16 - alignedLengthBottom),
                 aabb(16, margin, alignedLengthBottom).move(0, 16 - margin, marginAdjBottom),
@@ -161,7 +156,7 @@ public class CopycatSlopeModelPart implements CopycatModelPart {
                         angle(-angleBottom, 0, 0)
                 )
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(0, maxHeight - margin, 16 - alignedLengthTop),
                 aabb(16, margin, alignedLengthTop).move(0, 16 - margin, 16 - marginAdjTop - alignedLengthTop),
@@ -176,7 +171,7 @@ public class CopycatSlopeModelPart implements CopycatModelPart {
                         angle(-angleBottom, 0, 0)
                 )
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(0, 0, 16 - marginAdjTop),
                 aabb(16, 16, marginAdjTop).move(0, 0, 16 - marginAdjTop),
@@ -207,7 +202,7 @@ public class CopycatSlopeModelPart implements CopycatModelPart {
         final double alignedLengthTop = Math.floor(midLengthTop + marginAdjExcessTop) - marginAdjExcessTop;
 
         if (minHeight == 16 || minHeight == 0) {
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(0, 0, 0),
                     aabb(16, 16, margin),
@@ -215,13 +210,13 @@ public class CopycatSlopeModelPart implements CopycatModelPart {
                     updateUV(slope(Direction.UP, (a, b) -> map(0, margin, minHeight, minHeight - marginAdjBottom, b)))
             );
         } else {
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(0, 0, 0),
                     aabb(16, minHeight / 2, margin).move(0, 0, 0),
                     cull(UP | SOUTH)
             );
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(0, 0, 0),
                     aabb(16, minHeight / 2, margin).move(0, 16 - minHeight / 2, 0),
@@ -238,7 +233,7 @@ public class CopycatSlopeModelPart implements CopycatModelPart {
                     translate(0, minHeight / 2, 0)
             );
         }
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(0, 0, margin),
                 aabb(16, 16, 16 - margin * 2).move(0, 0, margin),
@@ -246,7 +241,7 @@ public class CopycatSlopeModelPart implements CopycatModelPart {
                 updateUV(slope(Direction.UP, (a, b) -> map(margin, 16 - margin, minHeight - marginAdjBottom, maxHeight - marginAdjTop, b)))
         );
         if (maxHeight == 16 || maxHeight == 0) {
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(0, 0, 16 - margin),
                     aabb(16, 16, margin).move(0, 0, 16 - margin),
@@ -254,13 +249,13 @@ public class CopycatSlopeModelPart implements CopycatModelPart {
                     updateUV(slope(Direction.UP, (a, b) -> map(16 - margin, 16, maxHeight - marginAdjTop, maxHeight, b)))
             );
         } else {
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(0, 0, 16 - margin),
                     aabb(16, maxHeight / 2, margin).move(0, 0, 16 - margin),
                     cull(UP | NORTH)
             );
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(0, 16 - maxHeight / 2, 16 - margin),
                     aabb(16, maxHeight / 2, margin).move(0, 16 - maxHeight / 2, 16 - margin),
@@ -277,7 +272,7 @@ public class CopycatSlopeModelPart implements CopycatModelPart {
                     translate(0, -16 + maxHeight, 0)
             );
         }
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(0, 0, 0),
                 aabb(16, 16, marginAdjBottom),
@@ -289,7 +284,7 @@ public class CopycatSlopeModelPart implements CopycatModelPart {
                         angle(90 - angleBottom, 0, 0)
                 )
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(0, maxHeight - margin, 16 - alignedLengthBottom),
                 aabb(16, margin, alignedLengthBottom).move(0, 16 - margin, marginAdjBottom),
@@ -304,7 +299,7 @@ public class CopycatSlopeModelPart implements CopycatModelPart {
                         angle(90 - angleBottom, 0, 0)
                 )
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(0, maxHeight - margin, 16 - alignedLengthTop),
                 aabb(16, margin, alignedLengthTop).move(0, 16 - margin, 16 - marginAdjTop - alignedLengthTop),
@@ -319,7 +314,7 @@ public class CopycatSlopeModelPart implements CopycatModelPart {
                         angle(90 - angleBottom, 0, 0)
                 )
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(0, 0, 16 - marginAdjTop),
                 aabb(16, 16, marginAdjTop).move(0, 0, 16 - marginAdjTop),

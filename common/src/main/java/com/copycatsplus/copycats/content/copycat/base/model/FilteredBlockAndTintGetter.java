@@ -3,6 +3,7 @@ package com.copycatsplus.copycats.content.copycat.base.model;
 import java.util.function.Predicate;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 
+@ApiStatus.Internal
 public class FilteredBlockAndTintGetter implements BlockAndTintGetter {
 
     public final BlockAndTintGetter wrapped;

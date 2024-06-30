@@ -1,18 +1,26 @@
 package com.copycatsplus.copycats.content.copycat.half_layer;
 
+import com.copycatsplus.copycats.CCBlocks;
+import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
-import com.copycatsplus.copycats.content.copycat.base.model.multistate.MultiStateCopycatModelPart;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableCullFace.*;
-import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Assembler.*;
+import static com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext.*;
 import static com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLayerBlock.*;
 
-public class CopycatMultiHalfLayerModelPart implements MultiStateCopycatModelPart {
+public class CopycatMultiHalfLayerModelPart extends CopycatModelCore {
+
+    @Override
+    public void registerModels(List<ModelEntry> entries) {
+        registerForMultiState(entries, CCBlocks.COPYCAT_HALF_LAYER.get());
+    }
 
     @Override
     public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
@@ -27,29 +35,25 @@ public class CopycatMultiHalfLayerModelPart implements MultiStateCopycatModelPar
         int layer = state.getValue(positive ? POSITIVE_LAYERS : NEGATIVE_LAYERS);
         if (layer == 0) return;
         GlobalTransform transform = t -> t.rotateY(rot + (positive ? 180 : 0)).flipY(flipY);
-        assemblePiece(
-                context,
+        context.assemblePiece(
                 transform,
                 vec3(0, 0, 0),
                 aabb(4, layer, 16),
                 cull(EAST | UP)
         );
-        assemblePiece(
-                context,
+        context.assemblePiece(
                 transform,
                 vec3(0, layer, 0),
                 aabb(4, layer, 16).move(0, 16 - layer, 0),
                 cull(EAST | DOWN)
         );
-        assemblePiece(
-                context,
+        context.assemblePiece(
                 transform,
                 vec3(4, 0, 0),
                 aabb(4, layer, 16).move(12, 0, 0),
                 cull(WEST | UP)
         );
-        assemblePiece(
-                context,
+        context.assemblePiece(
                 transform,
                 vec3(4, layer, 0),
                 aabb(4, layer, 16).move(12, 16 - layer, 0),

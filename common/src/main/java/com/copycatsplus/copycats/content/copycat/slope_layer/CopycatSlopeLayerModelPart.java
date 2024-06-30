@@ -1,24 +1,17 @@
 package com.copycatsplus.copycats.content.copycat.slope_layer;
 
-import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelPart;
+import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
 import com.copycatsplus.copycats.content.copycat.slope.CopycatSlopeModelPart;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
 
-import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Assembler.*;
-
-public class CopycatSlopeLayerModelPart implements CopycatModelPart {
-
-    private final boolean enhanced;
-
-    public CopycatSlopeLayerModelPart(boolean enhanced) {
-        this.enhanced = enhanced;
-    }
+public class CopycatSlopeLayerModelPart extends CopycatModelCore {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
+    public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
         int layer = state.getValue(CopycatSlopeLayerBlock.LAYERS);
         Direction facing = state.getValue(CopycatSlopeLayerBlock.FACING);
         Half half = state.getValue(CopycatSlopeLayerBlock.HALF);

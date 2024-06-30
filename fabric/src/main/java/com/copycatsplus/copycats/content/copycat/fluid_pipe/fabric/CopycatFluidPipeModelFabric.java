@@ -1,14 +1,13 @@
 package com.copycatsplus.copycats.content.copycat.fluid_pipe.fabric;
 
-import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelPart;
-import com.copycatsplus.copycats.content.copycat.base.model.fabric.SimpleCopycatModel;
+import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
+import com.copycatsplus.copycats.content.copycat.base.model.fabric.CopycatModelFabric;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeModelPart;
 import com.simibubi.create.content.decoration.bracket.BracketedBlockEntityBehaviour;
 import com.simibubi.create.content.fluids.FluidTransportBehaviour;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlock;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.utility.Iterate;
-import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachedBlockView;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
@@ -18,21 +17,19 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.function.Supplier;
 
-public class CopycatFluidPipeModelFabric extends SimpleCopycatModel {
+public class CopycatFluidPipeModelFabric extends CopycatModelFabric {
 
-    public CopycatFluidPipeModelFabric(BakedModel originalModel, CopycatModelPart part) {
-        super(originalModel, part);
+    public CopycatFluidPipeModelFabric(BakedModel originalModel, CopycatModelCore core) {
+        super(originalModel, core);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    protected void prepareCopycatPart(BlockAndTintGetter blockView, BlockState state, BlockPos pos, Supplier<RandomSource> randomSupplier, RenderContext renderContext, BlockState material, CullFaceRemovalData cullFaceRemovalData, OcclusionData occlusionData) {
+    protected void prepareModelCore(BlockAndTintGetter blockView, BlockState state, BlockPos pos, Supplier<RandomSource> randomSupplier, BlockState material, Object renderAttachmentData) {
+        super.prepareModelCore(blockView, state, pos, randomSupplier, material, renderAttachmentData);
         CopycatFluidPipeModelPart.PipeModelData data = new CopycatFluidPipeModelPart.PipeModelData();
         BracketedBlockEntityBehaviour bracket = BlockEntityBehaviour.get(blockView, pos, BracketedBlockEntityBehaviour.TYPE);
 
-        RenderAttachedBlockView attachmentView = (RenderAttachedBlockView) blockView;
-        Object attachment = attachmentView.getBlockEntityRenderAttachment(pos);
-        if (attachment instanceof FluidTransportBehaviour.AttachmentTypes[] attachments) {
+        if (renderAttachmentData instanceof FluidTransportBehaviour.AttachmentTypes[] attachments) {
             for (int i = 0; i < attachments.length; i++) {
                 data.putAttachment(Iterate.directions[i], attachments[i]);
             }
@@ -43,10 +40,10 @@ public class CopycatFluidPipeModelFabric extends SimpleCopycatModel {
 
         data.setEncased(FluidPipeBlock.shouldDrawCasing(blockView, pos, state));
 
-        if (part instanceof CopycatModelPart.WithData<?>) {
+        if (core instanceof CopycatModelCore.WithData<?>) {
             @SuppressWarnings("unchecked")
-            CopycatModelPart.WithData<CopycatFluidPipeModelPart.PipeModelData> dataPart = (CopycatModelPart.WithData<CopycatFluidPipeModelPart.PipeModelData>) part;
-            dataPart.acceptData(data);
+            CopycatModelCore.WithData<CopycatFluidPipeModelPart.PipeModelData> dataCore = (CopycatModelCore.WithData<CopycatFluidPipeModelPart.PipeModelData>) core;
+            dataCore.setData(data);
         }
     }
 }

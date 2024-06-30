@@ -1,14 +1,13 @@
 package com.copycatsplus.copycats.content.copycat.ghost_block;
 
-import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelPart;
+import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
 import net.minecraft.world.level.block.state.BlockState;
 
-import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Assembler.*;
-
-public class CopycatGhostBlockModelPart implements CopycatModelPart {
+public class CopycatGhostBlockModelPart extends CopycatModelCore {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
-        assembleQuad(context); // assemble without any modifications
+    public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
+        context.assembleAll(); // assemble without any modifications
     }
 }

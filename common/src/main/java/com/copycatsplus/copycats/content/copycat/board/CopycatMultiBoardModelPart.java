@@ -1,22 +1,29 @@
 package com.copycatsplus.copycats.content.copycat.board;
 
-import com.copycatsplus.copycats.content.copycat.base.model.multistate.MultiStateCopycatModelPart;
+import com.copycatsplus.copycats.CCBlocks;
+import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
 import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Assembler.CopycatRenderContext;
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableCullFace.*;
-import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Assembler.*;
+import static com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext.*;
 import static com.copycatsplus.copycats.content.copycat.board.CopycatBoardBlock.byDirection;
 
-public class CopycatMultiBoardModelPart implements MultiStateCopycatModelPart {
+public class CopycatMultiBoardModelPart extends CopycatModelCore {
 
     private static int i(boolean b) {
         return b ? 1 : 0;
+    }
+
+    @Override
+    public void registerModels(List<ModelEntry> entries) {
+        registerForMultiState(entries, CCBlocks.COPYCAT_BOARD.get());
     }
 
     @Override
@@ -32,7 +39,7 @@ public class CopycatMultiBoardModelPart implements MultiStateCopycatModelPart {
             return;
 
         if (direction.getAxis().isVertical()) {
-            assemblePiece(context,
+            context.assemblePiece(
                     t -> t.flipY(direction == Direction.UP),
                     vec3(0, 0, 0),
                     aabb(16, 1, 16),
@@ -45,7 +52,7 @@ public class CopycatMultiBoardModelPart implements MultiStateCopycatModelPart {
         } else {
             Direction right = direction.getClockWise();
             Direction left = direction.getCounterClockWise();
-            assemblePiece(context,
+            context.assemblePiece(
                     t -> t.rotateY((int) direction.toYRot() + 180),
                     vec3(0, 0, 0),
                     aabb(16, 16, 1),

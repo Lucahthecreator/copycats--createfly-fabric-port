@@ -1,14 +1,13 @@
 package com.copycatsplus.copycats.content.copycat.fluid_pipe.forge;
 
-import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelPart;
-import com.copycatsplus.copycats.content.copycat.base.model.forge.SimpleCopycatModel;
+import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
+import com.copycatsplus.copycats.content.copycat.base.model.forge.CopycatModelForge;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeModelPart;
 import com.simibubi.create.content.decoration.bracket.BracketedBlockEntityBehaviour;
 import com.simibubi.create.content.fluids.FluidTransportBehaviour;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlock;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.utility.Iterate;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,13 +16,14 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
+import org.jetbrains.annotations.NotNull;
 
-public class CopycatFluidPipeModelForge extends SimpleCopycatModel {
+public class CopycatFluidPipeModelForge extends CopycatModelForge {
 
     private static final ModelProperty<CopycatFluidPipeModelPart.PipeModelData> PIPE_PROPERTY = new ModelProperty<>();
 
-    public CopycatFluidPipeModelForge(BakedModel originalModel, CopycatModelPart part) {
-        super(originalModel, part);
+    public CopycatFluidPipeModelForge(BakedModel originalModel, CopycatModelCore core) {
+        super(originalModel, core);
     }
 
     @Override
@@ -45,12 +45,13 @@ public class CopycatFluidPipeModelForge extends SimpleCopycatModel {
     }
 
     @Override
-    protected void prepareCopycatPart(BlockState state, ModelData data, Direction side, RandomSource rand, BlockState material, ModelData wrappedData, RenderType renderType) {
-        if (part instanceof CopycatModelPart.WithData<?>) {
+    protected void prepareModelCore(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
+        super.prepareModelCore(state, rand, data);
+        if (core instanceof CopycatModelCore.WithData<?>) {
             @SuppressWarnings("unchecked")
-            CopycatModelPart.WithData<CopycatFluidPipeModelPart.PipeModelData> dataPart = (CopycatModelPart.WithData<CopycatFluidPipeModelPart.PipeModelData>) part;
+            CopycatModelCore.WithData<CopycatFluidPipeModelPart.PipeModelData> dataCore = (CopycatModelCore.WithData<CopycatFluidPipeModelPart.PipeModelData>) core;
             CopycatFluidPipeModelPart.PipeModelData pipeData = data.get(PIPE_PROPERTY);
-            dataPart.acceptData(pipeData);
+            dataCore.setData(pipeData);
         }
     }
 }

@@ -1,21 +1,28 @@
 package com.copycatsplus.copycats.content.copycat.bytes;
 
+import com.copycatsplus.copycats.CCBlocks;
+import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
-import com.copycatsplus.copycats.content.copycat.base.model.multistate.MultiStateCopycatModelPart;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Assembler.CopycatRenderContext;
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableCullFace.*;
-import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Assembler.*;
+import static com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext.*;
 import static com.copycatsplus.copycats.content.copycat.bytes.CopycatByteBlock.*;
 
-public class CopycatMultiByteModelPart implements MultiStateCopycatModelPart {
+public class CopycatMultiByteModelPart extends CopycatModelCore {
 
     private static final Map<String, CopycatByteBlock.Byte> byteMap = allBytes.stream()
             .collect(Collectors.toMap(s -> CopycatByteBlock.byByte(s).getName(), s -> s));
+
+    @Override
+    public void registerModels(List<ModelEntry> entries) {
+        registerForMultiState(entries, CCBlocks.COPYCAT_BYTE.get());
+    }
 
     @Override
     public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
@@ -26,57 +33,49 @@ public class CopycatMultiByteModelPart implements MultiStateCopycatModelPart {
         int offsetY = bite.y() ? 8 : 0;
         int offsetZ = bite.z() ? 8 : 0;
 
-        assemblePiece(
-                context,
+        context.assemblePiece(
                 GlobalTransform.IDENTITY,
                 vec3(offsetX, offsetY, offsetZ),
                 aabb(4, 4, 4),
                 cull(UP | EAST | SOUTH)
         );
-        assemblePiece(
-                context,
+        context.assemblePiece(
                 GlobalTransform.IDENTITY,
                 vec3(offsetX + 4, offsetY, offsetZ),
                 aabb(4, 4, 4).move(12, 0, 0),
                 cull(UP | WEST | SOUTH)
         );
-        assemblePiece(
-                context,
+        context.assemblePiece(
                 GlobalTransform.IDENTITY,
                 vec3(offsetX, offsetY, offsetZ + 4),
                 aabb(4, 4, 4).move(0, 0, 12),
                 cull(UP | EAST | NORTH)
         );
-        assemblePiece(
-                context,
+        context.assemblePiece(
                 GlobalTransform.IDENTITY,
                 vec3(offsetX + 4, offsetY, offsetZ + 4),
                 aabb(4, 4, 4).move(12, 0, 12),
                 cull(UP | WEST | NORTH)
         );
-        assemblePiece(
-                context,
+        context.assemblePiece(
                 GlobalTransform.IDENTITY,
                 vec3(offsetX, offsetY + 4, offsetZ),
                 aabb(4, 4, 4).move(0, 12, 0),
                 cull(DOWN | EAST | SOUTH)
         );
-        assemblePiece(
-                context,
+        context.assemblePiece(
                 GlobalTransform.IDENTITY,
                 vec3(offsetX + 4, offsetY + 4, offsetZ),
                 aabb(4, 4, 4).move(12, 12, 0),
                 cull(DOWN | WEST | SOUTH)
         );
-        assemblePiece(
-                context,
+        context.assemblePiece(
                 GlobalTransform.IDENTITY,
                 vec3(offsetX, offsetY + 4, offsetZ + 4),
                 aabb(4, 4, 4).move(0, 12, 12),
                 cull(DOWN | EAST | NORTH)
         );
-        assemblePiece(
-                context,
+        context.assemblePiece(
                 GlobalTransform.IDENTITY,
                 vec3(offsetX + 4, offsetY + 4, offsetZ + 4),
                 aabb(4, 4, 4).move(12, 12, 12),

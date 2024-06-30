@@ -1,12 +1,14 @@
 package com.copycatsplus.copycats.content.copycat.base.forge;
 
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.model.forge.CopycatModel;
+import com.copycatsplus.copycats.content.copycat.base.model.forge.CopycatModelForge;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelDataManager;
+
+import static com.copycatsplus.copycats.content.copycat.base.model.forge.CopycatModelForge.MATERIAL_PROPERTY;
 
 public class CCCopycatBlockImpl {
 
@@ -20,6 +22,6 @@ public class CCCopycatBlockImpl {
         ModelDataManager modelDataManager = level.getModelDataManager();
         if (modelDataManager == null)
             return ICopycatBlock.getMaterial(level, pos);
-        return CopycatModel.getMaterial(modelDataManager.getAt(pos));
+        return CopycatModelForge.getMaterial(modelDataManager.getAt(pos));
     }
 }

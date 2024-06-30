@@ -1,40 +1,41 @@
 package com.copycatsplus.copycats.content.copycat.vertical_step;
 
-import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelPart;
+import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
-import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Assembler.*;
+import static com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext.*;
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableCullFace.*;
 
-public class CopycatVerticalStepModelPart implements CopycatModelPart {
+public class CopycatVerticalStepModelPart extends CopycatModelCore {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
+    public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
         Direction facing = state.getValue(CopycatVerticalStepBlock.FACING);
 
         GlobalTransform transform = t -> t.rotateY((int) facing.toYRot());
 
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(8, 0, 8),
                 aabb(4, 16, 4),
                 cull(EAST | SOUTH)
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(12, 0, 8),
                 aabb(4, 16, 4).move(12, 0, 0),
                 cull(WEST | SOUTH)
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(8, 0, 12),
                 aabb(4, 16, 4).move(0, 0, 12),
                 cull(EAST | NORTH)
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(12, 0, 12),
                 aabb(4, 16, 4).move(12, 0, 12),

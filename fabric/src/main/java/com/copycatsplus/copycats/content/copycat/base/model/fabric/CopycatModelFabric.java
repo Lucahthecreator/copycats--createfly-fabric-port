@@ -1,0 +1,288 @@
+package com.copycatsplus.copycats.content.copycat.base.model.fabric;
+
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
+import com.copycatsplus.copycats.content.copycat.base.model.FilteredBlockAndTintGetter;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.fabric.CopycatRenderContextFabric;
+import com.copycatsplus.copycats.content.copycat.base.model.functional.fabric.WorldWithRenderData;
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.foundation.utility.Iterate;
+import com.simibubi.create.foundation.utility.Pair;
+import io.github.fabricators_of_create.porting_lib.models.CustomParticleIconModel;
+import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
+import net.fabricmc.fabric.api.renderer.v1.material.MaterialFinder;
+import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
+import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
+import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+import net.fabricmc.fabric.api.renderer.v1.model.ForwardingBakedModel;
+import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
+import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachedBlockView;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+
+import javax.annotation.Nullable;
+import java.util.*;
+import java.util.function.Supplier;
+
+import static com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore.MATERIAL_KEY;
+import static com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore.getModelOf;
+
+public class CopycatModelFabric extends ForwardingBakedModel implements CustomParticleIconModel {
+
+    protected final CopycatModelCore core;
+    protected final List<CopycatModelCore.ModelEntry> entries = new ArrayList<>();
+
+    public CopycatModelFabric(BakedModel originalModel, CopycatModelCore core) {
+        this.wrapped = originalModel;
+        this.core = core;
+        core.registerModels(entries);
+    }
+
+    private void gatherOcclusionData(BlockAndTintGetter world, BlockPos pos, BlockState state, BlockState material,
+                                     OcclusionData occlusionData, ICopycatBlock copycatBlock) {
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+        for (Direction face : Iterate.directions) {
+            if (!copycatBlock.canFaceBeOccluded(state, face))
+                continue;
+            BlockPos.MutableBlockPos neighbourPos = mutablePos.setWithOffset(pos, face);
+            if (!Block.shouldRenderFace(material, world, pos, face, neighbourPos))
+                occlusionData.occlude(face);
+        }
+    }
+
+    @Override
+    public boolean isVanillaAdapter() {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void emitBlockQuads(BlockAndTintGetter blockView, BlockState state, BlockPos pos, Supplier<RandomSource> randomSupplier, RenderContext context) {
+        Map<String, BlockState> materials;
+        Map<String, Object> remainingDataMap;
+        if (blockView instanceof RenderAttachedBlockView attachmentView) {
+            Object attachment = attachmentView.getBlockEntityRenderAttachment(pos);
+            if (attachment instanceof BlockState material1) {
+                materials = Map.of(MATERIAL_KEY, material1);
+                remainingDataMap = Map.of();
+            } else if (attachment instanceof Pair<?, ?> pair && pair.getSecond() instanceof BlockState material2) {
+                materials = Map.of(MATERIAL_KEY, material2);
+                if (pair.getFirst() != null)
+                    remainingDataMap = Map.of(MATERIAL_KEY, pair.getFirst());
+                else
+                    remainingDataMap = Map.of();
+            } else if (attachment instanceof Map<?, ?> mats) {
+                synchronized (attachment) {
+                    materials = new HashMap<>();
+                    remainingDataMap = new HashMap<>();
+                    for (Map.Entry<?, ?> entry : mats.entrySet()) {
+                        if (entry.getValue() instanceof Pair<?, ?> pair && pair.getSecond() instanceof BlockState material3) {
+                            materials.put((String) entry.getKey(), material3);
+                            remainingDataMap.put((String) entry.getKey(), pair.getFirst());
+                        } else if (entry.getValue() instanceof BlockState material4) {
+                            materials.put((String) entry.getKey(), material4);
+                        }
+                    }
+                }
+            } else {
+                materials = new HashMap<>();
+                remainingDataMap = new HashMap<>();
+            }
+        } else {
+            materials = new HashMap<>();
+            remainingDataMap = new HashMap<>();
+        }
+
+        for (CopycatModelCore.ModelEntry entry : entries) {
+            BlockState material = getMaterial(materials.get(entry.key()));
+            Object remainingData = remainingDataMap.get(entry.key());
+            prepareModelCore(blockView, state, pos, randomSupplier, material, remainingData);
+            if (entry.useMaterial()) {
+                OcclusionData occlusionData = new OcclusionData();
+                if (state.getBlock() instanceof ICopycatBlock copycatBlock) {
+                    gatherOcclusionData(blockView, pos, state, material, occlusionData, copycatBlock);
+                }
+
+                CullFaceRemovalData cullFaceRemovalData = new CullFaceRemovalData();
+                if (state.getBlock() instanceof ICopycatBlock copycatBlock) {
+                    for (Direction cullFace : Iterate.directions) {
+                        if (copycatBlock.shouldFaceAlwaysRender(state, cullFace)) {
+                            cullFaceRemovalData.remove(cullFace);
+                        }
+                    }
+                }
+
+                // fabric: need to change the default render material
+                context.pushTransform(MaterialFixer.create(material));
+
+                WorldWithRenderData renderWorld;
+                if (state.getBlock() instanceof ICopycatBlock copycatBlock) {
+                    FilteredBlockAndTintGetter filteredBlockAndTintGetter = FilteredBlockAndTintGetter.create(blockView, t -> {
+                        BlockEntity be = blockView.getBlockEntity(pos);
+                        if (be instanceof ICopycatBlockEntity ctbe)
+                            if (!ctbe.isCTEnabled())
+                                return false;
+                        return copycatBlock.canConnectTexturesToward(blockView, pos, t, state);
+                    });
+                    renderWorld = new WorldWithRenderData(filteredBlockAndTintGetter, remainingData);
+                } else {
+                    renderWorld = new WorldWithRenderData(blockView, remainingData);
+                }
+
+                BakedModel model = entry.model() == null ? null : entry.model().getModel(state, material);
+
+                // Use a mesh to defer quad emission since quads cannot be emitted inside a transform
+                MeshBuilder meshBuilder = Objects.requireNonNull(RendererAccess.INSTANCE.getRenderer()).meshBuilder();
+                QuadEmitter emitter = meshBuilder.getEmitter();
+
+                context.pushTransform(quad -> {
+                    if (cullFaceRemovalData.shouldRemove(quad.cullFace())) {
+                        quad.cullFace(null);
+                    } else if (occlusionData.isOccluded(quad.cullFace())) {
+                        // Add quad to mesh and do not render original quad to preserve quad render order
+                        emitter.copyFrom(quad);
+                        emitter.emit();
+                        return false;
+                    }
+
+                    if (entry.part() == null) {
+                        emitter.copyFrom(quad);
+                        emitter.emit();
+                    } else {
+                        CopycatRenderContextFabric copycatContext = new CopycatRenderContextFabric(quad, emitter);
+                        entry.part().emitCopycatQuads(entry.key(), state, copycatContext, material);
+                    }
+                    return false;
+                });
+                if (model == null)
+                    super.emitBlockQuads(renderWorld, material, pos, randomSupplier, context);
+                else
+                    model.emitBlockQuads(renderWorld, material, pos, randomSupplier, context);
+                context.popTransform();
+
+                meshBuilder.build().outputTo(context.getEmitter());
+
+                // fabric: pop the material changer transform
+                context.popTransform();
+            } else {
+                BakedModel model = entry.model() == null ? null : entry.model().getModel(state, material);
+
+                if (entry.part() == null) {
+                    if (model == null)
+                        super.emitBlockQuads(blockView, state, pos, randomSupplier, context);
+                    else
+                        model.emitBlockQuads(blockView, state, pos, randomSupplier, context);
+                    continue;
+                }
+
+                // Use a mesh to defer quad emission since quads cannot be emitted inside a transform
+                MeshBuilder meshBuilder = Objects.requireNonNull(RendererAccess.INSTANCE.getRenderer()).meshBuilder();
+                QuadEmitter emitter = meshBuilder.getEmitter();
+
+                context.pushTransform(quad -> {
+                    CopycatRenderContextFabric copycatContext = new CopycatRenderContextFabric(quad, emitter);
+                    entry.part().emitCopycatQuads(entry.key(), state, copycatContext, material);
+                    return false;
+                });
+                if (model == null)
+                    super.emitBlockQuads(blockView, state, pos, randomSupplier, context);
+                else
+                    model.emitBlockQuads(blockView, state, pos, randomSupplier, context);
+                context.popTransform();
+
+                meshBuilder.build().outputTo(context.getEmitter());
+            }
+        }
+    }
+
+    protected void prepareModelCore(BlockAndTintGetter blockView, BlockState state, BlockPos pos, Supplier<RandomSource> randomSupplier, BlockState material, Object renderAttachmentData) {
+        core.prepareForRender();
+    }
+
+    @Override
+    public TextureAtlasSprite getParticleIcon(Object data) {
+        if (data instanceof BlockState state) {
+            BlockState material = getMaterial(state);
+
+            return getIcon(getModelOf(material), null);
+        } else if (data instanceof Pair<?, ?> pair && pair.getSecond() instanceof BlockState material) {
+            return getIcon(getModelOf(material), pair.getFirst());
+        }
+
+        return CustomParticleIconModel.super.getParticleIcon(data);
+    }
+
+    public static TextureAtlasSprite getIcon(BakedModel model, @Nullable Object data) {
+        if (model instanceof CustomParticleIconModel particleIconModel)
+            return particleIconModel.getParticleIcon(data);
+        return model.getParticleIcon();
+    }
+
+    public static BlockState getMaterial(BlockState material) {
+        return material == null ? AllBlocks.COPYCAT_BASE.getDefaultState() : material;
+    }
+
+    public static class OcclusionData {
+        private final boolean[] occluded;
+
+        public OcclusionData() {
+            occluded = new boolean[6];
+        }
+
+        public void occlude(Direction face) {
+            occluded[face.get3DDataValue()] = true;
+        }
+
+        public boolean isOccluded(Direction face) {
+            return face != null && occluded[face.get3DDataValue()];
+        }
+    }
+
+    public static class CullFaceRemovalData {
+        private final boolean[] shouldRemove;
+
+        public CullFaceRemovalData() {
+            shouldRemove = new boolean[6];
+        }
+
+        public void remove(Direction face) {
+            shouldRemove[face.get3DDataValue()] = true;
+        }
+
+        public boolean shouldRemove(Direction face) {
+            return face != null && shouldRemove[face.get3DDataValue()];
+        }
+    }
+
+    public record MaterialFixer(RenderMaterial materialDefault) implements RenderContext.QuadTransform {
+        @Override
+        public boolean transform(MutableQuadView quad) {
+            if (quad.material().blendMode() == BlendMode.DEFAULT) {
+                // default needs to be changed from the Copycat's default (cutout) to the wrapped material's default.
+                quad.material(materialDefault);
+            }
+            return true;
+        }
+
+        public static MaterialFixer create(BlockState materialState) {
+            RenderType type = ItemBlockRenderTypes.getChunkRenderType(materialState);
+            BlendMode blendMode = BlendMode.fromRenderLayer(type);
+            MaterialFinder finder = Objects.requireNonNull(RendererAccess.INSTANCE.getRenderer()).materialFinder();
+            RenderMaterial renderMaterial = finder.blendMode(blendMode).find();
+            return new CopycatModelFabric.MaterialFixer(renderMaterial);
+        }
+    }
+}
+

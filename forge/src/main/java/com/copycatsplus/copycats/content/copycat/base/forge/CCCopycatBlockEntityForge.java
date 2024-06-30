@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.base.forge;
 
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlockEntity;
-import com.copycatsplus.copycats.content.copycat.base.model.forge.CopycatModel;
+import com.copycatsplus.copycats.content.copycat.base.model.forge.CopycatModelForge;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,7 +23,7 @@ public class CCCopycatBlockEntityForge extends CCCopycatBlockEntity {
     @Override
     public @NotNull ModelData getModelData() {
         return ModelData.builder()
-                .with(CopycatModel.MATERIAL_PROPERTY, material)
+                .with(CopycatModelForge.MATERIAL_PROPERTY, material)
                 .build();
     }
 }

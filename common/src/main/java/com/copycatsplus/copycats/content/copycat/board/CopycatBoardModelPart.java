@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.board;
 
-import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelPart;
+import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
 import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
@@ -8,19 +9,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Assembler.CopycatRenderContext;
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableCullFace.*;
-import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Assembler.*;
+import static com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext.*;
 import static com.copycatsplus.copycats.content.copycat.board.CopycatBoardBlock.byDirection;
 
-public class CopycatBoardModelPart implements CopycatModelPart {
+public class CopycatBoardModelPart extends CopycatModelCore {
 
     private static int i(boolean b) {
         return b ? 1 : 0;
     }
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
+    public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
         Map<Direction, Boolean> sides = new HashMap<>();
         for (Direction direction : Iterate.directions) {
             sides.put(direction, state.getValue(byDirection(direction)));
@@ -30,7 +30,7 @@ public class CopycatBoardModelPart implements CopycatModelPart {
             if (!sides.get(direction))
                 continue;
             if (direction.getAxis().isVertical()) {
-                assemblePiece(context,
+                context.assemblePiece(
                         t -> t.flipY(direction == Direction.UP),
                         vec3(0, 0, 0),
                         aabb(16, 1, 16),
@@ -43,7 +43,7 @@ public class CopycatBoardModelPart implements CopycatModelPart {
             } else {
                 Direction right = direction.getClockWise();
                 Direction left = direction.getCounterClockWise();
-                assemblePiece(context,
+                context.assemblePiece(
                         t -> t.rotateY((int) direction.toYRot() + 180),
                         vec3(0, 0, 0),
                         aabb(16, 16, 1),

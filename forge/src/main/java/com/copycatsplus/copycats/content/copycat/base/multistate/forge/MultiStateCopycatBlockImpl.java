@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.base.multistate.forge;
 
-import com.copycatsplus.copycats.content.copycat.base.model.multistate.forge.MultiStateCopycatModel;
+import com.copycatsplus.copycats.content.copycat.base.model.forge.CopycatModelForge;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.ScaledBlockAndTintGetter;
 import net.minecraft.core.BlockPos;
@@ -48,7 +48,7 @@ public class MultiStateCopycatBlockImpl {
         ModelDataManager modelDataManager = level.getModelDataManager();
         BlockState appearance = null;
         if (modelDataManager != null)
-            appearance = MultiStateCopycatModel.getMaterials(modelDataManager.getAt(truePos == null ? pos : truePos)).get(property);
+            appearance = CopycatModelForge.getMaterials(modelDataManager.getAt(truePos == null ? pos : truePos)).get(property);
         if (appearance == null)
             appearance = MultiStateCopycatBlock.getMaterial(level, pos, property);
         return appearance;

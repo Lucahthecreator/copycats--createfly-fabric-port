@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.ladder.forge;
 
-import com.copycatsplus.copycats.content.copycat.base.model.multistate.forge.MultiStateCopycatModel;
+import com.copycatsplus.copycats.content.copycat.base.model.forge.CopycatModelForge;
 import com.copycatsplus.copycats.content.copycat.ladder.CopycatLadderMultiStateBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
@@ -23,8 +23,8 @@ public class CopycatLadderMultiStateBlockEntityForge extends CopycatLadderMultiS
 
     @Override
     public @NotNull ModelData getModelData() {
-         return ModelData.builder()
-                .with(MultiStateCopycatModel.MATERIALS_PROPERTY, getMaterialItemStorage().getMaterialMap())
+        return ModelData.builder()
+                .with(CopycatModelForge.MATERIALS_PROPERTY, getMaterialItemStorage().getMaterialMap())
                 .build();
     }
 }

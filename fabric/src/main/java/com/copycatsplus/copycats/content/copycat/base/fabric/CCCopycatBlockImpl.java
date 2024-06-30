@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.base.fabric;
 
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.model.fabric.CopycatModel;
+import com.copycatsplus.copycats.content.copycat.base.model.fabric.CopycatModelFabric;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockAndTintGetter;
@@ -14,6 +14,6 @@ public class CCCopycatBlockImpl {
         if (block.isIgnoredConnectivitySide(level, state, side, pos, queryPos))
             return state;
 
-        return CopycatModel.getMaterial(ICopycatBlock.getMaterial(level, pos));
+        return CopycatModelFabric.getMaterial(ICopycatBlock.getMaterial(level, pos));
     }
 }

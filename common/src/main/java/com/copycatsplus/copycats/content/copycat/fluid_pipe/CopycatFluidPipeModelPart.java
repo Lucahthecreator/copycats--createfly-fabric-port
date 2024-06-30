@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.fluid_pipe;
 
-import com.copycatsplus.copycats.config.CCConfigs;
-import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelPart;
+import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
 import com.simibubi.create.content.fluids.FluidTransportBehaviour;
 import com.simibubi.create.foundation.utility.Iterate;
@@ -14,17 +14,13 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.*;
 
-import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Assembler.*;
+import static com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext.*;
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableCullFace.*;
 
-public class CopycatFluidPipeModelPart implements CopycatModelPart.WithData<CopycatFluidPipeModelPart.PipeModelData> {
-
-    protected boolean enhanced;
-
-    protected final ThreadLocal<PipeModelData> data = new ThreadLocal<>();
+public class CopycatFluidPipeModelPart extends CopycatModelCore.WithData<CopycatFluidPipeModelPart.PipeModelData> {
 
     @Override
-    public void emitCopycatQuads(BlockState state, CopycatRenderContext context, BlockState material) {
+    public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
         List<Direction> directions = new ArrayList<>(6);
         for (Direction direction : Iterate.directions) {
             if (state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction)))
@@ -80,15 +76,15 @@ public class CopycatFluidPipeModelPart implements CopycatModelPart.WithData<Copy
 
     protected void assembleAccessories(CopycatRenderContext context) {
         for (Direction direction : Iterate.directions) {
-            for (FluidTransportBehaviour.AttachmentTypes.ComponentPartials partial : data.get().getAttachment(direction).partials) {
+            for (FluidTransportBehaviour.AttachmentTypes.ComponentPartials partial : getData().getAttachment(direction).partials) {
                 renderComponent(context, direction, partial);
             }
         }
-        if (data.get().isEncased()) {
+        if (getData().isEncased()) {
             renderEncasing(context);
         }
-        if (data.get().getBracket() != null) {
-            assembleModel(data.get().getBracket(), context);
+        if (getData().getBracket() != null) {
+//            assembleModel(data.get().getBracket(), context);
         }
     }
 
@@ -113,25 +109,25 @@ public class CopycatFluidPipeModelPart implements CopycatModelPart.WithData<Copy
     }
 
     protected void renderStraightCore(CopycatRenderContext context, GlobalTransform transform) {
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(4, 4, 4),
                 aabb(4, 4, 8).move(0, 0, 4),
                 cull(EAST | UP | NORTH | SOUTH)
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(8, 4, 4),
                 aabb(4, 4, 8).move(12, 0, 4),
                 cull(WEST | UP | NORTH | SOUTH)
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(4, 8, 4),
                 aabb(4, 4, 8).move(0, 12, 4),
                 cull(EAST | DOWN | NORTH | SOUTH)
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(8, 8, 4),
                 aabb(4, 4, 8).move(12, 12, 4),
@@ -141,62 +137,62 @@ public class CopycatFluidPipeModelPart implements CopycatModelPart.WithData<Copy
 
     protected void renderBend(CopycatRenderContext context, GlobalTransform transform) {
         if (enhanced) {
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(8, 4, 4),
                     aabb(4, 4, 8).move(12, 0, 8),
                     cull(WEST | UP | NORTH)
             );
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(8, 8, 4),
                     aabb(4, 4, 8).move(12, 12, 8),
                     cull(WEST | DOWN | NORTH)
             );
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(4, 4, 8),
                     aabb(4, 4, 4).move(8, 0, 12),
                     cull(EAST | WEST | UP | NORTH)
             );
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(4, 8, 8),
                     aabb(4, 4, 4).move(8, 12, 12),
                     cull(EAST | WEST | DOWN | NORTH)
             );
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(7, 4, 4),
                     aabb(1, 8, 4).move(3, 0, 8),
                     cull(EAST | WEST | NORTH | SOUTH)
             );
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(5, 4, 4),
                     aabb(2, 8, 2).move(1, 0, 8),
                     cull(EAST | WEST | NORTH | SOUTH)
             );
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(4, 4, 6),
                     aabb(3, 8, 2).move(8, 0, 2),
                     cull(EAST | WEST | NORTH | SOUTH)
             );
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(4, 4, 4),
                     aabb(1, 8, 2).move(8, 0, 0),
                     cull(EAST | WEST | NORTH | SOUTH)
             );
         } else {
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(4, 4, 4),
                     aabb(8, 4, 8).move(8, 0, 8),
                     cull(WEST | UP | NORTH)
             );
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(4, 8, 4),
                     aabb(8, 4, 8).move(8, 12, 8),
@@ -207,19 +203,19 @@ public class CopycatFluidPipeModelPart implements CopycatModelPart.WithData<Copy
 
     protected void renderCorner(CopycatRenderContext context, GlobalTransform transform) {
         if (enhanced) {
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(4, 4, 4),
                     aabb(4, 8, 4).move(0, 0, 0),
                     cull(EAST | UP | SOUTH)
             );
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(4, 4, 8),
                     aabb(4, 4, 4).move(0, 0, 4),
                     cull(EAST | UP | NORTH | SOUTH)
             );
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(8, 4, 4),
                     aabb(4, 4, 4).move(4, 0, 0),
@@ -229,7 +225,7 @@ public class CopycatFluidPipeModelPart implements CopycatModelPart.WithData<Copy
             renderCornerPart(context, t -> transform.apply(t.rotateY(-90).flipZ(true)));
             renderCornerPart(context, t -> transform.apply(t.rotateX(90).flipZ(true)));
         } else {
-            assemblePiece(context,
+            context.assemblePiece(
                     transform,
                     vec3(4, 4, 4),
                     aabb(8, 8, 8).move(0, 0, 0),
@@ -239,25 +235,25 @@ public class CopycatFluidPipeModelPart implements CopycatModelPart.WithData<Copy
     }
 
     protected void renderCornerPart(CopycatRenderContext context, GlobalTransform transform) {
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(8, 8, 4),
                 aabb(4, 1, 4).move(4, 12, 0),
                 cull(EAST | WEST | UP | DOWN | SOUTH)
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(10, 9, 4),
                 aabb(2, 2, 4).move(6, 13, 0),
                 cull(EAST | WEST | UP | DOWN | SOUTH)
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(8, 9, 4),
                 aabb(2, 3, 4).move(12, 5, 0),
                 cull(EAST | WEST | UP | DOWN | SOUTH)
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 transform,
                 vec3(10, 11, 4),
                 aabb(2, 1, 4).move(14, 7, 0),
@@ -266,49 +262,49 @@ public class CopycatFluidPipeModelPart implements CopycatModelPart.WithData<Copy
     }
 
     protected void renderEncasing(CopycatRenderContext context) {
-        assemblePiece(context,
+        context.assemblePiece(
                 GlobalTransform.IDENTITY,
                 vec3(3, 3, 3),
                 aabb(5, 5, 5).move(0, 0, 0),
                 cull(EAST | UP | SOUTH)
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 GlobalTransform.IDENTITY,
                 vec3(8, 3, 3),
                 aabb(5, 5, 5).move(11, 0, 0),
                 cull(WEST | UP | SOUTH)
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 GlobalTransform.IDENTITY,
                 vec3(3, 8, 3),
                 aabb(5, 5, 5).move(0, 11, 0),
                 cull(EAST | DOWN | SOUTH)
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 GlobalTransform.IDENTITY,
                 vec3(8, 8, 3),
                 aabb(5, 5, 5).move(11, 11, 0),
                 cull(WEST | DOWN | SOUTH)
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 GlobalTransform.IDENTITY,
                 vec3(3, 3, 8),
                 aabb(5, 5, 5).move(0, 0, 11),
                 cull(EAST | UP | NORTH)
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 GlobalTransform.IDENTITY,
                 vec3(8, 3, 8),
                 aabb(5, 5, 5).move(11, 0, 11),
                 cull(WEST | UP | NORTH)
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 GlobalTransform.IDENTITY,
                 vec3(3, 8, 8),
                 aabb(5, 5, 5).move(0, 11, 11),
                 cull(EAST | DOWN | NORTH)
         );
-        assemblePiece(context,
+        context.assemblePiece(
                 GlobalTransform.IDENTITY,
                 vec3(8, 8, 8),
                 aabb(5, 5, 5).move(11, 11, 11),
@@ -322,25 +318,25 @@ public class CopycatFluidPipeModelPart implements CopycatModelPart.WithData<Copy
                 : t -> t.rotateY((int) direction.toYRot() + 180);
         switch (component) {
             case RIM -> {
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(3, 3, 0),
                         aabb(5, 5, 2).move(0, 0, 14),
                         cull(EAST | UP)
                 );
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(8, 3, 0),
                         aabb(5, 5, 2).move(11, 0, 14),
                         cull(WEST | UP)
                 );
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(3, 8, 0),
                         aabb(5, 5, 2).move(0, 11, 14),
                         cull(EAST | DOWN)
                 );
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(8, 8, 0),
                         aabb(5, 5, 2).move(11, 11, 14),
@@ -348,25 +344,25 @@ public class CopycatFluidPipeModelPart implements CopycatModelPart.WithData<Copy
                 );
             }
             case CONNECTION -> {
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(4, 4, 0),
                         aabb(4, 4, 4).move(0, 0, 4),
                         cull(EAST | UP | SOUTH | NORTH)
                 );
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(8, 4, 0),
                         aabb(4, 4, 4).move(12, 0, 4),
                         cull(WEST | UP | SOUTH | NORTH)
                 );
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(4, 8, 0),
                         aabb(4, 4, 4).move(0, 12, 4),
                         cull(EAST | DOWN | SOUTH | NORTH)
                 );
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(8, 8, 0),
                         aabb(4, 4, 4).move(12, 12, 4),
@@ -374,25 +370,25 @@ public class CopycatFluidPipeModelPart implements CopycatModelPart.WithData<Copy
                 );
             }
             case RIM_CONNECTOR -> {
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(4, 4, 2),
                         aabb(4, 4, 2).move(0, 0, 4),
                         cull(EAST | UP | SOUTH | NORTH)
                 );
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(8, 4, 2),
                         aabb(4, 4, 2).move(12, 0, 4),
                         cull(WEST | UP | SOUTH | NORTH)
                 );
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(4, 8, 2),
                         aabb(4, 4, 2).move(0, 12, 4),
                         cull(EAST | DOWN | SOUTH | NORTH)
                 );
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(8, 8, 2),
                         aabb(4, 4, 2).move(12, 12, 4),
@@ -400,50 +396,50 @@ public class CopycatFluidPipeModelPart implements CopycatModelPart.WithData<Copy
                 );
             }
             case DRAIN -> {
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(3, 3, -1),
                         aabb(5, 5, 3).move(0, 0, 13),
                         cull(EAST | UP)
                 );
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(8, 3, -1),
                         aabb(5, 5, 3).move(11, 0, 13),
                         cull(WEST | UP)
                 );
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(3, 8, -1),
                         aabb(5, 5, 3).move(0, 11, 13),
                         cull(EAST | DOWN)
                 );
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(8, 8, -1),
                         aabb(5, 5, 3).move(11, 11, 13),
                         cull(WEST | DOWN)
                 );
 
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(5, 5, -4),
                         aabb(3, 3, 3).move(0, 0, 0),
                         cull(EAST | UP)
                 );
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(8, 5, -4),
                         aabb(3, 3, 3).move(13, 0, 0),
                         cull(WEST | UP)
                 );
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(5, 8, -4),
                         aabb(3, 3, 3).move(0, 13, 0),
                         cull(EAST | DOWN)
                 );
-                assemblePiece(context,
+                context.assemblePiece(
                         transform,
                         vec3(8, 8, -4),
                         aabb(3, 3, 3).move(13, 13, 0),
@@ -451,12 +447,6 @@ public class CopycatFluidPipeModelPart implements CopycatModelPart.WithData<Copy
                 );
             }
         }
-    }
-
-    @Override
-    public void acceptData(PipeModelData data) {
-        this.data.set(data);
-        this.enhanced = CCConfigs.client().useEnhancedModels.get();
     }
 
     public static class PipeModelData {
