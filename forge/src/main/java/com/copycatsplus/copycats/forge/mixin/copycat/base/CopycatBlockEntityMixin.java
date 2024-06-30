@@ -7,6 +7,7 @@ import com.copycatsplus.copycats.content.copycat.base.model.kinetic.forge.Kineti
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlockEntity;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatStraightPipeBlockEntity;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlockEntity;
+import com.copycatsplus.copycats.utility.BlockEntityUtils;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -31,7 +32,7 @@ public abstract class CopycatBlockEntityMixin extends SmartBlockEntity implement
     public void redraw() {
         if (!isVirtual())
             requestModelDataUpdate();
-        ICopycatBlockEntity.super.redraw();
+        BlockEntityUtils.redraw(this);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.copycatsplus.copycats.forge.mixin.copycat.base.multistate;
 import com.copycatsplus.copycats.content.copycat.base.model.kinetic.forge.KineticCopycatRendererImpl;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
+import com.copycatsplus.copycats.utility.BlockEntityUtils;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -28,7 +29,7 @@ public abstract class MultiStateCopycatBlockEntityMixin extends SmartBlockEntity
     public void redraw() {
         if (!isVirtual())
             requestModelDataUpdate();
-        IMultiStateCopycatBlockEntity.super.redraw();
+        BlockEntityUtils.redraw(this);
     }
 
     @Override
