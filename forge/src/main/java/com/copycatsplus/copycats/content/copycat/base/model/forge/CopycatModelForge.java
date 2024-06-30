@@ -3,8 +3,9 @@ package com.copycatsplus.copycats.content.copycat.base.model.forge;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
+import com.copycatsplus.copycats.content.copycat.base.model.FilteredBlockAndTintGetter;
+import com.copycatsplus.copycats.content.copycat.base.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.forge.CopycatRenderContextForge;
-import com.copycatsplus.copycats.content.copycat.base.model.multistate.forge.ScaledBlockAndTintGetterForge;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.simibubi.create.AllBlocks;
@@ -117,8 +118,8 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
         if (copycatBlock instanceof MultiStateCopycatBlock multiStateBlock) {
             Map<String, ModelData> wrappedDataMap = materials.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, s -> {
                 Vec3i inner = multiStateBlock.getVectorFromProperty(state, s.getKey());
-                ScaledBlockAndTintGetterForge scaledWorld = new ScaledBlockAndTintGetterForge(s.getKey(), world, pos, inner, multiStateBlock.vectorScale(state), p -> true);
-                ScaledBlockAndTintGetterForge filteredWorld = new ScaledBlockAndTintGetterForge(s.getKey(), world, pos, inner, multiStateBlock.vectorScale(state),
+                ScaledBlockAndTintGetter scaledWorld = new ScaledBlockAndTintGetterForge(s.getKey(), world, pos, inner, multiStateBlock.vectorScale(state), p -> true);
+                ScaledBlockAndTintGetter filteredWorld = new ScaledBlockAndTintGetterForge(s.getKey(), world, pos, inner, multiStateBlock.vectorScale(state),
                         targetPos -> {
                             BlockEntity be = world.getBlockEntity(pos);
                             if (be instanceof MultiStateCopycatBlockEntity mscbe)
@@ -132,7 +133,7 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
             }));
             return builder.with(WRAPPED_DATA_PROPERTY, wrappedDataMap);
         } else {
-            FilteredBlockAndTintGetterForge filteredWorld = new FilteredBlockAndTintGetterForge(world,
+            FilteredBlockAndTintGetter filteredWorld = new FilteredBlockAndTintGetterForge(world,
                     targetPos -> {
                         BlockEntity be = world.getBlockEntity(pos);
                         if (be instanceof ICopycatBlockEntity copycatBE)

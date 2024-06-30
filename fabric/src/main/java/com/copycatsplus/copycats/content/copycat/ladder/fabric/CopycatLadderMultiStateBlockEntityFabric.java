@@ -15,11 +15,6 @@ public class CopycatLadderMultiStateBlockEntityFabric extends CopycatLadderMulti
     }
 
     @Override
-    public void requestModelUpdate() {
-
-    }
-
-    @Override
     public @Nullable Map<String, BlockState> getRenderAttachmentData() {
         return getMaterialItemStorage().getMaterialMap();
     }

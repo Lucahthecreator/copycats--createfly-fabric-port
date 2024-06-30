@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.base.multistate;
 
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -11,6 +12,10 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public abstract class WaterloggedMultiStateCopycatBlock extends MultiStateCopycatBlock implements ProperWaterloggedBlock {
     public WaterloggedMultiStateCopycatBlock(Properties properties) {
         super(properties);

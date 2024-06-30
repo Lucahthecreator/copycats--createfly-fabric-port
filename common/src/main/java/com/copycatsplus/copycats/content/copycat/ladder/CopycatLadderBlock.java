@@ -136,11 +136,6 @@ public class CopycatLadderBlock extends LadderBlock implements ICopycatBlock, IB
         return CCBlockEntityTypes.COPYCAT.get();
     }
 
-    public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
-                                    BlockState queryState, BlockPos queryPos) {
-        return CCCopycatBlock.getCopycatAppearance(this, state, level, pos, side, queryState, queryPos);
-    }
-
     @Override
     public boolean canConnectTexturesToward(BlockAndTintGetter blockAndTintGetter, BlockPos blockPos, BlockPos blockPos1, BlockState blockState) {
         return false;

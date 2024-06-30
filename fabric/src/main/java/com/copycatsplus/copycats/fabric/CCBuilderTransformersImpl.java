@@ -2,6 +2,7 @@ package com.copycatsplus.copycats.fabric;
 
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
@@ -37,7 +38,7 @@ public class CCBuilderTransformersImpl {
                 .addLayer(() -> RenderType::cutout)
                 .addLayer(() -> RenderType::cutoutMipped)
                 .addLayer(() -> RenderType::translucent)
-                .color(() -> MultiStateCopycatBlock::wrappedColor)
+                .color(() -> IMultiStateCopycatBlock::wrappedColor)
                 .transform(TagGen.axeOrPickaxe());
     }
 
@@ -52,6 +53,6 @@ public class CCBuilderTransformersImpl {
                 .addLayer(() -> RenderType::cutout)
                 .addLayer(() -> RenderType::cutoutMipped)
                 .addLayer(() -> RenderType::translucent)
-                .color(() -> MultiStateCopycatBlock::wrappedColor);
+                .color(() -> IMultiStateCopycatBlock::wrappedColor);
     }
 }

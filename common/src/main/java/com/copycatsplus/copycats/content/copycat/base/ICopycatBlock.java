@@ -38,7 +38,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public interface ICopycatBlock extends IWrenchable {
+public interface ICopycatBlock extends IWrenchable, IStateType {
 
     @Nullable
     default ICopycatBlockEntity getCopycatBlockEntity(BlockGetter worldIn, BlockPos pos) {
@@ -46,10 +46,10 @@ public interface ICopycatBlock extends IWrenchable {
 
         if (blockEntity == null)
             return null;
-        if (!(blockEntity instanceof ICopycatBlockEntity functionalCopycatBlockEntity))
+        if (!(blockEntity instanceof ICopycatBlockEntity copycatBE))
             return null;
 
-        return functionalCopycatBlockEntity;
+        return copycatBE;
     }
 
     default boolean canToggleCT(BlockState state, BlockAndTintGetter level, BlockPos pos) {
@@ -87,11 +87,11 @@ public interface ICopycatBlock extends IWrenchable {
 
     @Override
     default InteractionResult onWrenched(BlockState state, UseOnContext context) {
-        ICopycatBlockEntity ufte = getCopycatBlockEntity(context.getLevel(), context.getClickedPos());
-        if (ufte == null)
+        ICopycatBlockEntity copycatBE = getCopycatBlockEntity(context.getLevel(), context.getClickedPos());
+        if (copycatBE == null)
             return InteractionResult.PASS;
-        ItemStack consumedItem = ufte.getConsumedItem();
-        if (!ufte.hasCustomMaterial())
+        ItemStack consumedItem = copycatBE.getConsumedItem();
+        if (!copycatBE.hasCustomMaterial())
             return InteractionResult.PASS;
         Player player = context.getPlayer();
         if (!player.isCreative())
@@ -99,8 +99,8 @@ public interface ICopycatBlock extends IWrenchable {
                     .placeItemBackInInventory(consumedItem);
         context.getLevel()
                 .levelEvent(2001, context.getClickedPos(), Block.getId(getMaterial(context.getLevel(), context.getClickedPos())));
-        ufte.setMaterial(AllBlocks.COPYCAT_BASE.getDefaultState());
-        ufte.setConsumedItem(ItemStack.EMPTY);
+        copycatBE.setMaterial(AllBlocks.COPYCAT_BASE.getDefaultState());
+        copycatBE.setConsumedItem(ItemStack.EMPTY);
         return InteractionResult.SUCCESS;
     }
 
@@ -188,27 +188,27 @@ public interface ICopycatBlock extends IWrenchable {
             return InteractionResult.PASS;
 
         BlockState material = materialIn;
-        ICopycatBlockEntity ufte = getCopycatBlockEntity(world, pos);
-        if (ufte == null)
+        ICopycatBlockEntity copycatBE = getCopycatBlockEntity(world, pos);
+        if (copycatBE == null)
             return InteractionResult.PASS;
-        if (ufte.getMaterial()
+        if (copycatBE.getMaterial()
                 .is(material.getBlock())) {
-            if (!ufte.cycleMaterial())
+            if (!copycatBE.cycleMaterial())
                 return InteractionResult.PASS;
-            ufte.getLevel()
-                    .playSound(null, ufte.getBlockPos(), SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, .75f,
+            copycatBE.getLevel()
+                    .playSound(null, copycatBE.getBlockPos(), SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, .75f,
                             .95f);
             return InteractionResult.SUCCESS;
         }
-        if (ufte.hasCustomMaterial())
+        if (copycatBE.hasCustomMaterial())
             return InteractionResult.PASS;
         if (world.isClientSide())
             return InteractionResult.SUCCESS;
 
-        ufte.setMaterial(material);
-        ufte.setConsumedItem(itemInHand);
-        ufte.getLevel()
-                .playSound(null, ufte.getBlockPos(), material.getSoundType()
+        copycatBE.setMaterial(material);
+        copycatBE.setConsumedItem(itemInHand);
+        copycatBE.getLevel()
+                .playSound(null, copycatBE.getBlockPos(), material.getSoundType()
                         .getPlaceSound(), SoundSource.BLOCKS, 1, .75f);
 
         if (player.isCreative())
@@ -229,14 +229,14 @@ public interface ICopycatBlock extends IWrenchable {
 
         if (appliedState == null)
             return;
-        ICopycatBlockEntity ufte = getCopycatBlockEntity(worldIn, pos);
-        if (ufte == null)
+        ICopycatBlockEntity copycatBE = getCopycatBlockEntity(worldIn, pos);
+        if (copycatBE == null)
             return;
-        if (ufte.hasCustomMaterial())
+        if (copycatBE.hasCustomMaterial())
             return;
 
-        ufte.setMaterial(appliedState);
-        ufte.setConsumedItem(offhandItem);
+        copycatBE.setMaterial(appliedState);
+        copycatBE.setConsumedItem(offhandItem);
 
         if (placer instanceof Player player && player.isCreative())
             return;
@@ -249,18 +249,27 @@ public interface ICopycatBlock extends IWrenchable {
         if (!state.hasBlockEntity() || state.getBlock() == newState.getBlock())
             return;
         if (!isMoving) {
-            ICopycatBlockEntity ufte = getCopycatBlockEntity(world, pos);
-            if (ufte != null)
-                Block.popResource(world, pos, ufte.getConsumedItem());
+            ICopycatBlockEntity copycatBE = getCopycatBlockEntity(world, pos);
+            if (copycatBE != null)
+                Block.popResource(world, pos, copycatBE.getConsumedItem());
         }
         world.removeBlockEntity(pos);
     }
 
     default void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         if (player.isCreative()) {
-            ICopycatBlockEntity ufte = getCopycatBlockEntity(level, pos);
-            if (ufte != null) ufte.setConsumedItem(ItemStack.EMPTY);
+            ICopycatBlockEntity copycatBE = getCopycatBlockEntity(level, pos);
+            if (copycatBE != null) copycatBE.setConsumedItem(ItemStack.EMPTY);
         }
+    }
+
+    static BlockState getAppearance(ICopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
+                                     BlockState queryState, BlockPos queryPos) {
+        if (block.isIgnoredConnectivitySide(level, state, side, pos, queryPos))
+            return state;
+
+        BlockState material = getMaterial(level, pos);
+        return material.is(Blocks.AIR) ? AllBlocks.COPYCAT_BASE.getDefaultState() : material;
     }
 
     static BlockState getMaterial(BlockGetter reader, BlockPos targetPos) {
@@ -293,7 +302,7 @@ public interface ICopycatBlock extends IWrenchable {
     }
 
     @Environment(EnvType.CLIENT)
-    static class WrappedBlockColor implements BlockColor {
+    class WrappedBlockColor implements BlockColor {
 
         @Override
         public int getColor(BlockState pState, @Nullable BlockAndTintGetter pLevel, @Nullable BlockPos pPos,

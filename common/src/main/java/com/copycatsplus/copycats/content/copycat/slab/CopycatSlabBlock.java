@@ -2,8 +2,11 @@ package com.copycatsplus.copycats.content.copycat.slab;
 
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
-import com.copycatsplus.copycats.content.copycat.base.multistate.ScaledBlockAndTintGetter;
+import com.copycatsplus.copycats.content.copycat.base.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.multistate.WaterloggedMultiStateCopycatBlock;
 import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.simibubi.create.AllBlocks;
@@ -60,8 +63,8 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock {
     }
 
     @Override
-    public int maxMaterials() {
-        return 2;
+    public String defaultProperty() {
+        return SlabType.TOP.getSerializedName();
     }
 
     @Override
@@ -123,7 +126,7 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock {
         Level world = context.getLevel();
         BlockPos pos = context.getClickedPos();
         Player player = context.getPlayer();
-        String property = getProperty(state, context.getLevel(), context.getClickedPos(), context.getClickLocation(), context.getClickedFace(), true);
+        String property = getPropertyFromInteraction(state, context.getLevel(), context.getClickedPos(), context.getClickLocation(), context.getClickedFace(), true);
         if (!partExists(state, property)) return InteractionResult.FAIL;
         if (world instanceof ServerLevel) {
             if (player != null) {
@@ -238,7 +241,7 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock {
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
-        VoxelShape shapeOverride = multiPlatformGetShape(pState, pLevel, pPos, pContext);
+        VoxelShape shapeOverride = IMultiStateCopycatBlock.blockShapeOverride(pState, pLevel, pPos, pContext);
         if (shapeOverride != null) return shapeOverride;
         SlabType type = pState.getValue(SLAB_TYPE);
         Axis axis = pState.getValue(AXIS);
@@ -260,12 +263,12 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock {
     public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState,
                                      Direction dir) {
         if (neighborState.getBlock() instanceof SlabBlock || neighborState.getBlock() instanceof CopycatSlabBlock) {
-            if (getMaterial(level, pos).skipRendering(getMaterial(level, pos.relative(dir)), dir.getOpposite()))
+            if (ICopycatBlock.getMaterial(level, pos).skipRendering(ICopycatBlock.getMaterial(level, pos.relative(dir)), dir.getOpposite()))
                 return getFaceShape(state, dir) == getFaceShape(neighborState, dir.getOpposite());
         }
 
         return getFaceShape(state, dir) == FaceShape.FULL
-                && getMaterial(level, pos).skipRendering(neighborState, dir.getOpposite());
+                && ICopycatBlock.getMaterial(level, pos).skipRendering(neighborState, dir.getOpposite());
     }
 
     @Override
@@ -275,7 +278,7 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock {
     }
 
     @Override
-    public void rotate(@NotNull BlockState state, @NotNull MultiStateCopycatBlockEntity be, Rotation rotation) {
+    public void rotate(@NotNull BlockState state, @NotNull IMultiStateCopycatBlockEntity be, Rotation rotation) {
         Axis axis = state.getValue(AXIS);
         if (axis == Axis.Y) return;
         if (rotation == Rotation.CLOCKWISE_90 && axis == Axis.X ||
@@ -292,7 +295,7 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock {
     }
 
     @Override
-    public void mirror(@NotNull BlockState state, @NotNull MultiStateCopycatBlockEntity be, Mirror mirror) {
+    public void mirror(@NotNull BlockState state, @NotNull IMultiStateCopycatBlockEntity be, Mirror mirror) {
         Axis axis = state.getValue(AXIS);
         if (axis == Axis.Y) return;
         if (mirror == Mirror.FRONT_BACK && axis == Axis.Z || mirror == Mirror.LEFT_RIGHT && axis == Axis.X) {

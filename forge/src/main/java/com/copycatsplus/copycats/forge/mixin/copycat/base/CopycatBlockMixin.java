@@ -113,14 +113,6 @@ public abstract class CopycatBlockMixin extends Block implements ICopycatBlock {
     }
 
     @Override
-    public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, @Nullable BlockState queryState, @Nullable BlockPos queryPos) {
-        if (isIgnoredConnectivitySide(level, state, side, pos, queryPos))
-            return state;
-
-        return getMaterial(level, pos);
-    }
-
-    @Override
     public boolean isValidSpawn(BlockState state, BlockGetter level, BlockPos pos, SpawnPlacements.Type type,
                                 EntityType<?> entityType) {
         return false;
@@ -137,5 +129,10 @@ public abstract class CopycatBlockMixin extends Block implements ICopycatBlock {
     @Override
     public float getDestroyProgress(@NotNull BlockState pState, @NotNull Player pPlayer, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos) {
         return getMaterial(pLevel, pPos).getDestroyProgress(pPlayer, pLevel, pPos);
+    }
+
+    @Override
+    public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, @Nullable BlockState queryState, @Nullable BlockPos queryPos) {
+        return ICopycatBlock.getAppearance(this, state, level, pos, side, queryState, queryPos);
     }
 }

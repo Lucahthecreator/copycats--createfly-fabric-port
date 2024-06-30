@@ -1,6 +1,8 @@
 package com.copycatsplus.copycats.content.copycat.bytes;
 
 import com.copycatsplus.copycats.Copycats;
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.WaterloggedMultiStateCopycatBlock;
 import com.google.common.collect.ImmutableMap;
@@ -79,8 +81,8 @@ public class CopycatByteBlock extends WaterloggedMultiStateCopycatBlock {
     }
 
     @Override
-    public int maxMaterials() {
-        return 8;
+    public String defaultProperty() {
+        return BOTTOM_NW.getName();
     }
 
     @Override
@@ -161,7 +163,7 @@ public class CopycatByteBlock extends WaterloggedMultiStateCopycatBlock {
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
-        VoxelShape shapeOverride = multiPlatformGetShape(pState, pLevel, pPos, pContext);
+        VoxelShape shapeOverride = IMultiStateCopycatBlock.blockShapeOverride(pState, pLevel, pPos, pContext);
         if (shapeOverride != null) return shapeOverride;
         return Objects.requireNonNull(this.shapesCache.get(pState));
     }
@@ -260,7 +262,7 @@ public class CopycatByteBlock extends WaterloggedMultiStateCopycatBlock {
     }
 
     @Override
-    public void rotate(@NotNull BlockState state, @NotNull MultiStateCopycatBlockEntity be, Rotation rotation) {
+    public void rotate(@NotNull BlockState state, @NotNull IMultiStateCopycatBlockEntity be, Rotation rotation) {
         be.getMaterialItemStorage().remapStorage(key -> byByte(byteMap.get(key).rotate(rotation)).getName());
     }
 
@@ -271,7 +273,7 @@ public class CopycatByteBlock extends WaterloggedMultiStateCopycatBlock {
     }
 
     @Override
-    public void mirror(@NotNull BlockState state, @NotNull MultiStateCopycatBlockEntity be, Mirror mirror) {
+    public void mirror(@NotNull BlockState state, @NotNull IMultiStateCopycatBlockEntity be, Mirror mirror) {
         be.getMaterialItemStorage().remapStorage(key -> byByte(byteMap.get(key).mirror(mirror)).getName());
     }
 

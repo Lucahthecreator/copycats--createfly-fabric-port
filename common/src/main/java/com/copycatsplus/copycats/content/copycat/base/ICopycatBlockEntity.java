@@ -61,6 +61,10 @@ public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement,
         setCTEnabledInternal(true);
     }
 
+    default ICopycatBlock getBlock() {
+        return (ICopycatBlock) getBlockState().getBlock();
+    }
+
     default boolean hasCustomMaterial() {
         return !AllBlocks.COPYCAT_BASE.has(getMaterial());
     }

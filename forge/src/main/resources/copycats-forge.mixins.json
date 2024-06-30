@@ -9,7 +9,7 @@
     "compat.registrate.CreateRegistrateMixin",
     "copycat.base.CopycatBlockEntityMixin",
     "copycat.base.CopycatBlockMixin",
-    "copycat.base.multistate.MultiStateCopycatBlockCombinerMixin",
+    "copycat.base.multistate.MultiStateCopycatBlockMixin",
     "network.ServerGamePacketListenerImplMixin"
   ],
   "client": [

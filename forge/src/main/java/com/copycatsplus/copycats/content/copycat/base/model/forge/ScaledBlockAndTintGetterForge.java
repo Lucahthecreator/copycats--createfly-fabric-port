@@ -1,6 +1,6 @@
-package com.copycatsplus.copycats.content.copycat.base.model.multistate.forge;
+package com.copycatsplus.copycats.content.copycat.base.model.forge;
 
-import com.copycatsplus.copycats.content.copycat.base.multistate.ScaledBlockAndTintGetter;
+import com.copycatsplus.copycats.content.copycat.base.model.ScaledBlockAndTintGetter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.BlockAndTintGetter;

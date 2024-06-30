@@ -12,19 +12,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("deprecation")
 public class MultiStateCopycatBlockEntityFabric extends MultiStateCopycatBlockEntity implements RenderAttachmentBlockEntity {
     public MultiStateCopycatBlockEntityFabric(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-    }
-
-    @Override
-    public void requestModelUpdate() {
-
-    }
-
-    @Override
-    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
-
     }
 
     @Override

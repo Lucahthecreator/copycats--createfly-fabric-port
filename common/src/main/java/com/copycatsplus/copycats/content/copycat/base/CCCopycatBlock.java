@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
 @ParametersAreNonnullByDefault
@@ -55,18 +56,21 @@ public abstract class CCCopycatBlock extends Block implements IBE<CCCopycatBlock
     }
 
     @Override
-    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
-        ICopycatBlock.super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(worldIn, pos, state, placer, stack);
+        ICopycatBlock.super.setPlacedBy(worldIn, pos, state, placer, stack);
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        ICopycatBlock.super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
+        super.onRemove(state, world, pos, newState, isMoving);
+        ICopycatBlock.super.onRemove(state, world, pos, newState, isMoving);
     }
 
     @Override
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
-        ICopycatBlock.super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+    public void playerWillDestroy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
+        super.playerWillDestroy(level, pos, state, player);
+        ICopycatBlock.super.playerWillDestroy(level, pos, state, player);
     }
 
     @Override
@@ -81,18 +85,6 @@ public abstract class CCCopycatBlock extends Block implements IBE<CCCopycatBlock
 
     public static BlockState getMaterial(BlockGetter level, BlockPos pos) {
         return ICopycatBlock.getMaterial(level, pos);
-    }
-
-    public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
-                                    BlockState queryState, BlockPos queryPos) {
-        return getCopycatAppearance(this, state, level, pos, side, queryState, queryPos);
-    }
-
-    @ExpectPlatform
-    public static BlockState getCopycatAppearance(ICopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
-                                           BlockState queryState, BlockPos queryPos) {
-        //noinspection DataFlowIssue
-        return null;
     }
 
     @Environment(EnvType.CLIENT)

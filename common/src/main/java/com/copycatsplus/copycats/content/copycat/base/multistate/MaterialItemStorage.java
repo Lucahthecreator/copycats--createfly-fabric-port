@@ -21,18 +21,16 @@ import java.util.stream.Collectors;
 public class MaterialItemStorage {
 
     private Map<String, MaterialItem> storage;
-    private int maxStorage;
 
-    private MaterialItemStorage(int maxStorage, Set<String> properties) {
-        storage = new HashMap<>(maxStorage);
-        this.maxStorage = maxStorage;
+    private MaterialItemStorage(Set<String> properties) {
+        storage = new HashMap<>(properties.size());
         for (String property : properties) {
             storage.put(property, new MaterialItem(AllBlocks.COPYCAT_BASE.getDefaultState(), ItemStack.EMPTY));
         }
     }
 
-    public static MaterialItemStorage create(int maxStorage, Set<String> properties) {
-        return new MaterialItemStorage(maxStorage, properties);
+    public static MaterialItemStorage create(Set<String> properties) {
+        return new MaterialItemStorage(properties);
     }
 
     public void storeMaterialItem(String property, MaterialItem materialItem) {

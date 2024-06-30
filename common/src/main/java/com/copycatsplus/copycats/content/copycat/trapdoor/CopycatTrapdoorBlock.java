@@ -88,11 +88,6 @@ public class CopycatTrapdoorBlock extends TrapDoorBlock implements ICopycatBlock
         return CCBlockEntityTypes.COPYCAT.get();
     }
 
-    public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
-                                    BlockState queryState, BlockPos queryPos) {
-        return CCCopycatBlock.getCopycatAppearance(this, state, level, pos, side, queryState, queryPos);
-    }
-
     @Override
     public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
                                              BlockPos fromPos, BlockPos toPos) {

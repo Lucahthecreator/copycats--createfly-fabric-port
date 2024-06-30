@@ -11,7 +11,7 @@
     "copycat.base.CopycatBlockEntityMixin$FluidPipeData",
     "copycat.base.CopycatBlockEntityMixin$StraightPipeData",
     "copycat.base.CopycatBlockMixin",
-    "copycat.base.multistate.MultiStateCopycatBlockCombinerMixin"
+    "copycat.base.multistate.MultiStateCopycatBlockMixin"
   ],
   "client": [
     "featuretoggle.SubMenuConfigScreenMixin"

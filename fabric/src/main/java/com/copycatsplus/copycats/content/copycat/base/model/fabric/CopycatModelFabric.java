@@ -3,9 +3,10 @@ package com.copycatsplus.copycats.content.copycat.base.model.fabric;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
-import com.copycatsplus.copycats.content.copycat.base.model.FilteredBlockAndTintGetter;
+import com.copycatsplus.copycats.content.copycat.base.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.fabric.CopycatRenderContextFabric;
-import com.copycatsplus.copycats.content.copycat.base.model.kinetic.fabric.WorldWithRenderData;
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.utility.Iterate;
 import com.simibubi.create.foundation.utility.Pair;
@@ -26,6 +27,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
@@ -131,21 +133,34 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                     }
                 }
 
+                // fabric: If it is the default state do not push transformations, will cause issues with GhostBlockRenderer
+                boolean shouldTransform = !material.equals(AllBlocks.COPYCAT_BASE.getDefaultState());
                 // fabric: need to change the default render material
-                context.pushTransform(MaterialFixer.create(material));
+                if (shouldTransform)
+                    context.pushTransform(MaterialFixer.create(material));
 
-                WorldWithRenderData renderWorld;
-                if (state.getBlock() instanceof ICopycatBlock copycatBlock) {
-                    FilteredBlockAndTintGetter filteredBlockAndTintGetter = FilteredBlockAndTintGetter.create(blockView, t -> {
+                BlockAndTintGetter renderWorld;
+                if (state.getBlock() instanceof IMultiStateCopycatBlock multiStateBlock) {
+                    Vec3i inner = multiStateBlock.getVectorFromProperty(state, entry.key());
+                    ScaledBlockAndTintGetter scaledWorld = new ScaledBlockAndTintGetterFabric(entry.key(), remainingData, blockView, pos, inner, multiStateBlock.vectorScale(state), p -> true);
+                    renderWorld = new ScaledBlockAndTintGetterFabric(entry.key(), remainingData, blockView, pos, inner, multiStateBlock.vectorScale(state),
+                            targetPos -> {
+                                BlockEntity be = blockView.getBlockEntity(pos);
+                                if (be instanceof MultiStateCopycatBlockEntity copycatBE)
+                                    if (!copycatBE.getMaterialItemStorage().getMaterialItem(entry.key()).enableCT())
+                                        return false;
+                                return multiStateBlock.canConnectTexturesToward(entry.key(), scaledWorld, pos, targetPos, state);
+                            });
+                } else if (state.getBlock() instanceof ICopycatBlock copycatBlock) {
+                    renderWorld = new FilteredBlockAndTintGetterFabric(remainingData, blockView, pos, t -> {
                         BlockEntity be = blockView.getBlockEntity(pos);
                         if (be instanceof ICopycatBlockEntity ctbe)
                             if (!ctbe.isCTEnabled())
                                 return false;
                         return copycatBlock.canConnectTexturesToward(blockView, pos, t, state);
                     });
-                    renderWorld = new WorldWithRenderData(filteredBlockAndTintGetter, remainingData);
                 } else {
-                    renderWorld = new WorldWithRenderData(blockView, remainingData);
+                    renderWorld = new WorldWithRenderData(blockView, remainingData, pos);
                 }
 
                 BakedModel model;
@@ -188,7 +203,8 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                 meshBuilder.build().outputTo(context.getEmitter());
 
                 // fabric: pop the material changer transform
-                context.popTransform();
+                if (shouldTransform)
+                    context.popTransform();
             } else {
                 BakedModel model;
                 if (entry.model() == null)
@@ -234,10 +250,17 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
     public TextureAtlasSprite getParticleIcon(Object data) {
         if (data instanceof BlockState state) {
             BlockState material = getMaterial(state);
-
             return getIcon(getModelOf(material), null);
         } else if (data instanceof Pair<?, ?> pair && pair.getSecond() instanceof BlockState material) {
             return getIcon(getModelOf(material), pair.getFirst());
+        } else if (data instanceof Map<?, ?> mats) {
+            for (Map.Entry<?, ?> entry : mats.entrySet()) {
+                if (entry.getValue() instanceof Pair<?, ?> pair && pair.getSecond() instanceof BlockState material3) {
+                    return getIcon(getModelOf(material3), pair.getFirst());
+                } else if (entry.getValue() instanceof BlockState material4) {
+                    return getIcon(getModelOf(material4), null);
+                }
+            }
         }
 
         return CustomParticleIconModel.super.getParticleIcon(data);

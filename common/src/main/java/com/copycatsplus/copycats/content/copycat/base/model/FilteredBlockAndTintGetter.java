@@ -2,7 +2,6 @@ package com.copycatsplus.copycats.content.copycat.base.model;
 
 import java.util.function.Predicate;
 
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -67,13 +66,5 @@ public class FilteredBlockAndTintGetter implements BlockAndTintGetter {
     public int getBlockTint(@NotNull BlockPos pBlockPos, @NotNull ColorResolver pColorResolver) {
         return wrapped.getBlockTint(pBlockPos, pColorResolver);
     }
-
-    @ExpectPlatform
-    @NotNull
-    public static FilteredBlockAndTintGetter create(BlockAndTintGetter wrapped, Predicate<BlockPos> filter) {
-        //noinspection DataFlowIssue
-        return null;
-    }
-
 }
 

@@ -170,12 +170,7 @@ public abstract class CopycatBlockMixin extends Block implements ICopycatBlock,
     }
 
     @Override
-    public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
-                                    BlockState queryState, BlockPos queryPos) {
-
-        if (isIgnoredConnectivitySide(level, state, side, pos, queryPos))
-            return state;
-
-        return CopycatModelFabric.getMaterial(getMaterial(level, pos));
+    public BlockState getAppearance(BlockState state, BlockAndTintGetter renderView, BlockPos pos, Direction side, @Nullable BlockState sourceState, @Nullable BlockPos sourcePos) {
+        return ICopycatBlock.getAppearance(this, state, renderView, pos, side, sourceState, sourcePos);
     }
 }

@@ -1,8 +1,10 @@
 package com.copycatsplus.copycats.content.copycat.test_block;
 
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
-import com.copycatsplus.copycats.content.copycat.base.multistate.ScaledBlockAndTintGetter;
+import com.copycatsplus.copycats.content.copycat.base.model.ScaledBlockAndTintGetter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -49,7 +51,7 @@ public class CopycatTestBlock extends MultiStateCopycatBlock {
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
-        VoxelShape shapeOverride = multiPlatformGetShape(state, level, pos, context);
+        VoxelShape shapeOverride = IMultiStateCopycatBlock.blockShapeOverride(state, level, pos, context);
         if (shapeOverride != null) return shapeOverride;
         return super.getShape(state, level, pos, context);
     }
@@ -101,8 +103,8 @@ public class CopycatTestBlock extends MultiStateCopycatBlock {
     }
 
     @Override
-    public int maxMaterials() {
-        return 2;
+    public String defaultProperty() {
+        return SlabType.TOP.getSerializedName();
     }
 
     @Override
@@ -177,7 +179,7 @@ public class CopycatTestBlock extends MultiStateCopycatBlock {
     }
 
     @Override
-    public void rotate(@NotNull BlockState state, @NotNull MultiStateCopycatBlockEntity be, Rotation rotation) {
+    public void rotate(@NotNull BlockState state, @NotNull IMultiStateCopycatBlockEntity be, Rotation rotation) {
         Direction.Axis axis = state.getValue(AXIS);
         if (axis == Direction.Axis.Y) return;
         if (rotation == Rotation.CLOCKWISE_90 && axis == Direction.Axis.X ||
@@ -194,7 +196,7 @@ public class CopycatTestBlock extends MultiStateCopycatBlock {
     }
 
     @Override
-    public void mirror(@NotNull BlockState state, @NotNull MultiStateCopycatBlockEntity be, Mirror mirror) {
+    public void mirror(@NotNull BlockState state, @NotNull IMultiStateCopycatBlockEntity be, Mirror mirror) {
         Direction.Axis axis = state.getValue(AXIS);
         if (axis == Direction.Axis.Y) return;
         if (mirror == Mirror.FRONT_BACK && axis == Direction.Axis.Z || mirror == Mirror.LEFT_RIGHT && axis == Direction.Axis.X) {

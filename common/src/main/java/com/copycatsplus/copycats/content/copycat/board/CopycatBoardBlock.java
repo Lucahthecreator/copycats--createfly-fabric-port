@@ -1,9 +1,11 @@
 package com.copycatsplus.copycats.content.copycat.board;
 
 import com.copycatsplus.copycats.CCShapes;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.ICustomCTBlocking;
-import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
-import com.copycatsplus.copycats.content.copycat.base.multistate.ScaledBlockAndTintGetter;
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.multistate.WaterloggedMultiStateCopycatBlock;
 import com.google.common.collect.ImmutableMap;
 import com.simibubi.create.AllBlocks;
@@ -42,6 +44,8 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock.getMaterial;
+
 public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock implements ICustomCTBlocking {
     public static BooleanProperty UP = BlockStateProperties.UP;
     public static BooleanProperty DOWN = BlockStateProperties.DOWN;
@@ -66,8 +70,8 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
     }
 
     @Override
-    public int maxMaterials() {
-        return 6;
+    public String defaultProperty() {
+        return UP.getName();
     }
 
     @Override
@@ -160,7 +164,7 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
-        VoxelShape shapeOverride = multiPlatformGetShape(pState, pLevel, pPos, pContext);
+        VoxelShape shapeOverride = IMultiStateCopycatBlock.blockShapeOverride(pState, pLevel, pPos, pContext);
         if (shapeOverride != null) return shapeOverride;
         return Objects.requireNonNull(this.shapesCache.get(pState));
     }
@@ -279,12 +283,12 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
                                      Direction dir) {
         if (state.is(this) && !state.getValue(byDirection(dir))) return false;
         if (neighborState.is(this) && !neighborState.getValue(byDirection(dir.getOpposite()))) return false;
-        String property = getProperty(state, level, pos, new BlockHitResult(Vec3.atCenterOf(pos), dir, pos, true), true);
+        String property = getPropertyFromInteraction(state, level, pos, new BlockHitResult(Vec3.atCenterOf(pos), dir, pos, true), true);
         if (state.is(this) == neighborState.is(this)) {
-            return (getMaterial(level, pos, property).skipRendering(getMaterial(level, pos.relative(dir)), dir.getOpposite()));
+            return (IMultiStateCopycatBlock.getMaterial(level, pos, property).skipRendering(ICopycatBlock.getMaterial(level, pos.relative(dir)), dir.getOpposite()));
         }
 
-        return getMaterial(level, pos, property).skipRendering(neighborState, dir.getOpposite());
+        return IMultiStateCopycatBlock.getMaterial(level, pos, property).skipRendering(neighborState, dir.getOpposite());
     }
 
     @Override
@@ -294,7 +298,7 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
     }
 
     @Override
-    public void rotate(@NotNull BlockState state, @NotNull MultiStateCopycatBlockEntity be, Rotation rotation) {
+    public void rotate(@NotNull BlockState state, @NotNull IMultiStateCopycatBlockEntity be, Rotation rotation) {
         be.getMaterialItemStorage().remapStorage(key -> directionToProperty(rotation.rotate(propertyToDirection(key))));
     }
 
@@ -321,7 +325,7 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
     }
 
     @Override
-    public void mirror(@NotNull BlockState state, @NotNull MultiStateCopycatBlockEntity be, Mirror mirror) {
+    public void mirror(@NotNull BlockState state, @NotNull IMultiStateCopycatBlockEntity be, Mirror mirror) {
         be.getMaterialItemStorage().remapStorage(key -> directionToProperty(mirror.mirror(propertyToDirection(key))));
     }
 

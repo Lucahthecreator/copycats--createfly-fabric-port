@@ -10,16 +10,25 @@ import java.util.function.Predicate;
 
 @SuppressWarnings("deprecation")
 public class FilteredBlockAndTintGetterFabric extends FilteredBlockAndTintGetter implements RenderAttachedBlockView {
+    private final Object renderData;
     private final BlockAndTintGetter wrapped;
+    private final BlockPos origin;
 
-    public FilteredBlockAndTintGetterFabric(BlockAndTintGetter wrapped, Predicate<BlockPos> filter) {
+    public FilteredBlockAndTintGetterFabric(Object renderData, BlockAndTintGetter wrapped, BlockPos origin, Predicate<BlockPos> filter) {
         super(wrapped, filter);
+        this.renderData = renderData;
         this.wrapped = wrapped;
+        this.origin = origin;
     }
 
     @Deprecated
     @Nullable
     public Object getBlockEntityRenderAttachment(BlockPos pos) {
-        return wrapped.getBlockEntityRenderData(pos);
+        if (pos.equals(origin))
+            return renderData;
+        else if (wrapped instanceof RenderAttachedBlockView renderView) {
+            return renderView.getBlockEntityRenderAttachment(pos);
+        }
+        return null;
     }
 }

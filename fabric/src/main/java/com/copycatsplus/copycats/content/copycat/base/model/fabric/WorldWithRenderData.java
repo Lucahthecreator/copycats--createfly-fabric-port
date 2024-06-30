@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.content.copycat.base.model.kinetic.fabric;
+package com.copycatsplus.copycats.content.copycat.base.model.fabric;
 
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachedBlockView;
 import net.minecraft.core.BlockPos;
@@ -13,7 +13,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public record WorldWithRenderData(BlockAndTintGetter blockView, Object renderData) implements RenderAttachedBlockView {
+public record WorldWithRenderData(BlockAndTintGetter blockView, Object renderData,
+                                  BlockPos origin) implements RenderAttachedBlockView {
     @Override
     public float getShade(@NotNull Direction direction, boolean shade) {
         return blockView.getShade(direction, shade);
@@ -55,8 +56,14 @@ public record WorldWithRenderData(BlockAndTintGetter blockView, Object renderDat
         return blockView.getMinBuildHeight();
     }
 
-    @Override
-    public @Nullable Object getBlockEntityRenderAttachment(BlockPos pos) {
-        return renderData;
+    @Deprecated
+    @Nullable
+    public Object getBlockEntityRenderAttachment(BlockPos pos) {
+        if (pos.equals(origin))
+            return renderData;
+        else if (blockView instanceof RenderAttachedBlockView renderView) {
+            return renderView.getBlockEntityRenderAttachment(pos);
+        }
+        return null;
     }
 }

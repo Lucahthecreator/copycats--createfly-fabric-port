@@ -17,11 +17,6 @@ public class CopycatLadderMultiStateBlockEntityForge extends CopycatLadderMultiS
     }
 
     @Override
-    public void requestModelUpdate() {
-        requestModelDataUpdate();
-    }
-
-    @Override
     public @NotNull ModelData getModelData() {
         return ModelData.builder()
                 .with(CopycatModelForge.MATERIALS_PROPERTY, getMaterialItemStorage().getMaterialMap())

@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.content.copycat.base.multistate;
+package com.copycatsplus.copycats.content.copycat.base.model;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -113,6 +113,5 @@ public class ScaledBlockAndTintGetter implements BlockAndTintGetter {
     public int getBlockTint(@NotNull BlockPos pBlockPos, @NotNull ColorResolver pColorResolver) {
         return wrapped.getBlockTint(pBlockPos, pColorResolver);
     }
-
 }
 
