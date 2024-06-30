@@ -141,7 +141,13 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                     renderWorld = new WorldWithRenderData(blockView, remainingData);
                 }
 
-                BakedModel model = entry.model() == null ? null : entry.model().getModel(state, material);
+                BakedModel model;
+                if (entry.model() == null)
+                    model = null;
+                else {
+                    model = entry.model().getModel(state, material);
+                    if (model == null) continue;
+                }
 
                 // Use a mesh to defer quad emission since quads cannot be emitted inside a transform
                 MeshBuilder meshBuilder = Objects.requireNonNull(RendererAccess.INSTANCE.getRenderer()).meshBuilder();
@@ -177,7 +183,13 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                 // fabric: pop the material changer transform
                 context.popTransform();
             } else {
-                BakedModel model = entry.model() == null ? null : entry.model().getModel(state, material);
+                BakedModel model;
+                if (entry.model() == null)
+                    model = null;
+                else {
+                    model = entry.model().getModel(state, material);
+                    if (model == null) continue;
+                }
 
                 if (entry.part() == null) {
                     if (model == null)

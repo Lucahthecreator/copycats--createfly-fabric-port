@@ -171,7 +171,13 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
                 if (side != null && state.getBlock() instanceof ICopycatBlock ccb && ccb.shouldFaceAlwaysRender(state, side))
                     continue;
 
-                BakedModel model = entry.model() == null ? null : entry.model().getModel(state, material);
+                BakedModel model;
+                if (entry.model() == null)
+                    model = null;
+                else {
+                    model = entry.model().getModel(state, material);
+                    if (model == null) continue;
+                }
 
                 CopycatModelForge.OcclusionData occlusionData = occlusionDataMap.get(entry.key());
                 if (occlusionData != null && occlusionData.isOccluded(side))
@@ -207,7 +213,13 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
                         }
                 }
             } else {
-                BakedModel model = entry.model() == null ? null : entry.model().getModel(state, material);
+                BakedModel model;
+                if (entry.model() == null)
+                    model = null;
+                else {
+                    model = entry.model().getModel(state, material);
+                    if (model == null) continue;
+                }
                 if (renderType != null) {
                     if (model == null) {
                         if (!super.getRenderTypes(state, rand, data).contains(renderType))

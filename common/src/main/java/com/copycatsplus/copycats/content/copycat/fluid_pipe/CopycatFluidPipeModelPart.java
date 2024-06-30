@@ -20,6 +20,12 @@ import static com.copycatsplus.copycats.content.copycat.base.model.assembly.Muta
 public class CopycatFluidPipeModelPart extends CopycatModelCore.WithData<CopycatFluidPipeModelPart.PipeModelData> {
 
     @Override
+    public void registerModels(List<ModelEntry> entries) {
+        super.registerModels(entries);
+        entries.add(new ModelEntry("bracket", (state, material) -> getData().getBracket(), null, false));
+    }
+
+    @Override
     public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
         List<Direction> directions = new ArrayList<>(6);
         for (Direction direction : Iterate.directions) {
@@ -82,9 +88,6 @@ public class CopycatFluidPipeModelPart extends CopycatModelCore.WithData<Copycat
         }
         if (getData().isEncased()) {
             renderEncasing(context);
-        }
-        if (getData().getBracket() != null) {
-//            assembleModel(data.get().getBracket(), context);
         }
     }
 
