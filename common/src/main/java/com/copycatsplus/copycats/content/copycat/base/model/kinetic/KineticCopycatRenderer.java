@@ -1,7 +1,8 @@
-package com.copycatsplus.copycats.content.copycat.base.model.functional;
+package com.copycatsplus.copycats.content.copycat.base.model.kinetic;
 
 import com.copycatsplus.copycats.CopycatsClient;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.partial.CopycatPartialModel;
 import com.jozufozu.flywheel.core.model.BlockModel;
 import com.jozufozu.flywheel.core.model.ShadeSeparatedBufferedData;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -12,34 +13,32 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.resources.model.BakedModel;
 
-public class FunctionalCopycatRenderHelper {
+public class KineticCopycatRenderer {
     public static final SuperByteBufferCache.Compartment<KineticCopycatRenderData> KINETIC_COPYCAT = new SuperByteBufferCache.Compartment<>();
 
-    public static SuperByteBuffer getBuffer(ICopycatBlockEntity be) {
+    public static SuperByteBuffer getBuffer(CopycatPartialModel partialModel, ICopycatBlockEntity be) {
         return CopycatsClient.BUFFER_CACHE.get(KINETIC_COPYCAT,
-                KineticCopycatRenderData.of(be),
-                () -> copycatRender(be)
+                KineticCopycatRenderData.of(partialModel, be),
+                () -> copycatRender(partialModel, be)
         );
     }
 
-    public static BlockModel getInstanceModel(ICopycatBlockEntity be, KineticCopycatRenderData renderData) {
-        ShadeSeparatedBufferedData data = getCopycatBuffer(be);
+    public static BlockModel getInstanceModel(CopycatPartialModel partialModel, ICopycatBlockEntity be, KineticCopycatRenderData renderData) {
+        ShadeSeparatedBufferedData data = getCopycatBuffer(partialModel.getModel(), be);
         BlockModel blockModel = new BlockModel(data, renderData.toString());
         data.release();
         return blockModel;
     }
 
-    public static SuperByteBuffer copycatRender(ICopycatBlockEntity be) {
-        ShadeSeparatedBufferedData bufferedData = getCopycatBuffer(be);
+    public static SuperByteBuffer copycatRender(CopycatPartialModel partialModel, ICopycatBlockEntity be) {
+        ShadeSeparatedBufferedData bufferedData = getCopycatBuffer(partialModel.getModel(), be);
         SuperByteBuffer sbb = new SuperByteBuffer(bufferedData);
         bufferedData.release();
         return sbb;
     }
 
-    public static ShadeSeparatedBufferedData getCopycatBuffer(ICopycatBlockEntity be) {
-        BlockRenderDispatcher dispatcher = Minecraft.getInstance()
-                .getBlockRenderer();
-        return getCopycatBuffer(dispatcher.getBlockModel(be.getBlockState()), be, new PoseStack());
+    public static ShadeSeparatedBufferedData getCopycatBuffer(BakedModel partialModel, ICopycatBlockEntity be) {
+        return getCopycatBuffer(partialModel, be, new PoseStack());
     }
 
     @ExpectPlatform

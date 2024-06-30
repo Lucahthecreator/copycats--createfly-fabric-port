@@ -1,8 +1,8 @@
-package com.copycatsplus.copycats.content.copycat.base.model.functional.forge;
+package com.copycatsplus.copycats.content.copycat.base.model.kinetic.fabric;
 
 import com.jozufozu.flywheel.core.model.BlockModel;
 import com.jozufozu.flywheel.core.model.Bufferable;
-import com.jozufozu.flywheel.core.model.ModelUtil;
+import com.jozufozu.flywheel.core.model.ShadeSeparatingVertexConsumer;
 import com.jozufozu.flywheel.core.virtual.VirtualEmptyBlockGetter;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -14,7 +14,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
 
 public final class BakedModelWithDataBuilder implements Bufferable {
     private final BakedModel model;
@@ -22,7 +21,6 @@ public final class BakedModelWithDataBuilder implements Bufferable {
     private BlockState referenceState = Blocks.AIR.defaultBlockState();
     private PoseStack poseStack = new PoseStack();
     private BlockPos renderPos = BlockPos.ZERO;
-    private ModelData data = ModelUtil.VIRTUAL_DATA;
 
     public BakedModelWithDataBuilder(BakedModel model) {
         this.model = model;
@@ -48,14 +46,13 @@ public final class BakedModelWithDataBuilder implements Bufferable {
         return this;
     }
 
-    public BakedModelWithDataBuilder withData(ModelData data) {
-        this.data = data;
-        return this;
-    }
-
     @Override
     public void bufferInto(VertexConsumer consumer, ModelBlockRenderer blockRenderer, RandomSource random) {
-        blockRenderer.tesselateBlock(renderWorld, model, referenceState, renderPos, poseStack, consumer, false, random, 42, OverlayTexture.NO_OVERLAY, data, null);
+        BakedModel model = this.model; //DefaultLayerFilteringBakedModel.wrap(this.model); // not sure what the goal of this filter is, but it filtered out all copycat quads
+        if (consumer instanceof ShadeSeparatingVertexConsumer shadeSeparatingWrapper) {
+            model = shadeSeparatingWrapper.wrapModel(model);
+        }
+        blockRenderer.tesselateBlock(renderWorld, model, referenceState, renderPos, poseStack, consumer, false, random, 42, OverlayTexture.NO_OVERLAY);
     }
 
     public BlockModel toModel(String name) {

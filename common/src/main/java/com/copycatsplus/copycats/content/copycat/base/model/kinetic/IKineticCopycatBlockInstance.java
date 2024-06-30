@@ -1,6 +1,7 @@
-package com.copycatsplus.copycats.content.copycat.base.model.functional;
+package com.copycatsplus.copycats.content.copycat.base.model.kinetic;
 
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.partial.CopycatPartialModel;
 import com.copycatsplus.copycats.utility.ChatUtils;
 import com.jozufozu.flywheel.api.Instancer;
 import com.jozufozu.flywheel.api.Material;
@@ -15,7 +16,7 @@ import net.minecraft.client.renderer.RenderType;
 
 import javax.annotation.Nullable;
 
-public interface IFunctionalCopycatBlockInstance {
+public interface IKineticCopycatBlockInstance {
 
     @Nullable
     KineticCopycatRenderData getRenderData();
@@ -44,20 +45,18 @@ public interface IFunctionalCopycatBlockInstance {
                 .material(AllMaterialSpecs.ROTATING);
     }
 
-    default Instancer<RotatingData> getModel() {
-        KineticCopycatRenderData renderData = KineticCopycatRenderData.of(getBlockEntity());
+    default Instancer<RotatingData> getModel(CopycatPartialModel partialModel) {
+        KineticCopycatRenderData renderData = KineticCopycatRenderData.of(partialModel, getBlockEntity());
         setRenderData(renderData);
-        return getRotatingMaterial().model(renderData, () -> FunctionalCopycatRenderHelper.getInstanceModel(getBlockEntity(), renderData));
+        return getRotatingMaterial().model(renderData, () -> KineticCopycatRenderer.getInstanceModel(partialModel, getBlockEntity(), renderData));
     }
 
     default boolean shouldReset() {
         if (getRenderData() == null)
             return true;
-        if (getRenderData().enableCT() != getBlockEntity().isCTEnabled())
-            return true;
         if (!getRenderData().material().equals(getBlockEntity().getMaterial()))
             return true;
-        if (!getRenderData().state().equals(getBlockEntity().getBlockState()))
+        if (!getRenderData().state().equalsState(getBlockEntity().getBlockState()))
             return true;
         return false;
     }

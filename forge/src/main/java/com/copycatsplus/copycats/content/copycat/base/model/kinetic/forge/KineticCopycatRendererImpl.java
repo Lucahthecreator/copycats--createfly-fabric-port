@@ -1,7 +1,7 @@
-package com.copycatsplus.copycats.content.copycat.base.model.functional.forge;
+package com.copycatsplus.copycats.content.copycat.base.model.kinetic.forge;
 
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
-import com.copycatsplus.copycats.content.copycat.base.model.functional.WrappedRenderWorld;
+import com.copycatsplus.copycats.content.copycat.base.model.kinetic.WrappedRenderWorld;
 import com.jozufozu.flywheel.core.model.ModelUtil;
 import com.jozufozu.flywheel.core.model.ShadeSeparatedBufferedData;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -10,17 +10,17 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
 
-public class FunctionalCopycatRenderHelperImpl {
+public class KineticCopycatRendererImpl {
 
     public static ShadeSeparatedBufferedData getCopycatBuffer(BakedModel model, ICopycatBlockEntity be, PoseStack ms) {
-        WrappedRenderWorld renderWorld = new WrappedRenderWorld(be).setCTMode(true);
+        WrappedRenderWorld renderWorld = new WrappedRenderWorld(be);
         ModelData renderData = model.getModelData(renderWorld, be.getBlockPos(), be.getBlockState(), ((BlockEntity) be).getModelData());
         ModelData.Builder builder = ModelData.builder();
         copyModelData(renderData, builder);
         builder.with(ModelUtil.VIRTUAL_PROPERTY, true);
 
         return new BakedModelWithDataBuilder(model)
-                .withRenderWorld(renderWorld.setCTMode(false))
+                .withRenderWorld(renderWorld)
                 .withRenderPos(be.getBlockPos())
                 .withReferenceState(be.getBlockState())
                 .withPoseStack(ms)

@@ -3,7 +3,7 @@ package com.copycatsplus.copycats.forge.mixin.copycat.base;
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.model.forge.CopycatModelForge;
-import com.copycatsplus.copycats.content.copycat.base.model.functional.forge.FunctionalCopycatRenderHelperImpl;
+import com.copycatsplus.copycats.content.copycat.base.model.kinetic.forge.KineticCopycatRendererImpl;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlockEntity;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatStraightPipeBlockEntity;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlockEntity;
@@ -29,7 +29,7 @@ public abstract class CopycatBlockEntityMixin extends SmartBlockEntity implement
 
     @Override
     public @NotNull ModelData getModelData() {
-        return FunctionalCopycatRenderHelperImpl.mergeData(
+        return KineticCopycatRendererImpl.mergeData(
                 super.getModelData(),
                 ModelData.builder()
                         .with(CopycatModelForge.MATERIAL_PROPERTY, getMaterial())

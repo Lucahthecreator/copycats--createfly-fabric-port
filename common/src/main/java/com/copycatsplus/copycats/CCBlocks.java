@@ -34,7 +34,7 @@ import com.copycatsplus.copycats.content.copycat.layer.CopycatLayerBlock;
 import com.copycatsplus.copycats.content.copycat.layer.CopycatLayerModelPart;
 import com.copycatsplus.copycats.content.copycat.pressure_plate.*;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
-import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftModelPart;
+import com.copycatsplus.copycats.content.copycat.partial.CopycatShaftModelPart;
 import com.copycatsplus.copycats.content.copycat.slab.CopycatMultiSlabModelPart;
 import com.copycatsplus.copycats.content.copycat.slab.CopycatSlabBlock;
 import com.copycatsplus.copycats.content.copycat.slice.CopycatSliceBlock;
@@ -63,6 +63,7 @@ import com.copycatsplus.copycats.datagen.CCBlockStateGen;
 import com.copycatsplus.copycats.datagen.CCLootGen;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
+import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
 import com.simibubi.create.foundation.data.*;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.providers.DataGenContext;
@@ -413,7 +414,7 @@ public class CCBlocks {
                     .transform(CCBuilderTransformers.copycat())
                     .transform(FeatureToggle.register())
                     .transform(BlockStressDefaults.setNoImpact())
-                    .onRegister(CreateRegistrate.blockModel(() -> model -> getShaftModel(model, CopycatModelCore.createModel(model, new CopycatShaftModelPart()))))
+                    .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
                     .item()
                     .transform(customItemModel("copycat_base", "shaft"))
                     .register();
@@ -434,11 +435,6 @@ public class CCBlocks {
                     .onRegister(CreateRegistrate.blockModel(() -> model -> getFluidPipeModel(model, new CopycatStraightPipeModelPart())))
                     .loot((p, b) -> p.dropOther(b, COPYCAT_FLUID_PIPE.get()))
                     .register();
-
-    @ExpectPlatform
-    public static BakedModel getShaftModel(BakedModel original, BakedModel copycat) {
-        throw new AssertionError();
-    }
 
     @ExpectPlatform
     public static BakedModel getFluidPipeModel(BakedModel original, CopycatModelCore copycat) {

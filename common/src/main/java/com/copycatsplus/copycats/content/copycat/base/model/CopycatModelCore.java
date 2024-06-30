@@ -46,6 +46,13 @@ public abstract class CopycatModelCore implements CopycatModelPart {
         return null;
     }
 
+    @ExpectPlatform
+    @NotNull
+    public static BakedModel createModelWithoutAO(BakedModel original, CopycatModelCore core) {
+        //noinspection DataFlowIssue
+        return null;
+    }
+
     public static abstract class WithData<T> extends CopycatModelCore {
         private final ThreadLocal<T> data = new ThreadLocal<>();
 

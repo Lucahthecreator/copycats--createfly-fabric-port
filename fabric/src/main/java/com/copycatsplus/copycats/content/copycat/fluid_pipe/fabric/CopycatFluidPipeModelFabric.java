@@ -8,7 +8,6 @@ import com.simibubi.create.content.fluids.FluidTransportBehaviour;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlock;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.utility.Iterate;
-import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachedBlockView;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -20,7 +19,7 @@ import java.util.function.Supplier;
 public class CopycatFluidPipeModelFabric extends CopycatModelFabric {
 
     public CopycatFluidPipeModelFabric(BakedModel originalModel, CopycatModelCore core) {
-        super(originalModel, core);
+        super(originalModel, core, false);
     }
 
     @Override

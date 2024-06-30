@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.mixin.copycat.base.functional;
+package com.copycatsplus.copycats.mixin.copycat.base.kinetic;
 
 import com.copycatsplus.copycats.CopycatsClient;
 import com.simibubi.create.CreateClient;

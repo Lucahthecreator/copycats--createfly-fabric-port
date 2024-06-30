@@ -8,6 +8,11 @@ public class CopycatModelCoreImpl {
 
     @NotNull
     public static BakedModel createModel(BakedModel original, CopycatModelCore core) {
-        return new CopycatModelFabric(original, core);
+        return new CopycatModelFabric(original, core, false);
+    }
+
+    @NotNull
+    public static BakedModel createModelWithoutAO(BakedModel original, CopycatModelCore core) {
+        return new CopycatModelFabric(original, core, true);
     }
 }

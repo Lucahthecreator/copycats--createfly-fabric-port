@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.content.copycat.base.model.functional.fabric;
+package com.copycatsplus.copycats.content.copycat.base.model.kinetic.fabric;
 
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachedBlockView;
 import net.minecraft.core.BlockPos;

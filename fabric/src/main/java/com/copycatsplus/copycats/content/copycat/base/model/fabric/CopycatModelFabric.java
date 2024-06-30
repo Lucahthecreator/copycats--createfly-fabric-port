@@ -5,7 +5,7 @@ import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.FilteredBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.fabric.CopycatRenderContextFabric;
-import com.copycatsplus.copycats.content.copycat.base.model.functional.fabric.WorldWithRenderData;
+import com.copycatsplus.copycats.content.copycat.base.model.kinetic.fabric.WorldWithRenderData;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.utility.Iterate;
 import com.simibubi.create.foundation.utility.Pair;
@@ -43,8 +43,10 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
 
     protected final CopycatModelCore core;
     protected final List<CopycatModelCore.ModelEntry> entries = new ArrayList<>();
+    private final boolean disableAO;
 
-    public CopycatModelFabric(BakedModel originalModel, CopycatModelCore core) {
+    public CopycatModelFabric(BakedModel originalModel, CopycatModelCore core, boolean disableAO) {
+        this.disableAO = disableAO;
         this.wrapped = originalModel;
         this.core = core;
         core.registerModels(entries);
@@ -65,6 +67,11 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
     @Override
     public boolean isVanillaAdapter() {
         return false;
+    }
+
+    @Override
+    public boolean useAmbientOcclusion() {
+        return !disableAO && super.useAmbientOcclusion();
     }
 
     @SuppressWarnings("deprecation")

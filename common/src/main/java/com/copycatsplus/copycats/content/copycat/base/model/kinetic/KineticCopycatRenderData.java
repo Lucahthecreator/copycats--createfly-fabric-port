@@ -1,15 +1,18 @@
-package com.copycatsplus.copycats.content.copycat.base.model.functional;
+package com.copycatsplus.copycats.content.copycat.base.model.kinetic;
 
 import com.copycatsplus.copycats.config.CCConfigs;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.partial.CopycatPartialModel;
 import com.copycatsplus.copycats.utility.ChatUtils;
 import com.jozufozu.flywheel.backend.Backend;
 import com.jozufozu.flywheel.config.BackendType;
+import com.mojang.authlib.properties.PropertyMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-public record KineticCopycatRenderData(BlockState state, BlockState material, boolean enableCT) {
-    public static KineticCopycatRenderData of(ICopycatBlockEntity be) {
+public record KineticCopycatRenderData(CopycatPartialModel partialModel, PartialModelState state, BlockState material) {
+    public static KineticCopycatRenderData of(CopycatPartialModel partialModel, ICopycatBlockEntity be) {
         if (!CCConfigs.client().disableGraphicsWarnings.get()) {
             if (Backend.getBackendType() != BackendType.INSTANCING &&
                     Minecraft.getInstance().getBlockColors().getColor(be.getMaterial(), null, null, 0) != -1) {
@@ -19,6 +22,6 @@ public record KineticCopycatRenderData(BlockState state, BlockState material, bo
                 );
             }
         }
-        return new KineticCopycatRenderData(be.getBlockState(), be.getMaterial(), be.isCTEnabled());
+        return new KineticCopycatRenderData(partialModel, PartialModelState.fromBlockState(be.getBlockState(), partialModel.getProperties()), be.getMaterial());
     }
 }

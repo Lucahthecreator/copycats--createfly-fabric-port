@@ -46,12 +46,29 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
     private static final ChunkRenderTypeSet allRenderTypes = ChunkRenderTypeSet.of(RenderType.solid(), RenderType.cutout(), RenderType.cutoutMipped(), RenderType.translucent());
 
     protected final CopycatModelCore core;
+    private final boolean disableAO;
     protected final List<CopycatModelCore.ModelEntry> entries = new ArrayList<>();
 
-    public CopycatModelForge(BakedModel originalModel, CopycatModelCore core) {
+    public CopycatModelForge(BakedModel originalModel, CopycatModelCore core, boolean disableAO) {
         super(originalModel);
         this.core = core;
+        this.disableAO = disableAO;
         core.registerModels(entries);
+    }
+
+    @Override
+    public boolean useAmbientOcclusion() {
+        return !disableAO && super.useAmbientOcclusion();
+    }
+
+    @Override
+    public boolean useAmbientOcclusion(@NotNull BlockState state) {
+        return !disableAO && super.useAmbientOcclusion(state);
+    }
+
+    @Override
+    public boolean useAmbientOcclusion(@NotNull BlockState state, @NotNull RenderType renderType) {
+        return !disableAO && super.useAmbientOcclusion(state, renderType);
     }
 
     @Override

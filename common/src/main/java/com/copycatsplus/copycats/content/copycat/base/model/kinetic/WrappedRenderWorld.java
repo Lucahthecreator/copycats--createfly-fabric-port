@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.content.copycat.base.model.functional;
+package com.copycatsplus.copycats.content.copycat.base.model.kinetic;
 
 
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
@@ -29,8 +29,6 @@ public class WrappedRenderWorld implements VirtualEmptyBlockGetter {
     protected final BlockPos targetPos;
     protected final LevelLightEngine lightEngine;
     protected final BlockState material;
-
-    protected boolean ctMode = false;
 
     public WrappedRenderWorld(ICopycatBlockEntity be) {
         this.level = be.getLevel();
@@ -103,11 +101,6 @@ public class WrappedRenderWorld implements VirtualEmptyBlockGetter {
         };
     }
 
-    public WrappedRenderWorld setCTMode(boolean ctMode) {
-        this.ctMode = ctMode;
-        return this;
-    }
-
     @Override
     @Nullable
     public BlockEntity getBlockEntity(@NotNull BlockPos pos) {
@@ -117,7 +110,7 @@ public class WrappedRenderWorld implements VirtualEmptyBlockGetter {
 
     @Override
     public @NotNull BlockState getBlockState(@NotNull BlockPos pos) {
-        if (!pos.equals(targetPos)) return ctMode ? material : Blocks.AIR.defaultBlockState();
+        if (!pos.equals(targetPos)) return material;
         return level.getBlockState(pos);
     }
 
