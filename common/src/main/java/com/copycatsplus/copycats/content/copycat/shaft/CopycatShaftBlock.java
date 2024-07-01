@@ -34,9 +34,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class CopycatShaftBlock extends ShaftBlock implements ICopycatBlock, ICustomCTBlocking {
 
     public static final int placementHelperId = PlacementHelpers.register(new PlacementHelper());

@@ -34,10 +34,13 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Predicate;
 
 import static net.minecraft.core.Direction.Axis;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class CopycatBeamBlock extends CCWaterloggedCopycatBlock implements IStateType {
 
     public static final EnumProperty<Axis> AXIS = BlockStateProperties.AXIS;
