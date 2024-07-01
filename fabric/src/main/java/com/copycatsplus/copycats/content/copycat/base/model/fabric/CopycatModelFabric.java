@@ -173,6 +173,8 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                 MeshBuilder meshBuilder = Objects.requireNonNull(RendererAccess.INSTANCE.getRenderer()).meshBuilder();
                 QuadEmitter emitter = meshBuilder.getEmitter();
 
+                List<MutableQuadView> quads = new ArrayList<>();
+
                 context.pushTransform(quad -> {
                     if (cullFaceRemovalData.shouldRemove(quad.cullFace())) {
                         quad.cullFace(null);
@@ -187,8 +189,9 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                         emitter.copyFrom(quad);
                         emitter.emit();
                     } else {
-                        CopycatRenderContextFabric copycatContext = new CopycatRenderContextFabric(quad, emitter);
-                        entry.part().emitCopycatQuads(entry.key(), state, copycatContext, material);
+                        MutableQuadView newQuad = new IntermediateMutableQuadView();
+                        newQuad.copyFrom(quad);
+                        quads.add(newQuad);
                     }
                     return false;
                 });
@@ -197,6 +200,9 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                 else
                     model.emitBlockQuads(renderWorld, material, pos, randomSupplier, context);
                 context.popTransform();
+
+                CopycatRenderContextFabric copycatContext = new CopycatRenderContextFabric(quads, emitter);
+                entry.part().emitCopycatQuads(entry.key(), state, copycatContext, material);
 
                 meshBuilder.build().outputTo(context.getEmitter());
 
@@ -224,9 +230,11 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                 MeshBuilder meshBuilder = Objects.requireNonNull(RendererAccess.INSTANCE.getRenderer()).meshBuilder();
                 QuadEmitter emitter = meshBuilder.getEmitter();
 
+                List<MutableQuadView> quads = new ArrayList<>();
                 context.pushTransform(quad -> {
-                    CopycatRenderContextFabric copycatContext = new CopycatRenderContextFabric(quad, emitter);
-                    entry.part().emitCopycatQuads(entry.key(), state, copycatContext, material);
+                    MutableQuadView newQuad = new IntermediateMutableQuadView();
+                    newQuad.copyFrom(quad);
+                    quads.add(newQuad);
                     return false;
                 });
                 if (model == null)
@@ -234,6 +242,9 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                 else
                     model.emitBlockQuads(blockView, state, pos, randomSupplier, context);
                 context.popTransform();
+
+                CopycatRenderContextFabric copycatContext = new CopycatRenderContextFabric(quads, emitter);
+                entry.part().emitCopycatQuads(entry.key(), state, copycatContext, material);
 
                 meshBuilder.build().outputTo(context.getEmitter());
             }

@@ -22,8 +22,8 @@ import java.util.List;
 @ApiStatus.Internal
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class CopycatRenderContextFabric extends CopycatRenderContext.Base<MutableQuadView, QuadEmitter> {
-    public CopycatRenderContextFabric(MutableQuadView source, QuadEmitter destination) {
+public class CopycatRenderContextFabric extends CopycatRenderContext.Base<List<MutableQuadView>, QuadEmitter> {
+    public CopycatRenderContextFabric(List<MutableQuadView> source, QuadEmitter destination) {
         super(source, destination);
     }
 
@@ -34,10 +34,14 @@ public class CopycatRenderContextFabric extends CopycatRenderContext.Base<Mutabl
         globalTransform.apply(select);
         globalTransform.apply(offset);
         globalTransform.apply(cull);
-        if (cull.isCulled(source().lightFace())) {
-            return;
+        AABB aabb = select.toAABB();
+        Vec3 vec3 = offset.toVec3().subtract(select.minX, select.minY, select.minZ);
+        for (MutableQuadView quad : source()) {
+            if (cull.isCulled(quad.lightFace())) {
+                continue;
+            }
+            assembleQuad(quad, destination(), aabb, vec3);
         }
-        assembleQuad(source(), destination(), select.toAABB(), offset.toVec3().subtract(select.minX, select.minY, select.minZ));
     }
 
     @Override
@@ -45,30 +49,40 @@ public class CopycatRenderContextFabric extends CopycatRenderContext.Base<Mutabl
         globalTransform.apply(select);
         globalTransform.apply(offset);
         globalTransform.apply(cull);
-        if (cull.isCulled(source().lightFace())) {
-            return;
+        AABB aabb = select.toAABB();
+        Vec3 vec3 = offset.toVec3().subtract(select.minX, select.minY, select.minZ);
+        for (MutableQuadView quad : source()) {
+            if (cull.isCulled(quad.lightFace())) {
+                continue;
+            }
+            assembleQuad(quad, destination(), aabb, vec3, globalTransform, transforms);
         }
-        assembleQuad(source(), destination(), select.toAABB(), offset.toVec3().subtract(select.minX, select.minY, select.minZ), globalTransform, transforms);
     }
 
     @Override
     public void assembleAll() {
-        assembleAll(source(), destination());
+        for (MutableQuadView quad : source()) {
+            assembleQuad(quad, destination());
+        }
     }
 
-    private static void assembleAll(MutableQuadView src, QuadEmitter dest) {
+    private static void assembleQuad(MutableQuadView src, QuadEmitter dest) {
         dest.copyFrom(src);
         dest.emit();
     }
 
     @Override
     public void assembleRaw(AABB crop, Vec3 move) {
-        assembleQuad(source(), destination(), crop, move);
+        for (MutableQuadView quad : source()) {
+            assembleQuad(quad, destination(), crop, move);
+        }
     }
 
     @Override
     public void assembleRaw(AABB crop, Vec3 move, QuadTransform... transforms) {
-        assembleQuad(source(), destination(), crop, move, GlobalTransform.IDENTITY, transforms);
+        for (MutableQuadView quad : source()) {
+            assembleQuad(quad, destination(), crop, move, GlobalTransform.IDENTITY, transforms);
+        }
     }
 
 
