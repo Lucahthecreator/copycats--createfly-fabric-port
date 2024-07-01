@@ -176,7 +176,7 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
 
     GeneratedRecipe COPYCAT_SHAFT = copycat(CCBlocks.COPYCAT_SHAFT, 4);
 
-    GeneratedRecipe COPYCAT_FLUID_PIPE = functionalCopycat(AllBlocks.FLUID_PIPE, CCBlocks.COPYCAT_FLUID_PIPE, 4);
+    GeneratedRecipe COPYCAT_FLUID_PIPE = copycatWithBaseItem(AllBlocks.FLUID_PIPE, CCBlocks.COPYCAT_FLUID_PIPE, 4);
 
     Set<RegistryEntry<? extends Block>> blocksWithoutRecipe = Set.of(
             CCBlocks.COPYCAT_GLASS_FLUID_PIPE
@@ -218,7 +218,7 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
                 .create();
     }
 
-    GeneratedRecipeBuilder.GeneratedRecipe functionalCopycat(ItemProviderEntry<? extends ItemLike> base, ItemProviderEntry<? extends ItemLike> result, int resultCount) {
+    GeneratedRecipeBuilder.GeneratedRecipe copycatWithBaseItem(ItemProviderEntry<? extends ItemLike> base, ItemProviderEntry<? extends ItemLike> result, int resultCount) {
         if (result.get() instanceof ICopycatBlock) {
             copycatsWithRecipes.add((Block) result.get());
         }
