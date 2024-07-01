@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.fluid_pipe.fabric;
 
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.fabric.CopycatModelFabric;
-import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeModelPart;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeModelCore;
 import com.simibubi.create.content.decoration.bracket.BracketedBlockEntityBehaviour;
 import com.simibubi.create.content.fluids.FluidTransportBehaviour;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlock;
@@ -25,7 +25,7 @@ public class CopycatFluidPipeModelFabric extends CopycatModelFabric {
     @Override
     protected void prepareModelCore(BlockAndTintGetter blockView, BlockState state, BlockPos pos, Supplier<RandomSource> randomSupplier, BlockState material, Object renderAttachmentData) {
         super.prepareModelCore(blockView, state, pos, randomSupplier, material, renderAttachmentData);
-        CopycatFluidPipeModelPart.PipeModelData data = new CopycatFluidPipeModelPart.PipeModelData();
+        CopycatFluidPipeModelCore.PipeModelData data = new CopycatFluidPipeModelCore.PipeModelData();
         BracketedBlockEntityBehaviour bracket = BlockEntityBehaviour.get(blockView, pos, BracketedBlockEntityBehaviour.TYPE);
 
         if (renderAttachmentData instanceof FluidTransportBehaviour.AttachmentTypes[] attachments) {
@@ -41,7 +41,7 @@ public class CopycatFluidPipeModelFabric extends CopycatModelFabric {
 
         if (core instanceof CopycatModelCore.WithData<?>) {
             @SuppressWarnings("unchecked")
-            CopycatModelCore.WithData<CopycatFluidPipeModelPart.PipeModelData> dataCore = (CopycatModelCore.WithData<CopycatFluidPipeModelPart.PipeModelData>) core;
+            CopycatModelCore.WithData<CopycatFluidPipeModelCore.PipeModelData> dataCore = (CopycatModelCore.WithData<CopycatFluidPipeModelCore.PipeModelData>) core;
             dataCore.setData(data);
         }
     }

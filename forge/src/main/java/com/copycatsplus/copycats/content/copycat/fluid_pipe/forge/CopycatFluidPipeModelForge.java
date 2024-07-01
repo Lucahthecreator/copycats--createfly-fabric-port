@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.fluid_pipe.forge;
 
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.forge.CopycatModelForge;
-import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeModelPart;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeModelCore;
 import com.simibubi.create.content.decoration.bracket.BracketedBlockEntityBehaviour;
 import com.simibubi.create.content.fluids.FluidTransportBehaviour;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlock;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CopycatFluidPipeModelForge extends CopycatModelForge {
 
-    private static final ModelProperty<CopycatFluidPipeModelPart.PipeModelData> PIPE_PROPERTY = new ModelProperty<>();
+    private static final ModelProperty<CopycatFluidPipeModelCore.PipeModelData> PIPE_PROPERTY = new ModelProperty<>();
 
     public CopycatFluidPipeModelForge(BakedModel originalModel, CopycatModelCore core) {
         super(originalModel, core, false);
@@ -30,7 +30,7 @@ public class CopycatFluidPipeModelForge extends CopycatModelForge {
     public ModelData.Builder gatherModelData(ModelData.Builder builder, BlockAndTintGetter world, BlockPos pos, BlockState state,
                                              ModelData blockEntityData) {
         super.gatherModelData(builder, world, pos, state, blockEntityData);
-        CopycatFluidPipeModelPart.PipeModelData data = new CopycatFluidPipeModelPart.PipeModelData();
+        CopycatFluidPipeModelCore.PipeModelData data = new CopycatFluidPipeModelCore.PipeModelData();
         FluidTransportBehaviour transport = BlockEntityBehaviour.get(world, pos, FluidTransportBehaviour.TYPE);
         BracketedBlockEntityBehaviour bracket = BlockEntityBehaviour.get(world, pos, BracketedBlockEntityBehaviour.TYPE);
 
@@ -49,8 +49,8 @@ public class CopycatFluidPipeModelForge extends CopycatModelForge {
         super.prepareModelCore(state, rand, data);
         if (core instanceof CopycatModelCore.WithData<?>) {
             @SuppressWarnings("unchecked")
-            CopycatModelCore.WithData<CopycatFluidPipeModelPart.PipeModelData> dataCore = (CopycatModelCore.WithData<CopycatFluidPipeModelPart.PipeModelData>) core;
-            CopycatFluidPipeModelPart.PipeModelData pipeData = data.get(PIPE_PROPERTY);
+            CopycatModelCore.WithData<CopycatFluidPipeModelCore.PipeModelData> dataCore = (CopycatModelCore.WithData<CopycatFluidPipeModelCore.PipeModelData>) core;
+            CopycatFluidPipeModelCore.PipeModelData pipeData = data.get(PIPE_PROPERTY);
             dataCore.setData(pipeData);
         }
     }

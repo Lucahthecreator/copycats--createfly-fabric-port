@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.properties.Property;
  * Use {@link com.jozufozu.flywheel.core.PartialModel} instead if dynamic assembly is not required.
  */
 public enum CopycatPartialModel {
-    SHAFT(new CopycatShaftModelPart(), BlockStateProperties.AXIS);
+    SHAFT(new CopycatShaftModelCore(), BlockStateProperties.AXIS);
 
     /**
      * Creates a new partial model with the given core and properties.
