@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unchecked")
 public class PartialModelState {
@@ -94,5 +95,14 @@ public class PartialModelState {
     @Override
     public int hashCode() {
         return Objects.hashCode(backingMap);
+    }
+
+    @Override
+    public String toString() {
+        return '[' +
+                this.backingMap.entrySet().stream()
+                        .map(entry -> entry.getKey().getName() + "=" + entry.getValue().toString())
+                        .collect(Collectors.joining(",")) +
+                ']';
     }
 }
