@@ -137,16 +137,6 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
     }
 
     @Override
-    public boolean canFaceBeOccluded(BlockState state, Direction face) {
-        return !state.getValue(byDirection(face.getOpposite()));
-    }
-
-    @Override
-    public boolean shouldFaceAlwaysRender(BlockState state, Direction face) {
-        return !canFaceBeOccluded(state, face);
-    }
-
-    @Override
     public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
         return switch (pType) {
             case LAND -> (!pState.getValue(UP) && pState.getValue(DOWN) || pState.getValue(UP));

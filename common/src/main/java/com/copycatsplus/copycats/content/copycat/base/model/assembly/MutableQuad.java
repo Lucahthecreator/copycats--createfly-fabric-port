@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.base.model.assembly;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -13,11 +14,71 @@ public class MutableQuad implements AssemblyTransform.Transformable<MutableQuad>
     public List<MutableVertex> vertices;
     @Nullable
     public Direction cullFace;
+    public boolean disableFinalAutoCull = false;
     List<Mutation> mutations = new ArrayList<>();
 
     public MutableQuad(List<MutableVertex> vertices, @Nullable Direction cullFace) {
         this.vertices = vertices;
         this.cullFace = cullFace;
+    }
+
+    public Direction computeLightFace() {
+        final MutableVec3 normal = computeFaceNormal();
+        return switch (longestAxis(normal.x, normal.y, normal.z)) {
+            case X -> normal.x() > 0 ? Direction.EAST : Direction.WEST;
+            case Y -> normal.y() > 0 ? Direction.UP : Direction.DOWN;
+            case Z -> normal.z() > 0 ? Direction.SOUTH : Direction.NORTH;
+        };
+    }
+
+    private static Axis longestAxis(double normalX, double normalY, double normalZ) {
+        Axis result = Axis.Y;
+        double longest = Math.abs(normalY);
+        double a = Math.abs(normalX);
+
+        if (a > longest) {
+            result = Axis.X;
+            longest = a;
+        }
+
+        return Math.abs(normalZ) > longest
+                ? Axis.Z : result;
+    }
+
+    public MutableVec3 computeFaceNormal() {
+        final double x0 = vertices.get(0).xyz.x;
+        final double y0 = vertices.get(0).xyz.y;
+        final double z0 = vertices.get(0).xyz.z;
+        final double x1 = vertices.get(1).xyz.x;
+        final double y1 = vertices.get(1).xyz.y;
+        final double z1 = vertices.get(1).xyz.z;
+        final double x2 = vertices.get(2).xyz.x;
+        final double y2 = vertices.get(2).xyz.y;
+        final double z2 = vertices.get(2).xyz.z;
+        final double x3 = vertices.get(3).xyz.x;
+        final double y3 = vertices.get(3).xyz.y;
+        final double z3 = vertices.get(3).xyz.z;
+
+        final double dx0 = x2 - x0;
+        final double dy0 = y2 - y0;
+        final double dz0 = z2 - z0;
+        final double dx1 = x3 - x1;
+        final double dy1 = y3 - y1;
+        final double dz1 = z3 - z1;
+
+        double normX = dy0 * dz1 - dz0 * dy1;
+        double normY = dz0 * dx1 - dx0 * dz1;
+        double normZ = dx0 * dy1 - dy0 * dx1;
+
+        double l = (float) Math.sqrt(normX * normX + normY * normY + normZ * normZ);
+
+        if (l != 0) {
+            normX /= l;
+            normY /= l;
+            normZ /= l;
+        }
+
+        return new MutableVec3(normX, normY, normZ);
     }
 
     public MutableQuad mutate() {

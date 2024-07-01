@@ -17,10 +17,12 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -84,6 +86,11 @@ public class CopycatFluidPipeBlock extends FluidPipeBlock implements ICopycatBlo
     public void playerWillDestroy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
         super.playerWillDestroy(level, pos, state, player);
         ICopycatBlock.super.playerWillDestroy(level, pos, state, player);
+    }
+
+    @Override
+    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
+        return ICopycatBlock.super.getOcclusionShape(state, level, pos);
     }
 
     @Override

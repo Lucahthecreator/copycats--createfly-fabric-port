@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.WallSide;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -82,6 +83,12 @@ public class CopycatWallBlock extends WallBlock implements ICopycatBlock, IBE<CC
     public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         ICopycatBlock.super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
+        return ICopycatBlock.super.getOcclusionShape(state, level, pos);
     }
 
     @Override
@@ -156,24 +163,6 @@ public class CopycatWallBlock extends WallBlock implements ICopycatBlock, IBE<CC
             if (side != WallSide.NONE) return false;
         }
         return true;
-    }
-
-    @Override
-    public boolean canFaceBeOccluded(BlockState state, Direction face) {
-        if (face.getAxis().isHorizontal()) {
-            WallSide side = state.getValue(byDirection(face));
-            return side != WallSide.NONE &&
-                    !state.getValue(UP) &&
-                    side == state.getValue(byDirection(face.getOpposite())) &&
-                    state.getValue(byDirection(face.getClockWise())) == WallSide.NONE &&
-                    state.getValue(byDirection(face.getCounterClockWise())) == WallSide.NONE;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean shouldFaceAlwaysRender(BlockState state, Direction face) {
-        return !canFaceBeOccluded(state, face);
     }
 
     public boolean supportsExternalFaceHiding(BlockState state) {

@@ -140,18 +140,6 @@ public class CopycatHalfPanelBlock extends CCWaterloggedCopycatBlock implements 
     }
 
     @Override
-    public boolean canFaceBeOccluded(BlockState state, Direction face) {
-        Direction facing = state.getValue(FACING);
-        Direction offset = state.getValue(OFFSET);
-        return face == facing || face == getOffsetFacing(facing, offset) || face.getAxis() == getOffsetAxis(facing, offset);
-    }
-
-    @Override
-    public boolean shouldFaceAlwaysRender(BlockState state, Direction face) {
-        return !canFaceBeOccluded(state, face);
-    }
-
-    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState stateForPlacement = super.getStateForPlacement(context);
         assert stateForPlacement != null;

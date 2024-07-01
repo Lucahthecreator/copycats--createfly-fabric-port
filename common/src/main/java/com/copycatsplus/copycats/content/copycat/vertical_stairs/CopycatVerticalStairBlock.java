@@ -319,17 +319,6 @@ public class CopycatVerticalStairBlock extends CCWaterloggedCopycatBlock impleme
         return value >= 0 ? AxisDirection.POSITIVE : AxisDirection.NEGATIVE;
     }
 
-    @Override
-    public boolean canFaceBeOccluded(BlockState state, Direction face) {
-        int count = getFaceShape(state, face).countBlocks();
-        return count == 4 || count == 3 && state.getValue(SHAPE) == VerticalStairShape.STRAIGHT;
-    }
-
-    @Override
-    public boolean shouldFaceAlwaysRender(BlockState state, Direction face) {
-        return !canFaceBeOccluded(state, face);
-    }
-
 
     public boolean supportsExternalFaceHiding(BlockState state) {
         return true;

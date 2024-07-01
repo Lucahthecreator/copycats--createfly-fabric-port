@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -70,6 +71,12 @@ public class CopycatWeightedPressurePlate extends WeightedPressurePlateBlock imp
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
+        return ICopycatBlock.super.getOcclusionShape(state, level, pos);
+    }
+
     @Override
     public Class<CCCopycatBlockEntity> getBlockEntityClass() {
         return CCCopycatBlockEntity.class;
@@ -88,10 +95,5 @@ public class CopycatWeightedPressurePlate extends WeightedPressurePlateBlock imp
     @Override
     public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
         return false;
-    }
-
-    @Override
-    public boolean shouldFaceAlwaysRender(BlockState state, Direction face) {
-        return true;
     }
 }

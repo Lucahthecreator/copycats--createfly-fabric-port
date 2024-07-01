@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.base.multistate;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -65,6 +67,11 @@ public abstract class MultiStateCopycatBlock extends Block implements IMultiStat
     public void playerWillDestroy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
         super.playerWillDestroy(level, pos, state, player);
         IMultiStateCopycatBlock.super.playerWillDestroy(level, pos, state, player);
+    }
+
+    @Override
+    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
+        return IMultiStateCopycatBlock.super.getOcclusionShape(state, level, pos);
     }
 
     @Override

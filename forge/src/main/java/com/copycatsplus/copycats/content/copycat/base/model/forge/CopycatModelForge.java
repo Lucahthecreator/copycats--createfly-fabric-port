@@ -6,6 +6,7 @@ import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.FilteredBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.forge.CopycatRenderContextForge;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.forge.CopycatRenderContextForge.CullingBakedQuad;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
 import com.simibubi.create.AllBlocks;
@@ -28,10 +29,7 @@ import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore.MATERIAL_KEY;
@@ -49,6 +47,7 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
     protected final CopycatModelCore core;
     private final boolean disableAO;
     protected final List<CopycatModelCore.ModelEntry> entries = new ArrayList<>();
+    private final ThreadLocal<RenderSession> renderSession = ThreadLocal.withInitial(() -> new RenderSession(this::getQuads));
 
     public CopycatModelForge(BakedModel originalModel, CopycatModelCore core, boolean disableAO) {
         super(originalModel);
@@ -74,7 +73,6 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
 
     @Override
     public @NotNull ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
-        prepareModelCore(state, rand, data);
         ChunkRenderTypeSet renderTypes = allRenderTypes;
         Map<String, BlockState> materials = getMaterials(data);
         for (CopycatModelCore.ModelEntry entry : entries) {
@@ -164,101 +162,97 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
                 continue;
             }
 
-            if (!copycatBlock.canFaceBeOccluded(state, face))
-                continue;
             if (!Block.shouldRenderFace(material, world, pos, face, neighbourPos))
                 occlusionData.occlude(face);
         }
     }
 
-    @Override
-    public @NotNull List<BakedQuad> getQuads(BlockState state, Direction side, @NotNull RandomSource rand, @NotNull ModelData data, RenderType renderType) {
-        List<BakedQuad> croppedQuads = new ArrayList<>();
+    protected @NotNull List<CullingBakedQuad> getQuads(BlockState state, @NotNull RandomSource rand, @NotNull ModelData data, RenderType renderType) {
+
+        prepareModelCore(state, rand, data);
+
+        List<CullingBakedQuad> allQuads = new ArrayList<>();
         Map<String, BlockState> materials = getMaterials(data);
         Map<String, OcclusionData> occlusionDataMap = getOcclusion(data);
         Map<String, ModelData> wrappedDataMap = getWrappedData(data);
         for (CopycatModelCore.ModelEntry entry : entries) {
             BlockState material = materials.get(entry.key());
+
+            if (entry.useCopycatLogic() && material == null)
+                continue;
+
+            BakedModel model;
+            if (entry.model() == null)
+                model = null;
+            else {
+                model = entry.model().getModel(state, material);
+                if (model == null) continue;
+            }
+
+            BlockState wrappedState = state;
+            ModelData wrappedData = data;
             if (entry.useCopycatLogic()) {
-                if (material == null)
-                    continue;
-
-                // Rubidium: see below
-                if (side != null && state.getBlock() instanceof ICopycatBlock ccb && ccb.shouldFaceAlwaysRender(state, side))
-                    continue;
-
-                BakedModel model;
-                if (entry.model() == null)
-                    model = null;
-                else {
-                    model = entry.model().getModel(state, material);
-                    if (model == null) continue;
-                }
-
-                CopycatModelForge.OcclusionData occlusionData = occlusionDataMap.get(entry.key());
-                if (occlusionData != null && occlusionData.isOccluded(side))
-                    continue;
-
-                ModelData wrappedData = wrappedDataMap.get(entry.key());
+                wrappedState = material;
+                wrappedData = wrappedDataMap.get(entry.key());
                 if (wrappedData == null)
                     wrappedData = ModelData.EMPTY;
-                if (renderType != null) {
-                    if (model == null) {
-                        if (!super.getRenderTypes(material, rand, wrappedData).contains(renderType))
-                            continue;
-                    } else {
-                        if (!model.getRenderTypes(material, rand, wrappedData).contains(renderType))
-                            continue;
-                    }
+            }
+            if (renderType != null) {
+                if (model == null) {
+                    if (!super.getRenderTypes(wrappedState, rand, wrappedData).contains(renderType))
+                        continue;
+                } else {
+                    if (!model.getRenderTypes(wrappedState, rand, wrappedData).contains(renderType))
+                        continue;
                 }
+            }
 
+            List<CullingBakedQuad> quads = new ArrayList<>();
+            for (Direction side : Iterate.directions) {
                 List<BakedQuad> templateQuads = model == null
-                        ? super.getQuads(material, side, rand, wrappedData, renderType)
-                        : model.getQuads(material, side, rand, wrappedData, renderType);
-                croppedQuads.addAll(getCroppedQuads(entry, state, templateQuads, material));
+                        ? super.getQuads(wrappedState, side, rand, wrappedData, renderType)
+                        : model.getQuads(wrappedState, side, rand, wrappedData, renderType);
+                for (BakedQuad templateQuad : templateQuads) {
+                    quads.add(new CullingBakedQuad(templateQuad, side));
+                }
+            }
+            List<BakedQuad> templateQuads = model == null
+                    ? super.getQuads(wrappedState, null, rand, wrappedData, renderType)
+                    : model.getQuads(wrappedState, null, rand, wrappedData, renderType);
+            for (BakedQuad templateQuad : templateQuads) {
+                quads.add(new CullingBakedQuad(templateQuad, null));
+            }
 
-                // Rubidium: render side!=null versions of the base material during side==null,
-                // to avoid getting culled away
-                if (side == null && state.getBlock() instanceof ICopycatBlock ccb) {
-                    for (Direction nonOcclusionSide : Iterate.directions)
-                        if (ccb.shouldFaceAlwaysRender(state, nonOcclusionSide)) {
-                            List<BakedQuad> nonOcclusionTemplateQuads = model == null
-                                    ? super.getQuads(material, nonOcclusionSide, rand, wrappedData, renderType)
-                                    : model.getQuads(material, nonOcclusionSide, rand, wrappedData, renderType);
-                            croppedQuads.addAll(getCroppedQuads(entry, state, nonOcclusionTemplateQuads, material));
-                        }
-                }
-            } else {
-                BakedModel model;
-                if (entry.model() == null)
-                    model = null;
-                else {
-                    model = entry.model().getModel(state, material);
-                    if (model == null) continue;
-                }
-                if (renderType != null) {
-                    if (model == null) {
-                        if (!super.getRenderTypes(state, rand, data).contains(renderType))
-                            continue;
-                    } else {
-                        if (!model.getRenderTypes(state, rand, data).contains(renderType))
-                            continue;
-                    }
-                }
-                List<BakedQuad> templateQuads = model == null
-                        ? super.getQuads(material, side, rand, data, renderType)
-                        : model.getQuads(material, side, rand, data, renderType);
-                croppedQuads.addAll(getCroppedQuads(entry, state, templateQuads, material));
+            List<CullingBakedQuad> croppedQuads = getCroppedQuads(entry, state, quads, material);
+
+            CopycatModelForge.OcclusionData occlusionData = occlusionDataMap.get(entry.key());
+            for (CullingBakedQuad croppedQuad : croppedQuads) {
+                if (occlusionData != null && occlusionData.isOccluded(croppedQuad.cullFace))
+                    continue;
+
+                allQuads.add(croppedQuad);
             }
         }
 
-        return croppedQuads;
+        return allQuads;
     }
 
-    private List<BakedQuad> getCroppedQuads(CopycatModelCore.ModelEntry entry, BlockState state, List<BakedQuad> templateQuads, BlockState material) {
+    @Override
+    public @NotNull List<BakedQuad> getQuads(BlockState state, Direction side, @NotNull RandomSource rand, @NotNull ModelData data, RenderType renderType) {
+        List<CullingBakedQuad> templateQuads = renderSession.get().getQuads(state, rand, data, renderType);
+        List<BakedQuad> quads = new ArrayList<>();
+        for (CullingBakedQuad quad : templateQuads) {
+            if (side != quad.cullFace)
+                continue;
+            quads.add(new BakedQuad(quad.getVertices(), quad.getTintIndex(), quad.getDirection(), quad.getSprite(), quad.isShade()));
+        }
+        return quads;
+    }
+
+    private List<CullingBakedQuad> getCroppedQuads(CopycatModelCore.ModelEntry entry, BlockState state, List<CullingBakedQuad> templateQuads, BlockState material) {
         if (entry.part() == null)
             return templateQuads;
-        List<BakedQuad> quads = new ArrayList<>();
+        List<CullingBakedQuad> quads = new ArrayList<>();
         CopycatRenderContextForge context = new CopycatRenderContextForge(templateQuads, quads);
         entry.part().emitCopycatQuads(entry.key(), state, context, material);
         return quads;
@@ -316,4 +310,34 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
         }
     }
 
+    @FunctionalInterface
+    public interface Renderer {
+        List<CullingBakedQuad> getQuads(BlockState state, @NotNull RandomSource rand, @NotNull ModelData data, RenderType renderType);
+    }
+
+    public static class RenderSession implements Renderer {
+        private final Renderer renderer;
+        private BlockState state = null;
+        private RandomSource rand = null;
+        private ModelData data = null;
+        private RenderType renderType = null;
+        private List<CullingBakedQuad> result = null;
+
+        public RenderSession(Renderer renderer) {
+            this.renderer = renderer;
+        }
+
+        @Override
+        public List<CullingBakedQuad> getQuads(BlockState state, @NotNull RandomSource rand, @NotNull ModelData data, RenderType renderType) {
+            if (Objects.equals(this.state, state) && this.rand == rand && this.data == data && this.renderType == renderType && this.result != null) {
+                return result;
+            }
+            this.state = state;
+            this.rand = rand;
+            this.data = data;
+            this.renderType = renderType;
+            this.result = renderer.getQuads(state, rand, data, renderType);
+            return result;
+        }
+    }
 }

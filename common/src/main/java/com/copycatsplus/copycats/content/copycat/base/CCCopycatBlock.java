@@ -25,6 +25,8 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -76,6 +78,11 @@ public abstract class CCCopycatBlock extends Block implements IBE<CCCopycatBlock
     public void playerWillDestroy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
         super.playerWillDestroy(level, pos, state, player);
         ICopycatBlock.super.playerWillDestroy(level, pos, state, player);
+    }
+
+    @Override
+    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
+        return ICopycatBlock.super.getOcclusionShape(state, level, pos);
     }
 
     @Override

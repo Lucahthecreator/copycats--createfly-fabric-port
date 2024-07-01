@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -81,6 +82,11 @@ public class CopycatFenceGateBlock extends FenceGateBlock implements ICopycatBlo
     }
 
     @Override
+    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
+        return ICopycatBlock.super.getOcclusionShape(state, level, pos);
+    }
+
+    @Override
     public Class<CCCopycatBlockEntity> getBlockEntityClass() {
         return CCCopycatBlockEntity.class;
     }
@@ -99,11 +105,6 @@ public class CopycatFenceGateBlock extends FenceGateBlock implements ICopycatBlo
     @Override
     public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
         return false;
-    }
-
-    @Override
-    public boolean shouldFaceAlwaysRender(BlockState state, Direction face) {
-        return true;
     }
 
     public boolean supportsExternalFaceHiding(BlockState state) {

@@ -175,16 +175,6 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock {
     }
 
     @Override
-    public boolean canFaceBeOccluded(BlockState state, Direction face) {
-        return getFaceShape(state, face).hasContact();
-    }
-
-    @Override
-    public boolean shouldFaceAlwaysRender(BlockState state, Direction face) {
-        return !getFaceShape(state, face).hasContact();
-    }
-
-    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState stateForPlacement = super.getStateForPlacement(context);
         assert stateForPlacement != null;

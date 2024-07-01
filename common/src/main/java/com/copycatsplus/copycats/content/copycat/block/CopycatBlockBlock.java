@@ -23,11 +23,6 @@ public class CopycatBlockBlock extends CCCopycatBlock implements IStateType {
         super(properties);
     }
 
-    @Override
-    public boolean canFaceBeOccluded(BlockState state, Direction face) {
-        return true;
-    }
-
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {

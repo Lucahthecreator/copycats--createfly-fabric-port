@@ -146,17 +146,6 @@ public class CopycatVerticalSlopeBlock extends CCWaterloggedCopycatBlock impleme
         return false;
     }
 
-    @Override
-    public boolean canFaceBeOccluded(BlockState state, Direction face) {
-        Direction facing = state.getValue(FACING);
-        return face.getAxis() == Axis.Y || face == facing || face == facing.getCounterClockWise();
-    }
-
-    @Override
-    public boolean shouldFaceAlwaysRender(BlockState state, Direction face) {
-        return !canFaceBeOccluded(state, face);
-    }
-
     private static final Map<Pair<Integer, Integer>, Direction> VERTICAL_POSITION_MAP = new HashMap<>();
     private static final Map<Pair<Direction, Integer>, Direction> HORIZONTAL_POSITION_MAP = new HashMap<>();
 

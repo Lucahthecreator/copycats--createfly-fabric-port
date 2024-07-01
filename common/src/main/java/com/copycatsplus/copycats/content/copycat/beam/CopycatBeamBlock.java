@@ -112,16 +112,6 @@ public class CopycatBeamBlock extends CCWaterloggedCopycatBlock implements IStat
     }
 
     @Override
-    public boolean canFaceBeOccluded(BlockState state, Direction face) {
-        return face.getAxis() == state.getValue(AXIS);
-    }
-
-    @Override
-    public boolean shouldFaceAlwaysRender(BlockState state, Direction face) {
-        return face.getAxis() != state.getValue(AXIS);
-    }
-
-    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState stateForPlacement = super.getStateForPlacement(context);
         assert stateForPlacement != null;

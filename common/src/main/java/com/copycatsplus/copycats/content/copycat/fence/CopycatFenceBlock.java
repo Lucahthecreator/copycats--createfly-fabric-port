@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -81,6 +82,11 @@ public class CopycatFenceBlock extends FenceBlock implements ICopycatBlock, IBE<
     }
 
     @Override
+    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
+        return ICopycatBlock.super.getOcclusionShape(state, level, pos);
+    }
+
+    @Override
     public Class<CCCopycatBlockEntity> getBlockEntityClass() {
         return CCCopycatBlockEntity.class;
     }
@@ -114,11 +120,6 @@ public class CopycatFenceBlock extends FenceBlock implements ICopycatBlock, IBE<
         for (Direction direction : Iterate.horizontalDirections) {
             if (state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction))) return false;
         }
-        return true;
-    }
-
-    @Override
-    public boolean shouldFaceAlwaysRender(BlockState state, Direction face) {
         return true;
     }
 

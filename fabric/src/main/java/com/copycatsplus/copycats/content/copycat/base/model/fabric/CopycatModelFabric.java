@@ -58,8 +58,6 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                                      OcclusionData occlusionData, ICopycatBlock copycatBlock) {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction face : Iterate.directions) {
-            if (!copycatBlock.canFaceBeOccluded(state, face))
-                continue;
             BlockPos.MutableBlockPos neighbourPos = mutablePos.setWithOffset(pos, face);
             if (!Block.shouldRenderFace(material, world, pos, face, neighbourPos))
                 occlusionData.occlude(face);
@@ -124,15 +122,6 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                     gatherOcclusionData(blockView, pos, state, material, occlusionData, copycatBlock);
                 }
 
-                CullFaceRemovalData cullFaceRemovalData = new CullFaceRemovalData();
-                if (state.getBlock() instanceof ICopycatBlock copycatBlock) {
-                    for (Direction cullFace : Iterate.directions) {
-                        if (copycatBlock.shouldFaceAlwaysRender(state, cullFace)) {
-                            cullFaceRemovalData.remove(cullFace);
-                        }
-                    }
-                }
-
                 // fabric: If it is the default state do not push transformations, will cause issues with GhostBlockRenderer
                 boolean shouldTransform = !material.equals(AllBlocks.COPYCAT_BASE.getDefaultState());
                 // fabric: need to change the default render material
@@ -176,9 +165,7 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                 List<MutableQuadView> quads = new ArrayList<>();
 
                 context.pushTransform(quad -> {
-                    if (cullFaceRemovalData.shouldRemove(quad.cullFace())) {
-                        quad.cullFace(null);
-                    } else if (occlusionData.isOccluded(quad.cullFace())) {
+                    if (occlusionData.isOccluded(quad.cullFace())) {
                         // Add quad to mesh and do not render original quad to preserve quad render order
                         emitter.copyFrom(quad);
                         emitter.emit();
@@ -298,22 +285,6 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
 
         public boolean isOccluded(Direction face) {
             return face != null && occluded[face.get3DDataValue()];
-        }
-    }
-
-    public static class CullFaceRemovalData {
-        private final boolean[] shouldRemove;
-
-        public CullFaceRemovalData() {
-            shouldRemove = new boolean[6];
-        }
-
-        public void remove(Direction face) {
-            shouldRemove[face.get3DDataValue()] = true;
-        }
-
-        public boolean shouldRemove(Direction face) {
-            return face != null && shouldRemove[face.get3DDataValue()];
         }
     }
 

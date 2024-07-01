@@ -21,25 +21,29 @@ public class CopycatShaftModelCore extends CopycatModelCore {
                 transform,
                 vec3(6, 6, 0),
                 aabb(2, 2, 16).move(0, 0, 0),
-                cull(UP | EAST)
+                cull(UP | EAST),
+                noCull()
         );
         context.assemblePiece(
                 transform,
                 vec3(8, 6, 0),
                 aabb(2, 2, 16).move(14, 0, 0),
-                cull(UP | WEST)
+                cull(UP | WEST),
+                noCull()
         );
         context.assemblePiece(
                 transform,
                 vec3(6, 8, 0),
                 aabb(2, 2, 16).move(0, 14, 0),
-                cull(DOWN | EAST)
+                cull(DOWN | EAST),
+                noCull()
         );
         context.assemblePiece(
                 transform,
                 vec3(8, 8, 0),
                 aabb(2, 2, 16).move(14, 14, 0),
-                cull(DOWN | WEST)
+                cull(DOWN | WEST),
+                noCull()
         );
     }
 }

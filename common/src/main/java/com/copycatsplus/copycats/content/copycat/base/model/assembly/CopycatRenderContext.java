@@ -9,6 +9,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 @ParametersAreNonnullByDefault
@@ -174,6 +175,31 @@ public interface CopycatRenderContext {
      */
     static QuadUVUpdate updateUV(QuadTransform... transforms) {
         return new QuadUVUpdate(transforms);
+    }
+
+    /**
+     * Assign cull face to the quad based on the light face and the existing cull face.
+     * <p>
+     * Return null to specify that the quad should never be culled.
+     *
+     * @param mapper The mapper function to determine the cull face.
+     */
+    static QuadCullFace cullFace(QuadCullFace.CullFaceMapper mapper) {
+        return new QuadCullFace(mapper);
+    }
+
+    /**
+     * Disable face culling for the quad.
+     */
+    static QuadCullFace noCull() {
+        return cullFace((lightFace, cullFace) -> null);
+    }
+
+    /**
+     * Automatically assign cull face according to quad position and orientation.
+     */
+    static QuadAutoCull autoCull() {
+        return QuadAutoCull.INSTANCE;
     }
 
     @ApiStatus.Internal

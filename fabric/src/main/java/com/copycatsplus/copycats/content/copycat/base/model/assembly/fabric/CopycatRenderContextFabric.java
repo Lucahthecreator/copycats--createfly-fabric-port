@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.base.model.assembly.fabric;
 
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.*;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.quad.QuadAutoCull;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.quad.QuadTransform;
 import com.simibubi.create.foundation.model.BakedModelHelper;
 import com.simibubi.create.foundation.model.BakedQuadHelper;
@@ -40,7 +41,7 @@ public class CopycatRenderContextFabric extends CopycatRenderContext.Base<List<M
             if (cull.isCulled(quad.lightFace())) {
                 continue;
             }
-            assembleQuad(quad, destination(), aabb, vec3);
+            assembleQuad(quad, destination(), aabb, vec3, assemblyTransform);
         }
     }
 
@@ -74,7 +75,7 @@ public class CopycatRenderContextFabric extends CopycatRenderContext.Base<List<M
     @Override
     public void assembleRaw(AABB crop, Vec3 move) {
         for (MutableQuadView quad : source()) {
-            assembleQuad(quad, destination(), crop, move);
+            assembleQuad(quad, destination(), crop, move, AssemblyTransform.IDENTITY);
         }
     }
 
@@ -83,13 +84,6 @@ public class CopycatRenderContextFabric extends CopycatRenderContext.Base<List<M
         for (MutableQuadView quad : source()) {
             assembleQuad(quad, destination(), crop, move, AssemblyTransform.IDENTITY, transforms);
         }
-    }
-
-
-    private static void assembleQuad(MutableQuadView src, QuadEmitter dest, AABB crop, Vec3 move) {
-        dest.copyFrom(src);
-        BakedModelHelper.cropAndMove(dest, spriteFinder.find(src), crop, move);
-        dest.emit();
     }
 
     private static void assembleQuad(MutableQuadView src, QuadEmitter dest, AABB crop, Vec3 move, AssemblyTransform assemblyTransform, QuadTransform... transforms) {
@@ -102,12 +96,14 @@ public class CopycatRenderContextFabric extends CopycatRenderContext.Base<List<M
         for (QuadTransform transform : transforms) {
             transform.transformQuad(mutableQuad, sprite);
         }
+        if (!mutableQuad.disableFinalAutoCull)
+            QuadAutoCull.INSTANCE.transformQuad(mutableQuad, sprite);
         mutableQuad.mutate();
         for (int i = 0; i < 4; i++) {
             BakedQuadHelper.setXYZ(dest, i, mutableQuad.vertices.get(i).xyz.toVec3());
             dest.uv(i, mutableQuad.vertices.get(i).uv.u, mutableQuad.vertices.get(i).uv.v);
         }
-        // light face is calculated automatically in Fabric
+        dest.cullFace(mutableQuad.cullFace);
         dest.emit();
     }
 

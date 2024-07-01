@@ -346,22 +346,6 @@ public class CopycatHalfLayerBlock extends WaterloggedMultiStateCopycatBlock {
         return true;
     }
 
-    @Override
-    public boolean shouldFaceAlwaysRender(BlockState state, Direction face) {
-        if (face.getAxis().isVertical() && (state.getValue(HALF) == Half.TOP) == (face == Direction.DOWN)) {
-            return state.getValue(POSITIVE_LAYERS) < 8 || state.getValue(NEGATIVE_LAYERS) < 8;
-        }
-        if (face.getAxis() == state.getValue(AXIS)) {
-            int negativeLayers = state.getValue(NEGATIVE_LAYERS);
-            int positiveLayers = state.getValue(POSITIVE_LAYERS);
-            if (face.getAxisDirection() == AxisDirection.NEGATIVE && negativeLayers < positiveLayers)
-                return true;
-            if (face.getAxisDirection() == AxisDirection.POSITIVE && positiveLayers < negativeLayers)
-                return true;
-        }
-        return super.shouldFaceAlwaysRender(state, face);
-    }
-
 
     public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState, Direction dir) {
         return false;

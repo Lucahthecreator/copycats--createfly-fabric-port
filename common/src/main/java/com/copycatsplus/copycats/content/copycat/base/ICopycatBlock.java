@@ -48,6 +48,7 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
  * {@link IBE#getBlockEntityType} in the concrete class, and redirect calls of
  * {@link IMultiStateCopycatBlock#use},
  * {@link IMultiStateCopycatBlock#setPlacedBy},
+ * {@link IMultiStateCopycatBlock#getOcclusionShape},
  * {@link IMultiStateCopycatBlock#onRemove} and
  * {@link IMultiStateCopycatBlock#playerWillDestroy} to this interface.
  * <p>
@@ -293,6 +294,10 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
         }
     }
 
+    default VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
+        return Shapes.block();
+    }
+
     static BlockState getAppearance(ICopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
                                     BlockState queryState, BlockPos queryPos) {
         if (block.isIgnoredConnectivitySide(level, state, side, pos, queryPos))
@@ -441,30 +446,6 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
     default boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos,
                                              BlockState state) {
         return true;
-    }
-
-    /**
-     * Determine whether the block face of the copied material can be culled by {@link Block#skipRendering} logic,
-     * which is mostly used for face culling between two transparent blocks such as glass.
-     *
-     * @param state The state of the copycat block.
-     * @param face  The face of the copycat block that is being checked for occlusion.
-     * @return Whether the face can be culled.
-     */
-    default boolean canFaceBeOccluded(BlockState state, Direction face) {
-        return false;
-    }
-
-    /**
-     * Determine whether the block face of the copycat can be culled by an adjacent solid block, or by other optimizations
-     * in modded renderers such as Sodium.
-     *
-     * @param state The state of the copycat block.
-     * @param face  The face of the copycat block that is being checked for face culling.
-     * @return Whether the face should always render.
-     */
-    default boolean shouldFaceAlwaysRender(BlockState state, Direction face) {
-        return false;
     }
 
     @Environment(EnvType.CLIENT)

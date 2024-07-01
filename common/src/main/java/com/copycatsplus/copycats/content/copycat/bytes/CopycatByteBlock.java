@@ -141,16 +141,6 @@ public class CopycatByteBlock extends WaterloggedMultiStateCopycatBlock {
         return toState.is(this);
     }
 
-    @Override
-    public boolean canFaceBeOccluded(BlockState state, Direction face) {
-        return false;
-    }
-
-    @Override
-    public boolean shouldFaceAlwaysRender(BlockState state, Direction face) {
-        return true;
-    }
-
     private static VoxelShape calculateMultiFaceShape(BlockState pState) {
         VoxelShape shape = Shapes.empty();
         for (Byte bite : allBytes) {

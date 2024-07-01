@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -75,6 +76,12 @@ public class CopycatStairsBlock extends StairBlock implements ICopycatBlock, IBE
     public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         ICopycatBlock.super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
+        return ICopycatBlock.super.getOcclusionShape(state, level, pos);
     }
 
     @Override
@@ -163,17 +170,6 @@ public class CopycatStairsBlock extends StairBlock implements ICopycatBlock, IBE
     @Override
     public Optional<Boolean> blockCTTowards(BlockAndTintGetter reader, BlockState state, BlockPos pos, BlockPos ctPos, BlockPos connectingPos, Direction face) {
         return CCBlocks.COPYCAT_VERTICAL_STAIRS.get().blockCTTowards(reader, state, pos, ctPos, connectingPos, face);
-    }
-
-    @Override
-    public boolean canFaceBeOccluded(BlockState state, Direction face) {
-        int count = getFaceShape(state, face).countBlocks();
-        return count == 4 || count == 3 && state.getValue(StairBlock.SHAPE) == StairsShape.STRAIGHT;
-    }
-
-    @Override
-    public boolean shouldFaceAlwaysRender(BlockState state, Direction face) {
-        return !canFaceBeOccluded(state, face);
     }
 
 

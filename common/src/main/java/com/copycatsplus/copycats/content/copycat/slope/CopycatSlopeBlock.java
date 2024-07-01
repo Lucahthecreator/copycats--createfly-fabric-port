@@ -137,21 +137,6 @@ public class CopycatSlopeBlock extends CCWaterloggedCopycatBlock implements ISta
     }
 
     @Override
-    public boolean canFaceBeOccluded(BlockState state, Direction face) {
-        Direction facing = state.getValue(FACING);
-        Half half = state.getValue(HALF);
-        if (face == facing) return true;
-        if (face == facing.getOpposite()) return false;
-        if (half == Half.TOP) return face != Direction.DOWN;
-        else return face != Direction.UP;
-    }
-
-    @Override
-    public boolean shouldFaceAlwaysRender(BlockState state, Direction face) {
-        return !canFaceBeOccluded(state, face);
-    }
-
-    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState stateForPlacement = super.getStateForPlacement(context);
         assert stateForPlacement != null;
