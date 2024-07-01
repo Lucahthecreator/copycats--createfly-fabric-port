@@ -1,6 +1,5 @@
 package com.copycatsplus.copycats.content.copycat.base;
 
-import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
@@ -115,7 +114,7 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
             return null;
 
         Block block = bi.getBlock();
-        if (block instanceof ICopycatBlock || block instanceof MultiStateCopycatBlock)
+        if (block instanceof ICopycatBlock)
             return null;
 
         BlockState appliedState = block.defaultBlockState();

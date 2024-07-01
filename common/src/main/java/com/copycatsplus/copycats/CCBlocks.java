@@ -4,7 +4,7 @@ import com.copycatsplus.copycats.config.FeatureCategory;
 import com.copycatsplus.copycats.config.FeatureToggle;
 import com.copycatsplus.copycats.content.copycat.base.WrappedCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
-import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.beam.CopycatBeamBlock;
 import com.copycatsplus.copycats.content.copycat.beam.CopycatBeamModelPart;
 import com.copycatsplus.copycats.content.copycat.block.CopycatBlockBlock;
@@ -453,6 +453,6 @@ public class CCBlocks {
     }
 
     public static Set<RegistryEntry<Block>> getAllRegisteredMultiStateBlocks() {
-        return new HashSet<>(REGISTRATE.getAll(BuiltInRegistries.BLOCK.key())).stream().filter(entry -> entry.get() instanceof MultiStateCopycatBlock).collect(Collectors.toSet());
+        return new HashSet<>(REGISTRATE.getAll(BuiltInRegistries.BLOCK.key())).stream().filter(entry -> entry.get() instanceof IMultiStateCopycatBlock).collect(Collectors.toSet());
     }
 }

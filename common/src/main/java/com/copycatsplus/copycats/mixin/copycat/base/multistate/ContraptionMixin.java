@@ -51,7 +51,7 @@ public class ContraptionMixin {
             BlockPos pos = cir.getReturnValue().pos();
             CopycatBlockEntity be = AllBlockEntityTypes.COPYCAT.create(pos, state);
             be.load(nbt);
-            MultiStateCopycatBlockEntity multiBe = CCBlockEntityTypes.MULTI_STATE_COPYCAT_BLOCK_ENTITY.create(pos, state);
+            MultiStateCopycatBlockEntity multiBe = CCBlockEntityTypes.MULTI_STATE_COPYCAT.create(pos, state);
             multiBe.migrateData((ICopycatBlockEntity) be);
             nbt = multiBe.saveWithId();
             cir.setReturnValue(new StructureTemplate.StructureBlockInfo(pos, state, nbt));

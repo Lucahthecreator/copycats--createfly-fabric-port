@@ -45,7 +45,7 @@ public class CCBlockEntityTypes {
                     )
                     .register();
 
-    public static final BlockEntityEntry<? extends MultiStateCopycatBlockEntity> MULTI_STATE_COPYCAT_BLOCK_ENTITY =
+    public static final BlockEntityEntry<? extends MultiStateCopycatBlockEntity> MULTI_STATE_COPYCAT =
             REGISTRATE.blockEntity("multistate_copycat", MultiStateCopycatBlockEntity::new)
                     .validBlocks(
                             CCBlocks.COPYCAT_SLAB,
@@ -55,7 +55,7 @@ public class CCBlockEntityTypes {
                     )
                     .register();
 
-    public static final BlockEntityEntry<? extends MultiStateCopycatBlockEntity> MULTI_STATE_COPYCAT_LADDER_BLOCK_ENTITY =
+    public static final BlockEntityEntry<? extends MultiStateCopycatBlockEntity> MULTI_STATE_COPYCAT_LADDER =
             REGISTRATE.blockEntity("multistate_ladder_copycat", MultiStateCopycatLadderBlockEntity::new)
                     .validBlocks(/*CCBlocks.COPYCAT_LADDER*/)
                     .register();

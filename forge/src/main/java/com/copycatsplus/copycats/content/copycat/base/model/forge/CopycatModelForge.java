@@ -6,9 +6,8 @@ import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.FilteredBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.forge.CopycatRenderContextForge;
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
-import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.model.BakedModelWrapperWithData;
 import com.simibubi.create.foundation.utility.Iterate;
@@ -116,7 +115,7 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
         }));
         builder.with(OCCLUSION_PROPERTY, occlusionMap);
 
-        if (copycatBlock instanceof MultiStateCopycatBlock multiStateBlock) {
+        if (copycatBlock instanceof IMultiStateCopycatBlock multiStateBlock) {
             Map<String, ModelData> wrappedDataMap = materials.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, s -> {
                 Vec3i inner = multiStateBlock.getVectorFromProperty(state, s.getKey());
                 boolean enableCT = !(world.getBlockEntity(pos) instanceof IMultiStateCopycatBlockEntity multiStateBE) || multiStateBE.getMaterialItemStorage().getMaterialItem(s.getKey()).enableCT();

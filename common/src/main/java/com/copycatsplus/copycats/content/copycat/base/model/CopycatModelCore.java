@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.base.model;
 
 import com.copycatsplus.copycats.config.CCConfigs;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatModelPart;
-import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
@@ -23,7 +23,7 @@ public abstract class CopycatModelCore implements CopycatModelPart {
         entries.add(MATERIAL);
     }
 
-    protected void registerForMultiState(List<ModelEntry> entries, MultiStateCopycatBlock block) {
+    protected void registerForMultiState(List<ModelEntry> entries, IMultiStateCopycatBlock block) {
         for (String property : block.storageProperties()) {
             entries.add(new ModelEntry(property, (state, mat) -> getModelOf(mat), this, true));
         }

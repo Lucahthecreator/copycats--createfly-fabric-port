@@ -82,7 +82,7 @@ public interface IMultiStateCopycatBlockEntity extends ICopycatBlockEntity {
                 BlockState neighbourState = getLevel().getBlockState(neighbour);
                 if (neighbourState != wrapperState)
                     continue;
-                if (!(getLevel().getBlockEntity(neighbour) instanceof MultiStateCopycatBlockEntity cbe))
+                if (!(getLevel().getBlockEntity(neighbour) instanceof IMultiStateCopycatBlockEntity cbe))
                     continue;
                 BlockState otherMaterial = cbe.getMaterialItemStorage().getMaterialItem(property).material();
                 if (!otherMaterial.is(blockState.getBlock()))
@@ -146,7 +146,7 @@ public interface IMultiStateCopycatBlockEntity extends ICopycatBlockEntity {
 
     @ApiStatus.Internal
     static void read(IMultiStateCopycatBlockEntity self, CompoundTag tag, boolean clientPacket) {
-        if (self.getBlockState().getBlock() instanceof MultiStateCopycatBlock) {
+        if (self.getBlockState().getBlock() instanceof IMultiStateCopycatBlock) {
             boolean anyUpdated = self.getMaterialItemStorage().deserialize(tag.getCompound("material_data"));
 
             if (clientPacket && anyUpdated)

@@ -1,9 +1,7 @@
 package com.copycatsplus.copycats.fabric;
 
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.builders.BlockBuilder;
@@ -27,7 +25,7 @@ public class CCBuilderTransformersImpl {
                 .transform(TagGen.axeOrPickaxe());
     }
 
-    public static <B extends MultiStateCopycatBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> multiCopycat() {
+    public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> multiCopycat() {
         return b -> b.initialProperties(SharedProperties::softMetal)
                 .blockstate((c, p) -> p.simpleBlock(c.get(), p.models()
                         .getExistingFile(p.mcLoc("air"))))

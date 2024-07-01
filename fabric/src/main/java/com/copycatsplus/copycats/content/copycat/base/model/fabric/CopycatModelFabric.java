@@ -7,7 +7,6 @@ import com.copycatsplus.copycats.content.copycat.base.model.ScaledBlockAndTintGe
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.fabric.CopycatRenderContextFabric;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
-import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.utility.Iterate;
 import com.simibubi.create.foundation.utility.Pair;

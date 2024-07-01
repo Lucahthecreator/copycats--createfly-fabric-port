@@ -4,7 +4,6 @@ import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCItems;
 import com.copycatsplus.copycats.CCTags;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
 import com.copycatsplus.copycats.datagen.recipes.gen.CopycatsRecipeProvider;
 import com.copycatsplus.copycats.datagen.recipes.gen.GeneratedRecipeBuilder;
 import com.copycatsplus.copycats.multiloader.Platform;
@@ -212,10 +211,6 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
             copycatsWithRecipes.add((Block) result.get());
         }
 
-        if (result.get() instanceof MultiStateCopycatBlock copycat) {
-            copycatsWithRecipes.add(copycat);
-        }
-
         return create(result)
                 .unlockedBy(AllItems.ZINC_INGOT::get)
                 .returns(resultCount)
@@ -226,10 +221,6 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
     GeneratedRecipeBuilder.GeneratedRecipe functionalCopycat(ItemProviderEntry<? extends ItemLike> base, ItemProviderEntry<? extends ItemLike> result, int resultCount) {
         if (result.get() instanceof ICopycatBlock) {
             copycatsWithRecipes.add((Block) result.get());
-        }
-
-        if (result.get() instanceof MultiStateCopycatBlock copycat) {
-            copycatsWithRecipes.add(copycat);
         }
 
         return create(result)

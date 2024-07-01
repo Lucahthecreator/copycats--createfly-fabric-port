@@ -34,7 +34,7 @@ public abstract class LevelChunkMixin {
     public abstract BlockState getBlockState(BlockPos pos);
 
     @Inject(method = "setBlockEntity", at = @At(value = "HEAD"), cancellable = true)
-    private void idfkanymore(BlockEntity blockEntity, CallbackInfo ci) {
+    private void migrateBlockEntity(BlockEntity blockEntity, CallbackInfo ci) {
         BlockPos pos = blockEntity.getBlockPos();
         LevelChunk chunk = (LevelChunk) (Object) this;
 
@@ -45,7 +45,7 @@ public abstract class LevelChunkMixin {
                     CompoundTag oldTag = blockEntity.saveWithFullMetadata();
 
                     // Create and initialize the new BlockEntity
-                    MultiStateCopycatBlockEntity newBlockEntity = CCBlockEntityTypes.MULTI_STATE_COPYCAT_BLOCK_ENTITY.create(pos, state);
+                    MultiStateCopycatBlockEntity newBlockEntity = CCBlockEntityTypes.MULTI_STATE_COPYCAT.create(pos, state);
                     newBlockEntity.load(oldTag);
 
                     // Migrate data from the old BlockEntity

@@ -1,7 +1,6 @@
 package com.copycatsplus.copycats.mixin.copycat.base;
 
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
 import com.simibubi.create.content.decoration.copycat.CopycatBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -28,7 +27,7 @@ public class CopycatBlockMixin {
             return;
 
         Block block = bi.getBlock();
-        if (block instanceof ICopycatBlock || block instanceof MultiStateCopycatBlock)
+        if (block instanceof ICopycatBlock)
             cir.setReturnValue(null);
     }
 
