@@ -9,6 +9,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+/**
+ * Allow fans to blow through copycat blocks
+ */
 @Mixin(AirCurrent.class)
 public class AirCurrentMixin {
 

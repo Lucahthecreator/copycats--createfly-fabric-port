@@ -15,8 +15,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+/**
+ * Implement {@link ICopycatBlock} for Create's {@link CopycatBlock}.
+ * <p>
+ * Also patch its implementation to consider our copycats.
+ */
 @Mixin(CopycatBlock.class)
-public class CopycatBlockMixin {
+public class CopycatBlockMixin implements ICopycatBlock {
     @Inject(
             method = "getAcceptedBlockState",
             at = @At("HEAD"),

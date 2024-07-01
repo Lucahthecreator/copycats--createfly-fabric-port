@@ -14,6 +14,11 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
+/**
+ * Convert a copycat fluid pipe to a copycat glass fluid pipe when wrenched.
+ * <p>
+ * The reverse conversion doesn't need to be patched because it can be overridden in {@link CopycatGlassFluidPipeBlock}.
+ */
 @Mixin(FluidPipeBlock.class)
 public class FluidPipeBlockMixin {
     @WrapOperation(

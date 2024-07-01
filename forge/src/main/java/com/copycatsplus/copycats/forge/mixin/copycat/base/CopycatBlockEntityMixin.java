@@ -16,6 +16,11 @@ import net.minecraftforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 
+/**
+ * Implement platform-specific methods for copycat block entities.
+ * <p>
+ * All non-multi-state copycats should register their block entities here instead of writing their own platform-specific implementations.
+ */
 @Mixin({
         CCCopycatBlockEntity.class,
         CopycatFluidPipeBlockEntity.class,

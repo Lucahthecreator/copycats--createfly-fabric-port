@@ -15,6 +15,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
 
+/**
+ * Implementation for {@link ICustomCTBlocking}.
+ */
 @Mixin(value = ConnectedTextureBehaviour.class)
 public class ConnectedTextureBehaviourMixin {
     @Inject(

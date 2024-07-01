@@ -30,6 +30,11 @@ import org.spongepowered.asm.mixin.Pseudo;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Implement platform-specific methods for multi-state copycat blocks.
+ * <p>
+ * All multi-state copycats should register their blocks here instead of writing their own platform-specific implementations.
+ */
 @Mixin(MultiStateCopycatBlock.class)
 @Pseudo
 public abstract class MultiStateCopycatBlockMixin extends Block implements IForgeBlock, IMultiStateCopycatBlock {

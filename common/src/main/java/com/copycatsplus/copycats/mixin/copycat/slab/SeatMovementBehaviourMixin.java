@@ -10,6 +10,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
+/**
+ * Consider copycat slab as a normal slab when handling seat movement.
+ */
 @Mixin(SeatMovementBehaviour.class)
 public class SeatMovementBehaviourMixin {
     @WrapOperation(

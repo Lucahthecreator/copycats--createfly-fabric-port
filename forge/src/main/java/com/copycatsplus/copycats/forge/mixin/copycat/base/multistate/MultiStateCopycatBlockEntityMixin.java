@@ -16,6 +16,11 @@ import java.util.Collections;
 
 import static com.copycatsplus.copycats.content.copycat.base.model.forge.CopycatModelForge.MATERIALS_PROPERTY;
 
+/**
+ * Implement platform-specific methods for multi-state copycat block entities.
+ * <p>
+ * All multi-state copycats should register their block entities here instead of writing their own platform-specific implementations.
+ */
 @Mixin({
         MultiStateCopycatBlockEntity.class
 })

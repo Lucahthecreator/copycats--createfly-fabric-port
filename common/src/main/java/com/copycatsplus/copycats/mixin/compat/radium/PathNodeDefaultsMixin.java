@@ -10,12 +10,16 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 
+/**
+ * Make sure Radium's pathfinding algorithm considers slabs properly, since they do not extend from {@link net.minecraft.world.level.block.SlabBlock}.
+ */
 @Mixin(targets = "me.jellysquid.mods.lithium.common.ai.pathing.PathNodeDefaults")
-@Pseudo // Would normally fail if Radium is not installed
+@Pseudo
 public class PathNodeDefaultsMixin {
     @WrapOperation(
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getBlock()Lnet/minecraft/world/level/block/Block;"),
-            method = "getNodeType(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/world/level/pathfinder/BlockPathTypes;"
+            method = "getNodeType(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/world/level/pathfinder/BlockPathTypes;",
+            require = 0
     )
     private static Block getWrappedBlock(BlockState instance, Operation<Block> original) {
         if (instance.getBlock() instanceof CopycatSlabBlock)

@@ -35,6 +35,11 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+/**
+ * Implement platform-specific methods for multi-state copycat blocks.
+ * <p>
+ * All multi-state copycats should register their blocks here instead of writing their own platform-specific implementations.
+ */
 @Mixin(MultiStateCopycatBlock.class)
 public abstract class MultiStateCopycatBlockMixin extends Block implements IMultiStateCopycatBlock,
         CustomFrictionBlock, CustomSoundTypeBlock, LightEmissiveBlock, ExplosionResistanceBlock,

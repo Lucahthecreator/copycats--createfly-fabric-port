@@ -13,7 +13,6 @@
     "compat.rubidium.BlockRendererMixin",
     "copycat.VoxelShapeAccessor",
     "copycat.base.ConnectedTextureBehaviourMixin",
-    "copycat.base.CopycatBlockEntityAccessor",
     "copycat.base.CopycatBlockEntityMixin",
     "copycat.base.CopycatBlockMixin",
     "copycat.base.kinetic.CreateClientMixin",

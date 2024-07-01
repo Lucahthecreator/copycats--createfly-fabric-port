@@ -2,6 +2,7 @@ package com.copycatsplus.copycats.mixin.copycat.step;
 
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.simibubi.create.content.decoration.copycat.CopycatBlockEntity;
+import com.simibubi.create.content.decoration.copycat.CopycatPanelBlock;
 import com.simibubi.create.content.decoration.copycat.CopycatStepBlock;
 import com.simibubi.create.content.decoration.copycat.WaterloggedCopycatBlock;
 import net.minecraft.core.BlockPos;
@@ -20,6 +21,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+/**
+ * Add CT toggle to Create's {@link CopycatStepBlock}.
+ */
 @Mixin(CopycatStepBlock.class)
 public abstract class CopycatStepBlockMixin extends WaterloggedCopycatBlock implements ICopycatBlock {
     public CopycatStepBlockMixin(Properties pProperties) {

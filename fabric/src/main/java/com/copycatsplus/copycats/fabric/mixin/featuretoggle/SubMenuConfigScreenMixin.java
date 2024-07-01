@@ -18,6 +18,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+/**
+ * Sync the config when the user saves changes in Create's GUI config screen.
+ */
 @Mixin(value = SubMenuConfigScreen.class, remap = false)
 public class SubMenuConfigScreenMixin {
     @Inject(

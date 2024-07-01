@@ -8,6 +8,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+/**
+ * Always report that our blocks have no extra states added by AdditionalPlacements.
+ */
 @Mixin(
         value = {
                 AdditionalPlacementBlock.class,
@@ -25,7 +28,7 @@ public class PlacementBlockMixin {
             at = @At("HEAD"),
             method = "hasAdditionalStates()Z",
             cancellable = true,
-            expect = 0, require = 0
+            require = 0
     )
     private void forCopycatBlocks(CallbackInfoReturnable<Boolean> cir) {
         Block block = ((Block) (Object) this);

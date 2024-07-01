@@ -35,6 +35,11 @@ import org.spongepowered.asm.mixin.Mixin;
 
 import static com.copycatsplus.copycats.content.copycat.base.ICopycatBlock.getMaterial;
 
+/**
+ * Implement platform-specific methods for copycat blocks.
+ * <p>
+ * All non-multi-state copycats should register their blocks here instead of writing their own platform-specific implementations.
+ */
 @Mixin({
         CCCopycatBlock.class,
         CopycatButtonBlock.class,

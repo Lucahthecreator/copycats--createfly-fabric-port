@@ -16,6 +16,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
+/**
+ * Implement platform-specific methods for copycat block entities.
+ * <p>
+ * All non-multi-state copycats should register their block entities here instead of writing their own platform-specific implementations.
+ */
 @SuppressWarnings("deprecation")
 public class CopycatBlockEntityMixin {
     @Mixin({

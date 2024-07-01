@@ -11,6 +11,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
+/**
+ * Patch Create's {@link CTModel} to consider our copycats.
+ */
 @Mixin(CTModel.class)
 public class CTModelMixin {
     @WrapOperation(

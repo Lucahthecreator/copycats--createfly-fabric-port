@@ -15,6 +15,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+/**
+ * Expand Create's {@link CopycatBlockEntity} with CT toggle.
+ * <p>
+ * Also implement {@link ICopycatBlockEntity} to unify instanceof checks.
+ */
 @Mixin(value = CopycatBlockEntity.class)
 public abstract class CopycatBlockEntityMixin extends SmartBlockEntity implements ICopycatBlockEntity {
     @Shadow

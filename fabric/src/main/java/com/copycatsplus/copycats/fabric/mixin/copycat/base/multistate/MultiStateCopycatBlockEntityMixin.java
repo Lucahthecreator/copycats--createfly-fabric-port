@@ -12,6 +12,11 @@ import org.spongepowered.asm.mixin.Mixin;
 
 import java.util.Collections;
 
+/**
+ * Implement platform-specific methods for multi-state copycat block entities.
+ * <p>
+ * All multi-state copycats should register their block entities here instead of writing their own platform-specific implementations.
+ */
 @SuppressWarnings("deprecation")
 public class MultiStateCopycatBlockEntityMixin {
     @Mixin({

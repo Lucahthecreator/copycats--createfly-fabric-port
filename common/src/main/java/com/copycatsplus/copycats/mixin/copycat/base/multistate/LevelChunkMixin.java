@@ -26,9 +26,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.stream.Collectors;
 
+/**
+ * Migrate copycat block entities to multi-state copycat block entities when loading worlds.
+ */
 @Mixin(value = LevelChunk.class)
 public abstract class LevelChunkMixin {
-
 
     @Shadow
     public abstract BlockState getBlockState(BlockPos pos);
