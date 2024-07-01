@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats;
 
 import com.copycatsplus.copycats.content.copycat.base.model.kinetic.KineticCopycatRenderer;
-import com.copycatsplus.copycats.multiloader.LogicalSidedProvider;
+import com.copycatsplus.copycats.utility.LogicalSidedProvider;
 import com.copycatsplus.copycats.network.CCPackets;
 import com.simibubi.create.foundation.render.SuperByteBufferCache;
 import net.minecraft.client.Minecraft;

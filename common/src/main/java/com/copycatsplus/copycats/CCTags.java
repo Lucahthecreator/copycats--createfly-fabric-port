@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats;
 
-import com.copycatsplus.copycats.multiloader.Platform;
+import com.copycatsplus.copycats.utility.Platform;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;

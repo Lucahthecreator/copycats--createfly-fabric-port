@@ -1,6 +1,6 @@
-package com.copycatsplus.copycats.multiloader.forge;
+package com.copycatsplus.copycats.utility.forge;
 
-import com.copycatsplus.copycats.multiloader.Platform;
+import com.copycatsplus.copycats.utility.Platform;
 
 public class PlatformImpl {
 

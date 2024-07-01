@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.multiloader;
+package com.copycatsplus.copycats.utility;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;

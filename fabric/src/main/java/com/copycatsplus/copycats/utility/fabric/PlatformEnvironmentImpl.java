@@ -1,6 +1,6 @@
-package com.copycatsplus.copycats.multiloader.fabric;
+package com.copycatsplus.copycats.utility.fabric;
 
-import com.copycatsplus.copycats.multiloader.Platform;
+import com.copycatsplus.copycats.utility.Platform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 

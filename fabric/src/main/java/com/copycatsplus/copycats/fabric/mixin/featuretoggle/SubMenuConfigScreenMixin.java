@@ -2,8 +2,8 @@ package com.copycatsplus.copycats.fabric.mixin.featuretoggle;
 
 import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.config.CCConfigs;
-import com.copycatsplus.copycats.multiloader.LogicalSidedProvider;
-import com.copycatsplus.copycats.multiloader.Platform;
+import com.copycatsplus.copycats.utility.LogicalSidedProvider;
+import com.copycatsplus.copycats.utility.Platform;
 import com.copycatsplus.copycats.network.CCPackets;
 import com.copycatsplus.copycats.network.ConfigSyncPacket;
 import com.copycatsplus.copycats.network.PlayerSelection;

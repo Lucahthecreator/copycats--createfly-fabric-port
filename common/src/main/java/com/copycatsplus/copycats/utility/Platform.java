@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.multiloader;
+package com.copycatsplus.copycats.utility;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import org.jetbrains.annotations.ApiStatus;
