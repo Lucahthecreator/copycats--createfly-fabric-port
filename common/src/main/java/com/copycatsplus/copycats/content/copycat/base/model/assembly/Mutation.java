@@ -3,6 +3,9 @@ package com.copycatsplus.copycats.content.copycat.base.model.assembly;
 
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import org.jetbrains.annotations.Contract;
+
+import javax.annotation.Nullable;
 
 /**
  * Records a mutation to be applied to a {@link AssemblyTransform.Transformable} object or a {@link Direction}.
@@ -31,7 +34,10 @@ public record Mutation(MutationType type, int value) {
     /**
      * Apply the recorded mutation to the given object.
      */
-    public Direction mutate(Direction dir) {
+    @Nullable
+    @Contract("null -> null")
+    public Direction mutate(@Nullable Direction dir) {
+        if (dir == null) return null;
         return switch (type) {
             case ROTATE_X -> rotateX(dir, value);
             case ROTATE_Y -> rotateY(dir, value);
@@ -65,7 +71,10 @@ public record Mutation(MutationType type, int value) {
     /**
      * Undo the recorded mutation on the given object.
      */
-    public Direction undoMutate(Direction dir) {
+    @Nullable
+    @Contract("null -> null")
+    public Direction undoMutate(@Nullable Direction dir) {
+        if (dir == null) return null;
         return switch (type) {
             case ROTATE_X -> rotateX(dir, -value);
             case ROTATE_Y -> rotateY(dir, -value);
@@ -79,7 +88,10 @@ public record Mutation(MutationType type, int value) {
         };
     }
 
-    private static Direction rotateX(Direction dir, int angle) {
+    @Nullable
+    @Contract("null, _ -> null")
+    private static Direction rotateX(@Nullable Direction dir, int angle) {
+        if (dir == null) return null;
         // rotate around the X axis clockwise
         angle = angle % 360;
         if (angle < 0) angle += 360;
@@ -109,7 +121,10 @@ public record Mutation(MutationType type, int value) {
         };
     }
 
-    private static Direction rotateY(Direction dir, int angle) {
+    @Nullable
+    @Contract("null, _ -> null")
+    private static Direction rotateY(@Nullable Direction dir, int angle) {
+        if (dir == null) return null;
         // rotate around the Y axis clockwise
         angle = angle % 360;
         if (angle < 0) angle += 360;
@@ -139,7 +154,10 @@ public record Mutation(MutationType type, int value) {
         };
     }
 
-    private static Direction rotateZ(Direction dir, int angle) {
+    @Nullable
+    @Contract("null, _ -> null")
+    private static Direction rotateZ(@Nullable Direction dir, int angle) {
+        if (dir == null) return null;
         // rotate around the Z axis clockwise
         angle = angle % 360;
         if (angle < 0) angle += 360;

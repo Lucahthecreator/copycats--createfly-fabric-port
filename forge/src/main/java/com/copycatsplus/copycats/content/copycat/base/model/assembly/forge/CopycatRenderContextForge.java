@@ -97,7 +97,7 @@ public class CopycatRenderContextForge extends CopycatRenderContext.Base<List<Ba
             BakedQuadHelper.setU(vertices, i, mutableQuad.vertices.get(i).uv.u);
             BakedQuadHelper.setV(vertices, i, mutableQuad.vertices.get(i).uv.v);
         }
-        dest.add(new BakedQuad(vertices, src.getTintIndex(), mutableQuad.direction, src.getSprite(), src.isShade()));
+        dest.add(new BakedQuad(vertices, src.getTintIndex(), mutableQuad.cullFace, src.getSprite(), src.isShade()));
     }
 
     public static MutableQuad getMutableQuad(BakedQuad quad) {

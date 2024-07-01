@@ -2,6 +2,7 @@ package com.copycatsplus.copycats.content.copycat.base.model.assembly;
 
 import net.minecraft.core.Direction;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,12 +11,13 @@ import java.util.List;
  */
 public class MutableQuad implements AssemblyTransform.Transformable<MutableQuad> {
     public List<MutableVertex> vertices;
-    public Direction direction;
+    @Nullable
+    public Direction cullFace;
     List<Mutation> mutations = new ArrayList<>();
 
-    public MutableQuad(List<MutableVertex> vertices, Direction direction) {
+    public MutableQuad(List<MutableVertex> vertices, @Nullable Direction cullFace) {
         this.vertices = vertices;
-        this.direction = direction;
+        this.cullFace = cullFace;
     }
 
     public MutableQuad mutate() {
@@ -23,7 +25,7 @@ public class MutableQuad implements AssemblyTransform.Transformable<MutableQuad>
             for (MutableVertex vertex : vertices) {
                 mutation.mutate(vertex.xyz);
             }
-            direction = mutation.mutate(direction);
+            cullFace = mutation.mutate(cullFace);
         }
         return this;
     }
@@ -34,7 +36,7 @@ public class MutableQuad implements AssemblyTransform.Transformable<MutableQuad>
             for (MutableVertex vertex : vertices) {
                 mutation.undoMutate(vertex.xyz);
             }
-            direction = mutation.undoMutate(direction);
+            cullFace = mutation.undoMutate(cullFace);
         }
         return this;
     }

@@ -19,9 +19,9 @@ public interface CopycatRenderContext {
      * Copy a piece of cuboid from the source model and assemble it to the copycat.
      *
      * @param assemblyTransform The transform to apply to the entire operation, changing the positions, AABBs and cull faces, while not affecting the source model. This can be used to combine repetitive assembly code, or to rotate the entire piece according to block state.
-     * @param offset          The final position of the assembled piece, in voxel space.
-     * @param select          The selection on the source model to copy from, in voxel space. {@link MutableAABB#move} can be used to move the selection if it does not start at the origin.
-     * @param cull            Faces to skip rendering in the destination model.
+     * @param offset            The final position of the assembled piece, in voxel space.
+     * @param select            The selection on the source model to copy from, in voxel space. {@link MutableAABB#move} can be used to move the selection if it does not start at the origin.
+     * @param cull              Faces to skip rendering in the destination model.
      */
     void assemblePiece(
             @NotNull AssemblyTransform assemblyTransform,
@@ -34,10 +34,10 @@ public interface CopycatRenderContext {
      * Copy a piece of cuboid from the source model and assemble it to the copycat.
      *
      * @param assemblyTransform The transform to apply to the entire operation, changing the positions, AABBs, cull faces and quad transforms, while not affecting the source model. This can be used to combine repetitive assembly code, or to rotate the entire piece according to block state.
-     * @param offset          The final position of the assembled piece, in voxel space.
-     * @param select          The selection on the source model to copy from, in voxel space. {@link MutableAABB#move} can be used to move the selection if it does not start at the origin.
-     * @param cull            Faces to skip rendering in the destination model.
-     * @param transforms      Quad transforms to apply to the copied quads. These transforms are applied after the selection is copied, and mutate the vertices of the quads directly. Assembly transforms should be used over quad transforms for block state-dependent rotations/mirroring.
+     * @param offset            The final position of the assembled piece, in voxel space.
+     * @param select            The selection on the source model to copy from, in voxel space. {@link MutableAABB#move} can be used to move the selection if it does not start at the origin.
+     * @param cull              Faces to skip rendering in the destination model.
+     * @param transforms        Quad transforms to apply to the copied quads. These transforms are applied after the selection is copied, and mutate the vertices of the quads directly. Assembly transforms should be used over quad transforms for block state-dependent rotations/mirroring.
      */
     void assemblePiece(
             @NotNull AssemblyTransform assemblyTransform,
@@ -174,19 +174,6 @@ public interface CopycatRenderContext {
      */
     static QuadUVUpdate updateUV(QuadTransform... transforms) {
         return new QuadUVUpdate(transforms);
-    }
-
-    /**
-     * Transforms the light direction of a quad.
-     * <p>
-     * Note that this is currently only implemented for Forge, since Fabric calculates quad light direction based on
-     * the vertex normals.
-     *
-     * @param directionMapper The function that maps the original direction to the new direction.
-     */
-    @ApiStatus.Experimental
-    static QuadLightDirection lightDirection(Function<Direction, Direction> directionMapper) {
-        return new QuadLightDirection(directionMapper);
     }
 
     @ApiStatus.Internal
