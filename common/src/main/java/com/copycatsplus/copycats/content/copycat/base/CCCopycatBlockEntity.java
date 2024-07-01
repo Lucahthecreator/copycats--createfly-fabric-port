@@ -8,8 +8,11 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -34,6 +37,34 @@ public class CCCopycatBlockEntity extends SmartBlockEntity implements ICopycatBl
     public CCCopycatBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         ICopycatBlockEntity.super.init();
+    }
+
+    public void notifyUpdate() {
+        super.notifyUpdate();
+    }
+
+    public Level getLevel() {
+        return super.getLevel();
+    }
+
+    public BlockPos getBlockPos() {
+        return super.getBlockPos();
+    }
+
+    public BlockState getBlockState() {
+        return super.getBlockState();
+    }
+
+    public HolderGetter<Block> blockHolderGetter() {
+        return super.blockHolderGetter();
+    }
+
+    public void setBlockState(BlockState blockState) {
+        super.setBlockState(blockState);
+    }
+
+    public void setLevel(Level level) {
+        super.setLevel(level);
     }
 
     @Override
