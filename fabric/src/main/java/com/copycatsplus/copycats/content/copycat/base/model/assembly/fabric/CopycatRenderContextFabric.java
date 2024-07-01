@@ -100,7 +100,7 @@ public class CopycatRenderContextFabric extends CopycatRenderContext.Base<List<M
         assemblyTransform.apply(mutableQuad);
         mutableQuad.undoMutate();
         for (QuadTransform transform : transforms) {
-            transform.transformVertices(mutableQuad, sprite);
+            transform.transformQuad(mutableQuad, sprite);
         }
         mutableQuad.mutate();
         for (int i = 0; i < 4; i++) {

@@ -23,7 +23,7 @@ public record QuadSlope(Direction face, QuadSlopeFunction func) implements QuadT
     private static final double EPSILON = 0.02 / 16;
 
     @Override
-    public void transformVertices(MutableQuad quad, TextureAtlasSprite sprite) {
+    public void transformQuad(MutableQuad quad, TextureAtlasSprite sprite) {
         for (int i = 0; i < 4; i++) {
             MutableVec3 vertex = quad.vertices.get(i).xyz;
 

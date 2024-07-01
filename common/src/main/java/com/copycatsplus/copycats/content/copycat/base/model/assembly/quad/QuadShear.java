@@ -16,7 +16,7 @@ import net.minecraft.core.Direction.Axis;
 public record QuadShear(Axis axis, Direction direction, double amount) implements QuadTransform {
 
     @Override
-    public void transformVertices(MutableQuad quad, TextureAtlasSprite sprite) {
+    public void transformQuad(MutableQuad quad, TextureAtlasSprite sprite) {
         for (int i = 0; i < 4; i++) {
             MutableVec3 vertex = quad.vertices.get(i).xyz;
 

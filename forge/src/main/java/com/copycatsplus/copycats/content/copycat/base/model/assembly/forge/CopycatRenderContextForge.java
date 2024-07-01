@@ -89,7 +89,7 @@ public class CopycatRenderContextForge extends CopycatRenderContext.Base<List<Ba
         assemblyTransform.apply(mutableQuad);
         mutableQuad.undoMutate();
         for (QuadTransform transform : transforms) {
-            transform.transformVertices(mutableQuad, src.getSprite());
+            transform.transformQuad(mutableQuad, src.getSprite());
         }
         mutableQuad.mutate();
         for (int i = 0; i < 4; i++) {

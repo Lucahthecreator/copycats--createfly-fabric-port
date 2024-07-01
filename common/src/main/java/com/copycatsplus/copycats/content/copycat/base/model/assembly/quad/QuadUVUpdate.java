@@ -19,7 +19,7 @@ import static com.simibubi.create.foundation.block.render.SpriteShiftEntry.getUn
 public record QuadUVUpdate(QuadTransform... transforms) implements QuadTransform {
 
     @Override
-    public void transformVertices(MutableQuad quad, TextureAtlasSprite sprite) {
+    public void transformQuad(MutableQuad quad, TextureAtlasSprite sprite) {
         List<MutableVec3> prevXYZ = List.of(
                 quad.vertices.get(0).xyz.copy(),
                 quad.vertices.get(1).xyz.copy(),
@@ -27,7 +27,7 @@ public record QuadUVUpdate(QuadTransform... transforms) implements QuadTransform
                 quad.vertices.get(3).xyz.copy()
         );
         for (QuadTransform transform : transforms) {
-            transform.transformVertices(quad, sprite);
+            transform.transformQuad(quad, sprite);
         }
         updateUV(quad, sprite, prevXYZ);
     }

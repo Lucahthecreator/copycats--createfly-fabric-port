@@ -7,5 +7,5 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
  * Transforms a quad by mutating its vertices or other properties.
  */
 public interface QuadTransform {
-    void transformVertices(MutableQuad quad, TextureAtlasSprite sprite);
+    void transformQuad(MutableQuad quad, TextureAtlasSprite sprite);
 }
