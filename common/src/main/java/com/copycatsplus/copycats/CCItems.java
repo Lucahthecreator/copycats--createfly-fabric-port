@@ -4,7 +4,6 @@ import com.copycatsplus.copycats.config.FeatureToggle;
 import com.copycatsplus.copycats.content.copycat.board.CopycatBoxItem;
 import com.copycatsplus.copycats.content.copycat.board.CopycatCatwalkItem;
 import com.simibubi.create.foundation.data.AssetLookup;
-import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
 public class CCItems {

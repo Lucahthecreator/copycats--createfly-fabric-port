@@ -3,7 +3,6 @@ package com.copycatsplus.copycats;
 import com.copycatsplus.copycats.config.CCConfigs;
 import com.copycatsplus.copycats.datagen.recipes.CCStandardRecipes;
 import com.copycatsplus.copycats.network.CCPackets;
-import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipHelper;

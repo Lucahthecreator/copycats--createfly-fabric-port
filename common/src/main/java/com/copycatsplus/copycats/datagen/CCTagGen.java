@@ -3,7 +3,6 @@ package com.copycatsplus.copycats.datagen;
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.compat.Mods;
-import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;

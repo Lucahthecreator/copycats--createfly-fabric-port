@@ -2,7 +2,6 @@ package com.copycatsplus.copycats.content.copycat.base.model.assembly;
 
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.quad.*;
 import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;

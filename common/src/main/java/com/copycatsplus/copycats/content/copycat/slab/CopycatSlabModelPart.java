@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.state.properties.SlabType;
 
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext.*;
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableCullFace.*;
-import static com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableCullFace.DOWN;
 
 public class CopycatSlabModelPart extends CopycatModelCore {
 

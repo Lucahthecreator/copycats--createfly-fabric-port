@@ -3,7 +3,6 @@ package com.copycatsplus.copycats.content.copycat.base.model.kinetic;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.partial.CopycatPartialModel;
 import com.simibubi.create.foundation.render.SuperByteBuffer;
-import net.minecraft.world.level.block.state.BlockState;
 
 public interface IKineticCopycatBlockRenderer {
 

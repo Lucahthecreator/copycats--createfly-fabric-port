@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.state.properties.Half;
 
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext.*;
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableCullFace.*;
-import static com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableCullFace.SOUTH;
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.quad.QuadSlope.map;
 
 public class CopycatSlopeModelPart extends CopycatModelCore {

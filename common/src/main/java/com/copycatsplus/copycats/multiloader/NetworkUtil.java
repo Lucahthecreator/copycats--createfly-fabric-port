@@ -1,6 +1,5 @@
 package com.copycatsplus.copycats.multiloader;
 
-import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.minecraft.network.PacketListener;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;

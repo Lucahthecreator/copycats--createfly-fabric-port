@@ -6,10 +6,8 @@ import com.copycatsplus.copycats.content.copycat.partial.CopycatPartialModel;
 import com.copycatsplus.copycats.utility.ChatUtils;
 import com.jozufozu.flywheel.backend.Backend;
 import com.jozufozu.flywheel.config.BackendType;
-import com.mojang.authlib.properties.PropertyMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public record KineticCopycatRenderData(CopycatPartialModel partialModel, PartialModelState state, BlockState material) {
     public static KineticCopycatRenderData of(CopycatPartialModel partialModel, ICopycatBlockEntity be) {

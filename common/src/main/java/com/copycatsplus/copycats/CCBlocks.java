@@ -20,8 +20,6 @@ import com.copycatsplus.copycats.content.copycat.fence.CopycatFenceModelPart;
 import com.copycatsplus.copycats.content.copycat.fence_gate.CopycatFenceGateBlock;
 import com.copycatsplus.copycats.content.copycat.fence_gate.CopycatFenceGateModelPart;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.*;
-import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeModelPart;
-import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatStraightPipeModelPart;
 import com.copycatsplus.copycats.content.copycat.ghost_block.CopycatGhostBlock;
 import com.copycatsplus.copycats.content.copycat.ghost_block.CopycatGhostBlockModelPart;
 import com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLayerBlock;
