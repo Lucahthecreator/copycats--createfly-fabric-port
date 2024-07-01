@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.mixin.copycat.base.multistate;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
+import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
@@ -58,8 +59,7 @@ public class ContraptionMixin {
             multiBe.migrateData((ICopycatBlockEntity) be);
             nbt = multiBe.saveWithId();
             cir.setReturnValue(new StructureTemplate.StructureBlockInfo(pos, state, nbt));
-        } else if (state.getBlock() instanceof ICopycatBlock &&
-                (state.getBlock() instanceof CopycatBlock) &&
+        } else if (state.getBlock() instanceof CCCopycatBlock &&
                 nbt != null &&
                 nbt.contains("id") &&
                 nbt.getString("id").equals(AllBlockEntityTypes.COPYCAT.getId().toString())) {
