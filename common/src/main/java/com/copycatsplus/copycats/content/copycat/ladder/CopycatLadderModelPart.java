@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.ladder;
 
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
-import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.AssemblyTransform;
 import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -13,12 +13,12 @@ public class CopycatLadderModelPart extends CopycatModelCore {
     @Override
     public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
         int rot = (int) state.getValue(LadderBlock.FACING).toYRot();
-        GlobalTransform transform = t -> t.rotateY(rot);
+        AssemblyTransform transform = t -> t.rotateY(rot);
         assemblePoles(context, transform);
         assembleSteps(context, transform);
     }
 
-    public static void assemblePoles(CopycatRenderContext context, GlobalTransform transform) {
+    public static void assemblePoles(CopycatRenderContext context, AssemblyTransform transform) {
         context.assemblePiece(
                 transform,
                 vec3(2, 0, 0),
@@ -33,7 +33,7 @@ public class CopycatLadderModelPart extends CopycatModelCore {
         );
     }
 
-    public static void assembleSteps(CopycatRenderContext context, GlobalTransform transform) {
+    public static void assembleSteps(CopycatRenderContext context, AssemblyTransform transform) {
         context.assemblePiece(
                 transform,
                 vec3(1, 1, 0.1),

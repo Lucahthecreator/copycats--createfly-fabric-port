@@ -1,11 +1,13 @@
 package com.copycatsplus.copycats.content.copycat.base;
 
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.contraptions.ITransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.foundation.block.IBE;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -37,7 +39,23 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
 /**
- * Indicates that a block functions as a copycat but is not a subclass of {@link CCCopycatBlock}.
+ * An interface with implementation for all copycats. Simple copycats should implement this interface while multi-state
+ * copycats should implement {@link IMultiStateCopycatBlock}.
+ * <p>
+ * Implementors should implement
+ * {@link net.minecraft.world.level.block.EntityBlock#getTicker},
+ * {@link IBE#getBlockEntityClass} and
+ * {@link IBE#getBlockEntityType} in the concrete class, and redirect calls of
+ * {@link IMultiStateCopycatBlock#use},
+ * {@link IMultiStateCopycatBlock#setPlacedBy},
+ * {@link IMultiStateCopycatBlock#onRemove} and
+ * {@link IMultiStateCopycatBlock#playerWillDestroy} to this interface.
+ * <p>
+ * If the concrete class is not a subclass of {@link CCCopycatBlock},
+ * it should also be registered in platform-specific CopycatBlockMixins as a mixin target.
+ * <p>
+ * It is not recommended to override undocumented methods in this interface, since they are considered internal to
+ * the implementation of copycats.
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -55,6 +73,9 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
         return copycatBE;
     }
 
+    /**
+     * Controls whether the player can shift-R-click on this block to toggle CT.
+     */
     default boolean canToggleCT(BlockState state, BlockAndTintGetter level, BlockPos pos) {
         return true;
     }
@@ -157,10 +178,16 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
         return appliedState;
     }
 
+    /**
+     * Determines whether the material is accepted regardless of COPYCAT_ALLOW and COPYCAT_DENY tags.
+     */
     default boolean isAcceptedRegardless(BlockState material) {
         return false;
     }
 
+    /**
+     * Modifies an accepted material before it is stored and displayed on the copycat.
+     */
     default BlockState prepareMaterial(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer,
                                        InteractionHand pHand, BlockHitResult pHit, BlockState material) {
         return material;
@@ -275,12 +302,21 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
         return material.is(Blocks.AIR) ? AllBlocks.COPYCAT_BASE.getDefaultState() : material;
     }
 
+    /**
+     * Get the material of the copycat at the given position.
+     * If the copycat is multi-state, the material for the default part is returned.
+     */
     static BlockState getMaterial(BlockGetter reader, BlockPos targetPos) {
         if (reader.getBlockEntity(targetPos) instanceof ICopycatBlockEntity cbe)
             return cbe.getMaterial();
         return Blocks.AIR.defaultBlockState();
     }
 
+    /**
+     * Transform the block state of the copycat according to the provided transform.
+     * <p>
+     * Possible transforms include single-axis rotation of 90 degree increments and mirroring in any axis.
+     */
     @Override
     default BlockState transform(BlockState state, StructureTransform transform) {
         Direction.Axis rotationAxis = transform.rotationAxis;
@@ -378,20 +414,55 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
         return state;
     }
 
+    /**
+     * Determines whether textures on an adjacent block should appear connected to the copycat block.
+     *
+     * @param reader  The world.
+     * @param state   The state of the copycat block.
+     * @param face    The face of the adjacent block that is being rendered.
+     * @param fromPos The position of the copycat block.
+     * @param toPos   The position of the adjacent block.
+     * @return Whether the adjacent block is not allowed to connect.
+     */
     default boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
                                               BlockPos fromPos, BlockPos toPos) {
         return false;
     }
 
+    /**
+     * Determines whether the copycat block can connect its textures towards the adjacent block.
+     *
+     * @param reader  The world.
+     * @param fromPos The position of the copycat block.
+     * @param toPos   The position of the adjacent block.
+     * @param state   The state of the copycat block.
+     * @return Whether the copycat block can connect its textures towards the adjacent block.
+     */
     default boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos,
                                              BlockState state) {
         return true;
     }
 
+    /**
+     * Determine whether the block face of the copied material can be culled by {@link Block#skipRendering} logic,
+     * which is mostly used for face culling between two transparent blocks such as glass.
+     *
+     * @param state The state of the copycat block.
+     * @param face  The face of the copycat block that is being checked for occlusion.
+     * @return Whether the face can be culled.
+     */
     default boolean canFaceBeOccluded(BlockState state, Direction face) {
         return false;
     }
 
+    /**
+     * Determine whether the block face of the copycat can be culled by an adjacent solid block, or by other optimizations
+     * in modded renderers such as Sodium.
+     *
+     * @param state The state of the copycat block.
+     * @param face  The face of the copycat block that is being checked for face culling.
+     * @return Whether the face should always render.
+     */
     default boolean shouldFaceAlwaysRender(BlockState state, Direction face) {
         return false;
     }

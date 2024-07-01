@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.half_panel;
 
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
-import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.AssemblyTransform;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -20,7 +20,7 @@ public class CopycatHalfPanelModelPart extends CopycatModelCore {
         if (facing.getAxis().isVertical()) {
             boolean flipY = facing == Direction.UP;
             int rot = (int) offset.toYRot();
-            GlobalTransform transform = t -> t.rotateY(rot).flipY(flipY);
+            AssemblyTransform transform = t -> t.rotateY(rot).flipY(flipY);
             context.assemblePiece(
                     transform,
                     vec3(0, 0, 12),
@@ -48,7 +48,7 @@ public class CopycatHalfPanelModelPart extends CopycatModelCore {
         } else if (offset.getAxis() == facing.getAxis()) {
             boolean flipY = offset.getAxisDirection() == Direction.AxisDirection.POSITIVE;
             int rot = (int) facing.toYRot();
-            GlobalTransform transform = t -> t.rotateY(rot).flipY(flipY);
+            AssemblyTransform transform = t -> t.rotateY(rot).flipY(flipY);
             context.assemblePiece(
                     transform,
                     vec3(0, 0, 15),
@@ -76,7 +76,7 @@ public class CopycatHalfPanelModelPart extends CopycatModelCore {
         } else {
             int leftOffset = offset == facing.getCounterClockWise() ? 8 : 0;
             int rot = (int) facing.toYRot();
-            GlobalTransform transform = t -> t.rotateY(rot);
+            AssemblyTransform transform = t -> t.rotateY(rot);
             context.assemblePiece(
                     transform,
                     vec3(leftOffset, 0, 15),

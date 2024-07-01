@@ -8,6 +8,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Contains selected block state values detached from the associated block.
+ */
 @SuppressWarnings("unchecked")
 public class PartialModelState {
     private final Map<Property<?>, Object> backingMap = new HashMap<>();

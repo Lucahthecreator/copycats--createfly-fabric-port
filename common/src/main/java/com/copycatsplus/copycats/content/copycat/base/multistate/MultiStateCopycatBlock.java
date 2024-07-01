@@ -21,6 +21,14 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+/**
+ * Base class for multi-state copycat blocks. Extend this class for multi-state copycat blocks that do not require
+ * another base class and cannot be waterlogged.
+ * <p>
+ * Note: DO NOT check for multi-state copycats with instanceof checks against this class. Copycats may implement
+ * {@link IMultiStateCopycatBlock} without extending this class. Check for multi-state copycats with instanceof checks
+ * against {@link IMultiStateCopycatBlock} instead.
+ */
 @SuppressWarnings("deprecation")
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault

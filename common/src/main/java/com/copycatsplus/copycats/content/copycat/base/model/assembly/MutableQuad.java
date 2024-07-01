@@ -5,7 +5,10 @@ import net.minecraft.core.Direction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MutableQuad implements GlobalTransform.Transformable<MutableQuad> {
+/**
+ * A mutable container for quad data.
+ */
+public class MutableQuad implements AssemblyTransform.Transformable<MutableQuad> {
     public List<MutableVertex> vertices;
     public Direction direction;
     List<Mutation> mutations = new ArrayList<>();

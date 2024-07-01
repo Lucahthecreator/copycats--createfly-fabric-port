@@ -4,7 +4,7 @@ import com.copycatsplus.copycats.CCBlockStateProperties;
 import com.copycatsplus.copycats.CCBlockStateProperties.VerticalStairShape;
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
-import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.AssemblyTransform;
 import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsModelPart;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -19,19 +19,19 @@ public class CopycatVerticalStairsModelPart extends CopycatModelCore {
         switch (shape) {
             case STRAIGHT -> {
                 boolean flipX = side.isRight();
-                GlobalTransform transform = t -> t.rotateX(90).rotateZ(90).flipX(flipX).rotateY(facing);
+                AssemblyTransform transform = t -> t.rotateX(90).rotateZ(90).flipX(flipX).rotateY(facing);
                 CopycatStairsModelPart.assembleStraight(context, transform, enhanced);
             }
             case INNER_BOTTOM, INNER_TOP -> {
                 boolean flipY = shape.isTop();
                 boolean flipX = side.isRight();
-                GlobalTransform transform = t -> t.rotateX(90).rotateZ(90).flipX(flipX).flipY(flipY).rotateY(facing);
+                AssemblyTransform transform = t -> t.rotateX(90).rotateZ(90).flipX(flipX).flipY(flipY).rotateY(facing);
                 CopycatStairsModelPart.assembleInnerLeft(context, transform, enhanced);
             }
             case OUTER_BOTTOM, OUTER_TOP -> {
                 boolean flipY = shape.isTop();
                 boolean flipX = side.isRight();
-                GlobalTransform transform = t -> t.rotateX(90).rotateZ(90).flipX(flipX).flipY(flipY).rotateY(facing);
+                AssemblyTransform transform = t -> t.rotateX(90).rotateZ(90).flipX(flipX).flipY(flipY).rotateY(facing);
                 CopycatStairsModelPart.assembleOuterLeft(context, transform, enhanced);
             }
         }

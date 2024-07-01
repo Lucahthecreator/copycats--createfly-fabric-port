@@ -11,6 +11,9 @@ import com.simibubi.create.foundation.render.SuperByteBufferCache;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.resources.model.BakedModel;
 
+/**
+ * Helper class to render kinetic copycat models.
+ */
 public class KineticCopycatRenderer {
     public static final SuperByteBufferCache.Compartment<KineticCopycatRenderData> KINETIC_COPYCAT = new SuperByteBufferCache.Compartment<>();
 

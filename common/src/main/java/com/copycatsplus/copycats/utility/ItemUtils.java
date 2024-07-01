@@ -7,6 +7,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class ItemUtils {
 
+    /**
+     * Platform-independent implementation of copying an ItemStack with a different size.
+     */
     @ExpectPlatform
     @NotNull
     public static ItemStack copyStackWithSize(ItemStack itemStack, int size) {
@@ -14,6 +17,9 @@ public class ItemUtils {
         return null;
     }
 
+    /**
+     * Platform-independent implementation of serializing an ItemStack to NBT.
+     */
     @ExpectPlatform
     @NotNull
     public static Tag serializeNBT(ItemStack stack) {

@@ -4,8 +4,17 @@ package com.copycatsplus.copycats.content.copycat.base.model.assembly;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 
+/**
+ * Records a mutation to be applied to a {@link AssemblyTransform.Transformable} object or a {@link Direction}.
+ *
+ * @param type  The type of mutation.
+ * @param value Associated value for the mutation. For rotations, this is the angle in degrees. For mirroring, this is the axis to mirror across.
+ */
 public record Mutation(MutationType type, int value) {
-    public <T extends GlobalTransform.Transformable<T>> T mutate(T vec3) {
+    /**
+     * Apply the recorded mutation to the given object.
+     */
+    public <T extends AssemblyTransform.Transformable<T>> T mutate(T vec3) {
         return switch (type) {
             case ROTATE_X -> vec3.rotateX(value);
             case ROTATE_Y -> vec3.rotateY(value);
@@ -19,6 +28,9 @@ public record Mutation(MutationType type, int value) {
         };
     }
 
+    /**
+     * Apply the recorded mutation to the given object.
+     */
     public Direction mutate(Direction dir) {
         return switch (type) {
             case ROTATE_X -> rotateX(dir, value);
@@ -33,7 +45,10 @@ public record Mutation(MutationType type, int value) {
         };
     }
 
-    public <T extends GlobalTransform.Transformable<T>> T undoMutate(T vec3) {
+    /**
+     * Undo the recorded mutation on the given object.
+     */
+    public <T extends AssemblyTransform.Transformable<T>> T undoMutate(T vec3) {
         return switch (type) {
             case ROTATE_X -> vec3.rotateX(-value);
             case ROTATE_Y -> vec3.rotateY(-value);
@@ -47,6 +62,9 @@ public record Mutation(MutationType type, int value) {
         };
     }
 
+    /**
+     * Undo the recorded mutation on the given object.
+     */
     public Direction undoMutate(Direction dir) {
         return switch (type) {
             case ROTATE_X -> rotateX(dir, -value);

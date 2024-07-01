@@ -1,7 +1,12 @@
 package com.copycatsplus.copycats.content.copycat.base.multistate;
 
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import org.jetbrains.annotations.ApiStatus;
 
+/**
+ * A hack to pass the currently rendering property to the block color provider.
+ */
+@ApiStatus.Internal
 public class MultiStateTextureAtlasSprite extends TextureAtlasSprite {
     private final String property;
 

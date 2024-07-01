@@ -9,7 +9,20 @@ import com.jozufozu.flywheel.config.BackendType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.block.state.BlockState;
 
+/**
+ * Contains data required to cache a rendered kinetic copycat model.
+ *
+ * @param partialModel The partial model to render.
+ * @param state        The state of the partial model. Should only contain states required by the partial model.
+ * @param material     The material of the copycat.
+ */
 public record KineticCopycatRenderData(CopycatPartialModel partialModel, PartialModelState state, BlockState material) {
+    /**
+     * Create a new render data object from the given partial model rendered by the given block entity.
+     *
+     * @param partialModel The partial model to render.
+     * @param be           The block entity that is rendering the model.
+     */
     public static KineticCopycatRenderData of(CopycatPartialModel partialModel, ICopycatBlockEntity be) {
         if (!CCConfigs.client().disableGraphicsWarnings.get()) {
             if (Backend.getBackendType() != BackendType.INSTANCING &&

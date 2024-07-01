@@ -18,12 +18,26 @@ import org.jetbrains.annotations.ApiStatus;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Set;
 
+/**
+ * An interface with implementation for all multi-state copycat block entities.
+ * <p>
+ * Implementors should create a field to store the materials and redirect calls of
+ * {@link IMultiStateCopycatBlockEntity#read},
+ * {@link IMultiStateCopycatBlockEntity#writeSafe} and
+ * {@link IMultiStateCopycatBlockEntity#write} to this interface.
+ * <p>
+ * If the concrete class is not a subclass of {@link MultiStateCopycatBlockEntity},
+ * it should also be registered in platform-specific MultiStateCopycatBlockEntityMixins as a mixin target.
+ * <p>
+ * It is not recommended to override undocumented methods in this interface, since they are considered internal to
+ * the implementation of copycats.
+ */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public interface IMultiStateCopycatBlockEntity extends ICopycatBlockEntity {
     MaterialItemStorage getMaterialItemStorage();
 
-    @ApiStatus.Internal
+    @ApiStatus.OverrideOnly
     void setMaterialItemStorageInternal(MaterialItemStorage storage);
 
     @Override
@@ -148,7 +162,6 @@ public interface IMultiStateCopycatBlockEntity extends ICopycatBlockEntity {
         notifyUpdate();
     }
 
-    @ApiStatus.Internal
     static void read(IMultiStateCopycatBlockEntity self, CompoundTag tag, boolean clientPacket) {
         if (self.getBlockState().getBlock() instanceof IMultiStateCopycatBlock) {
             boolean anyUpdated = self.getMaterialItemStorage().deserialize(tag.getCompound("material_data"));
@@ -158,12 +171,10 @@ public interface IMultiStateCopycatBlockEntity extends ICopycatBlockEntity {
         }
     }
 
-    @ApiStatus.Internal
     static void writeSafe(IMultiStateCopycatBlockEntity self, CompoundTag tag) {
         tag.put("material_data", self.getMaterialItemStorage().serializeSafe());
     }
 
-    @ApiStatus.Internal
     static void write(IMultiStateCopycatBlockEntity self, CompoundTag tag, boolean clientPacket) {
         tag.put("material_data", self.getMaterialItemStorage().serialize());
     }

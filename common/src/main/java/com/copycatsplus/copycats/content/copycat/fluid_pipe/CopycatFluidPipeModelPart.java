@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.fluid_pipe;
 
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
-import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.AssemblyTransform;
 import com.simibubi.create.content.fluids.FluidTransportBehaviour;
 import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.client.Minecraft;
@@ -111,7 +111,7 @@ public class CopycatFluidPipeModelPart extends CopycatModelCore.WithData<Copycat
         };
     }
 
-    protected void renderStraightCore(CopycatRenderContext context, GlobalTransform transform) {
+    protected void renderStraightCore(CopycatRenderContext context, AssemblyTransform transform) {
         context.assemblePiece(
                 transform,
                 vec3(4, 4, 4),
@@ -138,7 +138,7 @@ public class CopycatFluidPipeModelPart extends CopycatModelCore.WithData<Copycat
         );
     }
 
-    protected void renderBend(CopycatRenderContext context, GlobalTransform transform) {
+    protected void renderBend(CopycatRenderContext context, AssemblyTransform transform) {
         if (enhanced) {
             context.assemblePiece(
                     transform,
@@ -204,7 +204,7 @@ public class CopycatFluidPipeModelPart extends CopycatModelCore.WithData<Copycat
         }
     }
 
-    protected void renderCorner(CopycatRenderContext context, GlobalTransform transform) {
+    protected void renderCorner(CopycatRenderContext context, AssemblyTransform transform) {
         if (enhanced) {
             context.assemblePiece(
                     transform,
@@ -237,7 +237,7 @@ public class CopycatFluidPipeModelPart extends CopycatModelCore.WithData<Copycat
         }
     }
 
-    protected void renderCornerPart(CopycatRenderContext context, GlobalTransform transform) {
+    protected void renderCornerPart(CopycatRenderContext context, AssemblyTransform transform) {
         context.assemblePiece(
                 transform,
                 vec3(8, 8, 4),
@@ -266,49 +266,49 @@ public class CopycatFluidPipeModelPart extends CopycatModelCore.WithData<Copycat
 
     protected void renderEncasing(CopycatRenderContext context) {
         context.assemblePiece(
-                GlobalTransform.IDENTITY,
+                AssemblyTransform.IDENTITY,
                 vec3(3, 3, 3),
                 aabb(5, 5, 5).move(0, 0, 0),
                 cull(EAST | UP | SOUTH)
         );
         context.assemblePiece(
-                GlobalTransform.IDENTITY,
+                AssemblyTransform.IDENTITY,
                 vec3(8, 3, 3),
                 aabb(5, 5, 5).move(11, 0, 0),
                 cull(WEST | UP | SOUTH)
         );
         context.assemblePiece(
-                GlobalTransform.IDENTITY,
+                AssemblyTransform.IDENTITY,
                 vec3(3, 8, 3),
                 aabb(5, 5, 5).move(0, 11, 0),
                 cull(EAST | DOWN | SOUTH)
         );
         context.assemblePiece(
-                GlobalTransform.IDENTITY,
+                AssemblyTransform.IDENTITY,
                 vec3(8, 8, 3),
                 aabb(5, 5, 5).move(11, 11, 0),
                 cull(WEST | DOWN | SOUTH)
         );
         context.assemblePiece(
-                GlobalTransform.IDENTITY,
+                AssemblyTransform.IDENTITY,
                 vec3(3, 3, 8),
                 aabb(5, 5, 5).move(0, 0, 11),
                 cull(EAST | UP | NORTH)
         );
         context.assemblePiece(
-                GlobalTransform.IDENTITY,
+                AssemblyTransform.IDENTITY,
                 vec3(8, 3, 8),
                 aabb(5, 5, 5).move(11, 0, 11),
                 cull(WEST | UP | NORTH)
         );
         context.assemblePiece(
-                GlobalTransform.IDENTITY,
+                AssemblyTransform.IDENTITY,
                 vec3(3, 8, 8),
                 aabb(5, 5, 5).move(0, 11, 11),
                 cull(EAST | DOWN | NORTH)
         );
         context.assemblePiece(
-                GlobalTransform.IDENTITY,
+                AssemblyTransform.IDENTITY,
                 vec3(8, 8, 8),
                 aabb(5, 5, 5).move(11, 11, 11),
                 cull(WEST | DOWN | NORTH)
@@ -316,7 +316,7 @@ public class CopycatFluidPipeModelPart extends CopycatModelCore.WithData<Copycat
     }
 
     protected void renderComponent(CopycatRenderContext context, Direction direction, FluidTransportBehaviour.AttachmentTypes.ComponentPartials component) {
-        GlobalTransform transform = direction.getAxis().isVertical()
+        AssemblyTransform transform = direction.getAxis().isVertical()
                 ? t -> t.rotateX(direction == Direction.DOWN ? 90 : -90)
                 : t -> t.rotateY((int) direction.toYRot() + 180);
         switch (component) {

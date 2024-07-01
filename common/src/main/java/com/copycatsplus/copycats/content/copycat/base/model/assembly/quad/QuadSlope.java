@@ -5,6 +5,19 @@ import com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableVec3
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 
+/**
+ * Maps the height of a quad along an axis to a slope function.
+ * <p>
+ * The mapping function can return values that vary with the position of the vertex to achieve slopes.
+ * <p>
+ * For example, if the mapping direction is UP and the function returns a scaling factor of 0.5, the height of the quad will be halved.
+ * If the mapping direction is DOWN and the function returns 0.5, the bottom of the quad will be raised to 50% of its original height.
+ * <p>
+ * If the height is mapped to 0, a small epsilon is added to the output to prevent texture UVs from messing up due to loss of precision.
+ *
+ * @param face The face to map the height along. Vertices located on this face has a height of 1, while those located on the opposite face has a height of 0.
+ * @param func The function that maps the coordinates of the quad to a scaling factor for the height in the axis aligned with the face. Coordinates are provided in block space.
+ */
 public record QuadSlope(Direction face, QuadSlopeFunction func) implements QuadTransform {
 
     private static final double EPSILON = 0.02 / 16;
@@ -68,10 +81,23 @@ public record QuadSlope(Direction face, QuadSlopeFunction func) implements QuadT
         }
     }
 
+    /**
+     * Maps a value from one range to another.
+     *
+     * @param fromStart The start of the range to map from
+     * @param fromEnd   The end of the range to map from
+     * @param toStart   The start of the range to map to
+     * @param toEnd     The end of the range to map to
+     * @param value     The value to map
+     * @return The mapped value
+     */
     public static double map(double fromStart, double fromEnd, double toStart, double toEnd, double value) {
         return toStart + (value - fromStart) / (fromEnd - fromStart) * (toEnd - toStart);
     }
 
+    /**
+     * The function that maps the coordinates of the quad to a scaling factor for the height in the axis aligned with the face.
+     */
     @FunctionalInterface
     public interface QuadSlopeFunction {
         /**

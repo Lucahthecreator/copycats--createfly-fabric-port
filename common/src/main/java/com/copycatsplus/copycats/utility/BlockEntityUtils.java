@@ -10,6 +10,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class BlockEntityUtils {
+    /**
+     * Invalidate render data caches for the block entity and re-render it.
+     */
     public static void redraw(BlockEntity blockEntity) {
         requestModelDataUpdate(blockEntity);
         if (blockEntity.getLevel() != null) {

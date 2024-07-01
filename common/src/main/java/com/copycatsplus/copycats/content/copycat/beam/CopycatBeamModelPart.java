@@ -3,7 +3,7 @@ package com.copycatsplus.copycats.content.copycat.beam;
 
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
-import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.AssemblyTransform;
 import net.minecraft.world.level.block.state.BlockState;
 
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext.*;
@@ -16,7 +16,7 @@ public class CopycatBeamModelPart extends CopycatModelCore {
     public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
         Axis axis = state.getValue(CopycatBeamBlock.AXIS);
 
-        GlobalTransform transform = t -> t.rotateX(axis == Axis.Y ? 90 : 0).rotateY(axis == Axis.X ? 90 : 0);
+        AssemblyTransform transform = t -> t.rotateX(axis == Axis.Y ? 90 : 0).rotateY(axis == Axis.X ? 90 : 0);
 
         context.assemblePiece(
                 transform,

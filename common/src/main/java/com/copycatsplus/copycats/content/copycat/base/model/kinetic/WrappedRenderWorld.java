@@ -20,9 +20,14 @@ import net.minecraft.world.level.lighting.LayerLightEventListener;
 import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * A virtual world to render the kinetic copycat models in.
+ */
+@ApiStatus.Internal
 public class WrappedRenderWorld implements VirtualEmptyBlockGetter {
     protected final BlockAndTintGetter level;
     protected final BlockPos targetPos;

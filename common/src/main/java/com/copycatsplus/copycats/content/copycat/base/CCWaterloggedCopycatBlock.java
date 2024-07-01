@@ -14,6 +14,10 @@ import net.minecraft.world.level.material.FluidState;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+/**
+ * Base class for simple copycat blocks. Extend this class for simple copycat blocks that do not require
+ * another base class and can be waterlogged.
+ */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public abstract class CCWaterloggedCopycatBlock extends CCCopycatBlock implements ProperWaterloggedBlock {

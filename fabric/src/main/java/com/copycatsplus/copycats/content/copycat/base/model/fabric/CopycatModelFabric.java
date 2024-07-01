@@ -118,7 +118,7 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
             BlockState material = getMaterial(materials.get(entry.key()));
             Object remainingData = remainingDataMap.get(entry.key());
             prepareModelCore(blockView, state, pos, randomSupplier, material, remainingData);
-            if (entry.useMaterial()) {
+            if (entry.useCopycatLogic()) {
                 OcclusionData occlusionData = new OcclusionData();
                 if (state.getBlock() instanceof ICopycatBlock copycatBlock) {
                     gatherOcclusionData(blockView, pos, state, material, occlusionData, copycatBlock);

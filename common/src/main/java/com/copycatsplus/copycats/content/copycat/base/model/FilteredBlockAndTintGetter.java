@@ -16,6 +16,9 @@ import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 
+/**
+ * A filtered world that allows copycats to control how connected textures behave.
+ */
 @ApiStatus.Internal
 public class FilteredBlockAndTintGetter implements BlockAndTintGetter {
 

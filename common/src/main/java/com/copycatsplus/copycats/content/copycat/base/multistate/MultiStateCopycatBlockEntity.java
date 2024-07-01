@@ -15,6 +15,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
+/**
+ * Base class for multi-state copycat block entities. Extend this class for multi-state copycat block entities that do not require
+ * another base class.
+ * <p>
+ * Note: DO NOT check for multi-state copycats with instanceof checks against this class. Copycats may implement
+ * {@link IMultiStateCopycatBlockEntity} without extending this class. Check for multi-state copycats with instanceof checks
+ * against {@link IMultiStateCopycatBlockEntity} instead.
+ */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class MultiStateCopycatBlockEntity extends SmartBlockEntity implements IMultiStateCopycatBlockEntity {

@@ -5,6 +5,7 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -17,29 +18,29 @@ public interface CopycatRenderContext {
     /**
      * Copy a piece of cuboid from the source model and assemble it to the copycat.
      *
-     * @param globalTransform The global transform to apply to the entire operation, changing the positions, AABBs and cull faces.
-     * @param offset          In voxel space, the final position of the assembled piece.
-     * @param select          In voxel space, the selection on the source model to copy from.
+     * @param assemblyTransform The transform to apply to the entire operation, changing the positions, AABBs and cull faces, while not affecting the source model. This can be used to combine repetitive assembly code, or to rotate the entire piece according to block state.
+     * @param offset          The final position of the assembled piece, in voxel space.
+     * @param select          The selection on the source model to copy from, in voxel space. {@link MutableAABB#move} can be used to move the selection if it does not start at the origin.
      * @param cull            Faces to skip rendering in the destination model.
      */
     void assemblePiece(
-            @NotNull GlobalTransform globalTransform,
+            @NotNull AssemblyTransform assemblyTransform,
             MutableVec3 offset,
             MutableAABB select,
             MutableCullFace cull
     );
 
     /**
-     * Copy a piece of cuboid from the source model, apply quad transforms, and assemble it to the copycat.
+     * Copy a piece of cuboid from the source model and assemble it to the copycat.
      *
-     * @param globalTransform The global transform to apply to the entire operation, changing the positions, AABBs, cull faces and quad transforms.
-     * @param offset          In voxel space, the final position of the assembled piece.
-     * @param select          In voxel space, the selection on the source model to copy from.
+     * @param assemblyTransform The transform to apply to the entire operation, changing the positions, AABBs, cull faces and quad transforms, while not affecting the source model. This can be used to combine repetitive assembly code, or to rotate the entire piece according to block state.
+     * @param offset          The final position of the assembled piece, in voxel space.
+     * @param select          The selection on the source model to copy from, in voxel space. {@link MutableAABB#move} can be used to move the selection if it does not start at the origin.
      * @param cull            Faces to skip rendering in the destination model.
-     * @param transforms      Quad transforms to apply to the copied quads.
+     * @param transforms      Quad transforms to apply to the copied quads. These transforms are applied after the selection is copied, and mutate the vertices of the quads directly. Assembly transforms should be used over quad transforms for block state-dependent rotations/mirroring.
      */
     void assemblePiece(
-            @NotNull GlobalTransform globalTransform,
+            @NotNull AssemblyTransform assemblyTransform,
             MutableVec3 offset,
             MutableAABB select,
             MutableCullFace cull,
@@ -52,19 +53,25 @@ public interface CopycatRenderContext {
     void assembleAll();
 
     /**
-     * Copy ALL quads from source to destination while applying the specified crop and move.
+     * Copy ALL quads from source to destination while applying the specified crop and move in block space.
+     * <p>
+     * {@link CopycatRenderContext#assemblePiece(AssemblyTransform, MutableVec3, MutableAABB, MutableCullFace)} should be used instead of this method.
      */
+    @ApiStatus.Internal
     void assembleRaw(AABB crop, Vec3 move);
 
     /**
      * Copy ALL quads from source to destination while applying the specified transforms.
+     * <p>
+     * {@link CopycatRenderContext#assemblePiece(AssemblyTransform, MutableVec3, MutableAABB, MutableCullFace, QuadTransform...)} should be used instead of this method.
      */
+    @ApiStatus.Internal
     void assembleRaw(AABB crop, Vec3 move, QuadTransform... transforms);
 
     /**
      * Specify faces to be culled. You should import static constants from {@link MutableCullFace} and use bitwise OR to combine them.
      *
-     * @param mask The faces to be culled. Specify multiple faces by bitwise OR.
+     * @param mask The faces to be culled. Specify multiple faces by bitwise OR. Use 0 to render all faces.
      */
     static MutableCullFace cull(int mask) {
         return new MutableCullFace(mask);
@@ -78,7 +85,7 @@ public interface CopycatRenderContext {
     }
 
     /**
-     * Specify a position in voxel space, where each block is 16 units. This position is used as a pivot point.
+     * Specify a position in voxel space, where each block is 16 units. This position is used as a pivot point for transforms such as rotation and scaling.
      */
     static MutableVec3.AsPivot pivot(double x, double y, double z) {
         return new MutableVec3.AsPivot(x / 16, y / 16, z / 16);
@@ -131,43 +138,58 @@ public interface CopycatRenderContext {
     }
 
     /**
-     * Map the height of the quad in the specified direction to the specified function.
+     * Maps the height of a quad along an axis to a slope function.
+     * <p>
+     * The mapping function can return values that vary with the position of the vertex to achieve slopes.
      * <p>
      * For example, if the mapping direction is UP and the function returns a scaling factor of 0.5, the height of the quad will be halved.
      * If the mapping direction is DOWN and the function returns 0.5, the bottom of the quad will be raised to 50% of its original height.
      * <p>
-     * The mapping function can return values that vary with the position of the vertex to achieve slopes.
+     * If the height is mapped to 0, a small epsilon is added to the output to prevent texture UVs from messing up due to loss of precision.
+     *
+     * @param face The face to map the height along. Vertices located on this face has a height of 1, while those located on the opposite face has a height of 0.
+     * @param func The function that maps the coordinates of the quad to a scaling factor for the height in the axis aligned with the face. Coordinates are provided in voxel space.
      */
     static QuadSlope slope(Direction face, QuadSlope.QuadSlopeFunction func) {
         return new QuadSlope(face, (a, b) -> func.apply(a * 16, b * 16) / 16);
     }
 
     /**
-     * Shear the quad in the specified direction.
+     * Shears a quad along an axis towards the specified direction.
      *
-     * @param axis      The axis to be sheared. The direction of this axis will be changed while the other two axes remain the same.
-     * @param direction The direction to "pull" the positive end of the axis towards.
-     * @param amount    The amount of shear in voxel space. 16 units is the width of a block.
+     * @param axis      The axis to shear along. This is the axis that will be moved towards the specified direction.
+     * @param direction The direction to shear towards. Cannot be aligned with the axis.
+     * @param amount    The amount to shear by, in voxel space. A vertex located at 1 block (16 units) along the axis will be moved towards the direction by this amount.
      */
     static QuadShear shear(Direction.Axis axis, Direction direction, double amount) {
         return new QuadShear(axis, direction, amount / 16);
     }
 
     /**
-     * Wrap quad transforms so that the textures remain visually in the same position while the vertices are being moved,
+     * Wraps other {@link QuadTransform}s such that the UV coordinates are updated after the wrapped transforms are applied.
+     * The end result is that the textures appear to stay in the same place while the vertices are moved by the wrapped transforms,
      * as opposed to the default behavior where the textures are stretched or squished along with the vertices.
+     *
+     * @param transforms The transforms to apply before updating the UV coordinates.
      */
     static QuadUVUpdate updateUV(QuadTransform... transforms) {
         return new QuadUVUpdate(transforms);
     }
 
     /**
-     * Modify the lighting direction of the quad.
+     * Transforms the light direction of a quad.
+     * <p>
+     * Note that this is currently only implemented for Forge, since Fabric calculates quad light direction based on
+     * the vertex normals.
+     *
+     * @param directionMapper The function that maps the original direction to the new direction.
      */
+    @ApiStatus.Experimental
     static QuadLightDirection lightDirection(Function<Direction, Direction> directionMapper) {
         return new QuadLightDirection(directionMapper);
     }
 
+    @ApiStatus.Internal
     abstract class Base<Source, Destination> implements CopycatRenderContext {
         private final Source source;
         private final Destination destination;

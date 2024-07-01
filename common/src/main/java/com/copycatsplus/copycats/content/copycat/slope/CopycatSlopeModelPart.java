@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.slope;
 
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
-import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.AssemblyTransform;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
@@ -19,11 +19,11 @@ public class CopycatSlopeModelPart extends CopycatModelCore {
         Half half = state.getValue(CopycatSlopeBlock.HALF);
         int rot = (int) facing.toYRot();
         boolean flipY = half == Half.TOP;
-        GlobalTransform transform = t -> t.flipY(flipY).rotateY(rot);
+        AssemblyTransform transform = t -> t.flipY(flipY).rotateY(rot);
         assembleSlope(context, transform, 0, 16, enhanced);
     }
 
-    public static void assembleSlope(CopycatRenderContext context, GlobalTransform transform, double minHeight, double maxHeight, boolean enhanced) {
+    public static void assembleSlope(CopycatRenderContext context, AssemblyTransform transform, double minHeight, double maxHeight, boolean enhanced) {
         if (minHeight == 0) {
             if (enhanced) {
                 assembleTriangularSlope(context, transform, maxHeight, getMarginForHeight(maxHeight));
@@ -46,7 +46,7 @@ public class CopycatSlopeModelPart extends CopycatModelCore {
         return 3;
     }
 
-    public static void assembleTriangularSlope(CopycatRenderContext context, GlobalTransform transform, double maxHeight) {
+    public static void assembleTriangularSlope(CopycatRenderContext context, AssemblyTransform transform, double maxHeight) {
         context.assemblePiece(
                 transform,
                 vec3(0, 0, 0),
@@ -56,7 +56,7 @@ public class CopycatSlopeModelPart extends CopycatModelCore {
         );
     }
 
-    public static void assembleTrapezoidSlope(CopycatRenderContext context, GlobalTransform transform, double minHeight, double maxHeight) {
+    public static void assembleTrapezoidSlope(CopycatRenderContext context, AssemblyTransform transform, double minHeight, double maxHeight) {
         context.assemblePiece(
                 transform,
                 vec3(0, 0, 0),
@@ -66,7 +66,7 @@ public class CopycatSlopeModelPart extends CopycatModelCore {
         );
     }
 
-    public static void assembleTriangularSlope(CopycatRenderContext context, GlobalTransform transform, double maxHeight, double margin) {
+    public static void assembleTriangularSlope(CopycatRenderContext context, AssemblyTransform transform, double maxHeight, double margin) {
         final double angleBottom = Math.toDegrees(Math.atan2(maxHeight, 16));
         final double marginAdjBottom = margin / Math.tan(Math.toRadians(angleBottom) / 2);
         final double angleTop = Math.toDegrees(Math.atan2(16, maxHeight));
@@ -184,7 +184,7 @@ public class CopycatSlopeModelPart extends CopycatModelCore {
         );
     }
 
-    public static void assembleTrapezoidSlope(CopycatRenderContext context, GlobalTransform transform, double minHeight, double maxHeight, double margin) {
+    public static void assembleTrapezoidSlope(CopycatRenderContext context, AssemblyTransform transform, double minHeight, double maxHeight, double margin) {
         final double angleBottom = Math.toDegrees(Math.atan2(maxHeight - minHeight, 16)) + 90;
         final double marginAdjBottom = margin / Math.tan(Math.toRadians(angleBottom) / 2);
         final double angleTop = Math.toDegrees(Math.atan2(16, maxHeight - minHeight));

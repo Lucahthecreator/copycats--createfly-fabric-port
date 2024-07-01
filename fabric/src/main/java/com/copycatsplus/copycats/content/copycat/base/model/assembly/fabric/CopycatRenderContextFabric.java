@@ -30,10 +30,10 @@ public class CopycatRenderContextFabric extends CopycatRenderContext.Base<List<M
     static SpriteFinder spriteFinder = SpriteFinder.get(Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS));
 
     @Override
-    public void assemblePiece(GlobalTransform globalTransform, MutableVec3 offset, MutableAABB select, MutableCullFace cull) {
-        globalTransform.apply(select);
-        globalTransform.apply(offset);
-        globalTransform.apply(cull);
+    public void assemblePiece(AssemblyTransform assemblyTransform, MutableVec3 offset, MutableAABB select, MutableCullFace cull) {
+        assemblyTransform.apply(select);
+        assemblyTransform.apply(offset);
+        assemblyTransform.apply(cull);
         AABB aabb = select.toAABB();
         Vec3 vec3 = offset.toVec3().subtract(select.minX, select.minY, select.minZ);
         for (MutableQuadView quad : source()) {
@@ -45,17 +45,17 @@ public class CopycatRenderContextFabric extends CopycatRenderContext.Base<List<M
     }
 
     @Override
-    public void assemblePiece(GlobalTransform globalTransform, MutableVec3 offset, MutableAABB select, MutableCullFace cull, QuadTransform... transforms) {
-        globalTransform.apply(select);
-        globalTransform.apply(offset);
-        globalTransform.apply(cull);
+    public void assemblePiece(AssemblyTransform assemblyTransform, MutableVec3 offset, MutableAABB select, MutableCullFace cull, QuadTransform... transforms) {
+        assemblyTransform.apply(select);
+        assemblyTransform.apply(offset);
+        assemblyTransform.apply(cull);
         AABB aabb = select.toAABB();
         Vec3 vec3 = offset.toVec3().subtract(select.minX, select.minY, select.minZ);
         for (MutableQuadView quad : source()) {
             if (cull.isCulled(quad.lightFace())) {
                 continue;
             }
-            assembleQuad(quad, destination(), aabb, vec3, globalTransform, transforms);
+            assembleQuad(quad, destination(), aabb, vec3, assemblyTransform, transforms);
         }
     }
 
@@ -81,7 +81,7 @@ public class CopycatRenderContextFabric extends CopycatRenderContext.Base<List<M
     @Override
     public void assembleRaw(AABB crop, Vec3 move, QuadTransform... transforms) {
         for (MutableQuadView quad : source()) {
-            assembleQuad(quad, destination(), crop, move, GlobalTransform.IDENTITY, transforms);
+            assembleQuad(quad, destination(), crop, move, AssemblyTransform.IDENTITY, transforms);
         }
     }
 
@@ -92,12 +92,12 @@ public class CopycatRenderContextFabric extends CopycatRenderContext.Base<List<M
         dest.emit();
     }
 
-    private static void assembleQuad(MutableQuadView src, QuadEmitter dest, AABB crop, Vec3 move, GlobalTransform globalTransform, QuadTransform... transforms) {
+    private static void assembleQuad(MutableQuadView src, QuadEmitter dest, AABB crop, Vec3 move, AssemblyTransform assemblyTransform, QuadTransform... transforms) {
         dest.copyFrom(src);
         TextureAtlasSprite sprite = spriteFinder.find(src);
         BakedModelHelper.cropAndMove(dest, sprite, crop, move);
         MutableQuad mutableQuad = getMutableQuad(dest);
-        globalTransform.apply(mutableQuad);
+        assemblyTransform.apply(mutableQuad);
         mutableQuad.undoMutate();
         for (QuadTransform transform : transforms) {
             transform.transformVertices(mutableQuad, sprite);
@@ -107,7 +107,7 @@ public class CopycatRenderContextFabric extends CopycatRenderContext.Base<List<M
             BakedQuadHelper.setXYZ(dest, i, mutableQuad.vertices.get(i).xyz.toVec3());
             dest.uv(i, mutableQuad.vertices.get(i).uv.u, mutableQuad.vertices.get(i).uv.v);
         }
-        // todo: assign lightFace
+        // light face is calculated automatically in Fabric
         dest.emit();
     }
 

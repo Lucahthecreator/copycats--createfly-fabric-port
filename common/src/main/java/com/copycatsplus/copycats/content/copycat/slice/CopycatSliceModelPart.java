@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.slice;
 
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
-import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.AssemblyTransform;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
 
@@ -17,7 +17,7 @@ public class CopycatSliceModelPart extends CopycatModelCore {
         boolean flipY = state.getValue(HALF) == Half.TOP;
         int rot = (int) state.getValue(FACING).toYRot();
         int layers = state.getValue(LAYERS);
-        GlobalTransform transform = t -> t.rotateY(rot).flipY(flipY);
+        AssemblyTransform transform = t -> t.rotateY(rot).flipY(flipY);
         context.assemblePiece(
                 transform,
                 vec3(0, 0, 16 - layers),

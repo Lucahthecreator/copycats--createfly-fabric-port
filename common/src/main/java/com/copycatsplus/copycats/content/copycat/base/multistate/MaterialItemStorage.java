@@ -1,7 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.base.multistate;
 
 import com.copycatsplus.copycats.utility.ItemUtils;
-import com.copycatsplus.copycats.utility.NBTUtils;
 import com.simibubi.create.AllBlocks;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -18,6 +17,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Stores copycat data, including material, consumed item and CT toggle, for each part of a multi-state copycat.
+ */
 public class MaterialItemStorage {
 
     private Map<String, MaterialItem> storage;
@@ -33,34 +35,60 @@ public class MaterialItemStorage {
         return new MaterialItemStorage(properties);
     }
 
+    /**
+     * Replace the material item for a specific property.
+     */
     public void storeMaterialItem(String property, MaterialItem materialItem) {
         storage.put(property, materialItem);
     }
 
+    /**
+     * Get the material item for a specific property.
+     */
     public @Nullable MaterialItem getMaterialItem(String property) {
         return storage.get(property);
     }
 
+    /**
+     * Get all properties stored in this storage, regardless of whether they have a custom material.
+     */
     public Set<String> getAllProperties() {
         return storage.keySet();
     }
 
+    /**
+     * Get all materials stored in this storage, regardless of whether they have a custom material or whether they exist according to the copycat's block state.
+     */
     public Set<BlockState> getAllMaterials() {
         return storage.values().stream().map(MaterialItem::material).collect(Collectors.toSet());
     }
 
+    /**
+     * Get all consumed items stored in this storage. Empty stacks are not included.
+     */
     public List<ItemStack> getAllConsumedItems() {
         return storage.values().stream().map(MaterialItem::consumedItem).dropWhile(itemStack -> itemStack.equals(ItemStack.EMPTY)).collect(Collectors.toList());
     }
 
+    /**
+     * Get a map of all properties and their corresponding materials stored in this storage.
+     */
     public Map<String, BlockState> getMaterialMap() {
         return storage.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, s -> s.getValue().material));
     }
 
+    /**
+     * Check if a specific property has a custom material.
+     */
     public boolean hasCustomMaterial(String property) {
         return !storage.get(property).material().is(AllBlocks.COPYCAT_BASE.get());
     }
 
+    /**
+     * Modify the keys of all stored materials using the provided key mapper.
+     *
+     * @param keyMapper A function which accepts a key and returns a new key where the corresponding material should be stored.
+     */
     public void remapStorage(Function<String, String> keyMapper) {
         Map<String, MaterialItem> newStorage = new HashMap<>();
         storage.forEach((key, materialItem) -> newStorage.put(keyMapper.apply(key), materialItem));
@@ -93,9 +121,10 @@ public class MaterialItemStorage {
         return anyUpdated.get();
     }
 
+    /**
+     * Stores copycat data for a single part of a multi-state copycat.
+     */
     public static class MaterialItem {
-
-        public static MaterialItem EMPTY = new MaterialItem(AllBlocks.COPYCAT_BASE.getDefaultState(), ItemStack.EMPTY);
 
         private BlockState material;
         private ItemStack consumedItem;
@@ -114,7 +143,7 @@ public class MaterialItemStorage {
         public CompoundTag serialize() {
             CompoundTag root = new CompoundTag();
             root.put("material", NbtUtils.writeBlockState(material));
-            root.put("consumedItem", NBTUtils.serializeStack(consumedItem));
+            root.put("consumedItem", ItemUtils.serializeNBT(consumedItem));
             root.putBoolean("enableCT", enableCT);
             return root;
         }
@@ -124,7 +153,7 @@ public class MaterialItemStorage {
             root.put("material", NbtUtils.writeBlockState(material));
             ItemStack stackEmpty = consumedItem.copy();
             stackEmpty.setTag(null);
-            root.put("consumedItem", NBTUtils.serializeStack(stackEmpty));
+            root.put("consumedItem", ItemUtils.serializeNBT(stackEmpty));
             root.putBoolean("enableCT", enableCT);
             return root;
         }

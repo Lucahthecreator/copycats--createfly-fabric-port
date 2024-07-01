@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.fluid_pipe;
 
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
-import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.AssemblyTransform;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -34,7 +34,7 @@ public class CopycatStraightPipeModelPart extends CopycatFluidPipeModelPart {
 
     private static final double EPSILON = 0.02;
 
-    protected void renderWindowCore(CopycatRenderContext context, GlobalTransform transform) {
+    protected void renderWindowCore(CopycatRenderContext context, AssemblyTransform transform) {
         context.assemblePiece(
                 transform,
                 vec3(4 + EPSILON, 4 + EPSILON, 0),

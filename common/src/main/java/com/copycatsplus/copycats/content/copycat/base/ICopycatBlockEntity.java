@@ -27,6 +27,20 @@ import org.jetbrains.annotations.ApiStatus;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+/**
+ * An interface with implementation for all simple copycat block entities.
+ * <p>
+ * Implementors should create a field to store the material, consumed item and CT toggle, and redirect calls of
+ * {@link ICopycatBlockEntity#read},
+ * {@link ICopycatBlockEntity#writeSafe} and
+ * {@link ICopycatBlockEntity#write} to this interface.
+ * <p>
+ * If the concrete class is not a subclass of {@link CCCopycatBlockEntity},
+ * it should also be registered in platform-specific CopycatBlockEntityMixins as a mixin target.
+ * <p>
+ * It is not recommended to override undocumented methods in this interface, since they are considered internal to
+ * the implementation of copycats.
+ */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement, ITransformableBlockEntity, IPartialSafeNBT {
@@ -51,15 +65,18 @@ public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement,
 
     boolean isCTEnabled();
 
-    @ApiStatus.Internal
+    @ApiStatus.OverrideOnly
     void setMaterialInternal(BlockState material);
 
-    @ApiStatus.Internal
+    @ApiStatus.OverrideOnly
     void setConsumedItemInternal(ItemStack consumedItem);
 
-    @ApiStatus.Internal
+    @ApiStatus.OverrideOnly
     void setCTEnabledInternal(boolean value);
 
+    /**
+     * Implementors should call this method in their constructor.
+     */
     default void init() {
         setMaterialInternal(AllBlocks.COPYCAT_BASE.getDefaultState());
         setConsumedItemInternal(ItemStack.EMPTY);
@@ -148,7 +165,6 @@ public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement,
         notifyUpdate();
     }
 
-    @ApiStatus.Internal
     static void read(ICopycatBlockEntity self, CompoundTag tag, boolean clientPacket) {
         if (tag.contains("EnableCT")) // need to check because copycats migrated from C:Connected don't have this tag
             self.setCTEnabled(tag.getBoolean("EnableCT"));
@@ -183,14 +199,12 @@ public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement,
             self.redraw();
     }
 
-    @ApiStatus.Internal
     static void writeSafe(ICopycatBlockEntity self, CompoundTag tag) {
         ItemStack stackWithoutNBT = self.getConsumedItem().copy();
         stackWithoutNBT.setTag(null);
         write(tag, stackWithoutNBT, self.getMaterial(), self.isCTEnabled());
     }
 
-    @ApiStatus.Internal
     static void write(ICopycatBlockEntity self, CompoundTag tag, boolean clientPacket) {
         write(tag, self.getConsumedItem(), self.getMaterial(), self.isCTEnabled());
     }

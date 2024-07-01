@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.vertical_step;
 
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
-import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.AssemblyTransform;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -15,7 +15,7 @@ public class CopycatVerticalStepModelPart extends CopycatModelCore {
     public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
         Direction facing = state.getValue(CopycatVerticalStepBlock.FACING);
 
-        GlobalTransform transform = t -> t.rotateY((int) facing.toYRot());
+        AssemblyTransform transform = t -> t.rotateY((int) facing.toYRot());
 
         context.assemblePiece(
                 transform,

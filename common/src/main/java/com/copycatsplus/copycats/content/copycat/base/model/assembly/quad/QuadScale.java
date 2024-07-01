@@ -4,6 +4,12 @@ import com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableQuad
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableVec3;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
+/**
+ * Scales a quad around a pivot point.
+ *
+ * @param pivot The pivot point to scale around, in block space.
+ * @param scale The scale to apply, where (1, 1, 1) is the original size.
+ */
 public record QuadScale(MutableVec3.AsPivot pivot, MutableVec3.AsScale scale) implements QuadTransform {
 
     @Override

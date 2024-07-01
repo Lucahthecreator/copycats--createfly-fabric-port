@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.fence;
 
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
-import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.AssemblyTransform;
 import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,7 +27,7 @@ public class CopycatFenceModelPart extends CopycatModelCore {
             if (!state.getValue(CopycatFenceBlock.byDirection(direction))) continue;
 
             int rot = (int) direction.toYRot();
-            GlobalTransform transform = t -> t.rotateY(rot);
+            AssemblyTransform transform = t -> t.rotateY(rot);
             context.assemblePiece(
                     transform,
                     vec3(7, 6, 10),

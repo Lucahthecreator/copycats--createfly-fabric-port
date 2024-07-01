@@ -4,6 +4,14 @@ import com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableQuad
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableVec3;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
+/**
+ * Freely rotate the quad around the pivot point. Rotations are performed in the order of X, Y, Z.
+ * <p>
+ * Rotations of any angle and of multiple axes are allowed.
+ *
+ * @param pivot    The pivot point to rotate around, in block space.
+ * @param rotation The rotation to apply, in axis-angle representation (degrees).
+ */
 public record QuadRotate(MutableVec3.AsPivot pivot, MutableVec3.AsAngle rotation) implements QuadTransform {
 
     @Override

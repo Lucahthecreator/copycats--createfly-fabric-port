@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.slope_layer;
 
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
-import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.AssemblyTransform;
 import com.copycatsplus.copycats.content.copycat.slope.CopycatSlopeModelPart;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
@@ -16,7 +16,7 @@ public class CopycatSlopeLayerModelPart extends CopycatModelCore {
         Direction facing = state.getValue(CopycatSlopeLayerBlock.FACING);
         Half half = state.getValue(CopycatSlopeLayerBlock.HALF);
 
-        GlobalTransform transform = t -> t.rotateY((int) facing.toYRot()).flipY(half == Half.TOP);
+        AssemblyTransform transform = t -> t.rotateY((int) facing.toYRot()).flipY(half == Half.TOP);
 
         if (layer <= 4)
             CopycatSlopeModelPart.assembleSlope(context, transform, 0, layer * 4, enhanced);

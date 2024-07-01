@@ -2,6 +2,7 @@ package com.copycatsplus.copycats.content.copycat.base;
 
 import java.util.List;
 
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 
@@ -14,6 +15,14 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+/**
+ * Base class for simple copycat block entities. Extend this class for simple copycat block entities that do not require
+ * another base class.
+ * <p>
+ * Note: DO NOT check for simple copycats with instanceof checks against this class. Copycats may implement
+ * {@link ICopycatBlockEntity} without extending this class. Check for simple copycats with instanceof checks
+ * against {@link ICopycatBlockEntity} instead.
+ */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class CCCopycatBlockEntity extends SmartBlockEntity implements ICopycatBlockEntity {

@@ -24,10 +24,10 @@ public class CopycatRenderContextForge extends CopycatRenderContext.Base<List<Ba
     }
 
     @Override
-    public void assemblePiece(GlobalTransform globalTransform, MutableVec3 offset, MutableAABB select, MutableCullFace cull) {
-        globalTransform.apply(select);
-        globalTransform.apply(offset);
-        globalTransform.apply(cull);
+    public void assemblePiece(AssemblyTransform assemblyTransform, MutableVec3 offset, MutableAABB select, MutableCullFace cull) {
+        assemblyTransform.apply(select);
+        assemblyTransform.apply(offset);
+        assemblyTransform.apply(cull);
         AABB aabb = select.toAABB();
         Vec3 vec3 = offset.toVec3().subtract(select.minX, select.minY, select.minZ);
         for (BakedQuad quad : source()) {
@@ -39,17 +39,17 @@ public class CopycatRenderContextForge extends CopycatRenderContext.Base<List<Ba
     }
 
     @Override
-    public void assemblePiece(GlobalTransform globalTransform, MutableVec3 offset, MutableAABB select, MutableCullFace cull, QuadTransform... transforms) {
-        globalTransform.apply(select);
-        globalTransform.apply(offset);
-        globalTransform.apply(cull);
+    public void assemblePiece(AssemblyTransform assemblyTransform, MutableVec3 offset, MutableAABB select, MutableCullFace cull, QuadTransform... transforms) {
+        assemblyTransform.apply(select);
+        assemblyTransform.apply(offset);
+        assemblyTransform.apply(cull);
         AABB aabb = select.toAABB();
         Vec3 vec3 = offset.toVec3().subtract(select.minX, select.minY, select.minZ);
         for (BakedQuad quad : source()) {
             if (cull.isCulled(quad.getDirection())) {
                 continue;
             }
-            assembleQuad(quad, destination(), aabb, vec3, globalTransform, transforms);
+            assembleQuad(quad, destination(), aabb, vec3, assemblyTransform, transforms);
         }
     }
 
@@ -74,7 +74,7 @@ public class CopycatRenderContextForge extends CopycatRenderContext.Base<List<Ba
     @Override
     public void assembleRaw(AABB crop, Vec3 move, QuadTransform... transforms) {
         for (BakedQuad quad : source()) {
-            assembleQuad(quad, destination(), crop, move, GlobalTransform.IDENTITY, transforms);
+            assembleQuad(quad, destination(), crop, move, AssemblyTransform.IDENTITY, transforms);
         }
     }
 
@@ -83,10 +83,10 @@ public class CopycatRenderContextForge extends CopycatRenderContext.Base<List<Ba
                 BakedModelHelper.cropAndMove(src.getVertices(), src.getSprite(), crop, move)));
     }
 
-    private static void assembleQuad(BakedQuad src, List<BakedQuad> dest, AABB crop, Vec3 move, GlobalTransform globalTransform, QuadTransform... transforms) {
+    private static void assembleQuad(BakedQuad src, List<BakedQuad> dest, AABB crop, Vec3 move, AssemblyTransform assemblyTransform, QuadTransform... transforms) {
         int[] vertices = BakedModelHelper.cropAndMove(src.getVertices(), src.getSprite(), crop, move);
         MutableQuad mutableQuad = getMutableQuad(new BakedQuad(vertices, src.getTintIndex(), src.getDirection(), src.getSprite(), src.isShade()));
-        globalTransform.apply(mutableQuad);
+        assemblyTransform.apply(mutableQuad);
         mutableQuad.undoMutate();
         for (QuadTransform transform : transforms) {
             transform.transformVertices(mutableQuad, src.getSprite());

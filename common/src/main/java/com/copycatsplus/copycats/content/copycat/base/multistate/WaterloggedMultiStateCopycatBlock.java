@@ -14,6 +14,10 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+/**
+ * Base class for waterlogged multi-state copycat blocks. Extend this class for multi-state copycat blocks that do not require
+ * another base class and can be waterlogged.
+ */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public abstract class WaterloggedMultiStateCopycatBlock extends MultiStateCopycatBlock implements ProperWaterloggedBlock {

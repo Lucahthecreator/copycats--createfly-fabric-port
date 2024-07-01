@@ -11,10 +11,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Predicate;
 
+/**
+ * A filtered world that allows multi-state copycats to control how connected textures behave.
+ */
+@ApiStatus.Internal
 public class ScaledBlockAndTintGetter implements BlockAndTintGetter {
 
     protected final String renderingProperty;

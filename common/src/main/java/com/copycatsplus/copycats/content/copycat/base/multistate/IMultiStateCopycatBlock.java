@@ -8,6 +8,7 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.contraptions.StructureTransform;
+import com.simibubi.create.foundation.block.IBE;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -39,6 +40,25 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Set;
 
+/**
+ * An interface with implementation for all multi-state copycats.
+ * <p>
+ * Implementors should implement
+ * {@link net.minecraft.world.level.block.EntityBlock#getTicker},
+ * {@link IBE#getBlockEntityClass} and
+ * {@link IBE#getBlockEntityType} in the concrete class, and redirect calls of
+ * {@link IMultiStateCopycatBlock#use},
+ * {@link IMultiStateCopycatBlock#setPlacedBy},
+ * {@link Block#getShape},
+ * {@link IMultiStateCopycatBlock#onRemove} and
+ * {@link IMultiStateCopycatBlock#playerWillDestroy} to this interface.
+ * <p>
+ * If the concrete class is not a subclass of {@link MultiStateCopycatBlock},
+ * it should also be registered in platform-specific MultiStateCopycatBlockMixins as a mixin target.
+ * <p>
+ * It is not recommended to override undocumented methods in this interface, since they are considered internal to
+ * the implementation of copycats.
+ */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
@@ -340,9 +360,28 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
         return canConnectTexturesToward(defaultProperty(), reader, fromPos, toPos, state);
     }
 
+    /**
+     * Determines whether textures on an adjacent part/block should appear connected to the copycat block part.
+     *
+     * @param reader  The world which is scaled by {@link IMultiStateCopycatBlock#vectorScale}.
+     * @param state   The state of the copycat block part.
+     * @param face    The face of the adjacent block/part that is being rendered.
+     * @param fromPos The position of the copycat block part.
+     * @param toPos   The position of the adjacent block/part.
+     * @return Whether the adjacent block/part is not allowed to connect.
+     */
     boolean isIgnoredConnectivitySide(String property, BlockAndTintGetter reader, BlockState state, Direction face,
                                       BlockPos fromPos, BlockPos toPos);
 
+    /**
+     * Determines whether the copycat block part can connect its textures towards the adjacent block/part.
+     *
+     * @param reader  The world which is scaled by {@link IMultiStateCopycatBlock#vectorScale}.
+     * @param fromPos The position of the copycat block part.
+     * @param toPos   The position of the adjacent block/part.
+     * @param state   The state of the copycat block part.
+     * @return Whether the copycat block part can connect its textures towards the adjacent block/part.
+     */
     boolean canConnectTexturesToward(String property, BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos,
                                      BlockState state);
 

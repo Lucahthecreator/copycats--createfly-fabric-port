@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.stairs;
 
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
-import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.AssemblyTransform;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
@@ -21,23 +21,23 @@ public class CopycatStairsModelPart extends CopycatModelCore {
 
         switch (shape) {
             case STRAIGHT -> {
-                GlobalTransform transform = t -> t.rotateY(facing).flipY(top);
+                AssemblyTransform transform = t -> t.rotateY(facing).flipY(top);
                 assembleStraight(context, transform, enhanced);
             }
             case INNER_LEFT, INNER_RIGHT -> {
                 boolean flipX = shape == StairsShape.INNER_RIGHT;
-                GlobalTransform transform = t -> t.flipX(flipX).rotateY(facing).flipY(top);
+                AssemblyTransform transform = t -> t.flipX(flipX).rotateY(facing).flipY(top);
                 assembleInnerLeft(context, transform, enhanced);
             }
             case OUTER_LEFT, OUTER_RIGHT -> {
                 boolean flipX = shape == StairsShape.OUTER_RIGHT;
-                GlobalTransform transform = t -> t.flipX(flipX).rotateY(facing).flipY(top);
+                AssemblyTransform transform = t -> t.flipX(flipX).rotateY(facing).flipY(top);
                 assembleOuterLeft(context, transform, enhanced);
             }
         }
     }
 
-    public static void assembleStraight(CopycatRenderContext context, GlobalTransform transform, boolean enhanced) {
+    public static void assembleStraight(CopycatRenderContext context, AssemblyTransform transform, boolean enhanced) {
         if (enhanced) {
             context.assemblePiece(
                     transform,
@@ -121,7 +121,7 @@ public class CopycatStairsModelPart extends CopycatModelCore {
         }
     }
 
-    public static void assembleInnerLeft(CopycatRenderContext context, GlobalTransform transform, boolean enhanced) {
+    public static void assembleInnerLeft(CopycatRenderContext context, AssemblyTransform transform, boolean enhanced) {
         if (enhanced) {
             context.assemblePiece(
                     transform,
@@ -271,7 +271,7 @@ public class CopycatStairsModelPart extends CopycatModelCore {
         }
     }
 
-    public static void assembleOuterLeft(CopycatRenderContext context, GlobalTransform transform, boolean enhanced) {
+    public static void assembleOuterLeft(CopycatRenderContext context, AssemblyTransform transform, boolean enhanced) {
         if (enhanced) {
             context.assemblePiece(
                     transform,

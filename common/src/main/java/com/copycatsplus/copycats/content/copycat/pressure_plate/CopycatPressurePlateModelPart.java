@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.pressure_plate;
 
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
-import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.AssemblyTransform;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.WeightedPressurePlateBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,50 +20,50 @@ public class CopycatPressurePlateModelPart extends CopycatModelCore {
                 .orElse(false);
         if (powered) {
             context.assemblePiece(
-                    GlobalTransform.IDENTITY,
+                    AssemblyTransform.IDENTITY,
                     vec3(1, 0, 1),
                     aabb(7, 0.5f, 7).move(0, 0, 0),
                     cull(SOUTH | EAST)
             );
             context.assemblePiece(
-                    GlobalTransform.IDENTITY,
+                    AssemblyTransform.IDENTITY,
                     vec3(8, 0, 8),
                     aabb(7, 0.5f, 7).move(9, 0, 9),
                     cull(NORTH | WEST)
             );
             context.assemblePiece(
-                    GlobalTransform.IDENTITY,
+                    AssemblyTransform.IDENTITY,
                     vec3(8, 0, 1),
                     aabb(7, 0.5f, 7).move(9, 0, 0),
                     cull(WEST | SOUTH)
             );
             context.assemblePiece(
-                    GlobalTransform.IDENTITY,
+                    AssemblyTransform.IDENTITY,
                     vec3(1, 0, 8),
                     aabb(7, 0.5f, 7).move(0, 0, 9),
                     cull(NORTH | EAST)
             );
         } else {
             context.assemblePiece(
-                    GlobalTransform.IDENTITY,
+                    AssemblyTransform.IDENTITY,
                     vec3(1, 0, 1),
                     aabb(7, 1, 7).move(0, 0, 0),
                     cull(SOUTH | EAST)
             );
             context.assemblePiece(
-                    GlobalTransform.IDENTITY,
+                    AssemblyTransform.IDENTITY,
                     vec3(8, 0, 8),
                     aabb(7, 1, 7).move(9, 0, 9),
                     cull(NORTH | WEST)
             );
             context.assemblePiece(
-                    GlobalTransform.IDENTITY,
+                    AssemblyTransform.IDENTITY,
                     vec3(8, 0, 1),
                     aabb(7, 1, 7).move(9, 0, 0),
                     cull(WEST | SOUTH)
             );
             context.assemblePiece(
-                    GlobalTransform.IDENTITY,
+                    AssemblyTransform.IDENTITY,
                     vec3(1, 0, 8),
                     aabb(7, 1, 7).move(0, 0, 9),
                     cull(NORTH | EAST)

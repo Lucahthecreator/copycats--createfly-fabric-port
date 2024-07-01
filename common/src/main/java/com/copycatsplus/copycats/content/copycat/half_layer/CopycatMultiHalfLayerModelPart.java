@@ -3,7 +3,7 @@ package com.copycatsplus.copycats.content.copycat.half_layer;
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
-import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.AssemblyTransform;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
@@ -34,7 +34,7 @@ public class CopycatMultiHalfLayerModelPart extends CopycatModelCore {
         boolean positive = key.equals(POSITIVE_LAYERS.getName());
         int layer = state.getValue(positive ? POSITIVE_LAYERS : NEGATIVE_LAYERS);
         if (layer == 0) return;
-        GlobalTransform transform = t -> t.rotateY(rot + (positive ? 180 : 0)).flipY(flipY);
+        AssemblyTransform transform = t -> t.rotateY(rot + (positive ? 180 : 0)).flipY(flipY);
         context.assemblePiece(
                 transform,
                 vec3(0, 0, 0),

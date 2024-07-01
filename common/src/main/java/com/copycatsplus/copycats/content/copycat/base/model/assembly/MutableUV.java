@@ -1,5 +1,9 @@
 package com.copycatsplus.copycats.content.copycat.base.model.assembly;
 
+/**
+ * A mutable container for UV coordinates. UV data is not transformable. Use
+ * {@link com.copycatsplus.copycats.content.copycat.base.model.assembly.quad.QuadUVUpdate} to update UV coordinates while other transforms are applied.
+ */
 public class MutableUV {
     public float u;
     public float v;

@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.button;
 
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
-import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.AssemblyTransform;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
@@ -19,7 +19,7 @@ public class CopycatButtonModelPart extends CopycatModelCore {
         boolean pressed = state.getValue(ButtonBlock.POWERED);
         switch (face) {
             case WALL -> {
-                GlobalTransform transform = t -> t.rotateY(rot);
+                AssemblyTransform transform = t -> t.rotateY(rot);
                 context.assemblePiece(
                         transform,
                         vec3(5, 6, (pressed ? 0 : 1)),
@@ -72,7 +72,7 @@ public class CopycatButtonModelPart extends CopycatModelCore {
                 }
             }
             case CEILING, FLOOR -> {
-                GlobalTransform transform = t -> t.rotateY(rot).flipY(face != AttachFace.FLOOR);
+                AssemblyTransform transform = t -> t.rotateY(rot).flipY(face != AttachFace.FLOOR);
                 context.assemblePiece(
                         transform,
                         vec3(5, (pressed ? 0 : 1), 6),

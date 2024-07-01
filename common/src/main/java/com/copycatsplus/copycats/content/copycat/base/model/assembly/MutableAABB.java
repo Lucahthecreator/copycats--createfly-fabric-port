@@ -2,7 +2,10 @@ package com.copycatsplus.copycats.content.copycat.base.model.assembly;
 
 import net.minecraft.world.phys.AABB;
 
-public class MutableAABB implements GlobalTransform.Transformable<MutableAABB> {
+/**
+ * A mutable version of {@link AABB}.
+ */
+public class MutableAABB implements AssemblyTransform.Transformable<MutableAABB> {
     public double minX;
     public double minY;
     public double minZ;
@@ -15,7 +18,11 @@ public class MutableAABB implements GlobalTransform.Transformable<MutableAABB> {
     }
 
     /**
-     * Move the entire AABB by the given amount in VOXEL SPACE
+     * Move the entire AABB by the given amount in voxel space.
+     * <p>
+     * * This is intended to be used in the assembly methods of {@link CopycatRenderContext}.
+     * For general AABB movement, use {@link #shift(double, double, double)}, which operates in block space and is
+     * consistent with the rest of the API.
      */
     public MutableAABB move(double dX, double dY, double dZ) {
         dX /= 16;
@@ -31,7 +38,7 @@ public class MutableAABB implements GlobalTransform.Transformable<MutableAABB> {
     }
 
     /**
-     * Move the entire AABB by the given amount in BLOCK SPACE
+     * Move the entire AABB by the given amount in block space.
      */
     public MutableAABB shift(double dX, double dY, double dZ) {
         minX += dX;
@@ -43,6 +50,7 @@ public class MutableAABB implements GlobalTransform.Transformable<MutableAABB> {
         return this;
     }
 
+    @Override
     public MutableAABB rotateY(int angle) {
         // rotate around the Y axis clockwise
         angle = angle % 360;
@@ -55,6 +63,7 @@ public class MutableAABB implements GlobalTransform.Transformable<MutableAABB> {
         };
     }
 
+    @Override
     public MutableAABB rotateX(int angle) {
         // rotate around the X axis clockwise
         angle = angle % 360;
@@ -67,6 +76,7 @@ public class MutableAABB implements GlobalTransform.Transformable<MutableAABB> {
         };
     }
 
+    @Override
     public MutableAABB rotateZ(int angle) {
         // rotate around the Z axis clockwise
         angle = angle % 360;
@@ -79,21 +89,27 @@ public class MutableAABB implements GlobalTransform.Transformable<MutableAABB> {
         };
     }
 
+    @Override
     public MutableAABB flipX(boolean flip) {
         if (!flip) return this;
         return set(1 - minX, minY, minZ, 1 - maxX, maxY, maxZ);
     }
 
+    @Override
     public MutableAABB flipY(boolean flip) {
         if (!flip) return this;
         return set(minX, 1 - minY, minZ, maxX, 1 - maxY, maxZ);
     }
 
+    @Override
     public MutableAABB flipZ(boolean flip) {
         if (!flip) return this;
         return set(minX, minY, 1 - minZ, maxX, maxY, 1 - maxZ);
     }
 
+    /**
+     * Convert this mutable AABB to an immutable {@link AABB} in block space.
+     */
     public AABB toAABB() {
         return new AABB(minX, minY, minZ, maxX, maxY, maxZ);
     }

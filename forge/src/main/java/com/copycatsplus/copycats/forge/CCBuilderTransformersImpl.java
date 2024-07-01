@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.forge;
 
 import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
@@ -23,7 +24,7 @@ public class CCBuilderTransformersImpl {
                 .addLayer(() -> RenderType::cutout)
                 .addLayer(() -> RenderType::cutoutMipped)
                 .addLayer(() -> RenderType::translucent)
-                .color(() -> CCCopycatBlock::wrappedColor)
+                .color(() -> ICopycatBlock::wrappedColor)
                 .transform(TagGen.axeOrPickaxe());
     }
 

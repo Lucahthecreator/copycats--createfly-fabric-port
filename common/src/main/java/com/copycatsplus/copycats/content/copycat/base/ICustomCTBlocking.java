@@ -9,16 +9,19 @@ import net.minecraft.world.level.block.Block;
 import java.util.Optional;
 
 /**
- * A block should implement this interface if it wishes to use non-default logic to determine the "blocking" mechanic of
+ * A copycat block should implement this interface if it wishes to use non-default logic to determine the "blocking" mechanic of
  * connected textures.
- * <br><br>
+ * <p>
  * "Blocking" causes the texture on the rendering block to appear disconnected to an adjacent block even though it
  * should normally appear connected. This is due the existence of a third block that connects to the adjacent block
  * perpendicularly. With blocking in place, both the rendering block and the third block (by reverse blocking) shows an
  * edge along the 90-degree bend.
- * <br><br>
+ * <p>
  * By default, blocking takes place on a face of the rendering block if the same face on the adjacent block is covered
  * up by an opposite full face of the third block. Whether a face is full is determined by {@link Block#getShape}.
+ * <p>
+ * Note that the blocking mechanic is specific to Create's connected textures. This logic does not affect other modded
+ * implementations of connected textures.
  */
 public interface ICustomCTBlocking {
     /**

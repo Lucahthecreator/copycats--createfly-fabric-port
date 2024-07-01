@@ -16,6 +16,14 @@ import net.minecraft.client.renderer.RenderType;
 
 import javax.annotation.Nullable;
 
+/**
+ * An interface with implementation for kinetic copycats with instancing support.
+ * <p>
+ * Implementors should create a field to store the render data and redirect calls of
+ * {@link IKineticCopycatBlockInstance#getRotatingMaterial},
+ * {@link IKineticCopycatBlockInstance#getModel} and
+ * {@link IKineticCopycatBlockInstance#shouldReset} to this interface.
+ */
 public interface IKineticCopycatBlockInstance {
 
     @Nullable

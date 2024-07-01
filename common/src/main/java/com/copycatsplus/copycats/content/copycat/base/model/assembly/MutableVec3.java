@@ -5,7 +5,10 @@ import net.minecraft.core.Position;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
-public class MutableVec3 implements GlobalTransform.Transformable<MutableVec3>, Position {
+/**
+ * A mutable version of {@link Vec3}.
+ */
+public class MutableVec3 implements AssemblyTransform.Transformable<MutableVec3>, Position {
     public double x;
     public double y;
     public double z;
@@ -18,6 +21,7 @@ public class MutableVec3 implements GlobalTransform.Transformable<MutableVec3>, 
         set(x, y, z);
     }
 
+    @Override
     public MutableVec3 rotateY(int angle) {
         // rotate around the Y axis clockwise
         angle = angle % 360;
@@ -30,6 +34,7 @@ public class MutableVec3 implements GlobalTransform.Transformable<MutableVec3>, 
         };
     }
 
+    @Override
     public MutableVec3 rotateX(int angle) {
         // rotate around the X axis clockwise
         angle = angle % 360;
@@ -42,6 +47,7 @@ public class MutableVec3 implements GlobalTransform.Transformable<MutableVec3>, 
         };
     }
 
+    @Override
     public MutableVec3 rotateZ(int angle) {
         // rotate around the Z axis clockwise
         angle = angle % 360;
@@ -54,21 +60,27 @@ public class MutableVec3 implements GlobalTransform.Transformable<MutableVec3>, 
         };
     }
 
+    @Override
     public MutableVec3 flipX(boolean flip) {
         if (!flip) return this;
         return set(1 - x, y, z);
     }
 
+    @Override
     public MutableVec3 flipY(boolean flip) {
         if (!flip) return this;
         return set(x, 1 - y, z);
     }
 
+    @Override
     public MutableVec3 flipZ(boolean flip) {
         if (!flip) return this;
         return set(x, y, 1 - z);
     }
 
+    /**
+     * Converts this mutable vector to an immutable vector in block space.
+     */
     public Vec3 toVec3() {
         return new Vec3(x, y, z);
     }
@@ -79,6 +91,8 @@ public class MutableVec3 implements GlobalTransform.Transformable<MutableVec3>, 
         this.z = z;
         return this;
     }
+
+    // ========== Helper methods from Vec3 ==========
 
     public double get(Axis axis) {
         return switch (axis) {
@@ -163,7 +177,7 @@ public class MutableVec3 implements GlobalTransform.Transformable<MutableVec3>, 
     }
 
     /**
-     * Returns a new vector with the result of this vector x the specified vector.
+     * Mutate this vector with the result of this vector x the specified vector.
      */
     public MutableVec3 cross(Position vec) {
         return set(this.y * vec.z() - this.z * vec.y(), this.z * vec.x() - this.x * vec.z(), this.x * vec.y() - this.y * vec.x());

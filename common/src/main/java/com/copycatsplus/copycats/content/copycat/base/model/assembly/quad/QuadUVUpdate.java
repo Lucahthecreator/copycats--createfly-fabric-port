@@ -9,6 +9,13 @@ import java.util.List;
 import static com.simibubi.create.foundation.block.render.SpriteShiftEntry.getUnInterpolatedU;
 import static com.simibubi.create.foundation.block.render.SpriteShiftEntry.getUnInterpolatedV;
 
+/**
+ * Wraps other {@link QuadTransform}s such that the UV coordinates are updated after the wrapped transforms are applied.
+ * The end result is that the textures appear to stay in the same place while the vertices are moved by the wrapped transforms,
+ * as opposed to the default behavior where the textures are stretched or squished along with the vertices.
+ *
+ * @param transforms The transforms to apply before updating the UV coordinates.
+ */
 public record QuadUVUpdate(QuadTransform... transforms) implements QuadTransform {
 
     @Override

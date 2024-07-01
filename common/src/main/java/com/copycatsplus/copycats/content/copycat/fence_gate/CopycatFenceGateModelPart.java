@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.fence_gate;
 
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
-import com.copycatsplus.copycats.content.copycat.base.model.assembly.GlobalTransform;
+import com.copycatsplus.copycats.content.copycat.base.model.assembly.AssemblyTransform;
 import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -15,7 +15,7 @@ public class CopycatFenceGateModelPart extends CopycatModelCore {
     public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
         int offsetWall = state.getValue(IN_WALL) ? -3 : 0;
         int rot = (int) state.getValue(FACING).toYRot();
-        GlobalTransform transform = t -> t.rotateY(rot);
+        AssemblyTransform transform = t -> t.rotateY(rot);
 
         // Assemble the poles
         for (boolean eastSide : Iterate.falseAndTrue) {
@@ -97,7 +97,7 @@ public class CopycatFenceGateModelPart extends CopycatModelCore {
         } else {
             for (boolean southSide : Iterate.falseAndTrue) {
                 int rot2 = rot + (southSide ? 180 : 0);
-                GlobalTransform transform2 = t -> t.rotateY(rot2);
+                AssemblyTransform transform2 = t -> t.rotateY(rot2);
                 context.assemblePiece(
                         transform2,
                         vec3(8, 12 + offsetWall, 7),

@@ -2,7 +2,10 @@ package com.copycatsplus.copycats.content.copycat.base.model.assembly;
 
 import net.minecraft.core.Direction;
 
-public class MutableCullFace implements GlobalTransform.Transformable<MutableCullFace> {
+/**
+ * A mutable container for cull face data.
+ */
+public class MutableCullFace implements AssemblyTransform.Transformable<MutableCullFace> {
 
     public static final int UP = 2 << Direction.UP.get3DDataValue();
     public static final int DOWN = 2 << Direction.DOWN.get3DDataValue();
@@ -18,10 +21,16 @@ public class MutableCullFace implements GlobalTransform.Transformable<MutableCul
     public boolean east;
     public boolean west;
 
+    /**
+     * Create a new instance with the specified faces culled.
+     *
+     * @param mask The mask of faces to cull. Use the UP, DOWN, NORTH, SOUTH, EAST, and WEST constants and specify multiple faces using bitwise OR.
+     */
     public MutableCullFace(int mask) {
         set((mask & UP) > 0, (mask & DOWN) > 0, (mask & NORTH) > 0, (mask & SOUTH) > 0, (mask & EAST) > 0, (mask & WEST) > 0);
     }
 
+    @Override
     public MutableCullFace rotateY(int angle) {
         // rotate around the Y axis clockwise
         angle = angle % 360;
@@ -34,6 +43,7 @@ public class MutableCullFace implements GlobalTransform.Transformable<MutableCul
         };
     }
 
+    @Override
     public MutableCullFace rotateX(int angle) {
         // rotate around the X axis clockwise
         angle = angle % 360;
@@ -46,6 +56,7 @@ public class MutableCullFace implements GlobalTransform.Transformable<MutableCul
         };
     }
 
+    @Override
     public MutableCullFace rotateZ(int angle) {
         // rotate around the Z axis clockwise
         angle = angle % 360;
@@ -58,16 +69,19 @@ public class MutableCullFace implements GlobalTransform.Transformable<MutableCul
         };
     }
 
+    @Override
     public MutableCullFace flipX(boolean flip) {
         if (!flip) return this;
         return set(up, down, north, south, west, east);
     }
 
+    @Override
     public MutableCullFace flipY(boolean flip) {
         if (!flip) return this;
         return set(down, up, north, south, east, west);
     }
 
+    @Override
     public MutableCullFace flipZ(boolean flip) {
         if (!flip) return this;
         return set(up, down, south, north, east, west);

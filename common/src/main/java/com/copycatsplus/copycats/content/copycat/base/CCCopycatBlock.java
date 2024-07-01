@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
 import com.simibubi.create.foundation.block.IBE;
 
 import net.fabricmc.api.EnvType;
@@ -26,6 +27,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Base class for simple copycat blocks. Extend this class for simple copycat blocks that do not require
+ * another base class and cannot be waterlogged.
+ * <p>
+ * Note: DO NOT check for copycats with instanceof checks against this class. Copycats may implement
+ * {@link ICopycatBlock} without extending this class. Check for copycats with instanceof checks
+ * against {@link ICopycatBlock} instead.
+ */
 @SuppressWarnings("deprecation")
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -79,12 +88,10 @@ public abstract class CCCopycatBlock extends Block implements IBE<CCCopycatBlock
         return CCBlockEntityTypes.COPYCAT.get();
     }
 
+    /**
+     * Convenience method for subclasses. Delegates to {@link ICopycatBlock#getMaterial}.
+     */
     public static BlockState getMaterial(BlockGetter level, BlockPos pos) {
         return ICopycatBlock.getMaterial(level, pos);
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static BlockColor wrappedColor() {
-        return ICopycatBlock.wrappedColor();
     }
 }

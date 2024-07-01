@@ -1,5 +1,8 @@
 package com.copycatsplus.copycats.content.copycat.base.model.assembly;
 
+/**
+ * A mutable container for vertex data.
+ */
 public class MutableVertex {
     public MutableVec3 xyz;
     public MutableUV uv;

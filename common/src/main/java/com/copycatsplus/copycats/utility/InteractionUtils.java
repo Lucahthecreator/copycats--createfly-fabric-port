@@ -19,6 +19,9 @@ import java.util.function.Supplier;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class InteractionUtils {
+    /**
+     * Sequentially runs a list of handlers until one consumes the action.
+     */
     @SafeVarargs
     public static InteractionResult sequential(Supplier<InteractionResult>... handlers) {
         for (Supplier<InteractionResult> handler : handlers) {
@@ -30,6 +33,9 @@ public class InteractionUtils {
         return InteractionResult.PASS;
     }
 
+    /**
+     * Handles the use action with a registered placement helper.
+     */
     public static InteractionResult usePlacementHelper(int placementHelperId, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult ray) {
         if (!player.isShiftKeyDown() && player.mayBuild()) {
             ItemStack heldItem = player.getItemInHand(hand);

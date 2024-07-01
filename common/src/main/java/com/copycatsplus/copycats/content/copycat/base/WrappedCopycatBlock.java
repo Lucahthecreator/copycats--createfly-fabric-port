@@ -6,12 +6,20 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.ApiStatus;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+/**
+ * A wrapped copycat block that extends {@link CopycatBlock} and delegates calls to an {@link ICopycatBlock}.
+ * <p>
+ * This class is used to get around instanceof CopycatBlock checks in Create's codebase. Do not use this class for any
+ * other purpose.
+ */
+@ApiStatus.Internal
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class WrappedCopycatBlock extends CopycatBlock {
+public final class WrappedCopycatBlock extends CopycatBlock {
 
     private final ThreadLocal<ICopycatBlock> wrapped = new ThreadLocal<>();
 

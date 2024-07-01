@@ -179,7 +179,7 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
         Map<String, ModelData> wrappedDataMap = getWrappedData(data);
         for (CopycatModelCore.ModelEntry entry : entries) {
             BlockState material = materials.get(entry.key());
-            if (entry.useMaterial()) {
+            if (entry.useCopycatLogic()) {
                 if (material == null)
                     continue;
 
