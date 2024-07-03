@@ -81,11 +81,6 @@ public abstract class CCCopycatBlock extends Block implements IBE<CCCopycatBlock
     }
 
     @Override
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
-        return ICopycatBlock.super.getOcclusionShape(state, level, pos);
-    }
-
-    @Override
     public Class<CCCopycatBlockEntity> getBlockEntityClass() {
         return CCCopycatBlockEntity.class;
     }

@@ -48,7 +48,6 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
  * {@link IBE#getBlockEntityType} in the concrete class, and redirect calls of
  * {@link IMultiStateCopycatBlock#use},
  * {@link IMultiStateCopycatBlock#setPlacedBy},
- * {@link IMultiStateCopycatBlock#getOcclusionShape},
  * {@link IMultiStateCopycatBlock#onRemove} and
  * {@link IMultiStateCopycatBlock#playerWillDestroy} to this interface.
  * <p>
@@ -292,10 +291,6 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
             ICopycatBlockEntity copycatBE = getCopycatBlockEntity(level, pos);
             if (copycatBE != null) copycatBE.setConsumedItem(ItemStack.EMPTY);
         }
-    }
-
-    default VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
-        return Shapes.block();
     }
 
     static BlockState getAppearance(ICopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,

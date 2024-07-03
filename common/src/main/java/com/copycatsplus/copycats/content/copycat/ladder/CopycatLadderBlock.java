@@ -82,12 +82,6 @@ public class CopycatLadderBlock extends LadderBlock implements ICopycatBlock, IB
         }
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
-        return ICopycatBlock.super.getOcclusionShape(state, level, pos);
-    }
-
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         return true;

@@ -93,12 +93,6 @@ public class CopycatGlassFluidPipeBlock extends GlassFluidPipeBlock implements I
         ICopycatBlock.super.playerWillDestroy(level, pos, state, player);
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
-        return ICopycatBlock.super.getOcclusionShape(state, level, pos);
-    }
-
     @Override
     public @NotNull ItemStack getCloneItemStack(@NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull BlockState state) {
         return CCBlocks.COPYCAT_FLUID_PIPE.asStack();

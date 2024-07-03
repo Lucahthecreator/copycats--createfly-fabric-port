@@ -89,11 +89,6 @@ public class CopycatFluidPipeBlock extends FluidPipeBlock implements ICopycatBlo
     }
 
     @Override
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
-        return ICopycatBlock.super.getOcclusionShape(state, level, pos);
-    }
-
-    @Override
     public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos) {
         return true;
     }

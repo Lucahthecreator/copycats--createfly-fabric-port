@@ -50,7 +50,6 @@ import java.util.Set;
  * {@link IMultiStateCopycatBlock#use},
  * {@link IMultiStateCopycatBlock#setPlacedBy},
  * {@link Block#getShape},
- * {@link IMultiStateCopycatBlock#getOcclusionShape},
  * {@link IMultiStateCopycatBlock#onRemove} and
  * {@link IMultiStateCopycatBlock#playerWillDestroy} to this interface.
  * <p>

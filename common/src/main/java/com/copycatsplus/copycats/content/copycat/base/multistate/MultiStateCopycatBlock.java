@@ -70,11 +70,6 @@ public abstract class MultiStateCopycatBlock extends Block implements IMultiStat
     }
 
     @Override
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
-        return IMultiStateCopycatBlock.super.getOcclusionShape(state, level, pos);
-    }
-
-    @Override
     public Class<MultiStateCopycatBlockEntity> getBlockEntityClass() {
         return MultiStateCopycatBlockEntity.class;
     }
