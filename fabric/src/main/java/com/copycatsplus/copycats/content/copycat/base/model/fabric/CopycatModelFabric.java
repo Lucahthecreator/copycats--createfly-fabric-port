@@ -166,9 +166,6 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
 
                 context.pushTransform(quad -> {
                     if (occlusionData.isOccluded(quad.cullFace())) {
-                        // Add quad to mesh and do not render original quad to preserve quad render order
-                        emitter.copyFrom(quad);
-                        emitter.emit();
                         return false;
                     }
 
