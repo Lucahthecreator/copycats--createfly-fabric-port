@@ -26,6 +26,7 @@ public class CCBlockEntityTypes {
                             CCBlocks.COPYCAT_FENCE,
                             CCBlocks.COPYCAT_FENCE_GATE,
                             CCBlocks.COPYCAT_TRAPDOOR,
+                            CCBlocks.COPYCAT_IRON_TRAPDOOR,
                             CCBlocks.COPYCAT_WALL,
                             CCBlocks.COPYCAT_GHOST_BLOCK,
                             CCBlocks.COPYCAT_LADDER,

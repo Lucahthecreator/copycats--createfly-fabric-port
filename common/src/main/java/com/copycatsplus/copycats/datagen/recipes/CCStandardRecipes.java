@@ -111,6 +111,8 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
 
     GeneratedRecipe COPYCAT_TRAPDOOR = copycat(CCBlocks.COPYCAT_TRAPDOOR, 4);
 
+    GeneratedRecipe COPYCAT_IRON_TRAPDOOR = copycat(CCBlocks.COPYCAT_IRON_TRAPDOOR, 2);
+
     GeneratedRecipe COPYCAT_TRAPDOOR_CYCLE =
             conversionCycle(ImmutableList.of(AllBlocks.COPYCAT_PANEL, CCBlocks.COPYCAT_TRAPDOOR));
 

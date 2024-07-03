@@ -342,6 +342,17 @@ public class CCBlocks {
                     .transform(customItemModel("copycat_base", "trapdoor"))
                     .register();
 
+    public static final BlockEntry<CopycatTrapdoorBlock> COPYCAT_IRON_TRAPDOOR =
+            REGISTRATE.block("copycat_iron_trapdoor", p -> new CopycatTrapdoorBlock(p, BlockSetType.IRON))
+                    .transform(CCBuilderTransformers.copycat())
+                    .properties(p -> p.isValidSpawn((state, level, pos, entity) -> false))
+                    .tag(BlockTags.TRAPDOORS)
+                    .transform(FeatureToggle.register())
+                    .onRegister(CreateRegistrate.blockModel(() -> model -> CopycatModelCore.createModel(model, new CopycatTrapdoorModelCore())))
+                    .item()
+                    .transform(customItemModel("copycat_base", "trapdoor"))
+                    .register();
+
     public static final BlockEntry<CopycatVerticalSliceBlock> COPYCAT_VERTICAL_SLICE =
             REGISTRATE.block("copycat_vertical_slice", CopycatVerticalSliceBlock::new)
                     .transform(CCBuilderTransformers.copycat())

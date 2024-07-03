@@ -21,6 +21,7 @@ public class CCCreativeTabs {
             CCBlocks.COPYCAT_FENCE_GATE,
             CCBlocks.COPYCAT_WALL,
             CCBlocks.COPYCAT_TRAPDOOR,
+            CCBlocks.COPYCAT_IRON_TRAPDOOR,
             CCBlocks.COPYCAT_LADDER,
             CCBlocks.COPYCAT_WOODEN_BUTTON,
             CCBlocks.COPYCAT_STONE_BUTTON,
