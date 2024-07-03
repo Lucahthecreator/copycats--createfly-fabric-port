@@ -7,6 +7,7 @@ import com.copycatsplus.copycats.content.copycat.base.model.ScaledBlockAndTintGe
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.fabric.CopycatRenderContextFabric;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
+import com.jozufozu.flywheel.core.virtual.VirtualEmptyBlockGetter;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.utility.Iterate;
 import com.simibubi.create.foundation.utility.Pair;
@@ -56,6 +57,8 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
 
     private void gatherOcclusionData(BlockAndTintGetter world, BlockPos pos, BlockState state, BlockState material,
                                      OcclusionData occlusionData, ICopycatBlock copycatBlock) {
+        if (VirtualEmptyBlockGetter.is(world))
+            return;
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction face : Iterate.directions) {
             BlockPos.MutableBlockPos neighbourPos = mutablePos.setWithOffset(pos, face);

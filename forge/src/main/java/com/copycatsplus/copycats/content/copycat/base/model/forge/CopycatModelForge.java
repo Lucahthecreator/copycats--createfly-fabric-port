@@ -9,6 +9,7 @@ import com.copycatsplus.copycats.content.copycat.base.model.assembly.forge.Copyc
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.forge.CopycatRenderContextForge.CullingBakedQuad;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
+import com.jozufozu.flywheel.core.model.ModelUtil;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.model.BakedModelWrapperWithData;
 import com.simibubi.create.foundation.utility.Iterate;
@@ -108,7 +109,8 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
 
         Map<String, OcclusionData> occlusionMap = materials.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, s -> {
             OcclusionData occlusionData = new OcclusionData();
-            gatherOcclusionData(world, pos, state, s.getValue(), occlusionData, copycatBlock);
+            if (!ModelUtil.isVirtual(blockEntityData))
+                gatherOcclusionData(world, pos, state, s.getValue(), occlusionData, copycatBlock);
             return occlusionData;
         }));
         builder.with(OCCLUSION_PROPERTY, occlusionMap);

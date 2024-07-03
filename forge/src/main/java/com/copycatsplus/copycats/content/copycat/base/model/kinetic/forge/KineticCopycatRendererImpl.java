@@ -4,6 +4,7 @@ import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.model.kinetic.WrappedRenderWorld;
 import com.jozufozu.flywheel.core.model.ModelUtil;
 import com.jozufozu.flywheel.core.model.ShadeSeparatedBufferedData;
+import com.jozufozu.flywheel.core.virtual.VirtualEmptyBlockGetter;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -14,7 +15,11 @@ public class KineticCopycatRendererImpl {
 
     public static ShadeSeparatedBufferedData getCopycatBuffer(BakedModel model, ICopycatBlockEntity be, PoseStack ms) {
         WrappedRenderWorld renderWorld = new WrappedRenderWorld(be);
-        ModelData renderData = model.getModelData(renderWorld, be.getBlockPos(), be.getBlockState(), ((BlockEntity) be).getModelData());
+        ModelData blockEntityData = mergeData(
+                ((BlockEntity) be).getModelData(),
+                ModelUtil.VIRTUAL_DATA
+        ).build();
+        ModelData renderData = model.getModelData(renderWorld, be.getBlockPos(), be.getBlockState(), blockEntityData);
         ModelData.Builder builder = ModelData.builder();
         copyModelData(renderData, builder);
         builder.with(ModelUtil.VIRTUAL_PROPERTY, true);
