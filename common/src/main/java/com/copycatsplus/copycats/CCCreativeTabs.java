@@ -29,6 +29,8 @@ public class CCCreativeTabs {
             CCBlocks.COPYCAT_STONE_PRESSURE_PLATE,
             CCBlocks.COPYCAT_LIGHT_WEIGHTED_PRESSURE_PLATE,
             CCBlocks.COPYCAT_HEAVY_WEIGHTED_PRESSURE_PLATE,
+            CCBlocks.COPYCAT_DOOR,
+            CCBlocks.COPYCAT_IRON_DOOR,
             /* Simple copycats */
             CCBlocks.COPYCAT_VERTICAL_STEP,
             CCBlocks.COPYCAT_BEAM,
