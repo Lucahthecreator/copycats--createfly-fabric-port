@@ -8,6 +8,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -186,6 +187,120 @@ public interface CopycatRenderContext {
      */
     static QuadCullFace cullFace(QuadCullFace.CullFaceMapper mapper) {
         return new QuadCullFace(mapper);
+    }
+
+    /**
+     * Assign cull face to the quad based on the light face.
+     * <p>
+     * Return null to specify that the quad should never be culled.
+     */
+    static QuadCullFace cullFace(Direction face1, @Nullable Direction cull1) {
+        return new QuadCullFace((lightFace, cullFace) -> {
+            if (face1 == lightFace) {
+                return cull1;
+            }
+            return cullFace;
+        });
+    }
+
+    /**
+     * Assign cull face to the quad based on the light face.
+     * <p>
+     * Return null to specify that the quad should never be culled.
+     */
+    static QuadCullFace cullFace(Direction face1, @Nullable Direction cull1, Direction face2, @Nullable Direction cull2) {
+        return new QuadCullFace((lightFace, cullFace) -> {
+            if (face1 == lightFace) {
+                return cull1;
+            } else if (face2 == lightFace) {
+                return cull2;
+            }
+            return cullFace;
+        });
+    }
+
+    /**
+     * Assign cull face to the quad based on the light face.
+     * <p>
+     * Return null to specify that the quad should never be culled.
+     */
+    static QuadCullFace cullFace(Direction face1, @Nullable Direction cull1, Direction face2, @Nullable Direction cull2, Direction face3, @Nullable Direction cull3) {
+        return new QuadCullFace((lightFace, cullFace) -> {
+            if (face1 == lightFace) {
+                return cull1;
+            } else if (face2 == lightFace) {
+                return cull2;
+            } else if (face3 == lightFace) {
+                return cull3;
+            }
+            return cullFace;
+        });
+    }
+
+    /**
+     * Assign cull face to the quad based on the light face.
+     * <p>
+     * Return null to specify that the quad should never be culled.
+     */
+    static QuadCullFace cullFace(Direction face1, @Nullable Direction cull1, Direction face2, @Nullable Direction cull2, Direction face3, @Nullable Direction cull3, Direction face4, @Nullable Direction cull4) {
+        return new QuadCullFace((lightFace, cullFace) -> {
+            if (face1 == lightFace) {
+                return cull1;
+            } else if (face2 == lightFace) {
+                return cull2;
+            } else if (face3 == lightFace) {
+                return cull3;
+            } else if (face4 == lightFace) {
+                return cull4;
+            }
+            return cullFace;
+        });
+    }
+
+    /**
+     * Assign cull face to the quad based on the light face.
+     * <p>
+     * Return null to specify that the quad should never be culled.
+     */
+    static QuadCullFace cullFace(Direction face1, @Nullable Direction cull1, Direction face2, @Nullable Direction cull2, Direction face3, @Nullable Direction cull3, Direction face4, @Nullable Direction cull4, Direction face5, @Nullable Direction cull5) {
+        return new QuadCullFace((lightFace, cullFace) -> {
+            if (face1 == lightFace) {
+                return cull1;
+            } else if (face2 == lightFace) {
+                return cull2;
+            } else if (face3 == lightFace) {
+                return cull3;
+            } else if (face4 == lightFace) {
+                return cull4;
+            } else if (face5 == lightFace) {
+                return cull5;
+            }
+            return cullFace;
+        });
+    }
+
+    /**
+     * Assign cull face to the quad based on the light face.
+     * <p>
+     * Return null to specify that the quad should never be culled.
+     */
+    static QuadCullFace cullFace(Direction face1, @Nullable Direction cull1, Direction face2, @Nullable Direction cull2, Direction face3, @Nullable Direction cull3, Direction face4, @Nullable Direction cull4, Direction face5, @Nullable Direction cull5, Direction face6, @Nullable Direction cull6) {
+        return new QuadCullFace((lightFace, cullFace) -> {
+            if (face1 == lightFace) {
+                return cull1;
+            } else if (face2 == lightFace) {
+                return cull2;
+            } else if (face3 == lightFace) {
+                return cull3;
+            } else if (face4 == lightFace) {
+                return cull4;
+            } else if (face5 == lightFace) {
+                return cull5;
+            } else if (face6 == lightFace) {
+                return cull6;
+            }
+            return cullFace;
+        });
     }
 
     /**
