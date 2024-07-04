@@ -7,6 +7,7 @@ import com.copycatsplus.copycats.content.copycat.base.model.kinetic.forge.Kineti
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlockEntity;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatStraightPipeBlockEntity;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlockEntity;
+import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorBlockEntity;
 import com.copycatsplus.copycats.utility.BlockEntityUtils;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -25,7 +26,8 @@ import org.spongepowered.asm.mixin.Mixin;
         CCCopycatBlockEntity.class,
         CopycatFluidPipeBlockEntity.class,
         CopycatStraightPipeBlockEntity.class,
-        CopycatShaftBlockEntity.class
+        CopycatShaftBlockEntity.class,
+        CopycatSlidingDoorBlockEntity.class
 })
 public abstract class CopycatBlockEntityMixin extends SmartBlockEntity implements ICopycatBlockEntity {
 

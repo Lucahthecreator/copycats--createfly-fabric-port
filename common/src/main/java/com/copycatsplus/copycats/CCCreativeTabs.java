@@ -51,7 +51,8 @@ public class CCCreativeTabs {
             CCBlocks.COPYCAT_SLOPE_LAYER,
             /*Misc*/
             CCBlocks.COPYCAT_SHAFT,
-            CCBlocks.COPYCAT_FLUID_PIPE
+            CCBlocks.COPYCAT_FLUID_PIPE,
+            CCBlocks.COPYCAT_SLIDING_DOOR
     );
 
     @ExpectPlatform
