@@ -20,8 +20,9 @@ import static com.copycatsplus.copycats.content.copycat.base.model.CopycatModelC
  * Use {@link com.jozufozu.flywheel.core.PartialModel} instead if dynamic assembly is not required.
  */
 public enum CopycatPartialModel {
-    SHAFT("shaft", new CopycatShaftModelCore(), BlockStateProperties.AXIS),
-    COGWHEEL("cogwheel", new CopycatCogWheelModelCore(), BlockStateProperties.AXIS);
+    SHAFT(new CopycatShaftModelCore(), BlockStateProperties.AXIS),
+    COGWHEEL(new CopycatCogWheelModelCore(), BlockStateProperties.AXIS),
+    LARGE_COGWHEEL(new CopycatLargeCogWheelModelCore(), BlockStateProperties.AXIS);
 
     /**
      * Creates a new partial model with the given core and block state properties.
@@ -33,23 +34,16 @@ public enum CopycatPartialModel {
      * <p>
      * Note that copycat partial models have no block state files, so a SUPER model entry in the {@link CopycatModelCore} will be empty.
      *
-     * @param key                  If the model is rendered as part of a multi-state copycat, the key that determines the material.
      * @param core                 The core of the model.
      * @param blockStateProperties The block state properties used to assemble the model.
      */
-    CopycatPartialModel(String key, CopycatModelCore core, Property<?>... blockStateProperties) {
-        this.key = key;
-        this.model = modelOf(core, key);
+    CopycatPartialModel(CopycatModelCore core, Property<?>... blockStateProperties) {
+        this.model = modelOf(core);
         this.properties = blockStateProperties;
     }
 
-    private final String key;
     private final BakedModel model;
     private final Property<?>[] properties;
-
-    public String getKey() {
-        return key;
-    }
 
     public BakedModel getModel() {
         return model;
@@ -59,14 +53,13 @@ public enum CopycatPartialModel {
         return properties;
     }
 
-    private static BakedModel modelOf(CopycatModelCore core, String property) {
+    private static BakedModel modelOf(CopycatModelCore core) {
         return CopycatModelCore.createKineticModel(
                 Minecraft
                         .getInstance()
                         .getBlockRenderer()
                         .getBlockModel(Blocks.AIR.defaultBlockState()),
-                core,
-                s -> s.equals(property) ? MATERIAL_KEY : s
+                core
         );
     }
 }

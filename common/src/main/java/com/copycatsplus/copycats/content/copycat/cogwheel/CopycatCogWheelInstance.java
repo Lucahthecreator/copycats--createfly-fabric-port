@@ -10,6 +10,8 @@ import com.jozufozu.flywheel.core.materials.FlatLit;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityInstance;
 import com.simibubi.create.content.kinetics.base.flwdata.RotatingData;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntity;
+import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntityRenderer;
+import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
 import net.minecraft.core.BlockPos;
 
 import java.util.Map;
@@ -68,10 +70,20 @@ public class CopycatCogWheelInstance extends KineticBlockEntityInstance<Brackete
         return (IMultiStateCopycatBlockEntity) blockEntity;
     }
 
+    private static final String SHAFT_KEY = CopycatCogWheelBlock.Part.SHAFT.getSerializedName();
+    private static final String COGWHEEL_KEY = CopycatCogWheelBlock.Part.COGWHEEL.getSerializedName();
+
     @Override
     public void init() {
         super.init();
-        init(CopycatPartialModel.SHAFT, CopycatPartialModel.COGWHEEL);
+        if (ICogWheel.isLargeCog(blockEntity.getBlockState())) {
+            initModel(CopycatPartialModel.SHAFT, SHAFT_KEY);
+            initModel(CopycatPartialModel.LARGE_COGWHEEL, COGWHEEL_KEY);
+        } else {
+            initModel(CopycatPartialModel.SHAFT, SHAFT_KEY);
+            initModel(CopycatPartialModel.COGWHEEL, COGWHEEL_KEY);
+        }
+        rotatingData.get(SHAFT_KEY).setRotationOffset(BracketedKineticBlockEntityRenderer.getShaftAngleOffset(axis, pos));
     }
 
     @Override
@@ -83,6 +95,7 @@ public class CopycatCogWheelInstance extends KineticBlockEntityInstance<Brackete
     public void update() {
         super.update();
         IMultiStateKineticCopycatBlockInstance.super.update();
+        rotatingData.get(SHAFT_KEY).setRotationOffset(BracketedKineticBlockEntityRenderer.getShaftAngleOffset(axis, pos));
     }
 
     @Override

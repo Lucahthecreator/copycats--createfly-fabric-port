@@ -2,6 +2,7 @@ package com.copycatsplus.copycats.content.copycat.base.model.kinetic;
 
 import com.copycatsplus.copycats.CopycatsClient;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.partial.CopycatPartialModel;
 import com.jozufozu.flywheel.core.model.BlockModel;
 import com.jozufozu.flywheel.core.model.ShadeSeparatedBufferedData;
@@ -20,6 +21,13 @@ public class KineticCopycatRenderer {
     public static SuperByteBuffer getBuffer(CopycatPartialModel partialModel, ICopycatBlockEntity be) {
         return CopycatsClient.BUFFER_CACHE.get(KINETIC_COPYCAT,
                 KineticCopycatRenderData.of(partialModel, be),
+                () -> copycatRender(partialModel, be)
+        );
+    }
+
+    public static SuperByteBuffer getBuffer(CopycatPartialModel partialModel, IMultiStateCopycatBlockEntity be, String property) {
+        return CopycatsClient.BUFFER_CACHE.get(KINETIC_COPYCAT,
+                KineticCopycatRenderData.of(partialModel, be, property),
                 () -> copycatRender(partialModel, be)
         );
     }

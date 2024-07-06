@@ -7,10 +7,18 @@ import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.List;
+
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext.*;
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableCullFace.*;
 
 public class CopycatShaftModelCore extends CopycatModelCore {
+
+    @Override
+    public void registerModels(List<ModelEntry> entries) {
+        super.registerModels(entries);
+        registerMultiStatePart(entries, "shaft");
+    }
 
     @Override
     public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {

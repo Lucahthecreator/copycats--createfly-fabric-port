@@ -154,6 +154,8 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
     @Override
     default InteractionResult toggleCT(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (player.isShiftKeyDown() && player.getItemInHand(hand).equals(ItemStack.EMPTY)) {
+            if (!canToggleCT(state, level, pos))
+                return InteractionResult.PASS;
             String property = getPropertyFromInteraction(state, level, pos, hit, true);
             IMultiStateCopycatBlockEntity be = getCopycatBlockEntity(level, pos);
             if (be == null)

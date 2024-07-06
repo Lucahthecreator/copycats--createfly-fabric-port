@@ -24,7 +24,9 @@ import java.util.Map;
  * <p>
  * Implementors should create a field to store the render data and redirect calls of
  * {@link IMultiStateKineticCopycatBlockInstance#getRotatingMaterial},
- * {@link IMultiStateKineticCopycatBlockInstance#getModel} and
+ * {@link IMultiStateKineticCopycatBlockInstance#update},
+ * {@link IMultiStateKineticCopycatBlockInstance#updateLight},
+ * {@link IMultiStateKineticCopycatBlockInstance#remove},
  * {@link IMultiStateKineticCopycatBlockInstance#shouldReset} to this interface.
  */
 public interface IMultiStateKineticCopycatBlockInstance {
@@ -53,10 +55,8 @@ public interface IMultiStateKineticCopycatBlockInstance {
     @ApiStatus.OverrideOnly
     void relightInternal(BlockPos pos, FlatLit<?>... models);
 
-    default void init(CopycatPartialModel... models) {
-        for (CopycatPartialModel model : models) {
-            getRotatingData().put(model.getKey(), setupInternal(getModel(model).createInstance()));
-        }
+    default void initModel(CopycatPartialModel model, String property) {
+        getRotatingData().put(property, setupInternal(getModel(model, property).createInstance()));
     }
 
     MaterialManager getMaterialManager();
@@ -81,9 +81,9 @@ public interface IMultiStateKineticCopycatBlockInstance {
                 .material(AllMaterialSpecs.ROTATING);
     }
 
-    default Instancer<RotatingData> getModel(CopycatPartialModel partialModel) {
-        KineticCopycatRenderData renderData = KineticCopycatRenderData.of(partialModel, getBlockEntity());
-        getRenderData().put(partialModel.getKey(), renderData);
+    default Instancer<RotatingData> getModel(CopycatPartialModel partialModel, String property) {
+        KineticCopycatRenderData renderData = KineticCopycatRenderData.of(partialModel, getBlockEntity(), property);
+        getRenderData().put(property, renderData);
         return getRotatingMaterial().model(renderData, () -> KineticCopycatRenderer.getInstanceModel(partialModel, getBlockEntity(), renderData));
     }
 

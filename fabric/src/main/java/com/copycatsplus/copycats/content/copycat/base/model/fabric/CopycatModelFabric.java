@@ -37,7 +37,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore.MATERIAL_KEY;
@@ -48,11 +47,9 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
     protected final CopycatModelCore core;
     protected final List<CopycatModelCore.ModelEntry> entries = new ArrayList<>();
     private final boolean disableAO;
-    private final Function<String, String> keyMapper;
 
-    public CopycatModelFabric(BakedModel originalModel, CopycatModelCore core, boolean disableAO, Function<String, String> keyMapper) {
+    public CopycatModelFabric(BakedModel originalModel, CopycatModelCore core, boolean disableAO) {
         this.disableAO = disableAO;
-        this.keyMapper = keyMapper;
         this.wrapped = originalModel;
         this.core = core;
         core.registerModels(entries);
@@ -88,12 +85,12 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
         if (blockView instanceof RenderAttachedBlockView attachmentView) {
             Object attachment = attachmentView.getBlockEntityRenderAttachment(pos);
             if (attachment instanceof BlockState material1) {
-                materials = Map.of(keyMapper.apply(MATERIAL_KEY), material1);
+                materials = Map.of(MATERIAL_KEY, material1);
                 remainingDataMap = Map.of();
             } else if (attachment instanceof Pair<?, ?> pair && pair.getSecond() instanceof BlockState material2) {
-                materials = Map.of(keyMapper.apply(MATERIAL_KEY), material2);
+                materials = Map.of(MATERIAL_KEY, material2);
                 if (pair.getFirst() != null)
-                    remainingDataMap = Map.of(keyMapper.apply(MATERIAL_KEY), pair.getFirst());
+                    remainingDataMap = Map.of(MATERIAL_KEY, pair.getFirst());
                 else
                     remainingDataMap = Map.of();
             } else if (attachment instanceof Map<?, ?> mats) {
@@ -102,10 +99,10 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                     remainingDataMap = new HashMap<>();
                     for (Map.Entry<?, ?> entry : mats.entrySet()) {
                         if (entry.getValue() instanceof Pair<?, ?> pair && pair.getSecond() instanceof BlockState material3) {
-                            materials.put(keyMapper.apply((String) entry.getKey()), material3);
-                            remainingDataMap.put(keyMapper.apply((String) entry.getKey()), pair.getFirst());
+                            materials.put((String) entry.getKey(), material3);
+                            remainingDataMap.put((String) entry.getKey(), pair.getFirst());
                         } else if (entry.getValue() instanceof BlockState material4) {
-                            materials.put(keyMapper.apply((String) entry.getKey()), material4);
+                            materials.put((String) entry.getKey(), material4);
                         }
                     }
                 }
@@ -119,7 +116,9 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
         }
 
         for (CopycatModelCore.ModelEntry entry : entries) {
-            BlockState material = getMaterial(materials.get(entry.key()));
+            BlockState material = materials.get(entry.key());
+            if (material == null && entry.useCopycatLogic())
+                continue;
             Object remainingData = remainingDataMap.get(entry.key());
             prepareModelCore(blockView, state, pos, randomSupplier, material, remainingData);
             if (entry.useCopycatLogic()) {

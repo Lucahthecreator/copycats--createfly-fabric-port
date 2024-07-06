@@ -1,11 +1,14 @@
 package com.copycatsplus.copycats.content.copycat.cogwheel;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.simibubi.create.content.contraptions.StructureTransform;
+import com.simibubi.create.content.decoration.bracket.BracketBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -18,7 +21,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -27,6 +32,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Set;
@@ -81,11 +87,42 @@ public class CopycatCogWheelBlock extends CogWheelBlock implements IMultiStateCo
     }
 
     @Override
+    public boolean canToggleCT(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+        return false;
+    }
+
+    @Override
+    public InteractionResult onWrenched(BlockState state, UseOnContext context) {
+        return InteractionUtils.sequential(
+                () -> IMultiStateCopycatBlock.super.onWrenched(state, context),
+                () -> super.onWrenched(state, context)
+        );
+    }
+
+    @Override
+    public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
+        return InteractionUtils.sequential(
+                () -> IMultiStateCopycatBlock.super.onSneakWrenched(state, context),
+                () -> super.onSneakWrenched(state, context)
+        );
+    }
+
+    @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         return InteractionUtils.sequential(
                 () -> IMultiStateCopycatBlock.super.use(state, level, pos, player, hand, hit),
                 () -> super.use(state, level, pos, player, hand, hit)
         );
+    }
+
+    @Nullable
+    @Override
+    public BlockState getAcceptedBlockState(Level pLevel, BlockPos pPos, ItemStack item, Direction face) {
+        if (item.getItem() instanceof BlockItem bi) {
+            if (bi.getBlock() instanceof BracketBlock) return null;
+        }
+
+        return IMultiStateCopycatBlock.super.getAcceptedBlockState(pLevel, pPos, item, face);
     }
 
     @Override

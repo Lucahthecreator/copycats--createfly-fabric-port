@@ -7,10 +7,18 @@ import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.List;
+
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext.*;
 import static com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableCullFace.*;
 
 public class CopycatCogWheelModelCore extends CopycatModelCore {
+
+    @Override
+    public void registerModels(List<ModelEntry> entries) {
+        super.registerModels(entries);
+        registerMultiStatePart(entries, "cogwheel");
+    }
 
     @Override
     public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
@@ -22,7 +30,7 @@ public class CopycatCogWheelModelCore extends CopycatModelCore {
             context.assemblePiece(
                     transform,
                     vec3(4, 4, 6),
-                    aabb(4, 4, 2).move(0, 0, 0),
+                    aabb(4, 4, 2),
                     cull(EAST | SOUTH | UP),
                     noCull()
             );
@@ -36,7 +44,7 @@ public class CopycatCogWheelModelCore extends CopycatModelCore {
             context.assemblePiece(
                     transform,
                     vec3(2, 2, 6.55),
-                    aabb(6, 6, 1.45).move(0, 0, 0),
+                    aabb(6, 6, 1.45),
                     cull(EAST | SOUTH | UP),
                     noCull()
             );
@@ -52,23 +60,8 @@ public class CopycatCogWheelModelCore extends CopycatModelCore {
                 context.assemblePiece(
                         transform,
                         vec3(6.5, 0, 6.5),
-                        aabb(1.5, 16, 1.5).move(0, 0, 0),
+                        aabb(1.5, 16, 1.5),
                         cull(EAST | SOUTH),
-                        scale(
-                                pivot(8, 8, 8),
-                                scale(1, 18 / 16.0, 1 + j * 0.02)
-                        ),
-                        rotate(
-                                pivot(8, 8, 8),
-                                angle(0, 0, gearRotation)
-                        ),
-                        noCull()
-                );
-                context.assemblePiece(
-                        transform,
-                        vec3(8, 0, 6.5),
-                        aabb(1.5, 16, 1.5).move(14.5, 0, 0),
-                        cull(WEST | SOUTH),
                         scale(
                                 pivot(8, 8, 8),
                                 scale(1, 18 / 16.0, 1 + j * 0.02)
@@ -84,21 +77,6 @@ public class CopycatCogWheelModelCore extends CopycatModelCore {
                         vec3(6.5, 0, 8),
                         aabb(1.5, 16, 1.5).move(0, 0, 14.5),
                         cull(EAST | NORTH),
-                        scale(
-                                pivot(8, 8, 8),
-                                scale(1, 18 / 16.0, 1 + j * 0.02)
-                        ),
-                        rotate(
-                                pivot(8, 8, 8),
-                                angle(0, 0, gearRotation)
-                        ),
-                        noCull()
-                );
-                context.assemblePiece(
-                        transform,
-                        vec3(8, 0, 8),
-                        aabb(1.5, 16, 1.5).move(14.5, 0, 14.5),
-                        cull(WEST | NORTH),
                         scale(
                                 pivot(8, 8, 8),
                                 scale(1, 18 / 16.0, 1 + j * 0.02)

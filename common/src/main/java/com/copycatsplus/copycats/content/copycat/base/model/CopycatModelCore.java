@@ -12,13 +12,26 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
  * Block-specific but platform-independent model generation logic for copycats.
  */
 public abstract class CopycatModelCore implements CopycatModelPart {
+
+    /**
+     * A core that renders the original model without modifications, while still handles particles and other copycat logic.
+     */
+    public static final CopycatModelCore PASS_THROUGH = new CopycatModelCore() {
+        @Override
+        public void registerModels(List<ModelEntry> entries) {
+            entries.add(SUPER);
+        }
+
+        @Override
+        public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
+
+        }
+    };
 
     protected static final ModelEntry SUPER = new ModelEntry("super", null, null, false);
 
@@ -57,8 +70,21 @@ public abstract class CopycatModelCore implements CopycatModelPart {
      */
     protected final void registerForMultiState(List<ModelEntry> entries, IMultiStateCopycatBlock block) {
         for (String property : block.storageProperties()) {
-            entries.add(new ModelEntry(property, (state, mat) -> getModelOf(mat), this, true));
+            registerMultiStatePart(entries, property);
         }
+    }
+
+    /**
+     * Helper method to register a model for one part of a multi-state copycat.
+     * <p>
+     * When implementing a model core for a kinetic multi-state copycat, override {@link CopycatModelCore#registerModels}
+     * and call this method for the specific part of the copycat that this model core is meant for.
+     *
+     * @param entries  The list to register the models to.
+     * @param property The storage property of the copycat that this model core is meant for.
+     */
+    protected final void registerMultiStatePart(List<ModelEntry> entries, String property) {
+        entries.add(new ModelEntry(property, (state, mat) -> getModelOf(mat), this, true));
     }
 
     /**
@@ -123,7 +149,7 @@ public abstract class CopycatModelCore implements CopycatModelPart {
      */
     @ExpectPlatform
     @NotNull
-    public static BakedModel createKineticModel(BakedModel original, CopycatModelCore core, Function<String, String> keyMapper) {
+    public static BakedModel createKineticModel(BakedModel original, CopycatModelCore core) {
         //noinspection DataFlowIssue
         return null;
     }

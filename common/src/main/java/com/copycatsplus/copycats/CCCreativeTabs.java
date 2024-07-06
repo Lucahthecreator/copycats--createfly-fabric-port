@@ -48,6 +48,8 @@ public class CCCreativeTabs {
             CCBlocks.COPYCAT_SLOPE_LAYER,
             /*Misc*/
             CCBlocks.COPYCAT_SHAFT,
+            CCBlocks.COPYCAT_COGWHEEL,
+            CCBlocks.COPYCAT_LARGE_COGWHEEL,
             CCBlocks.COPYCAT_FLUID_PIPE
     );
 

@@ -1,18 +1,19 @@
 package com.copycatsplus.copycats.content.copycat.cogwheel;
 
-import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.model.kinetic.IKineticCopycatBlockRenderer;
 import com.copycatsplus.copycats.content.copycat.base.model.kinetic.KineticCopycatRenderer;
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.partial.CopycatPartialModel;
 import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntityRenderer;
+import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
 import com.simibubi.create.foundation.render.SuperByteBuffer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class CopycatCogWheelRenderer extends BracketedKineticBlockEntityRenderer implements IKineticCopycatBlockRenderer {
@@ -22,7 +23,7 @@ public class CopycatCogWheelRenderer extends BracketedKineticBlockEntityRenderer
 
     @Override
     protected SuperByteBuffer getRotatedModel(BracketedKineticBlockEntity be, BlockState state) {
-        return IKineticCopycatBlockRenderer.super.getRotatedModel(CopycatPartialModel.SHAFT, (ICopycatBlockEntity) be);
+        return IKineticCopycatBlockRenderer.super.getRotatedModel(CopycatPartialModel.SHAFT, (IMultiStateCopycatBlockEntity) be, "shaft");
     }
 
     @Override
@@ -30,13 +31,29 @@ public class CopycatCogWheelRenderer extends BracketedKineticBlockEntityRenderer
         if (Backend.canUseInstancing(be.getLevel()))
             return;
 
-        if (!AllBlocks.LARGE_COGWHEEL.has(be.getBlockState())) {
+        RenderType type = getRenderType(be, ((IMultiStateCopycatBlockEntity) be).getMaterialItemStorage().getMaterialItem(CopycatCogWheelBlock.Part.COGWHEEL.getSerializedName()).material());
+
+        if (!ICogWheel.isLargeCog(be.getBlockState())) {
             super.renderSafe(be, partialTicks, ms, buffer, light, overlay);
-            BlockState state = getRenderedBlockState(be);
-            RenderType type = getRenderType(be, state);
             if (type != null)
-                renderRotatingBuffer(be, KineticCopycatRenderer.getBuffer(CopycatPartialModel.COGWHEEL, (ICopycatBlockEntity) be), ms, buffer.getBuffer(type), light);
+                renderRotatingBuffer(be, KineticCopycatRenderer.getBuffer(CopycatPartialModel.COGWHEEL, (IMultiStateCopycatBlockEntity) be, "cogwheel"), ms, buffer.getBuffer(type), light);
             return;
         }
+
+        // Large cogs sometimes have to offset their teeth by 11.25 degrees in order to
+        // mesh properly
+
+        RenderType shaftType = getRenderType(be, ((IMultiStateCopycatBlockEntity) be).getMaterialItemStorage().getMaterialItem(CopycatCogWheelBlock.Part.SHAFT.getSerializedName()).material());
+
+        Direction.Axis axis = getRotationAxisOf(be);
+        renderRotatingBuffer(be,
+                KineticCopycatRenderer.getBuffer(CopycatPartialModel.LARGE_COGWHEEL, (IMultiStateCopycatBlockEntity) be, "cogwheel"),
+                ms, buffer.getBuffer(type), light);
+
+        float angle = getAngleForLargeCogShaft(be, axis);
+        SuperByteBuffer shaft =
+                KineticCopycatRenderer.getBuffer(CopycatPartialModel.SHAFT, (IMultiStateCopycatBlockEntity) be, "shaft");
+        kineticRotationTransform(shaft, be, axis, angle, light);
+        shaft.renderInto(ms, buffer.getBuffer(shaftType));
     }
 }

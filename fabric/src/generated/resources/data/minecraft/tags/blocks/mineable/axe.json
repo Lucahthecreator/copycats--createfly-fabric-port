@@ -32,6 +32,7 @@
     "copycats:copycat_slope_layer",
     "copycats:copycat_shaft",
     "copycats:copycat_cogwheel",
+    "copycats:copycat_large_cogwheel",
     "copycats:copycat_fluid_pipe",
     "copycats:copycat_glass_fluid_pipe"
   ]

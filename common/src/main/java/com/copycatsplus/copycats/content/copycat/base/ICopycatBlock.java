@@ -91,6 +91,8 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
 
     default InteractionResult toggleCT(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (pPlayer.isShiftKeyDown() && pPlayer.getItemInHand(pHand).equals(ItemStack.EMPTY)) {
+            if (!canToggleCT(pState, pLevel, pPos))
+                return InteractionResult.PASS;
             BlockEntity be = pLevel.getBlockEntity(pPos);
             if (!(be instanceof ICopycatBlockEntity fbe))
                 return InteractionResult.PASS;

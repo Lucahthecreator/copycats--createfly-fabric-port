@@ -25,9 +25,26 @@ public record KineticCopycatRenderData(CopycatPartialModel partialModel, Partial
      * @param be           The block entity that is rendering the model.
      */
     public static KineticCopycatRenderData of(CopycatPartialModel partialModel, ICopycatBlockEntity be) {
-        BlockState material = be instanceof IMultiStateCopycatBlockEntity multiState
-                ? multiState.getMaterialItemStorage().getMaterialItem(partialModel.getKey()).material()
-                : be.getMaterial();
+        BlockState material = be.getMaterial();
+        return of(partialModel, be, material);
+    }
+
+    /**
+     * Create a new render data object from the given partial model rendered by the given multi-state block entity.
+     * <p>
+     * The partial model should only represent one part of the multi-state block entity, such that one material state
+     * is enough to render the model.
+     *
+     * @param partialModel The partial model to render.
+     * @param be           The block entity that is rendering the model.
+     * @param property     The property of the block entity that determines the material state.
+     */
+    public static KineticCopycatRenderData of(CopycatPartialModel partialModel, IMultiStateCopycatBlockEntity be, String property) {
+        BlockState material = be.getMaterialItemStorage().getMaterialItem(property).material();
+        return of(partialModel, be, material);
+    }
+
+    private static KineticCopycatRenderData of(CopycatPartialModel partialModel, ICopycatBlockEntity be, BlockState material) {
         if (!CCConfigs.client().disableGraphicsWarnings.get()) {
             if (Backend.getBackendType() != BackendType.INSTANCING &&
                     Minecraft.getInstance().getBlockColors().getColor(material, null, null, 0) != -1) {

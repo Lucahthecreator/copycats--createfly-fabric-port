@@ -10,11 +10,11 @@ public class CopycatModelCoreImpl {
 
     @NotNull
     public static BakedModel createModel(BakedModel original, CopycatModelCore core) {
-        return new CopycatModelForge(original, core, false, s -> s);
+        return new CopycatModelForge(original, core, false);
     }
 
     @NotNull
-    public static BakedModel createKineticModel(BakedModel original, CopycatModelCore core, Function<String, String> keyMapper) {
-        return new CopycatModelForge(original, core, true, keyMapper);
+    public static BakedModel createKineticModel(BakedModel original, CopycatModelCore core) {
+        return new CopycatModelForge(original, core, true);
     }
 }

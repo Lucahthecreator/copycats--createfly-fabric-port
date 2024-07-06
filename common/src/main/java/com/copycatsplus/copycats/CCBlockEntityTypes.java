@@ -73,7 +73,7 @@ public class CCBlockEntityTypes {
     public static final BlockEntityEntry<? extends CopycatCogWheelBlockEntity> COPYCAT_COGWHEEL =
             REGISTRATE.blockEntity("copycat_cogwheel", CopycatCogWheelBlockEntity::new)
                     .instance(() -> CopycatCogWheelInstance::new, false)
-                    .validBlocks(CCBlocks.COPYCAT_COGWHEEL)
+                    .validBlocks(CCBlocks.COPYCAT_COGWHEEL, CCBlocks.COPYCAT_LARGE_COGWHEEL)
                     .renderer(() -> CopycatCogWheelRenderer::new)
                     .register();
 
