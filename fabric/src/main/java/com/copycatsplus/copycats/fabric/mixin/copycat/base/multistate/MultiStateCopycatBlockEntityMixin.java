@@ -2,6 +2,7 @@ package com.copycatsplus.copycats.fabric.mixin.copycat.base.multistate;
 
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -20,7 +21,8 @@ import java.util.Collections;
 @SuppressWarnings("deprecation")
 public class MultiStateCopycatBlockEntityMixin {
     @Mixin({
-            MultiStateCopycatBlockEntity.class
+            MultiStateCopycatBlockEntity.class,
+            CopycatCogWheelBlockEntity.class
     })
     public static abstract class BlockEntityWithoutAttachmentData extends SmartBlockEntity implements IMultiStateCopycatBlockEntity, RenderAttachmentBlockEntity {
 

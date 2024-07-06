@@ -31,6 +31,8 @@ import net.minecraftforge.client.model.data.ModelProperty;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore.MATERIAL_KEY;
@@ -47,13 +49,15 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
 
     protected final CopycatModelCore core;
     private final boolean disableAO;
+    private final Function<String, String> keyMapper;
     protected final List<CopycatModelCore.ModelEntry> entries = new ArrayList<>();
     private final ThreadLocal<RenderSession> renderSession = ThreadLocal.withInitial(() -> new RenderSession(this::getQuads));
 
-    public CopycatModelForge(BakedModel originalModel, CopycatModelCore core, boolean disableAO) {
+    public CopycatModelForge(BakedModel originalModel, CopycatModelCore core, boolean disableAO, Function<String, String> keyMapper) {
         super(originalModel);
         this.core = core;
         this.disableAO = disableAO;
+        this.keyMapper = keyMapper;
         core.registerModels(entries);
     }
 
@@ -97,26 +101,32 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
         if (materials.isEmpty()) {
             BlockState material = blockEntityData.get(MATERIAL_PROPERTY);
             if (material != null)
-                materials = Map.of(MATERIAL_KEY, material);
+                materials = Map.of(keyMapper.apply(MATERIAL_KEY), material);
         }
         if (materials.isEmpty())
             return builder;
 
-        builder.with(MATERIALS_PROPERTY, new HashMap<>(materials));
+        Map<String, BlockState> remapped = new HashMap<>();
+        for (Map.Entry<String, BlockState> entry : materials.entrySet()) {
+            remapped.put(keyMapper.apply(entry.getKey()), entry.getValue());
+        }
+        builder.with(MATERIALS_PROPERTY, remapped);
 
         if (!(state.getBlock() instanceof ICopycatBlock copycatBlock))
             return builder;
 
-        Map<String, OcclusionData> occlusionMap = materials.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, s -> {
+        Map<String, OcclusionData> occlusionMap = new HashMap<>();
+        for (Map.Entry<String, BlockState> s : materials.entrySet()) {
             OcclusionData occlusionData = new OcclusionData();
             if (!ModelUtil.isVirtual(blockEntityData))
                 gatherOcclusionData(world, pos, state, s.getValue(), occlusionData, copycatBlock);
-            return occlusionData;
-        }));
+            occlusionMap.put(keyMapper.apply(s.getKey()), occlusionData);
+        }
         builder.with(OCCLUSION_PROPERTY, occlusionMap);
 
         if (copycatBlock instanceof IMultiStateCopycatBlock multiStateBlock) {
-            Map<String, ModelData> wrappedDataMap = materials.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, s -> {
+            Map<String, ModelData> wrappedDataMap = new HashMap<>();
+            for (Map.Entry<String, BlockState> s : materials.entrySet()) {
                 Vec3i inner = multiStateBlock.getVectorFromProperty(state, s.getKey());
                 boolean enableCT = !(world.getBlockEntity(pos) instanceof IMultiStateCopycatBlockEntity multiStateBE) || multiStateBE.getMaterialItemStorage().getMaterialItem(s.getKey()).enableCT();
                 ScaledBlockAndTintGetter scaledWorld = new ScaledBlockAndTintGetterForge(s.getKey(), world, pos, inner, multiStateBlock.vectorScale(state), p -> true);
@@ -125,10 +135,11 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
                             if (!enableCT) return false;
                             return multiStateBlock.canConnectTexturesToward(s.getKey(), scaledWorld, pos, targetPos, state);
                         });
-                return getModelOf(s.getValue()).getModelData(
+                wrappedDataMap.put(keyMapper.apply(s.getKey()), getModelOf(s.getValue()).getModelData(
                         filteredWorld,
-                        pos, s.getValue(), ModelData.EMPTY);
-            }));
+                        pos, s.getValue(), ModelData.EMPTY)
+                );
+            }
             return builder.with(WRAPPED_DATA_PROPERTY, wrappedDataMap);
         } else {
             FilteredBlockAndTintGetter filteredWorld = new FilteredBlockAndTintGetterForge(world,
@@ -140,7 +151,7 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
                     });
             BlockState material = materials.get(MATERIAL_KEY);
             Map<String, ModelData> wrappedDataMap = Map.of(
-                    MATERIAL_KEY,
+                    keyMapper.apply(MATERIAL_KEY),
                     getModelOf(material).getModelData(
                             filteredWorld,
                             pos, material, ModelData.EMPTY)

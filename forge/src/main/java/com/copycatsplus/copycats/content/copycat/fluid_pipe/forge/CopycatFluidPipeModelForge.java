@@ -23,7 +23,7 @@ public class CopycatFluidPipeModelForge extends CopycatModelForge {
     private static final ModelProperty<CopycatFluidPipeModelCore.PipeModelData> PIPE_PROPERTY = new ModelProperty<>();
 
     public CopycatFluidPipeModelForge(BakedModel originalModel, CopycatModelCore core) {
-        super(originalModel, core, false);
+        super(originalModel, core, false, s -> s);
     }
 
     @Override

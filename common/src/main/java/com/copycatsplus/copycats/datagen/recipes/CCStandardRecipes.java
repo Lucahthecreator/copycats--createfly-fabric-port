@@ -176,6 +176,8 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
 
     GeneratedRecipe COPYCAT_SHAFT = copycat(CCBlocks.COPYCAT_SHAFT, 4);
 
+    GeneratedRecipe COPYCAT_COGWHEEL = copycatWithBaseItem(AllBlocks.COGWHEEL, CCBlocks.COPYCAT_COGWHEEL, 4);
+
     GeneratedRecipe COPYCAT_FLUID_PIPE = copycatWithBaseItem(AllBlocks.FLUID_PIPE, CCBlocks.COPYCAT_FLUID_PIPE, 4);
 
     Set<RegistryEntry<? extends Block>> blocksWithoutRecipe = Set.of(

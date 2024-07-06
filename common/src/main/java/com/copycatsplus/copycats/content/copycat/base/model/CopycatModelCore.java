@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Block-specific but platform-independent model generation logic for copycats.
@@ -113,14 +115,15 @@ public abstract class CopycatModelCore implements CopycatModelPart {
      * Create a platform-specific {@link BakedModel} implementation for a copycat which wraps the original model and
      * renders with the provided core.
      * <p>
-     * Ambient occlusion is disabled for this model, which is ideal for partial models and kinetic copycat models.
+     * The model is configured for kinetic rendering by disabling ambient occlusion and applying a model filter
+     * to selectively render parts of a multi-state copycat.
      *
      * @param original The original model to wrap.
      * @param core     The core to render the model with.
      */
     @ExpectPlatform
     @NotNull
-    public static BakedModel createModelWithoutAO(BakedModel original, CopycatModelCore core) {
+    public static BakedModel createKineticModel(BakedModel original, CopycatModelCore core, Function<String, String> keyMapper) {
         //noinspection DataFlowIssue
         return null;
     }

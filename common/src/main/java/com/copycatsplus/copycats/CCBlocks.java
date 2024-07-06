@@ -15,6 +15,7 @@ import com.copycatsplus.copycats.content.copycat.button.CopycatButtonBlock;
 import com.copycatsplus.copycats.content.copycat.button.CopycatButtonModelCore;
 import com.copycatsplus.copycats.content.copycat.bytes.CopycatByteBlock;
 import com.copycatsplus.copycats.content.copycat.bytes.CopycatMultiByteModelCore;
+import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelBlock;
 import com.copycatsplus.copycats.content.copycat.fence.CopycatFenceBlock;
 import com.copycatsplus.copycats.content.copycat.fence.CopycatFenceModelCore;
 import com.copycatsplus.copycats.content.copycat.fence_gate.CopycatFenceGateBlock;
@@ -404,6 +405,16 @@ public class CCBlocks {
 
     public static final BlockEntry<CopycatShaftBlock> COPYCAT_SHAFT =
             REGISTRATE.block("copycat_shaft", CopycatShaftBlock::new)
+                    .transform(CCBuilderTransformers.copycat())
+                    .transform(FeatureToggle.register())
+                    .transform(BlockStressDefaults.setNoImpact())
+                    .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
+                    .item()
+                    .transform(customItemModel("copycat_base", "shaft"))
+                    .register();
+
+    public static final BlockEntry<CopycatCogWheelBlock> COPYCAT_COGWHEEL =
+            REGISTRATE.block("copycat_cogwheel", CopycatCogWheelBlock::small)
                     .transform(CCBuilderTransformers.copycat())
                     .transform(FeatureToggle.register())
                     .transform(BlockStressDefaults.setNoImpact())
