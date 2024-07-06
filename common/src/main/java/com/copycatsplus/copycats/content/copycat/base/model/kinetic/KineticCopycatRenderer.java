@@ -2,7 +2,6 @@ package com.copycatsplus.copycats.content.copycat.base.model.kinetic;
 
 import com.copycatsplus.copycats.CopycatsClient;
 import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
-import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.partial.CopycatPartialModel;
 import com.jozufozu.flywheel.core.model.BlockModel;
 import com.jozufozu.flywheel.core.model.ShadeSeparatedBufferedData;
@@ -11,8 +10,6 @@ import com.simibubi.create.foundation.render.SuperByteBuffer;
 import com.simibubi.create.foundation.render.SuperByteBufferCache;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.resources.model.BakedModel;
-
-import java.util.concurrent.ExecutionException;
 
 /**
  * Helper class to render kinetic copycat models.
