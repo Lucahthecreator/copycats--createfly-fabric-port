@@ -155,13 +155,8 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                     renderWorld = new WorldWithRenderData(blockView, remainingData, pos);
                 }
 
-                BakedModel model;
-                if (entry.model() == null)
-                    model = null;
-                else {
-                    model = entry.model().getModel(state, material);
-                    if (model == null) continue;
-                }
+                BakedModel model = getModelForEntry(entry, state, material);
+                if (model == null) continue;
 
                 // Use a mesh to defer quad emission since quads cannot be emitted inside a transform
                 MeshBuilder meshBuilder = Objects.requireNonNull(RendererAccess.INSTANCE.getRenderer()).meshBuilder();
@@ -184,10 +179,7 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                     }
                     return false;
                 });
-                if (model == null)
-                    super.emitBlockQuads(renderWorld, material, pos, randomSupplier, context);
-                else
-                    model.emitBlockQuads(renderWorld, material, pos, randomSupplier, context);
+                model.emitBlockQuads(renderWorld, material, pos, randomSupplier, context);
                 context.popTransform();
 
                 CopycatRenderContextFabric copycatContext = new CopycatRenderContextFabric(quads, emitter);
@@ -199,19 +191,11 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                 if (shouldTransform)
                     context.popTransform();
             } else {
-                BakedModel model;
-                if (entry.model() == null)
-                    model = null;
-                else {
-                    model = entry.model().getModel(state, material);
-                    if (model == null) continue;
-                }
+                BakedModel model = getModelForEntry(entry, state, material);
+                if (model == null) continue;
 
                 if (entry.part() == null) {
-                    if (model == null)
-                        super.emitBlockQuads(blockView, state, pos, randomSupplier, context);
-                    else
-                        model.emitBlockQuads(blockView, state, pos, randomSupplier, context);
+                    model.emitBlockQuads(blockView, state, pos, randomSupplier, context);
                     continue;
                 }
 
@@ -226,10 +210,7 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                     quads.add(newQuad);
                     return false;
                 });
-                if (model == null)
-                    super.emitBlockQuads(blockView, state, pos, randomSupplier, context);
-                else
-                    model.emitBlockQuads(blockView, state, pos, randomSupplier, context);
+                model.emitBlockQuads(blockView, state, pos, randomSupplier, context);
                 context.popTransform();
 
                 CopycatRenderContextFabric copycatContext = new CopycatRenderContextFabric(quads, emitter);
@@ -262,6 +243,14 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
         }
 
         return CustomParticleIconModel.super.getParticleIcon(data);
+    }
+
+    public BakedModel getModelForEntry(CopycatModelCore.ModelEntry entry, BlockState state, BlockState material) {
+        if (entry.model() == null)
+            return wrapped;
+        else {
+            return entry.model().getModel(state, material);
+        }
     }
 
     public static TextureAtlasSprite getIcon(BakedModel model, @Nullable Object data) {

@@ -78,14 +78,10 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
         ChunkRenderTypeSet renderTypes = allRenderTypes;
         Map<String, BlockState> materials = getMaterials(data);
         for (CopycatModelCore.ModelEntry entry : entries) {
-            if (entry.model() == null) {
-                renderTypes = ChunkRenderTypeSet.union(renderTypes, super.getRenderTypes(state, rand, data));
-                continue;
-            }
             BlockState material = materials.get(entry.key());
             if (material == null)
                 continue;
-            BakedModel model = entry.model().getModel(state, material);
+            BakedModel model = getModelForEntry(entry, state, material);
             renderTypes = ChunkRenderTypeSet.union(renderTypes, model.getRenderTypes(state, rand, data));
         }
         return renderTypes;
@@ -188,13 +184,8 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
             if (entry.useCopycatLogic() && material == null)
                 continue;
 
-            BakedModel model;
-            if (entry.model() == null)
-                model = null;
-            else {
-                model = entry.model().getModel(state, material);
-                if (model == null) continue;
-            }
+            BakedModel model = getModelForEntry(entry, state, material);
+            if (model == null) continue;
 
             BlockState wrappedState = state;
             ModelData wrappedData = data;
@@ -205,27 +196,18 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
                     wrappedData = ModelData.EMPTY;
             }
             if (renderType != null) {
-                if (model == null) {
-                    if (!super.getRenderTypes(wrappedState, rand, wrappedData).contains(renderType))
-                        continue;
-                } else {
-                    if (!model.getRenderTypes(wrappedState, rand, wrappedData).contains(renderType))
-                        continue;
-                }
+                if (!model.getRenderTypes(wrappedState, rand, wrappedData).contains(renderType))
+                    continue;
             }
 
             List<CullingBakedQuad> quads = new ArrayList<>();
             for (Direction side : Iterate.directions) {
-                List<BakedQuad> templateQuads = model == null
-                        ? super.getQuads(wrappedState, side, rand, wrappedData, renderType)
-                        : model.getQuads(wrappedState, side, rand, wrappedData, renderType);
+                List<BakedQuad> templateQuads = model.getQuads(wrappedState, side, rand, wrappedData, renderType);
                 for (BakedQuad templateQuad : templateQuads) {
                     quads.add(new CullingBakedQuad(templateQuad, side));
                 }
             }
-            List<BakedQuad> templateQuads = model == null
-                    ? super.getQuads(wrappedState, null, rand, wrappedData, renderType)
-                    : model.getQuads(wrappedState, null, rand, wrappedData, renderType);
+            List<BakedQuad> templateQuads = model.getQuads(wrappedState, null, rand, wrappedData, renderType);
             for (BakedQuad templateQuad : templateQuads) {
                 quads.add(new CullingBakedQuad(templateQuad, null));
             }
@@ -263,6 +245,14 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
         CopycatRenderContextForge context = new CopycatRenderContextForge(templateQuads, quads);
         entry.part().emitCopycatQuads(entry.key(), state, context, material);
         return quads;
+    }
+
+    public BakedModel getModelForEntry(CopycatModelCore.ModelEntry entry, BlockState state, BlockState material) {
+        if (entry.model() == null)
+            return originalModel;
+        else {
+            return entry.model().getModel(state, material);
+        }
     }
 
     protected void prepareModelCore(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
