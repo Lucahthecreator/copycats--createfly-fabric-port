@@ -109,7 +109,7 @@ public class CopycatLargeCogWheelModelCore extends CopycatModelCore {
                 context.assemblePiece(
                         transform,
                         vec3(6.5, -7, 6.6 + delta),
-                        aabb(1.5, 15, 1.5),
+                        aabb(1.5, 6, 1.5),
                         cull(EAST | SOUTH | UP),
                         rotate(
                                 pivot(8, 8, 8),
@@ -120,7 +120,7 @@ public class CopycatLargeCogWheelModelCore extends CopycatModelCore {
                 context.assemblePiece(
                         transform,
                         vec3(6.5, -7, 8 + delta),
-                        aabb(1.5, 15, 1.5).move(0, 0, 14.5),
+                        aabb(1.5, 6, 1.5).move(0, 0, 14.5),
                         cull(EAST | NORTH | UP),
                         rotate(
                                 pivot(8, 8, 8),
@@ -131,7 +131,7 @@ public class CopycatLargeCogWheelModelCore extends CopycatModelCore {
                 context.assemblePiece(
                         transform,
                         vec3(8, -7, 6.6 + delta),
-                        aabb(1.5, 15, 1.5).move(14.5, 0, 0),
+                        aabb(1.5, 6, 1.5).move(14.5, 0, 0),
                         cull(WEST | SOUTH | UP),
                         rotate(
                                 pivot(8, 8, 8),
@@ -142,7 +142,7 @@ public class CopycatLargeCogWheelModelCore extends CopycatModelCore {
                 context.assemblePiece(
                         transform,
                         vec3(8, -7, 8 + delta),
-                        aabb(1.5, 15, 1.5).move(14.5, 0, 14.5),
+                        aabb(1.5, 6, 1.5).move(14.5, 0, 14.5),
                         cull(WEST | NORTH | UP),
                         rotate(
                                 pivot(8, 8, 8),
