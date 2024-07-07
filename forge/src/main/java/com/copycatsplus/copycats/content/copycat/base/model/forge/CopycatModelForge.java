@@ -79,7 +79,7 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
         Map<String, BlockState> materials = getMaterials(data);
         for (CopycatModelCore.ModelEntry entry : entries) {
             BlockState material = materials.get(entry.key());
-            if (material == null)
+            if (material == null && entry.useCopycatLogic())
                 continue;
             BakedModel model = getModelForEntry(entry, state, material);
             renderTypes = ChunkRenderTypeSet.union(renderTypes, model.getRenderTypes(state, rand, data));

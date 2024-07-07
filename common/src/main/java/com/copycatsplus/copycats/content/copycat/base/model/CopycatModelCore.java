@@ -184,7 +184,7 @@ public abstract class CopycatModelCore implements CopycatModelPart {
      * @param key             A custom key to identify the model entry during rendering.
      * @param model           A getter that returns a {@link BakedModel} to be rendered for this entry, invoked for each render. Set to null to render the original model as specified by the copycat's block state file.
      * @param part            A {@link CopycatModelPart} to assemble the model quads with. Set to null if the model should be rendered without modifications.
-     * @param useCopycatLogic Whether to use copycat logic for occlusion, culling and connected textures instead of the original model's logic.
+     * @param useCopycatLogic Specifies that this model requires a copycat material and should use it for occlusion, culling and connected textures instead of the copycat's own block state.
      */
     public record ModelEntry(String key, @Nullable ModelGetter model, @Nullable CopycatModelPart part,
                              boolean useCopycatLogic) {
