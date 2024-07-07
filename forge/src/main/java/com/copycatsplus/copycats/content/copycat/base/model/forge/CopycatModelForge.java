@@ -7,6 +7,7 @@ import com.copycatsplus.copycats.content.copycat.base.model.FilteredBlockAndTint
 import com.copycatsplus.copycats.content.copycat.base.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.forge.CopycatRenderContextForge;
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.forge.CopycatRenderContextForge.CullingBakedQuad;
+import com.copycatsplus.copycats.content.copycat.base.model.kinetic.forge.KineticCopycatRendererImpl;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
 import com.jozufozu.flywheel.core.model.ModelUtil;
@@ -93,6 +94,10 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
     @Override
     public ModelData.Builder gatherModelData(ModelData.Builder builder, BlockAndTintGetter world, BlockPos pos, BlockState state,
                                              ModelData blockEntityData) {
+        if (!(originalModel instanceof BakedModelWrapperWithData)) {
+            KineticCopycatRendererImpl.copyModelData(originalModel.getModelData(world, pos, state, blockEntityData), builder);
+        }
+
         Map<String, BlockState> materials = getMaterials(blockEntityData);
         if (materials.isEmpty()) {
             BlockState material = blockEntityData.get(MATERIAL_PROPERTY);
