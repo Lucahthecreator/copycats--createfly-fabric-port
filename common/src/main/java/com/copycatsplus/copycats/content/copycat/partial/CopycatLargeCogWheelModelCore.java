@@ -58,7 +58,7 @@ public class CopycatLargeCogWheelModelCore extends CopycatModelCore {
             context.assemblePiece(
                     transform,
                     vec3(1, 1, 5.975),
-                    aabb(7, 7, 4.05),
+                    aabb(7, 7, 4.05).move(3, 3, 0),
                     cull(EAST | WEST | UP | DOWN),
                     noCull()
             );
