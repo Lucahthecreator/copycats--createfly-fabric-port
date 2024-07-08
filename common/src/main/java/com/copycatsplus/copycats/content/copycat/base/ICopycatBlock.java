@@ -475,7 +475,7 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
                                      Direction dir) {
         BlockPos toPos = pos.relative(dir);
         if (getMaterial(level, pos).skipRendering(getMaterial(level, toPos), dir.getOpposite())) {
-            return BlockFaceUtils.facesMatch(level, neighborState, toPos, state, pos, dir);
+            return BlockFaceUtils.facesMatch(level, neighborState, toPos, state, pos, dir.getOpposite());
         }
         return false;
     }
