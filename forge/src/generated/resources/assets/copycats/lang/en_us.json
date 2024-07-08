@@ -208,5 +208,6 @@
   "item.copycats.copycat_catwalk.tooltip.condition2": "When Sneak-R-Clicked with Empty Hand",
   "item.copycats.copycat_catwalk.tooltip.condition3": "When Wrenched while Sneaking",
   "item.copycats.copycat_catwalk.tooltip.summary": "_Copycat boards_ pre-assembled into a catwalk for convenient placement.",
-  "itemGroup.copycats.main": "Create: Copycats+"
+  "itemGroup.copycats.functional": "Create: Copycats+ | Functional",
+  "itemGroup.copycats.main": "Create: Copycats+ | Decorative"
 }

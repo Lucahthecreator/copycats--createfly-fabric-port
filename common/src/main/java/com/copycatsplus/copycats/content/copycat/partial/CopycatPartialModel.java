@@ -1,9 +1,11 @@
 package com.copycatsplus.copycats.content.copycat.partial;
 
 import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
+import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorModelCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 
@@ -18,7 +20,8 @@ import net.minecraft.world.level.block.state.properties.Property;
  * Use {@link com.jozufozu.flywheel.core.PartialModel} instead if dynamic assembly is not required.
  */
 public enum CopycatPartialModel {
-    SHAFT(new CopycatShaftModelCore(), BlockStateProperties.AXIS);
+    SHAFT(new CopycatShaftModelCore(), BlockStateProperties.AXIS),
+    SLIDING_DOOR(new CopycatSlidingDoorModelCore(), DoorBlock.HALF, DoorBlock.OPEN);
 
     /**
      * Creates a new partial model with the given core and properties.

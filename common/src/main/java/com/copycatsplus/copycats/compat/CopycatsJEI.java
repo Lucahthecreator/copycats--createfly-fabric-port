@@ -38,13 +38,13 @@ public class CopycatsJEI implements IModPlugin {
         if (MANAGER != null) {
             MANAGER.removeIngredientsAtRuntime(
                     VanillaTypes.ITEM_STACK,
-                    CCCreativeTabs.ITEMS.stream()
+                    CCCreativeTabs.DECORATIVE.stream()
                             .map(ItemProviderEntry::asStack)
                             .collect(Collectors.toList())
             );
             MANAGER.addIngredientsAtRuntime(
                     VanillaTypes.ITEM_STACK,
-                    CCCreativeTabs.ITEMS.stream()
+                    CCCreativeTabs.DECORATIVE.stream()
                             .filter(x -> FeatureToggle.isEnabled(x.getId()))
                             .map(ItemProviderEntry::asStack)
                             .collect(Collectors.toList())

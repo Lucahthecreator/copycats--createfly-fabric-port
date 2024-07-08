@@ -26,6 +26,7 @@
     "copycat.slab.SeatMovementBehaviourMixin",
     "copycat.slab.TrackPlacementMixin",
     "copycat.slab.WalkNodeEvaluatorMixin",
+    "copycat.sliding_door.SlidingDoorBlockEntityMixin",
     "copycat.step.CopycatStepBlockMixin",
     "entity.CatMixin",
     "feature_toggle.CreativeModeTabsAccessor"

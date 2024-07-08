@@ -23,7 +23,15 @@ public class CCCreativeTabsImpl extends CCCreativeTabs {
                     .title(Component.translatable("itemGroup.copycats.main"))
                     .withTabsBefore(Create.asResource("palettes"))
                     .icon(CCBlocks.COPYCAT_SLAB::asStack)
-                    .displayItems(new DisplayItemsGenerator(ITEMS))
+                    .displayItems(new DisplayItemsGenerator(DECORATIVE))
+                    .build());
+
+    public static final RegistryObject<CreativeModeTab> FUNCTIONAL_TAB = TAB_REGISTER.register("functional",
+            () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.copycats.functional"))
+                    .withTabsBefore(MAIN_TAB.getKey())
+                    .icon(CCBlocks.COPYCAT_DOOR::asStack)
+                    .displayItems(new DisplayItemsGenerator(FUNCTIONAL))
                     .build());
 
     public static void setCreativeTab() {
@@ -40,6 +48,14 @@ public class CCCreativeTabsImpl extends CCCreativeTabs {
 
     public static ResourceKey<CreativeModeTab> getBaseTabKey() {
         return MAIN_TAB.getKey();
+    }
+
+    public static CreativeModeTab getFunctionalTab() {
+        return FUNCTIONAL_TAB.get();
+    }
+
+    public static ResourceKey<CreativeModeTab> getFunctionalTabKey() {
+        return FUNCTIONAL_TAB.getKey();
     }
 
 
