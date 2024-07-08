@@ -162,13 +162,12 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
             // seems to be missing in Block.shouldRenderFace
             BlockPos.MutableBlockPos neighbourPos = mutablePos.setWithOffset(pos, face);
             BlockState neighbourState = world.getBlockState(neighbourPos);
-            if (state.supportsExternalFaceHiding()
-                    && neighbourState.hidesNeighborFace(world, neighbourPos, state, face.getOpposite())) {
+            if (state.supportsExternalFaceHiding() && neighbourState.hidesNeighborFace(world, neighbourPos, state, face.getOpposite())) {
                 occlusionData.occlude(face);
                 continue;
             }
 
-            if (!Block.shouldRenderFace(state, world, pos, face, neighbourPos))
+            if (!Block.shouldRenderFace(material, world, pos, face, neighbourPos))
                 occlusionData.occlude(face);
         }
     }

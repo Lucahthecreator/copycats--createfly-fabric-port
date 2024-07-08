@@ -165,10 +165,6 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                 List<MutableQuadView> quads = new ArrayList<>();
 
                 context.pushTransform(quad -> {
-                    if (occlusionData.isOccluded(quad.cullFace())) {
-                        return false;
-                    }
-
                     if (entry.part() == null) {
                         emitter.copyFrom(quad);
                         emitter.emit();
@@ -185,7 +181,9 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                 CopycatRenderContextFabric copycatContext = new CopycatRenderContextFabric(quads, emitter);
                 entry.part().emitCopycatQuads(entry.key(), state, copycatContext, material);
 
+                context.pushTransform(quad -> !occlusionData.isOccluded(quad.cullFace()));
                 meshBuilder.build().outputTo(context.getEmitter());
+                context.popTransform();
 
                 // fabric: pop the material changer transform
                 if (shouldTransform)
