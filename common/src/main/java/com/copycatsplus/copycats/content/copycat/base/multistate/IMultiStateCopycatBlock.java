@@ -372,6 +372,11 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
         return canConnectTexturesToward(defaultProperty(), reader, fromPos, toPos, state);
     }
 
+    @Override
+    default boolean canOcclude(BlockGetter level, BlockState state, BlockPos pos) {
+        return false;
+    }
+
     /**
      * Determines whether textures on an adjacent part/block should appear connected to the copycat block part.
      *
