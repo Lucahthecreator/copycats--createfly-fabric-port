@@ -106,7 +106,7 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
     }
 
     @Override
-    public String getPropertyFromRender(String renderingProperty, BlockState state, ScaledBlockAndTintGetter level, Vec3i vector, BlockPos blockPos, Direction side, BlockState queryState, BlockPos queryPos) {
+    public String getPropertyFromRender(String renderingProperty, BlockState state, ScaledBlockAndTintGetter level, Vec3i vector, BlockPos blockPos) {
         return renderingProperty;
     }
 

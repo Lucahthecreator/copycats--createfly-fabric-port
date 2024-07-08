@@ -137,17 +137,15 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
                                          BlockState state,
                                          ScaledBlockAndTintGetter level,
                                          Vec3i vector,
-                                         BlockPos blockPos,
-                                         Direction side,
-                                         BlockState queryState,
-                                         BlockPos queryPos) {
+                                         BlockPos blockPos) {
+        Vec3i scale = vectorScale(state);
         return getPropertyFromInteraction(
                 state,
                 level,
                 vector,
                 blockPos,
-                side,
-                Vec3.atCenterOf(vector)
+                Direction.UP,
+                Vec3.atLowerCornerOf(vector).multiply(1d / scale.getX(), 1d / scale.getY(), 1d / scale.getZ())
         );
     }
 
@@ -325,11 +323,8 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
     static BlockState getAppearance(IMultiStateCopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
                                     BlockState queryState, BlockPos queryPos) {
         String property;
-        BlockPos truePos = null;
         if (level instanceof ScaledBlockAndTintGetter scaledLevel) {
-            truePos = scaledLevel.getTruePos(pos);
-            Vec3i inner = scaledLevel.getInner(pos);
-            property = block.getPropertyFromRender(scaledLevel.getRenderingProperty(), state, scaledLevel, inner, truePos, side, queryState, queryPos);
+            property = scaledLevel.getPropertyForRender(state, pos);
         } else {
             property = block.defaultProperty();
         }
@@ -346,6 +341,21 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
             if (cbe.getMaterialItemStorage().getMaterialItem(property) != null)
                 return cbe.getMaterialItemStorage().getMaterialItem(property).material();
         return Blocks.AIR.defaultBlockState();
+    }
+
+    /**
+     * Whether a part of this copycat can occlude faces of adjacent parts if their shape is fully covered by the copycat.
+     *
+     * @param property The property corresponding to a part of this copycat.
+     * @param level    The world.
+     * @param state    The state of the copycat block.
+     * @param pos      The position of the copycat block.
+     * @return Whether the copycat can occlude faces of adjacent blocks.
+     */
+    default boolean canOcclude(String property, BlockGetter level, BlockState state, BlockPos pos) {
+        BlockState material = getMaterial(level, pos, property);
+        if (AllBlocks.COPYCAT_BASE.has(material)) return false; // copycat_base is incorrectly set to occlude
+        return material.canOcclude();
     }
 
     void transformStorage(BlockState state, IMultiStateCopycatBlockEntity be, StructureTransform transform);
