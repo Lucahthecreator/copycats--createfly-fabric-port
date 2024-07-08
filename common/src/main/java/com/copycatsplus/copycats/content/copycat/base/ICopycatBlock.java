@@ -445,6 +445,20 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
         return true;
     }
 
+    /**
+     * Whether this copycat can occlude faces of adjacent blocks if their shape is fully covered by the copycat.
+     *
+     * @param level The world.
+     * @param state The state of the copycat block.
+     * @param pos   The position of the copycat block.
+     * @return Whether the copycat can occlude faces of adjacent blocks.
+     */
+    default boolean canOcclude(BlockGetter level, BlockState state, BlockPos pos) {
+        BlockState material = getMaterial(level, pos);
+        if (AllBlocks.COPYCAT_BASE.has(material)) return false; // copycat_base is incorrectly set to occlude
+        return material.canOcclude();
+    }
+
     @Environment(EnvType.CLIENT)
     static BlockColor wrappedColor() {
         return new WrappedBlockColor();

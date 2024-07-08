@@ -51,6 +51,8 @@ public class CopycatFluidPipeModelForge extends CopycatModelForge {
             @SuppressWarnings("unchecked")
             CopycatModelCore.WithData<CopycatFluidPipeModelCore.PipeModelData> dataCore = (CopycatModelCore.WithData<CopycatFluidPipeModelCore.PipeModelData>) core;
             CopycatFluidPipeModelCore.PipeModelData pipeData = data.get(PIPE_PROPERTY);
+            if (pipeData == null)
+                pipeData = new CopycatFluidPipeModelCore.PipeModelData();
             dataCore.setData(pipeData);
         }
     }

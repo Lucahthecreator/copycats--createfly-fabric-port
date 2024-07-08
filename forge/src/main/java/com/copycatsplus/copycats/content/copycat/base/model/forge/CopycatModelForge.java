@@ -77,11 +77,14 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
     public @NotNull ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
         ChunkRenderTypeSet renderTypes = allRenderTypes;
         Map<String, BlockState> materials = getMaterials(data);
+        prepareModelCore(state, rand, data);
         for (CopycatModelCore.ModelEntry entry : entries) {
             BlockState material = materials.get(entry.key());
             if (material == null && entry.useCopycatLogic())
                 continue;
             BakedModel model = getModelForEntry(entry, state, material);
+            if (model == null)
+                continue;
             renderTypes = ChunkRenderTypeSet.union(renderTypes, model.getRenderTypes(state, rand, data));
         }
         return renderTypes;
@@ -165,7 +168,7 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
                 continue;
             }
 
-            if (!Block.shouldRenderFace(material, world, pos, face, neighbourPos))
+            if (!Block.shouldRenderFace(state, world, pos, face, neighbourPos))
                 occlusionData.occlude(face);
         }
     }
