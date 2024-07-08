@@ -167,7 +167,7 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
                 continue;
             }
 
-            if (!Block.shouldRenderFace(material, world, pos, face, neighbourPos))
+            if (!Block.shouldRenderFace(state, world, pos, face, neighbourPos))
                 occlusionData.occlude(face);
         }
     }

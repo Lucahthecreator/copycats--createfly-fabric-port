@@ -62,7 +62,7 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction face : Iterate.directions) {
             BlockPos.MutableBlockPos neighbourPos = mutablePos.setWithOffset(pos, face);
-            if (!Block.shouldRenderFace(material, world, pos, face, neighbourPos))
+            if (!Block.shouldRenderFace(state, world, pos, face, neighbourPos))
                 occlusionData.occlude(face);
         }
     }

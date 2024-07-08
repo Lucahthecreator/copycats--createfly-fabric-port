@@ -10,8 +10,8 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class OcclusionUtils {
-    private static final ThreadLocal<Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey>> OCCLUSION_CACHE = ThreadLocal.withInitial(() -> {
+public class BlockFaceUtils {
+    private static final ThreadLocal<Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey>> FACE_MATCH_CACHE = ThreadLocal.withInitial(() -> {
         Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey> object2bytelinkedopenhashmap = new Object2ByteLinkedOpenHashMap<>(2048, 0.25f) {
 
             @Override
@@ -24,7 +24,7 @@ public class OcclusionUtils {
 
     public static boolean facesMatch(BlockGetter level, BlockState fromState, BlockPos fromPos, BlockState toState, BlockPos toPos, Direction fromFace) {
         Block.BlockStatePairKey blockStatePair = new Block.BlockStatePairKey(fromState, toState, fromFace);
-        Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey> occlusionMap = OCCLUSION_CACHE.get();
+        Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey> occlusionMap = FACE_MATCH_CACHE.get();
         byte b0 = occlusionMap.getAndMoveToFirst(blockStatePair);
         if (b0 != 127) {
             return b0 == 0;

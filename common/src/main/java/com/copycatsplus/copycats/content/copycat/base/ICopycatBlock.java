@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.base;
 
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
-import com.copycatsplus.copycats.utility.OcclusionUtils;
+import com.copycatsplus.copycats.utility.BlockFaceUtils;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
@@ -475,7 +475,7 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
                                      Direction dir) {
         BlockPos toPos = pos.relative(dir);
         if (getMaterial(level, pos).skipRendering(getMaterial(level, toPos), dir.getOpposite())) {
-            return OcclusionUtils.facesMatch(level, state, pos, neighborState, toPos, dir);
+            return BlockFaceUtils.facesMatch(level, neighborState, toPos, state, pos, dir);
         }
         return false;
     }
