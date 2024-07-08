@@ -3,6 +3,7 @@ package com.copycatsplus.copycats.content.copycat.slice;
 import com.copycatsplus.copycats.CCShapes;
 import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.content.copycat.base.CCWaterloggedCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.simibubi.create.content.schematics.requirement.ISpecialBlockItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
@@ -210,19 +211,12 @@ public class CopycatSliceBlock extends CCWaterloggedCopycatBlock implements ISpe
     }
 
 
-    public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState,
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
                                      Direction dir) {
-        if (state.is(this) == neighborState.is(this)
-                && getMaterial(level, pos).skipRendering(getMaterial(level, pos.relative(dir)), dir.getOpposite())) {
-            int layers = state.getValue(LAYERS);
-            int neighborLayers = neighborState.getValue(LAYERS);
-            if (layers == 8 && neighborLayers == 8) return true;
-            return neighborState.getValue(FACING) == state.getValue(FACING) &&
-                    neighborState.getValue(HALF) == state.getValue(HALF) &&
-                    layers == neighborLayers &&
-                    state.getValue(FACING).getClockWise().getAxis() == dir.getAxis();
-        }
-        return false;
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
     @Override

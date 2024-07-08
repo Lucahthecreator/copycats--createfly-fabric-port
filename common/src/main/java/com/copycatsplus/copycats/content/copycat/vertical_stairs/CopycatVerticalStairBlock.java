@@ -5,6 +5,7 @@ import com.copycatsplus.copycats.CCBlockStateProperties.Side;
 import com.copycatsplus.copycats.CCBlockStateProperties.VerticalStairShape;
 import com.copycatsplus.copycats.CCShapes;
 import com.copycatsplus.copycats.content.copycat.base.CCWaterloggedCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.ICustomCTBlocking;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsBlock;
@@ -325,15 +326,12 @@ public class CopycatVerticalStairBlock extends CCWaterloggedCopycatBlock impleme
     }
 
 
-    public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState,
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
                                      Direction dir) {
-        if (neighborState.getBlock() instanceof CopycatVerticalStairBlock) {
-            if (getMaterial(level, pos).skipRendering(getMaterial(level, pos.relative(dir)), dir.getOpposite()))
-                return getFaceShape(state, dir).equals(getFaceShape(neighborState, dir.getOpposite()));
-        }
-
-        return getFaceShape(state, dir).isFull()
-                && getMaterial(level, pos).skipRendering(neighborState, dir.getOpposite());
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
     /**

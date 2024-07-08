@@ -163,27 +163,12 @@ public class CopycatWallBlock extends WallBlock implements ICopycatBlock, IBE<CC
         return true;
     }
 
-    public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState,
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
                                      Direction dir) {
-        if (neighborState.getBlock() instanceof WallBlock || neighborState.getBlock() instanceof CopycatWallBlock) {
-            if (ICopycatBlock.getMaterial(level, pos).skipRendering(ICopycatBlock.getMaterial(level, pos.relative(dir)), dir.getOpposite())) {
-                if (dir.getAxis().isHorizontal()) {
-                    WallSide side = state.getValue(byDirection(dir));
-                    return side != WallSide.NONE && side == neighborState.getValue(byDirection(dir.getOpposite()));
-                } else {
-                    if (neighborState.getValue(UP) && !state.getValue(UP)) return false;
-                    return Arrays.stream(Iterate.horizontalDirections).allMatch(s -> {
-                        WallSide neighbor = neighborState.getValue(byDirection(s));
-                        WallSide self = state.getValue(byDirection(s));
-                        if (dir == Direction.UP && self == WallSide.LOW) return false;
-                        if (dir == Direction.DOWN && neighbor == WallSide.LOW) return false;
-                        return self == neighbor;
-                    });
-                }
-            }
-        }
-
-        return false;
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
     public static EnumProperty<WallSide> byDirection(Direction direction) {

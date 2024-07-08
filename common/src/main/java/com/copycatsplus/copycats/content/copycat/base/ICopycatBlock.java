@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.base;
 
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
+import com.copycatsplus.copycats.utility.OcclusionUtils;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
@@ -46,10 +47,11 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
  * {@link net.minecraft.world.level.block.EntityBlock#getTicker},
  * {@link IBE#getBlockEntityClass} and
  * {@link IBE#getBlockEntityType} in the concrete class, and redirect calls of
- * {@link IMultiStateCopycatBlock#use},
- * {@link IMultiStateCopycatBlock#setPlacedBy},
- * {@link IMultiStateCopycatBlock#onRemove} and
- * {@link IMultiStateCopycatBlock#playerWillDestroy} to this interface.
+ * {@link ICopycatBlock#use},
+ * {@link ICopycatBlock#hidesNeighborFace},
+ * {@link ICopycatBlock#setPlacedBy},
+ * {@link ICopycatBlock#onRemove} and
+ * {@link ICopycatBlock#playerWillDestroy} to this interface.
  * <p>
  * If the concrete class is not a subclass of {@link CCCopycatBlock},
  * it should also be registered in platform-specific CopycatBlockMixins as a mixin target.
@@ -457,6 +459,25 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
         BlockState material = getMaterial(level, pos);
         if (AllBlocks.COPYCAT_BASE.has(material)) return false; // copycat_base is incorrectly set to occlude
         return material.canOcclude();
+    }
+
+    /**
+     * Whether this copycat can hide the face of an adjacent block.
+     * <p>
+     * Note that face hiding is different from occlusion, as it is meant for hiding inner faces of transparent blocks.
+     * Face hiding hides the face of the adjacent block if the adjacent block is the same type regardless of whether
+     * this block has occlusion enabled.
+     */
+    static boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
+                                     Direction dir) {
+        BlockPos toPos = pos.relative(dir);
+        if (getMaterial(level, pos).skipRendering(getMaterial(level, toPos), dir.getOpposite())) {
+            return OcclusionUtils.facesMatch(level, state, pos, neighborState, toPos, dir);
+        }
+        return false;
     }
 
     @Environment(EnvType.CLIENT)
