@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.base;
 
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
+import com.copycatsplus.copycats.utility.BlockFaceUtils;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
@@ -46,10 +47,11 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
  * {@link net.minecraft.world.level.block.EntityBlock#getTicker},
  * {@link IBE#getBlockEntityClass} and
  * {@link IBE#getBlockEntityType} in the concrete class, and redirect calls of
- * {@link IMultiStateCopycatBlock#use},
- * {@link IMultiStateCopycatBlock#setPlacedBy},
- * {@link IMultiStateCopycatBlock#onRemove} and
- * {@link IMultiStateCopycatBlock#playerWillDestroy} to this interface.
+ * {@link ICopycatBlock#use},
+ * {@link ICopycatBlock#hidesNeighborFace},
+ * {@link ICopycatBlock#setPlacedBy},
+ * {@link ICopycatBlock#onRemove} and
+ * {@link ICopycatBlock#playerWillDestroy} to this interface.
  * <p>
  * If the concrete class is not a subclass of {@link CCCopycatBlock},
  * it should also be registered in platform-specific CopycatBlockMixins as a mixin target.
@@ -91,6 +93,8 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
 
     default InteractionResult toggleCT(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (pPlayer.isShiftKeyDown() && pPlayer.getItemInHand(pHand).equals(ItemStack.EMPTY)) {
+            if (!canToggleCT(pState, pLevel, pPos))
+                return InteractionResult.PASS;
             BlockEntity be = pLevel.getBlockEntity(pPos);
             if (!(be instanceof ICopycatBlockEntity fbe))
                 return InteractionResult.PASS;
@@ -441,6 +445,39 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
     default boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos,
                                              BlockState state) {
         return true;
+    }
+
+    /**
+     * Whether this copycat can occlude faces of adjacent blocks if their shape is fully covered by the copycat.
+     *
+     * @param level The world.
+     * @param state The state of the copycat block.
+     * @param pos   The position of the copycat block.
+     * @return Whether the copycat can occlude faces of adjacent blocks.
+     */
+    default boolean canOcclude(BlockGetter level, BlockState state, BlockPos pos) {
+        BlockState material = getMaterial(level, pos);
+        if (AllBlocks.COPYCAT_BASE.has(material)) return false; // copycat_base is incorrectly set to occlude
+        return material.canOcclude();
+    }
+
+    /**
+     * Whether this copycat can hide the face of an adjacent block.
+     * <p>
+     * Note that face hiding is different from occlusion, as it is meant for hiding inner faces of transparent blocks.
+     * Face hiding hides the face of the adjacent block if the adjacent block is the same type regardless of whether
+     * this block has occlusion enabled.
+     */
+    static boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
+                                     Direction dir) {
+        BlockPos toPos = pos.relative(dir);
+        if (getMaterial(level, pos).skipRendering(getMaterial(level, toPos), dir.getOpposite())) {
+            return BlockFaceUtils.facesMatch(level, neighborState, toPos, state, pos, dir.getOpposite());
+        }
+        return false;
     }
 
     @Environment(EnvType.CLIENT)

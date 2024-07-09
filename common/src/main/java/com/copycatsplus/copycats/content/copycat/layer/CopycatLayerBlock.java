@@ -3,6 +3,7 @@ package com.copycatsplus.copycats.content.copycat.layer;
 import com.copycatsplus.copycats.CCShapes;
 import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.content.copycat.base.CCWaterloggedCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.simibubi.create.content.schematics.requirement.ISpecialBlockItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
@@ -185,21 +186,12 @@ public class CopycatLayerBlock extends CCWaterloggedCopycatBlock implements ISpe
     }
 
 
-    public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState, Direction dir) {
-        Direction facing = state.getValue(FACING);
-        int layers = state.getValue(LAYERS);
-        if (state.is(this) == neighborState.is(this)) {
-            Direction neighborFacing = neighborState.getValue(FACING);
-            int neighborLayers = neighborState.getValue(LAYERS);
-            if (getMaterial(level, pos).skipRendering(getMaterial(level, pos.relative(dir)), dir.getOpposite())) {
-                return neighborFacing == facing && neighborLayers == layers || // cull the sides if two copycats of the same height are next to each other
-                        // cull if both sides have a square block face
-                        (neighborFacing == facing.getOpposite() || neighborLayers == 8) && facing == dir.getOpposite() ||
-                        (neighborFacing == facing.getOpposite() || layers == 8) && neighborFacing == dir ||
-                        layers == 8 && neighborLayers == 8;
-            }
-        }
-        return false;
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
+                                     Direction dir) {
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
     @Override

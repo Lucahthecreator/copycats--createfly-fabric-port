@@ -48,6 +48,10 @@ public class CopycatShaftBlock extends ShaftBlock implements ICopycatBlock, ICus
         super(properties);
     }
 
+    @Override
+    public boolean canToggleCT(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+        return false;
+    }
 
     @Override
     public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {

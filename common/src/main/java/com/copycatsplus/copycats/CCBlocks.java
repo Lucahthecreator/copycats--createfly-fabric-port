@@ -15,6 +15,7 @@ import com.copycatsplus.copycats.content.copycat.button.CopycatButtonBlock;
 import com.copycatsplus.copycats.content.copycat.button.CopycatButtonModelCore;
 import com.copycatsplus.copycats.content.copycat.bytes.CopycatByteBlock;
 import com.copycatsplus.copycats.content.copycat.bytes.CopycatMultiByteModelCore;
+import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelBlock;
 import com.copycatsplus.copycats.content.copycat.door.CopycatDoorBlock;
 import com.copycatsplus.copycats.content.copycat.door.CopycatDoorModelCore;
 import com.copycatsplus.copycats.content.copycat.fence.CopycatFenceBlock;
@@ -68,6 +69,7 @@ import com.simibubi.create.content.contraptions.behaviour.DoorMovingInteraction;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
 import com.simibubi.create.foundation.data.BuilderTransformers;
+import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
@@ -428,9 +430,29 @@ public class CCBlocks {
                     .transform(CCBuilderTransformers.copycat())
                     .transform(FeatureToggle.register())
                     .transform(BlockStressDefaults.setNoImpact())
-                    .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
+                    .onRegister(CreateRegistrate.blockModel(() -> model -> CopycatModelCore.createModel(new BracketedKineticBlockModel(model), CopycatModelCore.PASS_THROUGH)))
                     .item()
                     .transform(customItemModel("copycat_base", "shaft"))
+                    .register();
+
+    public static final BlockEntry<CopycatCogWheelBlock> COPYCAT_COGWHEEL =
+            REGISTRATE.block("copycat_cogwheel", CopycatCogWheelBlock::small)
+                    .transform(CCBuilderTransformers.copycat())
+                    .transform(FeatureToggle.register())
+                    .transform(BlockStressDefaults.setNoImpact())
+                    .onRegister(CreateRegistrate.blockModel(() -> model -> CopycatModelCore.createModel(new BracketedKineticBlockModel(model), CopycatModelCore.PASS_THROUGH)))
+                    .item(CogwheelBlockItem::new)
+                    .transform(customItemModel("copycat_base", "cogwheel"))
+                    .register();
+
+    public static final BlockEntry<CopycatCogWheelBlock> COPYCAT_LARGE_COGWHEEL =
+            REGISTRATE.block("copycat_large_cogwheel", CopycatCogWheelBlock::large)
+                    .transform(CCBuilderTransformers.copycat())
+                    .transform(FeatureToggle.register())
+                    .transform(BlockStressDefaults.setNoImpact())
+                    .onRegister(CreateRegistrate.blockModel(() -> model -> CopycatModelCore.createModel(new BracketedKineticBlockModel(model), CopycatModelCore.PASS_THROUGH)))
+                    .item(CogwheelBlockItem::new)
+                    .transform(customItemModel("copycat_base", "large_cogwheel"))
                     .register();
 
     public static final BlockEntry<CopycatFluidPipeBlock> COPYCAT_FLUID_PIPE =

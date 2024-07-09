@@ -124,15 +124,12 @@ public class CopycatFenceBlock extends FenceBlock implements ICopycatBlock, IBE<
     }
 
 
-    public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState,
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
                                      Direction dir) {
-        if (neighborState.getBlock() instanceof FenceBlock || neighborState.getBlock() instanceof CopycatFenceBlock) {
-            if (ICopycatBlock.getMaterial(level, pos).skipRendering(ICopycatBlock.getMaterial(level, pos.relative(dir)), dir.getOpposite()))
-                if (dir.getAxis().isHorizontal())
-                    return state.getValue(byDirection(dir)) && neighborState.getValue(byDirection(dir.getOpposite()));
-        }
-
-        return false;
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
     public static BooleanProperty byDirection(Direction direction) {

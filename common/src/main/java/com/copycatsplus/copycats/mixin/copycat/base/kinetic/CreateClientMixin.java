@@ -14,6 +14,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class CreateClientMixin {
     @Inject(method = "invalidateRenderers", at = @At("HEAD"))
     private static void invalidateRenderers(CallbackInfo ci) {
-        CopycatsClient.BUFFER_CACHE.invalidate();
+        CopycatsClient.invalidateCaches();
     }
 }

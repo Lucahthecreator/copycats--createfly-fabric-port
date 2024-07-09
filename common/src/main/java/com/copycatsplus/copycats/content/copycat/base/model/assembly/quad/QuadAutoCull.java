@@ -26,6 +26,7 @@ public final class QuadAutoCull implements QuadTransform {
         for (MutableVertex vertex : quad.vertices) {
             if (Math.abs(vertex.xyz.get(axis) - target) > EPSILON) {
                 quad.cullFace = null;
+                quad.disableFinalAutoCull = true;
                 return;
             }
         }

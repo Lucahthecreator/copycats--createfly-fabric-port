@@ -180,6 +180,10 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
 
     GeneratedRecipe COPYCAT_SHAFT = copycat(CCBlocks.COPYCAT_SHAFT, 4);
 
+    GeneratedRecipe COPYCAT_COGWHEEL = copycatWithBaseItem(AllBlocks.COGWHEEL, CCBlocks.COPYCAT_COGWHEEL, 4);
+
+    GeneratedRecipe COPYCAT_LARGE_COGWHEEL = copycatWithBaseItem(AllBlocks.LARGE_COGWHEEL, CCBlocks.COPYCAT_LARGE_COGWHEEL, 4);
+
     GeneratedRecipe COPYCAT_FLUID_PIPE = copycatWithBaseItem(AllBlocks.FLUID_PIPE, CCBlocks.COPYCAT_FLUID_PIPE, 4);
 
     GeneratedRecipe COPYCAT_DOOR = copycat(CCBlocks.COPYCAT_DOOR, 1);

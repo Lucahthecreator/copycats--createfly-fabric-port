@@ -3,6 +3,7 @@ package com.copycatsplus.copycats.content.copycat.slope;
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
 import com.copycatsplus.copycats.content.copycat.base.CCWaterloggedCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.ICustomCTBlocking;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.copycatsplus.copycats.utility.InteractionUtils;
@@ -226,19 +227,12 @@ public class CopycatSlopeBlock extends CCWaterloggedCopycatBlock implements ISta
     }
 
 
-    public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState,
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
                                      Direction dir) {
-        if (state.is(this) == neighborState.is(this)) {
-            if (getMaterial(level, pos).skipRendering(getMaterial(level, pos.relative(dir)), dir.getOpposite())) {
-                Direction facing = state.getValue(FACING);
-                Half half = state.getValue(HALF);
-                return neighborState.getValue(FACING) == facing &&
-                        neighborState.getValue(HALF) == half &&
-                        dir.getAxis().isHorizontal() && dir.getAxis() != facing.getAxis();
-            }
-        }
-
-        return false;
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
     @SuppressWarnings("deprecation")

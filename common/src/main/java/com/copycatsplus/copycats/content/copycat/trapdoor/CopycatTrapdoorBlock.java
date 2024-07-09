@@ -98,4 +98,12 @@ public class CopycatTrapdoorBlock extends TrapDoorBlock implements ICopycatBlock
     public boolean supportsExternalFaceHiding(BlockState state) {
         return true;
     }
+
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
+                                     Direction dir) {
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
+    }
 }

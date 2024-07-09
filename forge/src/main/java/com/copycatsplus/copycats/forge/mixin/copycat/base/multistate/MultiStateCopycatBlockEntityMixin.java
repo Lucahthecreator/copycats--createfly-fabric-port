@@ -3,6 +3,7 @@ package com.copycatsplus.copycats.forge.mixin.copycat.base.multistate;
 import com.copycatsplus.copycats.content.copycat.base.model.kinetic.forge.KineticCopycatRendererImpl;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelBlockEntity;
 import com.copycatsplus.copycats.utility.BlockEntityUtils;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -22,7 +23,8 @@ import static com.copycatsplus.copycats.content.copycat.base.model.forge.Copycat
  * All multi-state copycats should register their block entities here instead of writing their own platform-specific implementations.
  */
 @Mixin({
-        MultiStateCopycatBlockEntity.class
+        MultiStateCopycatBlockEntity.class,
+        CopycatCogWheelBlockEntity.class
 })
 public abstract class MultiStateCopycatBlockEntityMixin extends SmartBlockEntity implements IMultiStateCopycatBlockEntity {
 

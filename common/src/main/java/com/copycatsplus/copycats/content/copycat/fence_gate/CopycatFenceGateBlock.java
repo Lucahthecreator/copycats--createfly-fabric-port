@@ -103,6 +103,6 @@ public class CopycatFenceGateBlock extends FenceGateBlock implements ICopycatBlo
     }
 
     public boolean supportsExternalFaceHiding(BlockState state) {
-        return true;
+        return false;
     }
 }

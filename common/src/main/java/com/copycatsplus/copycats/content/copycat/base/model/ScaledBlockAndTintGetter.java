@@ -1,5 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.base.model;
 
+import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -40,6 +41,12 @@ public class ScaledBlockAndTintGetter implements BlockAndTintGetter {
 
     public String getRenderingProperty() {
         return renderingProperty;
+    }
+
+    public String getPropertyForRender(BlockState state, BlockPos pos) {
+        BlockPos truePos = this.getTruePos(pos);
+        Vec3i inner = this.getInner(pos);
+        return ((IMultiStateCopycatBlock) state.getBlock()).getPropertyFromRender(this.getRenderingProperty(), state, this, inner, truePos);
     }
 
     public BlockAndTintGetter getWrapped() {

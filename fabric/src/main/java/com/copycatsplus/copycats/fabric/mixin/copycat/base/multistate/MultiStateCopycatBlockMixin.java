@@ -4,6 +4,7 @@ import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelBlock;
 import com.simibubi.create.AllBlocks;
 import io.github.fabricators_of_create.porting_lib.block.*;
 import io.github.fabricators_of_create.porting_lib.enchant.EnchantmentBonusBlock;
@@ -40,7 +41,10 @@ import java.util.function.Function;
  * <p>
  * All multi-state copycats should register their blocks here instead of writing their own platform-specific implementations.
  */
-@Mixin(MultiStateCopycatBlock.class)
+@Mixin({
+        MultiStateCopycatBlock.class,
+        CopycatCogWheelBlock.class
+})
 public abstract class MultiStateCopycatBlockMixin extends Block implements IMultiStateCopycatBlock,
         CustomFrictionBlock, CustomSoundTypeBlock, LightEmissiveBlock, ExplosionResistanceBlock,
         BlockPickInteractionAware, CustomLandingEffectsBlock, CustomRunningEffectsBlock, EnchantmentBonusBlock,

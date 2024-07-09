@@ -3,6 +3,7 @@ package com.copycatsplus.copycats.content.copycat.vertical_slice;
 import com.copycatsplus.copycats.CCShapes;
 import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.content.copycat.base.CCWaterloggedCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.simibubi.create.content.schematics.requirement.ISpecialBlockItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
@@ -216,21 +217,12 @@ public class CopycatVerticalSliceBlock extends CCWaterloggedCopycatBlock impleme
         return true;
     }
 
-
-    public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState,
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
                                      Direction dir) {
-        if (state.is(this) == neighborState.is(this)) {
-            if (getMaterial(level, pos).skipRendering(getMaterial(level, pos.relative(dir)), dir.getOpposite())) {
-                int layers = state.getValue(LAYERS);
-                int neighborLayers = neighborState.getValue(LAYERS);
-                if (layers == 8 && neighborLayers == 8) return true;
-                return dir.getAxis().isVertical() &&
-                        neighborState.getValue(FACING) == state.getValue(FACING) &&
-                        layers == neighborLayers;
-            }
-        }
-
-        return false;
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
     @SuppressWarnings("deprecation")

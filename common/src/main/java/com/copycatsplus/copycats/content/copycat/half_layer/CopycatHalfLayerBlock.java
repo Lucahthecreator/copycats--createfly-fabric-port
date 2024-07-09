@@ -248,9 +248,7 @@ public class CopycatHalfLayerBlock extends WaterloggedMultiStateCopycatBlock {
     public boolean canConnectTexturesToward(String property, BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
         BlockState toState = reader.getBlockState(toPos);
         if (reader instanceof ScaledBlockAndTintGetter scaledReader && toState.is(this)) {
-            BlockPos toTruePos = scaledReader.getTruePos(toPos);
-            Vec3i toInner = scaledReader.getInner(toPos);
-            String toProperty = getPropertyFromInteraction(toState, reader, toInner, toTruePos, Direction.UP, Vec3.atCenterOf(toInner));
+            String toProperty = scaledReader.getPropertyForRender(toState, toPos);
             int fromLayers = state.getValue(property.equals(POSITIVE_LAYERS.getName()) ? POSITIVE_LAYERS : NEGATIVE_LAYERS);
             int toLayers = toState.getValue(toProperty.equals(POSITIVE_LAYERS.getName()) ? POSITIVE_LAYERS : NEGATIVE_LAYERS);
             return fromLayers == toLayers;

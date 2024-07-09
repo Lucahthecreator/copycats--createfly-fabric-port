@@ -18,6 +18,21 @@ import java.util.List;
  */
 public abstract class CopycatModelCore implements CopycatModelPart {
 
+    /**
+     * A core that renders the original model without modifications, while still handles particles and other copycat logic.
+     */
+    public static final CopycatModelCore PASS_THROUGH = new CopycatModelCore() {
+        @Override
+        public void registerModels(List<ModelEntry> entries) {
+            entries.add(SUPER);
+        }
+
+        @Override
+        public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
+
+        }
+    };
+
     protected static final ModelEntry SUPER = new ModelEntry("super", null, null, false);
 
     /**
@@ -55,8 +70,21 @@ public abstract class CopycatModelCore implements CopycatModelPart {
      */
     protected final void registerForMultiState(List<ModelEntry> entries, IMultiStateCopycatBlock block) {
         for (String property : block.storageProperties()) {
-            entries.add(new ModelEntry(property, (state, mat) -> getModelOf(mat), this, true));
+            registerMultiStatePart(entries, property);
         }
+    }
+
+    /**
+     * Helper method to register a model for one part of a multi-state copycat.
+     * <p>
+     * When implementing a model core for a kinetic multi-state copycat, override {@link CopycatModelCore#registerModels}
+     * and call this method for the specific part of the copycat that this model core is meant for.
+     *
+     * @param entries  The list to register the models to.
+     * @param property The storage property of the copycat that this model core is meant for.
+     */
+    protected final void registerMultiStatePart(List<ModelEntry> entries, String property) {
+        entries.add(new ModelEntry(property, (state, mat) -> getModelOf(mat), this, true));
     }
 
     /**
@@ -113,14 +141,15 @@ public abstract class CopycatModelCore implements CopycatModelPart {
      * Create a platform-specific {@link BakedModel} implementation for a copycat which wraps the original model and
      * renders with the provided core.
      * <p>
-     * Ambient occlusion is disabled for this model, which is ideal for partial models and kinetic copycat models.
+     * The model is configured for kinetic rendering by disabling ambient occlusion and applying a model filter
+     * to selectively render parts of a multi-state copycat.
      *
      * @param original The original model to wrap.
      * @param core     The core to render the model with.
      */
     @ExpectPlatform
     @NotNull
-    public static BakedModel createModelWithoutAO(BakedModel original, CopycatModelCore core) {
+    public static BakedModel createKineticModel(BakedModel original, CopycatModelCore core) {
         //noinspection DataFlowIssue
         return null;
     }
@@ -155,7 +184,7 @@ public abstract class CopycatModelCore implements CopycatModelPart {
      * @param key             A custom key to identify the model entry during rendering.
      * @param model           A getter that returns a {@link BakedModel} to be rendered for this entry, invoked for each render. Set to null to render the original model as specified by the copycat's block state file.
      * @param part            A {@link CopycatModelPart} to assemble the model quads with. Set to null if the model should be rendered without modifications.
-     * @param useCopycatLogic Whether to use copycat logic for occlusion, culling and connected textures instead of the original model's logic.
+     * @param useCopycatLogic Specifies that this model requires a copycat material and should use it for occlusion, culling and connected textures instead of the copycat's own block state.
      */
     public record ModelEntry(String key, @Nullable ModelGetter model, @Nullable CopycatModelPart part,
                              boolean useCopycatLogic) {

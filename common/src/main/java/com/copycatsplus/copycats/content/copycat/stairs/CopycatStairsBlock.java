@@ -172,15 +172,12 @@ public class CopycatStairsBlock extends StairBlock implements ICopycatBlock, IBE
     }
 
 
-    public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState,
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
                                      Direction dir) {
-        if (CopycatVerticalStairBlock.isStairs(neighborState)) {
-            if (ICopycatBlock.getMaterial(level, pos).skipRendering(ICopycatBlock.getMaterial(level, pos.relative(dir)), dir.getOpposite()))
-                return getFaceShape(state, dir).equals(getFaceShape(neighborState, dir.getOpposite()));
-        }
-
-        return getFaceShape(state, dir).isFull()
-                && ICopycatBlock.getMaterial(level, pos).skipRendering(neighborState, dir.getOpposite());
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
     private static AxisDirection directionOf(int value) {

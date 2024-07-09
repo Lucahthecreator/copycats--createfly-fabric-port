@@ -4,6 +4,7 @@ import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelBlock;
 import com.simibubi.create.AllBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -35,7 +36,10 @@ import java.util.concurrent.atomic.AtomicReference;
  * <p>
  * All multi-state copycats should register their blocks here instead of writing their own platform-specific implementations.
  */
-@Mixin(MultiStateCopycatBlock.class)
+@Mixin({
+        MultiStateCopycatBlock.class,
+        CopycatCogWheelBlock.class
+})
 @Pseudo
 public abstract class MultiStateCopycatBlockMixin extends Block implements IForgeBlock, IMultiStateCopycatBlock {
 

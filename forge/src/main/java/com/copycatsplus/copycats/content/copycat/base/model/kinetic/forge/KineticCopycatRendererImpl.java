@@ -40,7 +40,7 @@ public class KineticCopycatRendererImpl {
         return builder;
     }
 
-    static void copyModelData(ModelData from, ModelData.Builder to) {
+    public static void copyModelData(ModelData from, ModelData.Builder to) {
         for (ModelProperty<?> property : from.getProperties()) {
             copyModelProperty(to, from, property);
         }

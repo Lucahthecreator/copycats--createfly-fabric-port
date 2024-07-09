@@ -29,6 +29,7 @@
   "block.copycats.copycat_byte.tooltip.condition2": "puɐH ʎʇdɯƎ ɥʇıʍ pǝʞɔıןƆ-ᴚ-ʞɐǝuS uǝɥM",
   "block.copycats.copycat_byte.tooltip.condition3": "buıʞɐǝuS ǝןıɥʍ pǝɥɔuǝɹM uǝɥM",
   "block.copycats.copycat_byte.tooltip.summary": "˙sǝɹnʇxǝʇ pǝʇɔǝuuoɔ ou :ǝʇoN ˙ʞɔoןq-ıuıɯ ǝʌıʇɐɹoɔǝp ɐ oʇuı ‾ʞɔoןq ןןnɟ‾ ʎuɐ ‾sʇɹǝʌuoƆ‾",
+  "block.copycats.copycat_cogwheel": "ןǝǝɥʍboƆ ʇɐɔʎdoƆ",
   "block.copycats.copycat_door": "ɹooᗡ ʇɐɔʎdoƆ",
   "block.copycats.copycat_door.tooltip.behaviour1": "˙ןɐıɹǝʇɐɯ ǝɥʇ ‾ʇǝsǝɹ‾ oʇ ‾ɥɔuǝɹM‾ ɐ ǝs∩ ˙ǝʇɐʇs ‾pǝɹǝʍod‾ ɹo ‾uoıʇɐʇuǝıɹo‾ ǝןɔʎɔ oʇ ‾uıɐbɐ ʞɔıןƆ‾ ˙ǝןqıssod ɟı ‾ןɐıɹǝʇɐɯ‾ sʇı sɐ ‾ɯǝʇı pןǝɥ‾ sǝıןddⱯ",
   "block.copycats.copycat_door.tooltip.behaviour2": "˙‾ןɐıɹǝʇɐɯ‾ sʇı uo ‾sǝɹnʇxǝʇ pǝʇɔǝuuoɔ‾ sǝןbbo⟘",
@@ -89,6 +90,7 @@
   "block.copycats.copycat_ladder.tooltip.behaviour1": "˙ןɐıɹǝʇɐɯ ǝɥʇ ‾ʇǝsǝɹ‾ oʇ ‾ɥɔuǝɹM‾ ɐ ǝs∩ ˙ǝʇɐʇs ‾pǝɹǝʍod‾ ɹo ‾uoıʇɐʇuǝıɹo‾ ǝןɔʎɔ oʇ ‾uıɐbɐ ʞɔıןƆ‾ ˙ǝןqıssod ɟı ‾ןɐıɹǝʇɐɯ‾ sʇı sɐ ‾ɯǝʇı pןǝɥ‾ sǝıןddⱯ",
   "block.copycats.copycat_ladder.tooltip.condition1": "pǝʞɔıןƆ-ᴚ uǝɥM",
   "block.copycats.copycat_ladder.tooltip.summary": "˙ɹǝppɐן ןɐuoıʇɔunɟ ɐ oʇuı ‾ʞɔoןq ןןnɟ‾ ʎuɐ ‾sʇɹǝʌuoƆ‾",
+  "block.copycats.copycat_large_cogwheel": "ןǝǝɥʍboƆ ǝbɹɐꞀ ʇɐɔʎdoƆ",
   "block.copycats.copycat_layer": "ɹǝʎɐꞀ ʇɐɔʎdoƆ",
   "block.copycats.copycat_layer.tooltip.behaviour1": "˙ןɐıɹǝʇɐɯ ǝɥʇ ‾ʇǝsǝɹ‾ oʇ ‾ɥɔuǝɹM‾ ɐ ǝs∩ ˙ǝʇɐʇs ‾pǝɹǝʍod‾ ɹo ‾uoıʇɐʇuǝıɹo‾ ǝןɔʎɔ oʇ ‾uıɐbɐ ʞɔıןƆ‾ ˙ǝןqıssod ɟı ‾ןɐıɹǝʇɐɯ‾ sʇı sɐ ‾ɯǝʇı pןǝɥ‾ sǝıןddⱯ",
   "block.copycats.copycat_layer.tooltip.behaviour2": "˙‾ןɐıɹǝʇɐɯ‾ sʇı uo ‾sǝɹnʇxǝʇ pǝʇɔǝuuoɔ‾ sǝןbbo⟘",
@@ -207,5 +209,6 @@
   "item.copycats.copycat_catwalk.tooltip.condition2": "puɐH ʎʇdɯƎ ɥʇıʍ pǝʞɔıןƆ-ᴚ-ʞɐǝuS uǝɥM",
   "item.copycats.copycat_catwalk.tooltip.condition3": "buıʞɐǝuS ǝןıɥʍ pǝɥɔuǝɹM uǝɥM",
   "item.copycats.copycat_catwalk.tooltip.summary": "˙ʇuǝɯǝɔɐןd ʇuǝıuǝʌuoɔ ɹoɟ ʞןɐʍʇɐɔ ɐ oʇuı pǝןqɯǝssɐ-ǝɹd ‾spɹɐoq ʇɐɔʎdoƆ‾",
-  "itemGroup.copycats.main": "+sʇɐɔʎdoƆ :ǝʇɐǝɹƆ"
+  "itemGroup.copycats.functional": "ןɐuoıʇɔunℲ | +sʇɐɔʎdoƆ :ǝʇɐǝɹƆ",
+  "itemGroup.copycats.main": "ǝʌıʇɐɹoɔǝᗡ | +sʇɐɔʎdoƆ :ǝʇɐǝɹƆ"
 }

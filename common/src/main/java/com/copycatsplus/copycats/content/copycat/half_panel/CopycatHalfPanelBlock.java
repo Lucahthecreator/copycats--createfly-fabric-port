@@ -3,6 +3,7 @@ package com.copycatsplus.copycats.content.copycat.half_panel;
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
 import com.copycatsplus.copycats.content.copycat.base.CCWaterloggedCopycatBlock;
+import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.IStateType;
 import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.simibubi.create.content.equipment.extendoGrip.ExtendoGripItem;
@@ -198,17 +199,12 @@ public class CopycatHalfPanelBlock extends CCWaterloggedCopycatBlock implements 
     }
 
 
-    public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState,
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
                                      Direction dir) {
-        if (state.is(this) == neighborState.is(this)) {
-            if (getMaterial(level, pos).skipRendering(getMaterial(level, pos.relative(dir)), dir.getOpposite())) {
-                return neighborState.getValue(FACING) == state.getValue(FACING) &&
-                        neighborState.getValue(OFFSET) == state.getValue(OFFSET) &&
-                        getOffsetAxis(state.getValue(FACING), state.getValue(OFFSET)) == dir.getAxis();
-            }
-        }
-
-        return false;
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
     @SuppressWarnings("deprecation")
