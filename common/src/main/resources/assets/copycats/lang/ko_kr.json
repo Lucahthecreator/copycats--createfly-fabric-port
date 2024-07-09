@@ -27,6 +27,10 @@
   "block.copycats.copycat_byte.tooltip.condition2": "빈 손으로 웅크리면서 우클릭",
   "block.copycats.copycat_byte.tooltip.condition3": "웅크리면서 렌치로 우클릭",
   "block.copycats.copycat_byte.tooltip.summary": "_전체 블록_을 장식용 소형 블록으로 _변환_합니다. 주의: 텍스처는 연결되지 않습니다.",
+  "block.copycats.copycat_door.tooltip.behaviour1": "_들고 있는 아이템_이 _소재_로 적용될 수 있다면 적용합니다. 다시 클릭하여 _방향_ 및 _신호_ 상태를 바꿉니다. _렌치_를 들었을 경우 소재를 _제거_합니다.",
+  "block.copycats.copycat_door.tooltip.behaviour2": "_소재_의 _텍스처 연결_을 켜거나 끕니다.",
+  "block.copycats.copycat_door.tooltip.condition1": "우클릭",
+  "block.copycats.copycat_door.tooltip.condition2": "빈 손으로 웅크리면서 우클릭",
   "block.copycats.copycat_fence": "모방 울타리",
   "block.copycats.copycat_fence.tooltip.behaviour1": "_들고 있는 아이템_이 _소재_로 적용될 수 있다면 적용합니다. 다시 클릭하여 _방향_ 및 _신호_ 상태를 바꿉니다. _렌치_를 들었을 경우 소재를 _제거_합니다.",
   "block.copycats.copycat_fence.tooltip.behaviour2": "_소재_의 _텍스처 연결_을 켜거나 끕니다.",
@@ -61,6 +65,14 @@
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.behaviour1": "_들고 있는 아이템_이 _소재_로 적용될 수 있다면 적용합니다. 다시 클릭하여 _방향_ 및 _신호_ 상태를 바꿉니다. _렌치_를 들었을 경우 소재를 _제거_합니다.",
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.condition1": "우클릭",
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.summary": "_전체 블록_을 작동하는 중형 무게 압력판으로 _변환_합니다.",
+  "block.copycats.copycat_iron_door.tooltip.behaviour1": "_들고 있는 아이템_이 _소재_로 적용될 수 있다면 적용합니다. 다시 클릭하여 _방향_ 및 _신호_ 상태를 바꿉니다. _렌치_를 들었을 경우 소재를 _제거_합니다.",
+  "block.copycats.copycat_iron_door.tooltip.behaviour2": "_소재_의 _텍스처 연결_을 켜거나 끕니다.",
+  "block.copycats.copycat_iron_door.tooltip.condition1": "우클릭",
+  "block.copycats.copycat_iron_door.tooltip.condition2": "빈 손으로 웅크리면서 우클릭",
+  "block.copycats.copycat_iron_trapdoor.tooltip.behaviour1": "_들고 있는 아이템_이 _소재_로 적용될 수 있다면 적용합니다. 다시 클릭하여 _방향_ 및 _신호_ 상태를 바꿉니다. _렌치_를 들었을 경우 소재를 _제거_합니다.",
+  "block.copycats.copycat_iron_trapdoor.tooltip.behaviour2": "_소재_의 _텍스처 연결_을 켜거나 끕니다.",
+  "block.copycats.copycat_iron_trapdoor.tooltip.condition1": "우클릭",
+  "block.copycats.copycat_iron_trapdoor.tooltip.condition2": "빈 손으로 웅크리면서 우클릭",
   "block.copycats.copycat_ladder.tooltip.behaviour1": "_들고 있는 아이템_이 _소재_로 적용될 수 있다면 적용합니다. 다시 클릭하여 _방향_ 및 _신호_ 상태를 바꿉니다. _렌치_를 들었을 경우 소재를 _제거_합니다.",
   "block.copycats.copycat_ladder.tooltip.condition1": "우클릭",
   "block.copycats.copycat_layer": "모방 레이어",
@@ -170,6 +182,5 @@
   "item.copycats.copycat_catwalk.tooltip.condition1": "우클릭",
   "item.copycats.copycat_catwalk.tooltip.condition2": "빈 손으로 웅크리면서 우클릭",
   "item.copycats.copycat_catwalk.tooltip.condition3": "웅크리면서 렌치로 우클릭",
-  "item.copycats.copycat_catwalk.tooltip.summary": "편리한 설치를 위해 캣워크 모양으로 미리 조립된 _모방 보드_입니다.",
-  "itemGroup.copycats.main": "Create: Copycats+"
+  "item.copycats.copycat_catwalk.tooltip.summary": "편리한 설치를 위해 캣워크 모양으로 미리 조립된 _모방 보드_입니다."
 }
