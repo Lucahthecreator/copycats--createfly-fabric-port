@@ -17,8 +17,10 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -111,6 +113,8 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
 
     GeneratedRecipe COPYCAT_TRAPDOOR = copycat(CCBlocks.COPYCAT_TRAPDOOR, 4);
 
+    GeneratedRecipe COPYCAT_IRON_TRAPDOOR = copycat(CCBlocks.COPYCAT_IRON_TRAPDOOR, 2);
+
     GeneratedRecipe COPYCAT_TRAPDOOR_CYCLE =
             conversionCycle(ImmutableList.of(AllBlocks.COPYCAT_PANEL, CCBlocks.COPYCAT_TRAPDOOR));
 
@@ -182,6 +186,10 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
 
     GeneratedRecipe COPYCAT_FLUID_PIPE = copycatWithBaseItem(AllBlocks.FLUID_PIPE, CCBlocks.COPYCAT_FLUID_PIPE, 4);
 
+    GeneratedRecipe COPYCAT_DOOR = copycat(CCBlocks.COPYCAT_DOOR, 1);
+
+    GeneratedRecipe COPYCAT_IRON_DOOR = copycatWithBaseItem(Items.IRON_DOOR, CCBlocks.COPYCAT_IRON_DOOR, 1);
+
     Set<RegistryEntry<? extends Block>> blocksWithoutRecipe = Set.of(
             CCBlocks.COPYCAT_GLASS_FLUID_PIPE
     );
@@ -210,6 +218,10 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
         return create(result::get);
     }
 
+    static GeneratedRecipeBuilder create(ItemLike result) {
+        return create(()-> result);
+    }
+
     GeneratedRecipeBuilder.GeneratedRecipe copycat(ItemProviderEntry<? extends ItemLike> result, int resultCount) {
         if (result.get() instanceof ICopycatBlock) {
             copycatsWithRecipes.add((Block) result.get());
@@ -229,6 +241,17 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
 
         return create(result)
                 .unlockedBy(base)
+                .returns(resultCount)
+                .viaShapeless(b -> b.requires(base, resultCount).requires(AllItems.ZINC_INGOT));
+    }
+
+    GeneratedRecipeBuilder.GeneratedRecipe copycatWithBaseItem(ItemLike base, ItemProviderEntry<? extends ItemLike> result, int resultCount) {
+        if (result.get() instanceof ICopycatBlock) {
+            copycatsWithRecipes.add((Block) result.get());
+        }
+
+        return create(result)
+                .unlockedBy(()-> base)
                 .returns(resultCount)
                 .viaShapeless(b -> b.requires(base, resultCount).requires(AllItems.ZINC_INGOT));
     }

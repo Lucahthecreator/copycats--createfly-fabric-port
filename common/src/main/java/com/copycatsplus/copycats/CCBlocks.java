@@ -16,11 +16,16 @@ import com.copycatsplus.copycats.content.copycat.button.CopycatButtonModelCore;
 import com.copycatsplus.copycats.content.copycat.bytes.CopycatByteBlock;
 import com.copycatsplus.copycats.content.copycat.bytes.CopycatMultiByteModelCore;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelBlock;
+import com.copycatsplus.copycats.content.copycat.door.CopycatDoorBlock;
+import com.copycatsplus.copycats.content.copycat.door.CopycatDoorModelCore;
 import com.copycatsplus.copycats.content.copycat.fence.CopycatFenceBlock;
 import com.copycatsplus.copycats.content.copycat.fence.CopycatFenceModelCore;
 import com.copycatsplus.copycats.content.copycat.fence_gate.CopycatFenceGateBlock;
 import com.copycatsplus.copycats.content.copycat.fence_gate.CopycatFenceGateModelCore;
-import com.copycatsplus.copycats.content.copycat.fluid_pipe.*;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlock;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeModelCore;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatGlassFluidPipeBlock;
+import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatStraightPipeModelCore;
 import com.copycatsplus.copycats.content.copycat.ghost_block.CopycatGhostBlock;
 import com.copycatsplus.copycats.content.copycat.ghost_block.CopycatGhostBlockModelCore;
 import com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLayerBlock;
@@ -31,7 +36,9 @@ import com.copycatsplus.copycats.content.copycat.ladder.CopycatLadderBlock;
 import com.copycatsplus.copycats.content.copycat.ladder.CopycatLadderModelCore;
 import com.copycatsplus.copycats.content.copycat.layer.CopycatLayerBlock;
 import com.copycatsplus.copycats.content.copycat.layer.CopycatLayerModelCore;
-import com.copycatsplus.copycats.content.copycat.pressure_plate.*;
+import com.copycatsplus.copycats.content.copycat.pressure_plate.CopycatPressurePlateBlock;
+import com.copycatsplus.copycats.content.copycat.pressure_plate.CopycatPressurePlateModelCore;
+import com.copycatsplus.copycats.content.copycat.pressure_plate.CopycatWeightedPressurePlate;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
 import com.copycatsplus.copycats.content.copycat.slab.CopycatMultiSlabModelCore;
 import com.copycatsplus.copycats.content.copycat.slab.CopycatSlabBlock;
@@ -58,28 +65,31 @@ import com.copycatsplus.copycats.content.copycat.wall.CopycatWallModelCore;
 import com.copycatsplus.copycats.datagen.CCBlockStateGen;
 import com.copycatsplus.copycats.datagen.CCLootGen;
 import com.simibubi.create.AllTags;
+import com.simibubi.create.content.contraptions.behaviour.DoorMovingInteraction;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
+import com.simibubi.create.foundation.data.BuilderTransformers;
 import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
-import com.simibubi.create.foundation.data.*;
+import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
-import net.minecraft.client.resources.model.BakedModel;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 
 import java.util.HashSet;
-
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.simibubi.create.AllInteractionBehaviours.interactionBehaviour;
 import static com.simibubi.create.foundation.data.CreateRegistrate.blockModel;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 
@@ -344,6 +354,17 @@ public class CCBlocks {
                     .transform(customItemModel("copycat_base", "trapdoor"))
                     .register();
 
+    public static final BlockEntry<CopycatTrapdoorBlock> COPYCAT_IRON_TRAPDOOR =
+            REGISTRATE.block("copycat_iron_trapdoor", p -> new CopycatTrapdoorBlock(p, BlockSetType.IRON))
+                    .transform(CCBuilderTransformers.copycat())
+                    .properties(p -> p.isValidSpawn((state, level, pos, entity) -> false))
+                    .tag(BlockTags.TRAPDOORS)
+                    .transform(FeatureToggle.register())
+                    .onRegister(CreateRegistrate.blockModel(() -> model -> CopycatModelCore.createModel(model, new CopycatTrapdoorModelCore())))
+                    .item()
+                    .transform(customItemModel("copycat_base", "trapdoor"))
+                    .register();
+
     public static final BlockEntry<CopycatVerticalSliceBlock> COPYCAT_VERTICAL_SLICE =
             REGISTRATE.block("copycat_vertical_slice", CopycatVerticalSliceBlock::new)
                     .transform(CCBuilderTransformers.copycat())
@@ -449,6 +470,28 @@ public class CCBlocks {
                     .blockstate(CCBlockStateGen::glassPipe)
                     .onRegister(CreateRegistrate.blockModel(() -> model -> getFluidPipeModel(model, new CopycatStraightPipeModelCore())))
                     .loot((p, b) -> p.dropOther(b, COPYCAT_FLUID_PIPE.get()))
+                    .register();
+
+    public static final BlockEntry<CopycatDoorBlock> COPYCAT_DOOR =
+            REGISTRATE.block("copycat_door", p -> new CopycatDoorBlock(p, BlockSetType.OAK))
+                    .transform(CCBuilderTransformers.copycat())
+                    .onRegister(interactionBehaviour(new DoorMovingInteraction()))
+                    .onRegister(CreateRegistrate.blockModel(() -> model -> CopycatModelCore.createModel(model, new CopycatDoorModelCore())))
+                    .loot((lr, block) -> lr.add(block, lr.createDoorTable(block)))
+                    .item()
+                    .tag(ItemTags.DOORS)
+                    .tag(AllTags.AllItemTags.CONTRAPTION_CONTROLLED.tag)
+                    .transform(customItemModel("copycat_base", "door"))
+                    .register();
+
+    public static final BlockEntry<CopycatDoorBlock> COPYCAT_IRON_DOOR =
+            REGISTRATE.block("copycat_iron_door", p -> new CopycatDoorBlock(p, BlockSetType.IRON))
+                    .transform(CCBuilderTransformers.copycat())
+                    .onRegister(CreateRegistrate.blockModel(() -> model -> CopycatModelCore.createModel(model, new CopycatDoorModelCore())))
+                    .onRegister(interactionBehaviour(new DoorMovingInteraction()))
+                    .loot((lr, block) -> lr.add(block, lr.createDoorTable(block)))
+                    .item()
+                    .transform(customItemModel("copycat_base", "door"))
                     .register();
 
     @ExpectPlatform

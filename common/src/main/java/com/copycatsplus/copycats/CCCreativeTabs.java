@@ -11,23 +11,14 @@ import java.util.List;
 
 public class CCCreativeTabs {
 
-    public static final List<ItemProviderEntry<?>> ITEMS = List.of(
+    public static final List<ItemProviderEntry<?>> DECORATIVE = List.of(
             /* Vanilla blocks */
             CCBlocks.COPYCAT_BLOCK,
             CCBlocks.COPYCAT_SLAB,
             CCBlocks.COPYCAT_STAIRS,
             CCBlocks.COPYCAT_VERTICAL_STAIRS,
-            CCBlocks.COPYCAT_FENCE,
-            CCBlocks.COPYCAT_FENCE_GATE,
             CCBlocks.COPYCAT_WALL,
-            CCBlocks.COPYCAT_TRAPDOOR,
-            CCBlocks.COPYCAT_LADDER,
-            CCBlocks.COPYCAT_WOODEN_BUTTON,
-            CCBlocks.COPYCAT_STONE_BUTTON,
-            CCBlocks.COPYCAT_WOODEN_PRESSURE_PLATE,
-            CCBlocks.COPYCAT_STONE_PRESSURE_PLATE,
-            CCBlocks.COPYCAT_LIGHT_WEIGHTED_PRESSURE_PLATE,
-            CCBlocks.COPYCAT_HEAVY_WEIGHTED_PRESSURE_PLATE,
+
             /* Simple copycats */
             CCBlocks.COPYCAT_VERTICAL_STEP,
             CCBlocks.COPYCAT_BEAM,
@@ -45,12 +36,28 @@ public class CCCreativeTabs {
             /* Slopes */
             CCBlocks.COPYCAT_SLOPE,
             CCBlocks.COPYCAT_VERTICAL_SLOPE,
-            CCBlocks.COPYCAT_SLOPE_LAYER,
-            /*Misc*/
-            CCBlocks.COPYCAT_SHAFT,
-            CCBlocks.COPYCAT_COGWHEEL,
-            CCBlocks.COPYCAT_LARGE_COGWHEEL,
-            CCBlocks.COPYCAT_FLUID_PIPE
+            CCBlocks.COPYCAT_SLOPE_LAYER
+    );
+
+    public static final List<ItemProviderEntry<?>> FUNCTIONAL = List.of(
+            /* Vanilla */
+            CCBlocks.COPYCAT_DOOR,
+            CCBlocks.COPYCAT_FENCE,
+            CCBlocks.COPYCAT_FENCE_GATE,
+            CCBlocks.COPYCAT_HEAVY_WEIGHTED_PRESSURE_PLATE,
+            CCBlocks.COPYCAT_IRON_DOOR,
+            CCBlocks.COPYCAT_IRON_TRAPDOOR,
+            CCBlocks.COPYCAT_LADDER,
+            CCBlocks.COPYCAT_LIGHT_WEIGHTED_PRESSURE_PLATE,
+            CCBlocks.COPYCAT_STONE_BUTTON,
+            CCBlocks.COPYCAT_STONE_PRESSURE_PLATE,
+            CCBlocks.COPYCAT_TRAPDOOR,
+            CCBlocks.COPYCAT_WOODEN_BUTTON,
+            CCBlocks.COPYCAT_WOODEN_PRESSURE_PLATE,
+
+            /* Create */
+            CCBlocks.COPYCAT_FLUID_PIPE,
+            CCBlocks.COPYCAT_SHAFT
     );
 
     @ExpectPlatform
@@ -67,6 +74,17 @@ public class CCCreativeTabs {
     public static ResourceKey<CreativeModeTab> getBaseTabKey() {
         throw new AssertionError();
     }
+
+    @ExpectPlatform
+    public static CreativeModeTab getFunctionalTab() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static ResourceKey<CreativeModeTab> getFunctionalTabKey() {
+        throw new AssertionError();
+    }
+
 
     public record DisplayItemsGenerator(
             List<ItemProviderEntry<?>> items) implements CreativeModeTab.DisplayItemsGenerator {
