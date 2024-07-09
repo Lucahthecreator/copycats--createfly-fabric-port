@@ -26,6 +26,7 @@ public class CCBlockEntityTypes {
                             CCBlocks.COPYCAT_FENCE,
                             CCBlocks.COPYCAT_FENCE_GATE,
                             CCBlocks.COPYCAT_TRAPDOOR,
+                            CCBlocks.COPYCAT_IRON_TRAPDOOR,
                             CCBlocks.COPYCAT_WALL,
                             CCBlocks.COPYCAT_GHOST_BLOCK,
                             CCBlocks.COPYCAT_LADDER,
@@ -41,7 +42,9 @@ public class CCBlockEntityTypes {
                             CCBlocks.COPYCAT_VERTICAL_STAIRS,
                             CCBlocks.COPYCAT_SLOPE,
                             CCBlocks.COPYCAT_VERTICAL_SLOPE,
-                            CCBlocks.COPYCAT_SLOPE_LAYER
+                            CCBlocks.COPYCAT_SLOPE_LAYER,
+                            CCBlocks.COPYCAT_DOOR,
+                            CCBlocks.COPYCAT_IRON_DOOR
                     )
                     .register();
 

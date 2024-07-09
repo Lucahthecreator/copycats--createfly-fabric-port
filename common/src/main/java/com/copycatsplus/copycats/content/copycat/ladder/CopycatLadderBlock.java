@@ -70,16 +70,7 @@ public class CopycatLadderBlock extends LadderBlock implements ICopycatBlock, IB
 
     @Override
     public @NotNull VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        Direction facing = pState.getValue(FACING);
-        if (pState.getValue(RAILS) && !pState.getValue(STEPS)) {
-            return CCShapes.LADDER_RAILS.get(facing);
-        } else if (pState.getValue(STEPS) && !pState.getValue(RAILS)) {
-            return CCShapes.LADDER_STEPS.get(facing);
-        } else if (pState.getValue(RAILS) && pState.getValue(STEPS)) {
-            return CCShapes.LADDER_BOTH.get(facing);
-        } else {
-            return super.getShape(pState, pLevel, pPos, pContext);
-        }
+        return super.getShape(pState, pLevel, pPos, pContext);
     }
 
     @Override
