@@ -29,6 +29,10 @@
   "block.copycats.copycat_byte.tooltip.condition2": "Wanneer sluipend rechter-muisknop geklikt met lege hand",
   "block.copycats.copycat_byte.tooltip.condition3": "Wanneer gesleuteld terwijl sluipen",
   "block.copycats.copycat_byte.tooltip.summary": "_verandert_ elk _volledig blok_ in een decoratief mini-blok. Notie: geen verbonden texturen.",
+  "block.copycats.copycat_door.tooltip.behaviour1": "Gebruikt het _vastgehouden item_ als het materiaal, indien mogelijk. _Klik opnieuw_ om de _oriëntatie_ te veranderen of om het _aan/uit_ te zetten. Gebruik een _Moersleutel_ om het materiaal te _resetten_.",
+  "block.copycats.copycat_door.tooltip.behaviour2": "Schakelt _verbonden texturen_ op zijn _materiaal_.",
+  "block.copycats.copycat_door.tooltip.condition1": "Bij rechter muisklik",
+  "block.copycats.copycat_door.tooltip.condition2": "Wanneer sluipend rechter-muisknop geklikt met lege hand",
   "block.copycats.copycat_fence": "Copycat hek",
   "block.copycats.copycat_fence.tooltip.behaviour1": "Gebruikt het _vastgehouden item_ als het materiaal, indien mogelijk. _Klik opnieuw_ om de _oriëntatie_ te veranderen of om het _aan/uit_ te zetten. Gebruik een _Moersleutel_ om het materiaal te _resetten_.",
   "block.copycats.copycat_fence.tooltip.behaviour2": "Schakelt _verbonden texturen_ op zijn _materiaal_.",
@@ -67,6 +71,14 @@
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.behaviour1": "Gebruikt het _vastgehouden item_ als het materiaal, indien mogelijk. _Klik opnieuw_ om de _oriëntatie_ te veranderen of om het _aan/uit_ te zetten. Gebruik een _Moersleutel_ om het materiaal te _resetten_.",
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.condition1": "Bij rechter muisklik",
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.summary": "_verandert_ elk _volledig blok_ in een functionele zware drukplaat.",
+  "block.copycats.copycat_iron_door.tooltip.behaviour1": "Gebruikt het _vastgehouden item_ als het materiaal, indien mogelijk. _Klik opnieuw_ om de _oriëntatie_ te veranderen of om het _aan/uit_ te zetten. Gebruik een _Moersleutel_ om het materiaal te _resetten_.",
+  "block.copycats.copycat_iron_door.tooltip.behaviour2": "Schakelt _verbonden texturen_ op zijn _materiaal_.",
+  "block.copycats.copycat_iron_door.tooltip.condition1": "Bij rechter muisklik",
+  "block.copycats.copycat_iron_door.tooltip.condition2": "Wanneer sluipend rechter-muisknop geklikt met lege hand",
+  "block.copycats.copycat_iron_trapdoor.tooltip.behaviour1": "Gebruikt het _vastgehouden item_ als het materiaal, indien mogelijk. _Klik opnieuw_ om de _oriëntatie_ te veranderen of om het _aan/uit_ te zetten. Gebruik een _Moersleutel_ om het materiaal te _resetten_.",
+  "block.copycats.copycat_iron_trapdoor.tooltip.behaviour2": "Schakelt _verbonden texturen_ op zijn _materiaal_.",
+  "block.copycats.copycat_iron_trapdoor.tooltip.condition1": "Bij rechter muisklik",
+  "block.copycats.copycat_iron_trapdoor.tooltip.condition2": "Wanneer sluipend rechter-muisknop geklikt met lege hand",
   "block.copycats.copycat_ladder": "Copycat ladder",
   "block.copycats.copycat_ladder.tooltip.behaviour1": "Gebruikt het _vastgehouden item_ als het materiaal, indien mogelijk. _Klik opnieuw_ om de _oriëntatie_ te veranderen of om het _aan/uit_ te zetten. Gebruik een _Moersleutel_ om het materiaal te _resetten_.",
   "block.copycats.copycat_ladder.tooltip.condition1": "Bij rechter muisklik",
@@ -188,6 +200,5 @@
   "item.copycats.copycat_catwalk.tooltip.condition1": "Bij rechter muisklik",
   "item.copycats.copycat_catwalk.tooltip.condition2": "Wanneer sluipend rechter-muisknop geklikt met lege hand",
   "item.copycats.copycat_catwalk.tooltip.condition3": "Wanneer gesleuteld terwijl sluipen",
-  "item.copycats.copycat_catwalk.tooltip.summary": "_Copycatplanken_ vooraf gemonteerd in de vorm van een catwalk voor handige plaatsing.",
-  "itemGroup.copycats.main": "Create: Copycats+"
+  "item.copycats.copycat_catwalk.tooltip.summary": "_Copycatplanken_ vooraf gemonteerd in de vorm van een catwalk voor handige plaatsing."
 }
