@@ -29,6 +29,10 @@
   "block.copycats.copycat_byte.tooltip.condition2": "Wenn Schleich-Rechts-Click mit leerer Hand",
   "block.copycats.copycat_byte.tooltip.condition3": "Wenn beim Schleichen gewrenched",
   "block.copycats.copycat_byte.tooltip.summary": "_Konvertiert_ jeden _vollen Block_ in einen dekorativen Mini-Block. Hinweis: keine verbundenen Texturen.",
+  "block.copycats.copycat_door.tooltip.behaviour1": "Nutzt _held item_ als _Material_ wenn möglich, _Click erneut_ um _Orientierung_ oder _powered_ Status zu wechseln. Benutze _Wrench_ um das Material zurückzusetzen.",
+  "block.copycats.copycat_door.tooltip.behaviour2": "Schaltet _verbundene Texturen_ auf seinem _Material_.",
+  "block.copycats.copycat_door.tooltip.condition1": "Wenn R-Klick",
+  "block.copycats.copycat_door.tooltip.condition2": "Wenn Schleich-Rechts-Click mit leerer Hand",
   "block.copycats.copycat_fence": "Copycat Zaun",
   "block.copycats.copycat_fence.tooltip.behaviour1": "Nutzt _held item_ als _Material_ wenn möglich, _Click erneut_ um _Orientierung_ oder _powered_ Status zu wechseln. Benutze _Wrench_ um das Material zurückzusetzen.",
   "block.copycats.copycat_fence.tooltip.behaviour2": "Schaltet _verbundene Texturen_ auf seinem _Material_.",
@@ -67,6 +71,14 @@
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.behaviour1": "Nutzt _held item_ als _Material_ wenn möglich, _Click erneut_ um _Orientierung_ oder _powered_ Status zu wechseln. Benutze _Wrench_ um das Material zurückzusetzen.",
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.condition1": "Wenn R-Klick",
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.summary": "_Wandelt jeden _vollen Block_ in eine funktionale schwere Copycat Druckplatte um.",
+  "block.copycats.copycat_iron_door.tooltip.behaviour1": "Nutzt _held item_ als _Material_ wenn möglich, _Click erneut_ um _Orientierung_ oder _powered_ Status zu wechseln. Benutze _Wrench_ um das Material zurückzusetzen.",
+  "block.copycats.copycat_iron_door.tooltip.behaviour2": "Schaltet _verbundene Texturen_ auf seinem _Material_.",
+  "block.copycats.copycat_iron_door.tooltip.condition1": "Wenn R-Klick",
+  "block.copycats.copycat_iron_door.tooltip.condition2": "Wenn Schleich-Rechts-Click mit leerer Hand",
+  "block.copycats.copycat_iron_trapdoor.tooltip.behaviour1": "Nutzt _held item_ als _Material_ wenn möglich, _Click erneut_ um _Orientierung_ oder _powered_ Status zu wechseln. Benutze _Wrench_ um das Material zurückzusetzen.",
+  "block.copycats.copycat_iron_trapdoor.tooltip.behaviour2": "Schaltet _verbundene Texturen_ auf seinem _Material_.",
+  "block.copycats.copycat_iron_trapdoor.tooltip.condition1": "Wenn R-Klick",
+  "block.copycats.copycat_iron_trapdoor.tooltip.condition2": "Wenn Schleich-Rechts-Click mit leerer Hand",
   "block.copycats.copycat_ladder": "Copycat Leiter",
   "block.copycats.copycat_ladder.tooltip.behaviour1": "Nutzt _held item_ als _Material_ wenn möglich, _Click erneut_ um _Orientierung_ oder _powered_ Status zu wechseln. Benutze _Wrench_ um das Material zurückzusetzen.",
   "block.copycats.copycat_ladder.tooltip.condition1": "Wenn R-Klick",
@@ -188,6 +200,5 @@
   "item.copycats.copycat_catwalk.tooltip.condition1": "Wenn R-Klick",
   "item.copycats.copycat_catwalk.tooltip.condition2": "Wenn Schleich-Rechts-Click mit leerer Hand",
   "item.copycats.copycat_catwalk.tooltip.condition3": "Wenn beim Schleichen gewrenched",
-  "item.copycats.copycat_catwalk.tooltip.summary": "_Copycat Boards_ wurde vormontiert zu einem Copycat Laufsteg für eine einfache Platzierung.",
-  "itemGroup.copycats.main": "Create: Copycats+"
+  "item.copycats.copycat_catwalk.tooltip.summary": "_Copycat Boards_ wurde vormontiert zu einem Copycat Laufsteg für eine einfache Platzierung."
 }
