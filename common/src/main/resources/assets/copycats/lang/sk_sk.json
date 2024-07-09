@@ -29,6 +29,10 @@
   "block.copycats.copycat_byte.tooltip.condition2": "Pri kliknutí PTM v podrepe s prázdnou rukou",
   "block.copycats.copycat_byte.tooltip.condition3": "PTM v podrepe s Montážnym kľúčom",
   "block.copycats.copycat_byte.tooltip.summary": "_Premení_ akýkoľvek _plný blok_ na dekoratívny miniblok. Poznámka: bez prepojenia textúr.",
+  "block.copycats.copycat_door.tooltip.behaviour1": "Používa _položku v ruke_ ako svoj _materiál_, ak je to možné. _Opätovným kliknutím_ zmeníte _orientáciu_ alebo _stav_. Pomocou _kluča_ resetujte materiál.",
+  "block.copycats.copycat_door.tooltip.behaviour2": "Prepína _spojenie textúr_ _materiálu_.",
+  "block.copycats.copycat_door.tooltip.condition1": "Pri kliknutí PTM",
+  "block.copycats.copycat_door.tooltip.condition2": "Pri kliknutí PTM v podrepe s prázdnou rukou",
   "block.copycats.copycat_fence": "Imitačný plot",
   "block.copycats.copycat_fence.tooltip.behaviour1": "Používa _položku v ruke_ ako svoj _materiál_, ak je to možné. _Opätovným kliknutím_ zmeníte _orientáciu_ alebo _stav_. Pomocou _kluča_ resetujte materiál.",
   "block.copycats.copycat_fence.tooltip.behaviour2": "Prepína _spojenie textúr_ _materiálu_.",
@@ -67,6 +71,14 @@
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.behaviour1": "Používa _položku v ruke_ ako svoj _materiál_, ak je to možné. _Opätovným kliknutím_ zmeníte _orientáciu_ alebo _stav_. Pomocou _kluča_ resetujte materiál.",
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.condition1": "Pri kliknutí PTM",
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.summary": "_Premení_ akýkoľvek _plný blok_ na funkcionálnu Váženú nášľapnú dosku (silnú).",
+  "block.copycats.copycat_iron_door.tooltip.behaviour1": "Používa _položku v ruke_ ako svoj _materiál_, ak je to možné. _Opätovným kliknutím_ zmeníte _orientáciu_ alebo _stav_. Pomocou _kluča_ resetujte materiál.",
+  "block.copycats.copycat_iron_door.tooltip.behaviour2": "Prepína _spojenie textúr_ _materiálu_.",
+  "block.copycats.copycat_iron_door.tooltip.condition1": "Pri kliknutí PTM",
+  "block.copycats.copycat_iron_door.tooltip.condition2": "Pri kliknutí PTM v podrepe s prázdnou rukou",
+  "block.copycats.copycat_iron_trapdoor.tooltip.behaviour1": "Používa _položku v ruke_ ako svoj _materiál_, ak je to možné. _Opätovným kliknutím_ zmeníte _orientáciu_ alebo _stav_. Pomocou _kluča_ resetujte materiál.",
+  "block.copycats.copycat_iron_trapdoor.tooltip.behaviour2": "Prepína _spojenie textúr_ _materiálu_.",
+  "block.copycats.copycat_iron_trapdoor.tooltip.condition1": "Pri kliknutí PTM",
+  "block.copycats.copycat_iron_trapdoor.tooltip.condition2": "Pri kliknutí PTM v podrepe s prázdnou rukou",
   "block.copycats.copycat_ladder": "Imitačný rebrík",
   "block.copycats.copycat_ladder.tooltip.behaviour1": "Používa _položku v ruke_ ako svoj _materiál_, ak je to možné. _Opätovným kliknutím_ zmeníte _orientáciu_ alebo _stav_. Pomocou _kluča_ resetujte materiál.",
   "block.copycats.copycat_ladder.tooltip.condition1": "Pri kliknutí PTM",
@@ -188,6 +200,5 @@
   "item.copycats.copycat_catwalk.tooltip.condition1": "Pri kliknutí PTM",
   "item.copycats.copycat_catwalk.tooltip.condition2": "Pri kliknutí PTM v podrepe s prázdnou rukou",
   "item.copycats.copycat_catwalk.tooltip.condition3": "PTM v podrepe s Montážnym kľúčom",
-  "item.copycats.copycat_catwalk.tooltip.summary": "_Imitačné dosky_ zložené do mostíka pre pohodlné umiestnenie.",
-  "itemGroup.copycats.main": "Create: Copycats+"
+  "item.copycats.copycat_catwalk.tooltip.summary": "_Imitačné dosky_ zložené do mostíka pre pohodlné umiestnenie."
 }
