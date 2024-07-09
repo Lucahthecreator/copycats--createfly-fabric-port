@@ -42,9 +42,22 @@ public class CopycatsJEI implements IModPlugin {
                             .map(ItemProviderEntry::asStack)
                             .collect(Collectors.toList())
             );
+            MANAGER.removeIngredientsAtRuntime(
+                    VanillaTypes.ITEM_STACK,
+                    CCCreativeTabs.FUNCTIONAL.stream()
+                            .map(ItemProviderEntry::asStack)
+                            .collect(Collectors.toList())
+            );
             MANAGER.addIngredientsAtRuntime(
                     VanillaTypes.ITEM_STACK,
                     CCCreativeTabs.DECORATIVE.stream()
+                            .filter(x -> FeatureToggle.isEnabled(x.getId()))
+                            .map(ItemProviderEntry::asStack)
+                            .collect(Collectors.toList())
+            );
+            MANAGER.addIngredientsAtRuntime(
+                    VanillaTypes.ITEM_STACK,
+                    CCCreativeTabs.FUNCTIONAL.stream()
                             .filter(x -> FeatureToggle.isEnabled(x.getId()))
                             .map(ItemProviderEntry::asStack)
                             .collect(Collectors.toList())
