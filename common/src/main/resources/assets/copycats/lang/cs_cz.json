@@ -29,6 +29,10 @@
   "block.copycats.copycat_byte.tooltip.condition2": "Při pravém kliknutí při plížení prázdnou rukou",
   "block.copycats.copycat_byte.tooltip.condition3": "Při kliknutí montážním klíčem při plížení",
   "block.copycats.copycat_byte.tooltip.summary": "_Převede_ jakýkoliv _plný blok_ na dekorativní miniblok. Poznámka: žádné propojené textury.",
+  "block.copycats.copycat_door.tooltip.behaviour1": "Pokud je to možné, použije _držený předmět_ jako svůj _materiál_. Dalším kliknutím_ se změní _orientace_ nebo stav _napájení_. Pro _resetování_ materiálu použijte _montážní klíč_.",
+  "block.copycats.copycat_door.tooltip.behaviour2": "Přepíná _propojené textury_ na svém _materiálu_.",
+  "block.copycats.copycat_door.tooltip.condition1": "Při pravém kliknutí",
+  "block.copycats.copycat_door.tooltip.condition2": "Při pravém kliknutí při plížení prázdnou rukou",
   "block.copycats.copycat_fence": "Imitační plot",
   "block.copycats.copycat_fence.tooltip.behaviour1": "Pokud je to možné, použije _držený předmět_ jako svůj _materiál_. Dalším kliknutím_ se změní _orientace_ nebo stav _napájení_. Pro _resetování_ materiálu použijte _montážní klíč_.",
   "block.copycats.copycat_fence.tooltip.behaviour2": "Přepíná _propojené textury_ na svém _materiálu_.",
@@ -67,6 +71,14 @@
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.behaviour1": "Pokud je to možné, použije _držený předmět_ jako svůj _materiál_. Dalším kliknutím_ se změní _orientace_ nebo stav _napájení_. Pro _resetování_ materiálu použijte _montážní klíč_.",
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.condition1": "Při pravém kliknutí",
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.summary": "_Převede_ jakýkoliv _plný blok_ na funkční zátěžovou vážní nášlapnou desku.",
+  "block.copycats.copycat_iron_door.tooltip.behaviour1": "Pokud je to možné, použije _držený předmět_ jako svůj _materiál_. Dalším kliknutím_ se změní _orientace_ nebo stav _napájení_. Pro _resetování_ materiálu použijte _montážní klíč_.",
+  "block.copycats.copycat_iron_door.tooltip.behaviour2": "Přepíná _propojené textury_ na svém _materiálu_.",
+  "block.copycats.copycat_iron_door.tooltip.condition1": "Při pravém kliknutí",
+  "block.copycats.copycat_iron_door.tooltip.condition2": "Při pravém kliknutí při plížení prázdnou rukou",
+  "block.copycats.copycat_iron_trapdoor.tooltip.behaviour1": "Pokud je to možné, použije _držený předmět_ jako svůj _materiál_. Dalším kliknutím_ se změní _orientace_ nebo stav _napájení_. Pro _resetování_ materiálu použijte _montážní klíč_.",
+  "block.copycats.copycat_iron_trapdoor.tooltip.behaviour2": "Přepíná _propojené textury_ na svém _materiálu_.",
+  "block.copycats.copycat_iron_trapdoor.tooltip.condition1": "Při pravém kliknutí",
+  "block.copycats.copycat_iron_trapdoor.tooltip.condition2": "Při pravém kliknutí při plížení prázdnou rukou",
   "block.copycats.copycat_ladder": "Imitační žebřík",
   "block.copycats.copycat_ladder.tooltip.behaviour1": "Pokud je to možné, použije _držený předmět_ jako svůj _materiál_. Dalším kliknutím_ se změní _orientace_ nebo stav _napájení_. Pro _resetování_ materiálu použijte _montážní klíč_.",
   "block.copycats.copycat_ladder.tooltip.condition1": "Při pravém kliknutí",
@@ -188,6 +200,5 @@
   "item.copycats.copycat_catwalk.tooltip.condition1": "Při pravém kliknutí",
   "item.copycats.copycat_catwalk.tooltip.condition2": "Při pravém kliknutí při plížení prázdnou rukou",
   "item.copycats.copycat_catwalk.tooltip.condition3": "Při kliknutí montážním klíčem při plížení",
-  "item.copycats.copycat_catwalk.tooltip.summary": "_Imitační desky_ předem sestavené do můstku pro pohodlné umístění.",
-  "itemGroup.copycats.main": "Create: Copycats+"
+  "item.copycats.copycat_catwalk.tooltip.summary": "_Imitační desky_ předem sestavené do můstku pro pohodlné umístění."
 }
