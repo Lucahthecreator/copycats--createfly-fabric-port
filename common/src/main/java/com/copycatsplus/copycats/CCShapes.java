@@ -78,31 +78,6 @@ public class CCShapes {
     public static final VoxelShaper HALF_LAYER_TOP_12PX = shape(0, 4, 0, 16, 16, 8).forHorizontal(Direction.NORTH);
     public static final VoxelShaper HALF_LAYER_TOP_14PX = shape(0, 2, 0, 16, 16, 8).forHorizontal(Direction.NORTH);
     public static final VoxelShaper HALF_LAYER_TOP_16PX = shape(0, 0, 0, 16, 16, 8).forHorizontal(Direction.NORTH);
-    public static final VoxelShaper LADDER_RAILS = shape(Shapes.empty()).build((voxelShape, direction) -> {
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0.125, 0, 0, 0.25, 1, 0.0625), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.75, 0, 0, 0.875, 1, 0.0625), BooleanOp.OR);
-        return shape(shape).forDirectional(Direction.SOUTH);
-    }, Direction.SOUTH);
-    public static final VoxelShaper LADDER_STEPS = shape(Shapes.empty()).build((voxelShape, direction) -> {
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0.0625, 0.0625, 0.00625, 0.9375, 0.1875, 0.05624999999999999), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.0625, 0.3125, 0.00625, 0.9375, 0.4375, 0.05624999999999999), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.0625, 0.5625, 0.00625, 0.9375, 0.6875, 0.05624999999999999), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.0625, 0.8125, 0.00625, 0.9375, 0.9375, 0.05624999999999999), BooleanOp.OR);
-        return shape(shape).forDirectional(Direction.SOUTH);
-    }, Direction.SOUTH);
-
-    public static final VoxelShaper LADDER_BOTH = shape(Shapes.empty()).build((voxelShape, direction) -> {
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0.125, 0, 0, 0.25, 1, 0.0625), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.75, 0, 0, 0.875, 1, 0.0625), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.0625, 0.0625, 0.00625, 0.9375, 0.1875, 0.05624999999999999), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.0625, 0.3125, 0.00625, 0.9375, 0.4375, 0.05624999999999999), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.0625, 0.5625, 0.00625, 0.9375, 0.6875, 0.05624999999999999), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.0625, 0.8125, 0.00625, 0.9375, 0.9375, 0.05624999999999999), BooleanOp.OR);
-        return shape(shape).forDirectional(Direction.SOUTH);
-    }, Direction.SOUTH);
     public static final VoxelShaper VERTICAL_STAIR_STRAIGHT_LEFT = shape(0, 0, 0, 16, 16, 8)
             .add(0, 0, 8, 8, 16, 16)
             .forDirectional(Direction.NORTH);

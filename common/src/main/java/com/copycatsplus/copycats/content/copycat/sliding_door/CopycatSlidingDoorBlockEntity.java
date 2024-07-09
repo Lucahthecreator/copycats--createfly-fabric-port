@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public class CopycatSlidingDoorBlockEntity extends SlidingDoorBlockEntity implements ICopycatBlockEntity {
 
@@ -19,11 +20,13 @@ public class CopycatSlidingDoorBlockEntity extends SlidingDoorBlockEntity implem
         ICopycatBlockEntity.super.init();
     }
 
+    @NotNull
     @Override
     public BlockState getMaterial() {
         return material;
     }
 
+    @NotNull
     @Override
     public ItemStack getConsumedItem() {
         return consumedItem;
@@ -35,12 +38,12 @@ public class CopycatSlidingDoorBlockEntity extends SlidingDoorBlockEntity implem
     }
 
     @Override
-    public void setMaterialInternal(BlockState material) {
+    public void setMaterialInternal(@NotNull BlockState material) {
         this.material = material;
     }
 
     @Override
-    public void setConsumedItemInternal(ItemStack consumedItem) {
+    public void setConsumedItemInternal(@NotNull ItemStack consumedItem) {
         this.consumedItem = consumedItem;
     }
 
