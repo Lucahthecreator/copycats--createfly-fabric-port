@@ -29,6 +29,10 @@
   "block.copycats.copycat_byte.tooltip.condition2": "Коли клацнуто ПКМ крадькома з порожньою рукою",
   "block.copycats.copycat_byte.tooltip.condition3": "Коли клацнуто гайковим ключем крадькома",
   "block.copycats.copycat_byte.tooltip.summary": "_Перетворює_ будь-який _суцільний блок_ на декоративний мініблок. Примітка: не підтримує поєднання текстур.",
+  "block.copycats.copycat_door.tooltip.behaviour1": "Застосовує _предмет у руці_, як _матеріал_, якщо таке можливо. _Клацніть знову_, щоб перемикати _орієнтацію_ або стан _живлення_. Використайте _гайковий ключ_, щоб _скинути_ матеріал.",
+  "block.copycats.copycat_door.tooltip.behaviour2": "Перемикає _з'єднані текстури_ на _матеріалі_.",
+  "block.copycats.copycat_door.tooltip.condition1": "Коли клацнуто ПКМ",
+  "block.copycats.copycat_door.tooltip.condition2": "Коли клацнуто ПКМ крадькома з порожньою рукою",
   "block.copycats.copycat_fence": "Імітаційний паркан",
   "block.copycats.copycat_fence.tooltip.behaviour1": "Застосовує _предмет у руці_, як _матеріал_, якщо таке можливо. _Клацніть знову_, щоб перемикати _орієнтацію_ або стан _живлення_. Використайте _гайковий ключ_, щоб _скинути_ матеріал.",
   "block.copycats.copycat_fence.tooltip.behaviour2": "Перемикає _з'єднані текстури_ на _матеріалі_.",
@@ -67,6 +71,14 @@
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.behaviour1": "Застосовує _предмет у руці_, як _матеріал_, якщо таке можливо. _Клацніть знову_, щоб перемикати _орієнтацію_ або стан _живлення_. Використайте _гайковий ключ_, щоб _скинути_ матеріал.",
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.condition1": "Коли клацнуто ПКМ",
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.summary": "_Перетворює_ будь-який _суцільний блок_ на функціональну важку вагову плиту.",
+  "block.copycats.copycat_iron_door.tooltip.behaviour1": "Застосовує _предмет у руці_, як _матеріал_, якщо таке можливо. _Клацніть знову_, щоб перемикати _орієнтацію_ або стан _живлення_. Використайте _гайковий ключ_, щоб _скинути_ матеріал.",
+  "block.copycats.copycat_iron_door.tooltip.behaviour2": "Перемикає _з'єднані текстури_ на _матеріалі_.",
+  "block.copycats.copycat_iron_door.tooltip.condition1": "Коли клацнуто ПКМ",
+  "block.copycats.copycat_iron_door.tooltip.condition2": "Коли клацнуто ПКМ крадькома з порожньою рукою",
+  "block.copycats.copycat_iron_trapdoor.tooltip.behaviour1": "Застосовує _предмет у руці_, як _матеріал_, якщо таке можливо. _Клацніть знову_, щоб перемикати _орієнтацію_ або стан _живлення_. Використайте _гайковий ключ_, щоб _скинути_ матеріал.",
+  "block.copycats.copycat_iron_trapdoor.tooltip.behaviour2": "Перемикає _з'єднані текстури_ на _матеріалі_.",
+  "block.copycats.copycat_iron_trapdoor.tooltip.condition1": "Коли клацнуто ПКМ",
+  "block.copycats.copycat_iron_trapdoor.tooltip.condition2": "Коли клацнуто ПКМ крадькома з порожньою рукою",
   "block.copycats.copycat_ladder": "Імітаційна драбина",
   "block.copycats.copycat_ladder.tooltip.behaviour1": "Застосовує _предмет у руці_, як _матеріал_, якщо таке можливо. _Клацніть знову_, щоб перемикати _орієнтацію_ або стан _живлення_. Використайте _гайковий ключ_, щоб _скинути_ матеріал.",
   "block.copycats.copycat_ladder.tooltip.condition1": "Коли клацнуто ПКМ",
@@ -188,6 +200,5 @@
   "item.copycats.copycat_catwalk.tooltip.condition1": "Коли клацнуто ПКМ",
   "item.copycats.copycat_catwalk.tooltip.condition2": "Коли клацнуто ПКМ крадькома з порожньою рукою",
   "item.copycats.copycat_catwalk.tooltip.condition3": "Коли клацнуто гайковим ключем крадькома",
-  "item.copycats.copycat_catwalk.tooltip.summary": "_Імітаційні дошки_ заздалегідь зібрані в подіум для зручного розміщення.",
-  "itemGroup.copycats.main": "Create: Copycats+"
+  "item.copycats.copycat_catwalk.tooltip.summary": "_Імітаційні дошки_ заздалегідь зібрані в подіум для зручного розміщення."
 }
