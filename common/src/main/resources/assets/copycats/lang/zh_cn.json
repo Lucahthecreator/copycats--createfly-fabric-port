@@ -29,6 +29,10 @@
   "block.copycats.copycat_byte.tooltip.condition2": "空手潜行右击时",
   "block.copycats.copycat_byte.tooltip.condition3": "潜行状态下使用扳手时",
   "block.copycats.copycat_byte.tooltip.summary": "将任意的_完整方块_转换为装饰小方块。注：无连接贴图。",
+  "block.copycats.copycat_door.tooltip.behaviour1": "如果可能，将根据_手持物品_改变_材质_。_再次点击_以循环切换_方向_或_充能_状态。使用_扳手_重置材质。",
+  "block.copycats.copycat_door.tooltip.behaviour2": "切换_材质_的_连接贴图_。",
+  "block.copycats.copycat_door.tooltip.condition1": "右击时",
+  "block.copycats.copycat_door.tooltip.condition2": "空手潜行右击时",
   "block.copycats.copycat_fence": "伪装栅栏",
   "block.copycats.copycat_fence.tooltip.behaviour1": "如果可能，将根据_手持物品_改变_材质_。_再次点击_以循环切换_方向_或_充能_状态。使用_扳手_重置材质。",
   "block.copycats.copycat_fence.tooltip.behaviour2": "切换_材质_的_连接贴图_。",
@@ -67,6 +71,14 @@
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.behaviour1": "如果可能，将根据_手持物品_改变_材质_。_再次点击_以循环切换_方向_或_充能_状态。使用_扳手_重置材质。",
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.condition1": "右击时",
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.summary": "将任意的_完整方块_转换为可交互的重质测重压力板。",
+  "block.copycats.copycat_iron_door.tooltip.behaviour1": "如果可能，将根据_手持物品_改变_材质_。_再次点击_以循环切换_方向_或_充能_状态。使用_扳手_重置材质。",
+  "block.copycats.copycat_iron_door.tooltip.behaviour2": "切换_材质_的_连接贴图_。",
+  "block.copycats.copycat_iron_door.tooltip.condition1": "右击时",
+  "block.copycats.copycat_iron_door.tooltip.condition2": "空手潜行右击时",
+  "block.copycats.copycat_iron_trapdoor.tooltip.behaviour1": "如果可能，将根据_手持物品_改变_材质_。_再次点击_以循环切换_方向_或_充能_状态。使用_扳手_重置材质。",
+  "block.copycats.copycat_iron_trapdoor.tooltip.behaviour2": "切换_材质_的_连接贴图_。",
+  "block.copycats.copycat_iron_trapdoor.tooltip.condition1": "右击时",
+  "block.copycats.copycat_iron_trapdoor.tooltip.condition2": "空手潜行右击时",
   "block.copycats.copycat_ladder": "伪装梯子",
   "block.copycats.copycat_ladder.tooltip.behaviour1": "如果可能，将根据_手持物品_改变_材质_。_再次点击_以循环切换_方向_或_充能_状态。使用_扳手_重置材质。",
   "block.copycats.copycat_ladder.tooltip.condition1": "右击时",
@@ -188,6 +200,5 @@
   "item.copycats.copycat_catwalk.tooltip.condition1": "右击时",
   "item.copycats.copycat_catwalk.tooltip.condition2": "空手潜行右击时",
   "item.copycats.copycat_catwalk.tooltip.condition3": "潜行状态下使用扳手时",
-  "item.copycats.copycat_catwalk.tooltip.summary": "由_伪装薄片_预装成的狭道，方便放置。",
-  "itemGroup.copycats.main": "机械动力：伪装方块+"
+  "item.copycats.copycat_catwalk.tooltip.summary": "由_伪装薄片_预装成的狭道，方便放置。"
 }
