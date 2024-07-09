@@ -27,6 +27,10 @@
   "block.copycats.copycat_byte.tooltip.condition2": "當空手蹲下右鍵時",
   "block.copycats.copycat_byte.tooltip.condition3": "當蹲下使用扳手",
   "block.copycats.copycat_byte.tooltip.summary": "任何的_全磚__轉換_為裝飾小方塊。註記：沒有連接材質。",
+  "block.copycats.copycat_door.tooltip.behaviour1": "如果可以，將根據_手持物品_改片_材質_。_再次點擊_以循環切換_方向_或_充能_狀態。使用_扳手_重置材質。",
+  "block.copycats.copycat_door.tooltip.behaviour2": "切換此_材料_上的_連接材質_。",
+  "block.copycats.copycat_door.tooltip.condition1": "當右鍵時",
+  "block.copycats.copycat_door.tooltip.condition2": "當空手蹲下右鍵時",
   "block.copycats.copycat_fence": "偽裝柵欄",
   "block.copycats.copycat_fence.tooltip.behaviour1": "如果可以，將根據_手持物品_改片_材質_。_再次點擊_以循環切換_方向_或_充能_狀態。使用_扳手_重置材質。",
   "block.copycats.copycat_fence.tooltip.behaviour2": "切換此_材料_上的_連接材質_。",
@@ -62,6 +66,14 @@
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.behaviour1": "如果可以，將根據_手持物品_改片_材質_。_再次點擊_以循環切換_方向_或_充能_狀態。使用_扳手_重置材質。",
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.condition1": "當右鍵時",
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.summary": "任何的_全磚__轉換_為重質測重壓力板。",
+  "block.copycats.copycat_iron_door.tooltip.behaviour1": "如果可以，將根據_手持物品_改片_材質_。_再次點擊_以循環切換_方向_或_充能_狀態。使用_扳手_重置材質。",
+  "block.copycats.copycat_iron_door.tooltip.behaviour2": "切換此_材料_上的_連接材質_。",
+  "block.copycats.copycat_iron_door.tooltip.condition1": "當右鍵時",
+  "block.copycats.copycat_iron_door.tooltip.condition2": "當空手蹲下右鍵時",
+  "block.copycats.copycat_iron_trapdoor.tooltip.behaviour1": "如果可以，將根據_手持物品_改片_材質_。_再次點擊_以循環切換_方向_或_充能_狀態。使用_扳手_重置材質。",
+  "block.copycats.copycat_iron_trapdoor.tooltip.behaviour2": "切換此_材料_上的_連接材質_。",
+  "block.copycats.copycat_iron_trapdoor.tooltip.condition1": "當右鍵時",
+  "block.copycats.copycat_iron_trapdoor.tooltip.condition2": "當空手蹲下右鍵時",
   "block.copycats.copycat_ladder": "偽裝梯子",
   "block.copycats.copycat_ladder.tooltip.behaviour1": "如果可以，將根據_手持物品_改片_材質_。_再次點擊_以循環切換_方向_或_充能_狀態。使用_扳手_重置材質。",
   "block.copycats.copycat_ladder.tooltip.condition1": "當右鍵時",
@@ -173,6 +185,5 @@
   "item.copycats.copycat_catwalk.tooltip.condition1": "當右鍵時",
   "item.copycats.copycat_catwalk.tooltip.condition2": "當空手蹲下右鍵時",
   "item.copycats.copycat_catwalk.tooltip.condition3": "當蹲下使用扳手",
-  "item.copycats.copycat_catwalk.tooltip.summary": "_偽裝薄板_可預先組成貓道，以方便放置。",
-  "itemGroup.copycats.main": "動力機械: 偽裝方塊+"
+  "item.copycats.copycat_catwalk.tooltip.summary": "_偽裝薄板_可預先組成貓道，以方便放置。"
 }
