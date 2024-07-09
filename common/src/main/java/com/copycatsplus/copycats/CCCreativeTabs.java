@@ -57,8 +57,7 @@ public class CCCreativeTabs {
 
             /* Create */
             CCBlocks.COPYCAT_FLUID_PIPE,
-            CCBlocks.COPYCAT_SHAFT,
-            CCBlocks.COPYCAT_SLIDING_DOOR
+            CCBlocks.COPYCAT_SHAFT
     );
 
     @ExpectPlatform

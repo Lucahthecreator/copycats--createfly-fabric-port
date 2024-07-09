@@ -9,9 +9,6 @@ import com.copycatsplus.copycats.content.copycat.ladder.MultiStateCopycatLadderB
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlockEntity;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftInstance;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftRenderer;
-import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorBlockEntity;
-import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorRenderer;
-import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorRenderer;
 import com.simibubi.create.content.fluids.pipes.TransparentStraightPipeRenderer;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
@@ -83,12 +80,6 @@ public class CCBlockEntityTypes {
             REGISTRATE.blockEntity("copycat_glass_fluid_pipe", CopycatStraightPipeBlockEntity::new)
                     .validBlocks(CCBlocks.COPYCAT_GLASS_FLUID_PIPE)
                     .renderer(() -> TransparentStraightPipeRenderer::new)
-                    .register();
-
-    public static final BlockEntityEntry<? extends CopycatSlidingDoorBlockEntity> COPYCAT_SLIDING_DOOR_BLOCK_ENTITY =
-            REGISTRATE.blockEntity("copycat_sliding_door", CopycatSlidingDoorBlockEntity::new)
-                    .validBlocks(CCBlocks.COPYCAT_SLIDING_DOOR)
-                    .renderer(() -> CopycatSlidingDoorRenderer::new)
                     .register();
 
     public static void register() {
