@@ -27,7 +27,7 @@ public class CCCreativeTabs {
             CCBlocks.COPYCAT_GHOST_BLOCK,
             CCBlocks.COPYCAT_LAYER,
             CCBlocks.COPYCAT_HALF_PANEL,
-            /* Multistates */
+            /* Multi-states */
             CCBlocks.COPYCAT_BYTE,
             CCBlocks.COPYCAT_BOARD,
             CCItems.COPYCAT_CATWALK,
@@ -57,7 +57,9 @@ public class CCCreativeTabs {
 
             /* Create */
             CCBlocks.COPYCAT_FLUID_PIPE,
-            CCBlocks.COPYCAT_SHAFT
+            CCBlocks.COPYCAT_SHAFT,
+            CCBlocks.COPYCAT_COGWHEEL,
+            CCBlocks.COPYCAT_LARGE_COGWHEEL
     );
 
     @ExpectPlatform
