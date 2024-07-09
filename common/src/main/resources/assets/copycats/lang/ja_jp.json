@@ -27,6 +27,10 @@
   "block.copycats.copycat_byte.tooltip.condition2": "素手でスニークしながら右クリックしたとき",
   "block.copycats.copycat_byte.tooltip.condition3": "スニークしながらレンチを使ったとき",
   "block.copycats.copycat_byte.tooltip.summary": "任意のフルブロックを装飾用のミニブロックに変換する。注釈: テクスチャは接続しない。",
+  "block.copycats.copycat_door.tooltip.behaviour1": "_持っているアイテム_が_素材_に使えるなら適用する。再びクリックで_方向_や_信号_状態_を切り替えられる。レンチを使うと素材をリセットできる。",
+  "block.copycats.copycat_door.tooltip.behaviour2": "_接続されたテクスチャ_の_素材_を切り替える。",
+  "block.copycats.copycat_door.tooltip.condition1": "右クリックしたとき",
+  "block.copycats.copycat_door.tooltip.condition2": "素手でスニークしながら右クリックしたとき",
   "block.copycats.copycat_fence": "コピーフェンス",
   "block.copycats.copycat_fence.tooltip.behaviour1": "_持っているアイテム_が_素材_に使えるなら適用する。再びクリックで_方向_や_信号_状態_を切り替えられる。レンチを使うと素材をリセットできる。",
   "block.copycats.copycat_fence.tooltip.behaviour2": "_接続されたテクスチャ_の_素材_を切り替える。_接続されたテクスチャ_の_素材_を切り替える。",
@@ -62,6 +66,14 @@
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.behaviour1": "_持っているアイテム_が_素材_に使えるなら適用する。再びクリックで_方向_や_信号_状態_を切り替えられる。レンチを使うと素材をリセットできる。",
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.condition1": "右クリックしたとき",
   "block.copycats.copycat_heavy_weighted_pressure_plate.tooltip.summary": "任意のフルブロックを機能する重量用感圧板に変換する。",
+  "block.copycats.copycat_iron_door.tooltip.behaviour1": "_持っているアイテム_が_素材_に使えるなら適用する。再びクリックで_方向_や_信号_状態_を切り替えられる。レンチを使うと素材をリセットできる。",
+  "block.copycats.copycat_iron_door.tooltip.behaviour2": "_接続されたテクスチャ_の_素材_を切り替える。",
+  "block.copycats.copycat_iron_door.tooltip.condition1": "右クリックしたとき",
+  "block.copycats.copycat_iron_door.tooltip.condition2": "素手でスニークしながら右クリックしたとき",
+  "block.copycats.copycat_iron_trapdoor.tooltip.behaviour1": "_持っているアイテム_が_素材_に使えるなら適用する。再びクリックで_方向_や_信号_状態_を切り替えられる。レンチを使うと素材をリセットできる。",
+  "block.copycats.copycat_iron_trapdoor.tooltip.behaviour2": "_接続されたテクスチャ_の_素材_を切り替える。",
+  "block.copycats.copycat_iron_trapdoor.tooltip.condition1": "右クリックしたとき",
+  "block.copycats.copycat_iron_trapdoor.tooltip.condition2": "素手でスニークしながら右クリックしたとき",
   "block.copycats.copycat_ladder": "コピーはしご",
   "block.copycats.copycat_ladder.tooltip.behaviour1": "_持っているアイテム_が_素材_に使えるなら適用する。再びクリックで_方向_や_信号_状態_を切り替えられる。レンチを使うと素材をリセットできる。",
   "block.copycats.copycat_ladder.tooltip.condition1": "右クリックしたとき",
@@ -175,6 +187,5 @@
   "item.copycats.copycat_catwalk.tooltip.condition1": "右クリックしたとき",
   "item.copycats.copycat_catwalk.tooltip.condition2": "素手でスニークしながら右クリックしたとき",
   "item.copycats.copycat_catwalk.tooltip.condition3": "スニークしながらレンチを使ったとき",
-  "item.copycats.copycat_catwalk.tooltip.summary": "あらかじめキャットウォーク型に組み立てられており、設置時に便利な_コピーボード_。",
-  "itemGroup.copycats.main": "Create: Copycats+"
+  "item.copycats.copycat_catwalk.tooltip.summary": "あらかじめキャットウォーク型に組み立てられており、設置時に便利な_コピーボード_。"
 }
