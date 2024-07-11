@@ -43,5 +43,17 @@
   "tooltip.copycats.characteristics.copy_cat.description": "PTM na _mačku_.",
   "tooltip.copycats.characteristics.copy_cat.title": "¿¿¿",
   "tooltip.copycats.characteristics.copycat.description": "PKM s materiálom na _priradenie_ a _otočenie_. Použite kľúč na _odstránenie materiálu_.",
-  "tooltip.copycats.characteristics.ghost.title": "Falošný blok"
+  "tooltip.copycats.characteristics.copycat.title": "Imitátor",
+  "tooltip.copycats.characteristics.ct_toggle.description": "Shift+PTM s prázdnom rukou na _prepínanie spojených textúr_.",
+  "tooltip.copycats.characteristics.ct_toggle.title": "Prepínač spojenia textúr",
+  "tooltip.copycats.characteristics.functional.description": "_Rovnaké použitie_ ako neimitačné verzie.",
+  "tooltip.copycats.characteristics.functional.title": "Funkcionálne",
+  "tooltip.copycats.characteristics.ghost.description": "_Bez kolízie_ s entitami.",
+  "tooltip.copycats.characteristics.ghost.title": "Falošný blok",
+  "tooltip.copycats.characteristics.multi_state.description": "Umiestniť viacero kópií s rôznymi materiálmi do rovnakého blokového priestoru.",
+  "tooltip.copycats.characteristics.multi_state.title": "Viac stavový",
+  "tooltip.copycats.characteristics.pre_assembled.description": "Demontuje _individuálne časti_ po ich umiestnení.",
+  "tooltip.copycats.characteristics.pre_assembled.title": "Predmontované",
+  "tooltip.copycats.characteristics.stackable.description": "PTM s rovnakým imitátorom aby _zväčšiť_.",
+  "tooltip.copycats.characteristics.stackable.title": "Ukladací"
 }
