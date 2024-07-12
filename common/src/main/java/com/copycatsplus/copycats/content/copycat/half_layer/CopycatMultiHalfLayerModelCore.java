@@ -36,9 +36,7 @@ public class CopycatMultiHalfLayerModelCore extends CopycatModelCore {
         int layer = state.getValue(positive ? POSITIVE_LAYERS : NEGATIVE_LAYERS);
         if (layer == 0) return;
         AssemblyTransform transform = t -> t.rotateY(rot + (positive ? 180 : 0)).flipY(flipY);
-        QuadAutoCull autoCull = state.getValue(AXIS) == Direction.Axis.X
-                ? autoCull(aabb(8, 16, 16))
-                : autoCull(aabb(16, 16, 8));
+        QuadAutoCull autoCull = autoCull(aabb(8, 16, 16));
         context.assemblePiece(
                 transform,
                 vec3(0, 0, 0),
