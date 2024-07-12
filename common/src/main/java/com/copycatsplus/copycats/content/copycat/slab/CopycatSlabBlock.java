@@ -114,6 +114,11 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock {
     }
 
     @Override
+    public int getColorIndex(String property) {
+        return property.equals(SlabType.BOTTOM.getSerializedName()) ? 0 : 1;
+    }
+
+    @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
                                  BlockHitResult ray) {
         return InteractionUtils.sequential(
