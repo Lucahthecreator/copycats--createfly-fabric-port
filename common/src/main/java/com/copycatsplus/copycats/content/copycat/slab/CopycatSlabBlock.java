@@ -160,7 +160,7 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock {
             BlockPos toTruePos = scaledReader.getTruePos(toPos);
             return fromTruePos.equals(toTruePos);
         }
-        return !toState.is(this);
+        return !toState.is(this) || toState.getValue(AXIS) != state.getValue(AXIS);
     }
 
     @Override
@@ -169,9 +169,9 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock {
         if (reader instanceof ScaledBlockAndTintGetter scaledReader) {
             BlockPos fromTruePos = scaledReader.getTruePos(fromPos);
             BlockPos toTruePos = scaledReader.getTruePos(toPos);
-            return !fromTruePos.equals(toTruePos) && toState.is(this);
+            return !fromTruePos.equals(toTruePos) && toState.is(this) && toState.getValue(AXIS) == state.getValue(AXIS);
         }
-        return toState.is(this);
+        return toState.is(this) && toState.getValue(AXIS) == state.getValue(AXIS);
     }
 
     @Override
