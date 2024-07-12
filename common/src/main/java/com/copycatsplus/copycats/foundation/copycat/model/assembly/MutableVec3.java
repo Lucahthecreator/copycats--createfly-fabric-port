@@ -246,6 +246,11 @@ public class MutableVec3 implements AssemblyTransform.Transformable<MutableVec3>
     }
 
     @Override
+    public String toString() {
+        return "(" + this.x + ", " + this.y + ", " + this.z + ")";
+    }
+
+    @Override
     public double x() {
         return x;
     }

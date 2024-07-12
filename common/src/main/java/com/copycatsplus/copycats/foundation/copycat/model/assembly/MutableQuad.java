@@ -86,6 +86,9 @@ public class MutableQuad implements AssemblyTransform.Transformable<MutableQuad>
             for (MutableVertex vertex : vertices) {
                 mutation.mutate(vertex.xyz);
             }
+            if (mutation.type() == Mutation.MutationType.MIRROR) {
+                reverseWinding();
+            }
             cullFace = mutation.mutate(cullFace);
         }
         return this;
@@ -97,9 +100,21 @@ public class MutableQuad implements AssemblyTransform.Transformable<MutableQuad>
             for (MutableVertex vertex : vertices) {
                 mutation.undoMutate(vertex.xyz);
             }
+            if (mutation.type() == Mutation.MutationType.MIRROR) {
+                reverseWinding();
+            }
             cullFace = mutation.undoMutate(cullFace);
         }
         return this;
+    }
+
+    private void reverseWinding() {
+        MutableVertex temp = vertices.get(0);
+        vertices.set(0, vertices.get(1));
+        vertices.set(1, temp);
+        temp = vertices.get(2);
+        vertices.set(2, vertices.get(3));
+        vertices.set(3, temp);
     }
 
     @Override
