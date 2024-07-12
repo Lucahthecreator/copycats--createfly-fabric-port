@@ -4,6 +4,7 @@ import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.foundation.copycat.model.CopycatModelCore;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.CopycatRenderContext;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.AssemblyTransform;
+import com.copycatsplus.copycats.foundation.copycat.model.assembly.quad.QuadAutoCull;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
@@ -35,29 +36,36 @@ public class CopycatMultiHalfLayerModelCore extends CopycatModelCore {
         int layer = state.getValue(positive ? POSITIVE_LAYERS : NEGATIVE_LAYERS);
         if (layer == 0) return;
         AssemblyTransform transform = t -> t.rotateY(rot + (positive ? 180 : 0)).flipY(flipY);
+        QuadAutoCull autoCull = state.getValue(AXIS) == Direction.Axis.X
+                ? autoCull(aabb(8, 16, 16))
+                : autoCull(aabb(16, 16, 8));
         context.assemblePiece(
                 transform,
                 vec3(0, 0, 0),
                 aabb(4, layer, 16),
-                cull(EAST | UP)
+                cull(EAST | UP),
+                autoCull
         );
         context.assemblePiece(
                 transform,
                 vec3(0, layer, 0),
                 aabb(4, layer, 16).move(0, 16 - layer, 0),
-                cull(EAST | DOWN)
+                cull(EAST | DOWN),
+                autoCull
         );
         context.assemblePiece(
                 transform,
                 vec3(4, 0, 0),
                 aabb(4, layer, 16).move(12, 0, 0),
-                cull(WEST | UP)
+                cull(WEST | UP),
+                autoCull
         );
         context.assemblePiece(
                 transform,
                 vec3(4, layer, 0),
                 aabb(4, layer, 16).move(12, 16 - layer, 0),
-                cull(WEST | DOWN)
+                cull(WEST | DOWN),
+                autoCull
         );
     }
 }

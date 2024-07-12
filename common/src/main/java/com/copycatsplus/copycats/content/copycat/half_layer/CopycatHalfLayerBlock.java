@@ -344,13 +344,15 @@ public class CopycatHalfLayerBlock extends WaterloggedMultiStateCopycatBlock {
         return Objects.requireNonNull(this.shapesCache.get(pState));
     }
 
-
     public boolean supportsExternalFaceHiding(BlockState state) {
         return true;
     }
 
-
-    public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState, Direction dir) {
-        return false;
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
+                                     Direction dir) {
+        return IMultiStateCopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 }
