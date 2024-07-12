@@ -9,6 +9,7 @@ import com.copycatsplus.copycats.content.copycat.base.model.ScaledBlockAndTintGe
 import com.copycatsplus.copycats.content.copycat.base.model.assembly.fabric.CopycatRenderContextFabric;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
+import com.jozufozu.flywheel.core.model.ModelUtil;
 import com.jozufozu.flywheel.core.virtual.VirtualEmptyBlockGetter;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.utility.Iterate;
@@ -121,8 +122,12 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
 
         for (CopycatModelCore.ModelEntry entry : entries) {
             BlockState material = materials.get(entry.key());
-            if (material == null && entry.useCopycatLogic())
-                continue;
+            if (material == null && entry.useCopycatLogic()) {
+                // Don't skip rendering if the world is empty since we might be rendering a placement helper
+                if (materials.isEmpty() && VirtualEmptyBlockGetter.is(blockView)) {
+                    material = AllBlocks.COPYCAT_BASE.getDefaultState();
+                } else continue;
+            }
             Object remainingData = remainingDataMap.get(entry.key());
             prepareModelCore(blockView, state, pos, randomSupplier, material, remainingData);
             if (entry.useCopycatLogic()) {

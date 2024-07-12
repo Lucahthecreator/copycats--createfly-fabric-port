@@ -12,6 +12,7 @@ import com.copycatsplus.copycats.content.copycat.base.model.kinetic.forge.Kineti
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlockEntity;
 import com.jozufozu.flywheel.core.model.ModelUtil;
+import com.jozufozu.flywheel.core.virtual.VirtualEmptyBlockGetter;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.model.BakedModelWrapperWithData;
 import com.simibubi.create.foundation.utility.Iterate;
@@ -186,8 +187,12 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
         for (CopycatModelCore.ModelEntry entry : entries) {
             BlockState material = materials.get(entry.key());
 
-            if (entry.useCopycatLogic() && material == null)
-                continue;
+            if (entry.useCopycatLogic() && material == null) {
+                // Don't skip rendering if the world is empty since we might be rendering a placement helper
+                if (materials.isEmpty() && ModelUtil.isVirtual(data)) {
+                    material = AllBlocks.COPYCAT_BASE.getDefaultState();
+                } else continue;
+            }
 
             BakedModel model = getModelForEntry(entry, state, material);
             if (model == null) continue;
