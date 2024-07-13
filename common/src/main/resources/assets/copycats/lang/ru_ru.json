@@ -1,4 +1,5 @@
 {
+  "block.copycats.copycat_base": "Заполняемая основа",
   "block.copycats.copycat_beam": "Заполняемая балка",
   "block.copycats.copycat_block": "Заполняемый блок",
   "block.copycats.copycat_board": "Заполняемая пластина",
