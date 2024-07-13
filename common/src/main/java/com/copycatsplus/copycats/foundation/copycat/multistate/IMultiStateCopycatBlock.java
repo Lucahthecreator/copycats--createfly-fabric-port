@@ -4,6 +4,7 @@ import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.IStateType;
 import com.copycatsplus.copycats.foundation.copycat.StateType;
 import com.copycatsplus.copycats.foundation.copycat.model.ScaledBlockAndTintGetter;
+import com.copycatsplus.copycats.utility.BlockFaceUtils;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
@@ -49,6 +50,7 @@ import java.util.Set;
  * {@link IBE#getBlockEntityType} in the concrete class, and redirect calls of
  * {@link IMultiStateCopycatBlock#use},
  * {@link IMultiStateCopycatBlock#setPlacedBy},
+ * {@link IMultiStateCopycatBlock#hidesNeighborFace},
  * {@link Block#getShape},
  * {@link IMultiStateCopycatBlock#onRemove} and
  * {@link IMultiStateCopycatBlock#playerWillDestroy} to this interface.
@@ -361,21 +363,6 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
         return Blocks.AIR.defaultBlockState();
     }
 
-    /**
-     * Whether a part of this copycat can occlude faces of adjacent parts if their shape is fully covered by the copycat.
-     *
-     * @param property The property corresponding to a part of this copycat.
-     * @param level    The world.
-     * @param state    The state of the copycat block.
-     * @param pos      The position of the copycat block.
-     * @return Whether the copycat can occlude faces of adjacent blocks.
-     */
-    default boolean canOcclude(String property, BlockGetter level, BlockState state, BlockPos pos) {
-        BlockState material = getMaterial(level, pos, property);
-        if (AllBlocks.COPYCAT_BASE.has(material)) return false; // copycat_base is incorrectly set to occlude
-        return material.canOcclude();
-    }
-
     void transformStorage(BlockState state, IMultiStateCopycatBlockEntity be, StructureTransform transform);
 
     @Override
@@ -388,11 +375,6 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
     default boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos,
                                              BlockState state) {
         return canConnectTexturesToward(defaultProperty(), reader, fromPos, toPos, state);
-    }
-
-    @Override
-    default boolean canOcclude(BlockGetter level, BlockState state, BlockPos pos) {
-        return false;
     }
 
     /**
@@ -420,6 +402,55 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
     boolean canConnectTexturesToward(String property, BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos,
                                      BlockState state);
 
+    @Override
+    default boolean canOcclude(BlockGetter level, BlockState state, BlockPos pos) {
+        if (level instanceof ScaledBlockAndTintGetter scaledWorld) {
+            return canOcclude(scaledWorld.getPropertyForRender(state, pos), level, state, pos);
+        }
+        return false;
+    }
+
+    /**
+     * Whether a part of this copycat can occlude faces of adjacent parts if their shape is fully covered by the copycat.
+     *
+     * @param property The property corresponding to a part of this copycat.
+     * @param level    The world.
+     * @param state    The state of the copycat block.
+     * @param pos      The position of the copycat block.
+     * @return Whether the copycat can occlude faces of adjacent blocks.
+     */
+    default boolean canOcclude(String property, BlockGetter level, BlockState state, BlockPos pos) {
+        BlockState material = getMaterial(level, pos, property);
+        if (AllBlocks.COPYCAT_BASE.has(material)) return false; // copycat_base is incorrectly set to occlude
+        return material.canOcclude();
+    }
+
+    /**
+     * Whether this copycat can hide the face of an adjacent block.
+     * <p>
+     * Note that face hiding is different from occlusion, as it is meant for hiding inner faces of transparent blocks.
+     * Face hiding hides the face of the adjacent block if the adjacent block is the same type regardless of whether
+     * this block has occlusion enabled.
+     */
+    static boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
+                                     Direction dir) {
+        BlockPos toPos = pos.relative(dir);
+        if (!(level instanceof ScaledBlockAndTintGetter scaledWorld)) return false;
+        // todo: incomplete face hiding if two multi-states have different orientations
+        BlockState material = state.getBlock() instanceof IMultiStateCopycatBlock
+                ? getMaterial(level, pos, scaledWorld.getPropertyForRender(state, pos))
+                : state;
+        BlockState neighborMaterial = neighborState.getBlock() instanceof IMultiStateCopycatBlock
+                ? getMaterial(level, toPos, scaledWorld.getPropertyForRender(neighborState, toPos))
+                : neighborState;
+        if (material.skipRendering(neighborMaterial, dir.getOpposite())) {
+            return BlockFaceUtils.facesMatch(level, neighborState, toPos, state, pos, dir.getOpposite());
+        }
+        return false;
+    }
 
     @Environment(EnvType.CLIENT)
     static BlockColor wrappedColor() {
