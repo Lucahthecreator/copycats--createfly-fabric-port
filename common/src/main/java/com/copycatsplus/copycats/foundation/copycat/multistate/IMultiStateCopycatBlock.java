@@ -4,6 +4,7 @@ import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.IStateType;
 import com.copycatsplus.copycats.foundation.copycat.StateType;
 import com.copycatsplus.copycats.foundation.copycat.model.ScaledBlockAndTintGetter;
+import com.copycatsplus.copycats.utility.BlockFaceUtils;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
@@ -438,6 +439,7 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
                                      Direction dir) {
         BlockPos toPos = pos.relative(dir);
         if (!(level instanceof ScaledBlockAndTintGetter scaledWorld)) return false;
+        // todo: incomplete face hiding if two multi-states have different orientations
         BlockState material = state.getBlock() instanceof IMultiStateCopycatBlock
                 ? getMaterial(level, pos, scaledWorld.getPropertyForRender(state, pos))
                 : state;
@@ -445,11 +447,7 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
                 ? getMaterial(level, toPos, scaledWorld.getPropertyForRender(neighborState, toPos))
                 : neighborState;
         if (material.skipRendering(neighborMaterial, dir.getOpposite())) {
-            // TODO: implement multi-sate face matching using sliced shapes
-            //   This is currently not done because the algorithm is quite complex and
-            //   we don't have a block that benefits from this yet
-//            return BlockFaceUtils.facesMatch(level, neighborState, toPos, state, pos, dir.getOpposite());
-            return true;
+            return BlockFaceUtils.facesMatch(level, neighborState, toPos, state, pos, dir.getOpposite());
         }
         return false;
     }
