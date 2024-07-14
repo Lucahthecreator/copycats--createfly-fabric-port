@@ -1,5 +1,7 @@
 package com.copycatsplus.copycats.foundation.copycat.multistate;
 
+import com.copycatsplus.copycats.compat.AthenaCompat;
+import com.copycatsplus.copycats.compat.Mods;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.IStateType;
 import com.copycatsplus.copycats.foundation.copycat.StateType;
@@ -343,16 +345,17 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
     static BlockState getAppearance(IMultiStateCopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
                                     BlockState queryState, BlockPos queryPos) {
         String property;
-        if (level instanceof ScaledBlockAndTintGetter scaledLevel) {
+        BlockAndTintGetter reader = Mods.ATHENA.runIfInstalled(() -> () -> AthenaCompat.unwrapAthenaGetter(level)).orElse(level);
+        if (reader instanceof ScaledBlockAndTintGetter scaledLevel) {
             property = scaledLevel.getPropertyForRender(state, pos);
         } else {
             property = block.defaultProperty();
         }
-        IMultiStateCopycatBlockEntity be = block.getCopycatBlockEntity(level, queryPos);
-        if (block.isIgnoredConnectivitySide(property, level, state, side, pos, queryPos))
+        IMultiStateCopycatBlockEntity be = block.getCopycatBlockEntity(reader, queryPos);
+        if (block.isIgnoredConnectivitySide(property, reader, state, side, pos, queryPos))
             return state;
 
-        BlockState material = IMultiStateCopycatBlock.getMaterial(level, pos, property);
+        BlockState material = IMultiStateCopycatBlock.getMaterial(reader, pos, property);
         return material.is(Blocks.AIR) ? AllBlocks.COPYCAT_BASE.getDefaultState() : material;
     }
 
