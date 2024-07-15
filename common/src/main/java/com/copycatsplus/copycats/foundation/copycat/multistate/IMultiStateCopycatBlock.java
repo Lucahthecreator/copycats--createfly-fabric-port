@@ -210,7 +210,7 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
             for (String prop : copycatBE.getMaterialItemStorage().getAllProperties()) {
                 if (prop.equals(property)) continue;
                 MaterialItemStorage.MaterialItem materialItem = copycatBE.getMaterialItemStorage().getMaterialItem(prop);
-                if (materialItem.material().equals(material.material()) && materialItem.consumedItem().isEmpty()) {
+                if (materialItem.material().getBlock().equals(material.material().getBlock()) && materialItem.consumedItem().isEmpty()) {
                     copycatBE.setConsumedItem(prop, consumedItem);
                     consumedItem = ItemStack.EMPTY;
                     break;
