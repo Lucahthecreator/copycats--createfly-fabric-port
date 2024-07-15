@@ -179,7 +179,7 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
                         emitter.copyFrom(quad);
                         emitter.emit();
                     } else {
-                        MutableQuadView newQuad = new IntermediateMutableQuadView();
+                        MutableQuadView newQuad = IntermediateMutableQuadView.create();
                         newQuad.copyFrom(quad);
                         quads.add(newQuad);
                     }
@@ -213,7 +213,7 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
 
                 List<MutableQuadView> quads = new ArrayList<>();
                 context.pushTransform(quad -> {
-                    MutableQuadView newQuad = new IntermediateMutableQuadView();
+                    MutableQuadView newQuad = IntermediateMutableQuadView.create();
                     newQuad.copyFrom(quad);
                     quads.add(newQuad);
                     return false;

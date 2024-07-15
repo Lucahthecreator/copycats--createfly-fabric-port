@@ -12,7 +12,11 @@ def getGitTag = { ->
         commandLine "git", "describe", "--tags", "--abbrev=0"
         standardOutput = stdout
     }
-    return stdout.toString().trim().takeBetween("v", "+")
+    def str = stdout.toString().trim().takeBetween("v", "+")
+    if (str == "") {
+        return "0.0.0"
+    }
+    return str
 }
 
 architectury {
@@ -120,6 +124,17 @@ allprojects {
         maven { // for Porting Lib: Mixin Extras, Fabric ASM
             url = "https://jitpack.io/"
             content { includeGroupAndSubgroups("com.github") }
+        }
+        exclusiveContent {
+            forRepository {
+                maven {
+                    name = "Modrinth"
+                    url = "https://api.modrinth.com/maven"
+                }
+            }
+            filter {
+                includeGroup "maven.modrinth"
+            }
         }
     }
 

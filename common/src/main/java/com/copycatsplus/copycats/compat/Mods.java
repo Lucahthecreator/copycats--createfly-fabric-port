@@ -23,7 +23,8 @@ public enum Mods {
      */
     ADDITIONAL_PLACEMENTS("additionalplacements"),
     DIAGONAL_FENCES("diagonalfences"),
-    ATHENA("athena");
+    ATHENA("athena"),
+    INDIUM("indium");
 
     public final String id;
     public final boolean isLoaded;
