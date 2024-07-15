@@ -206,6 +206,17 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
 
         MaterialItemStorage.MaterialItem material = copycatBE.getMaterialItemStorage().getMaterialItem(property);
         ItemStack consumedItem = material.consumedItem();
+        if (!consumedItem.isEmpty()) {
+            for (String prop : copycatBE.getMaterialItemStorage().getAllProperties()) {
+                if (prop.equals(property)) continue;
+                MaterialItemStorage.MaterialItem materialItem = copycatBE.getMaterialItemStorage().getMaterialItem(prop);
+                if (materialItem.material().equals(material.material()) && materialItem.consumedItem().isEmpty()) {
+                    copycatBE.setConsumedItem(prop, consumedItem);
+                    consumedItem = ItemStack.EMPTY;
+                    break;
+                }
+            }
+        }
 
         if (!copycatBE.getMaterialItemStorage().hasCustomMaterial(property))
             return InteractionResult.PASS;
@@ -266,8 +277,11 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
         if (level.isClientSide())
             return InteractionResult.SUCCESS;
 
+        boolean freeToApply = copycatBE.getMaterialItemStorage().getAllConsumedItems().stream().anyMatch(s -> s.getItem() == itemInHand.getItem());
+
         copycatBE.setMaterial(property, material);
-        copycatBE.setConsumedItem(property, itemInHand);
+        if (!freeToApply)
+            copycatBE.setConsumedItem(property, itemInHand);
         copycatBE.getLevel()
                 .playSound(null, copycatBE.getBlockPos(), material.getSoundType()
                         .getPlaceSound(), SoundSource.BLOCKS, 1, .75f);
@@ -275,7 +289,8 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
         if (player.isCreative())
             return InteractionResult.SUCCESS;
 
-        itemInHand.shrink(1);
+        if (!freeToApply)
+            itemInHand.shrink(1);
         if (itemInHand.isEmpty())
             player.setItemInHand(hand, ItemStack.EMPTY);
         return InteractionResult.SUCCESS;
@@ -313,6 +328,9 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
         }
     }
 
+    /**
+     * Implementation note: must be called before super.remove
+     */
     @Override
     default void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!state.hasBlockEntity() || state.getBlock() == newState.getBlock())

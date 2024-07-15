@@ -218,18 +218,13 @@ public class CopycatHalfLayerBlock extends WaterloggedMultiStateCopycatBlock {
         } else {
             targetProp = POSITIVE_LAYERS;
         }
+        if (state.getValue(targetProp) == 1)
+            onWrenched(state, context);
         if (world instanceof ServerLevel serverLevel) {
             if (player != null) {
                 List<ItemStack> drops = Block.getDrops(
                         state.setValue(POSITIVE_LAYERS, 0).setValue(NEGATIVE_LAYERS, 0).setValue(targetProp, 1),
                         serverLevel, pos, world.getBlockEntity(pos), player, context.getItemInHand());
-                if (state.getValue(targetProp) == 1)
-                    withBlockEntityDo(world, pos, ufte -> {
-                        String property = targetProp.getName();
-                        drops.add(ufte.getMaterialItemStorage().getMaterialItem(property).consumedItem());
-                        ufte.setMaterial(property, AllBlocks.COPYCAT_BASE.getDefaultState());
-                        ufte.setConsumedItem(property, ItemStack.EMPTY);
-                    });
                 if (!player.isCreative()) {
                     for (ItemStack drop : drops) {
                         player.getInventory().placeItemBackInInventory(drop);
