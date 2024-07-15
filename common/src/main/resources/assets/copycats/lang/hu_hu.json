@@ -1,1 +1,10 @@
-{}
+{
+  "block.copycats.copycat_base": "Kaméleon-alap",
+  "block.copycats.copycat_beam": "Kaméleon-oszlop",
+  "block.copycats.copycat_block": "Kaméleon-blokk",
+  "block.copycats.copycat_byte": "Kaméleon-darabka",
+  "block.copycats.copycat_cogwheel": "Kaméleon-fogaskerék",
+  "block.copycats.copycat_door": "Kaméleon-ajtó",
+  "block.copycats.copycat_fence": "Kaméleon-kerítés",
+  "block.copycats.copycat_fence_gate": "Kaméleon-kerítéskapu"
+}
