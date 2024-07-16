@@ -6,9 +6,12 @@ import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.IStateType;
 import com.copycatsplus.copycats.foundation.copycat.StateType;
 import com.copycatsplus.copycats.foundation.copycat.model.ScaledBlockAndTintGetter;
+import com.copycatsplus.copycats.network.CCPackets;
+import com.copycatsplus.copycats.network.FillCopycatPacket;
 import com.copycatsplus.copycats.utility.BlockFaceUtils;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
+import com.simibubi.create.AllKeys;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.foundation.block.IBE;
@@ -274,8 +277,14 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
         }
         if (copycatBE.getMaterialItemStorage().hasCustomMaterial(property))
             return InteractionResult.PASS;
-        if (level.isClientSide())
+
+        if (level.isClientSide()) {
+            if (AllKeys.altDown()) {
+                fillEmptyParts(level, pos, state, material);
+                CCPackets.PACKETS.send(new FillCopycatPacket(pos, material, property));
+            }
             return InteractionResult.SUCCESS;
+        }
 
         boolean freeToApply = copycatBE.getMaterialItemStorage().getAllConsumedItems().stream().anyMatch(s -> s.getItem() == itemInHand.getItem());
 
@@ -349,6 +358,16 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
             IMultiStateCopycatBlockEntity copycatBE = getCopycatBlockEntity(level, pos);
             if (copycatBE != null)
                 copycatBE.getMaterialItemStorage().getAllProperties().forEach(key -> copycatBE.getMaterialItemStorage().getMaterialItem(key).setConsumedItem(ItemStack.EMPTY));
+        }
+    }
+
+    default void fillEmptyParts(Level level, BlockPos pos, BlockState state, BlockState material) {
+        IMultiStateCopycatBlockEntity copycatBE = getCopycatBlockEntity(level, pos);
+        if (copycatBE == null) return;
+        for (String property : copycatBE.getMaterialItemStorage().getAllProperties()) {
+            if (copycatBE.getMaterialItemStorage().hasCustomMaterial(property)) continue;
+            if (!partExists(state, property)) continue;
+            copycatBE.setMaterial(property, material);
         }
     }
 
