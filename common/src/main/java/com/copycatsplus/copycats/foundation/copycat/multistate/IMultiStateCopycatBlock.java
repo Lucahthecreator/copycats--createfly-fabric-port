@@ -1,5 +1,6 @@
 package com.copycatsplus.copycats.foundation.copycat.multistate;
 
+import com.copycatsplus.copycats.CCKeys;
 import com.copycatsplus.copycats.compat.AthenaCompat;
 import com.copycatsplus.copycats.compat.Mods;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
@@ -279,7 +280,7 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
             return InteractionResult.PASS;
 
         if (level.isClientSide()) {
-            if (AllKeys.altDown()) {
+            if (CCKeys.FILL_COPYCAT.isPressed()) {
                 fillEmptyParts(level, pos, state, material);
                 CCPackets.PACKETS.send(new FillCopycatPacket(pos, material, property));
             }
