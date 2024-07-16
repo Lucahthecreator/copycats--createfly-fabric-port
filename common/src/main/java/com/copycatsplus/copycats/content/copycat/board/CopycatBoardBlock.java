@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.board;
 
 import com.copycatsplus.copycats.CCShapes;
+import com.copycatsplus.copycats.CCSimpleShapes;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICustomCTBlocking;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
@@ -37,6 +38,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -159,10 +161,10 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
         VoxelShape shape = Shapes.empty();
         for (Direction direction : Iterate.directions) {
             if (pState.getValue(byDirection(direction))) {
-                shape = Shapes.or(shape, CCShapes.CASING_1PX.get(direction));
+                shape = Shapes.joinUnoptimized(shape, CCSimpleShapes.BOARD.get(direction).toShape(), BooleanOp.OR);
             }
         }
-        return shape;
+        return shape.optimize();
     }
 
     @SuppressWarnings("deprecation")

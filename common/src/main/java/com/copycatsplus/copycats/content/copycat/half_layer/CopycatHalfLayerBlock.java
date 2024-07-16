@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.half_layer;
 
 import com.copycatsplus.copycats.CCShapes;
+import com.copycatsplus.copycats.CCSimpleShapes;
 import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
@@ -35,6 +36,7 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -59,29 +61,6 @@ public class CopycatHalfLayerBlock extends WaterloggedMultiStateCopycatBlock {
     public static final IntegerProperty POSITIVE_LAYERS = IntegerProperty.create("positive_layers", 0, 8);
     public static final IntegerProperty NEGATIVE_LAYERS = IntegerProperty.create("negative_layers", 0, 8);
     private final ImmutableMap<BlockState, VoxelShape> shapesCache;
-
-    private static final VoxelShaper[] TOP_BY_LAYER = new VoxelShaper[]{
-            CCShapes.EMPTY,
-            CCShapes.HALF_LAYER_TOP_2PX,
-            CCShapes.HALF_LAYER_TOP_4PX,
-            CCShapes.HALF_LAYER_TOP_6PX,
-            CCShapes.HALF_LAYER_TOP_8PX,
-            CCShapes.HALF_LAYER_TOP_10PX,
-            CCShapes.HALF_LAYER_TOP_12PX,
-            CCShapes.HALF_LAYER_TOP_14PX,
-            CCShapes.HALF_LAYER_TOP_16PX
-    };
-    private static final VoxelShaper[] BOTTOM_BY_LAYER = new VoxelShaper[]{
-            CCShapes.EMPTY,
-            CCShapes.HALF_LAYER_BOTTOM_2PX,
-            CCShapes.HALF_LAYER_BOTTOM_4PX,
-            CCShapes.HALF_LAYER_BOTTOM_6PX,
-            CCShapes.HALF_LAYER_BOTTOM_8PX,
-            CCShapes.HALF_LAYER_BOTTOM_10PX,
-            CCShapes.HALF_LAYER_BOTTOM_12PX,
-            CCShapes.HALF_LAYER_BOTTOM_14PX,
-            CCShapes.HALF_LAYER_BOTTOM_16PX
-    };
 
     public CopycatHalfLayerBlock(Properties pProperties) {
         super(pProperties);
@@ -321,15 +300,9 @@ public class CopycatHalfLayerBlock extends WaterloggedMultiStateCopycatBlock {
 
     private static VoxelShape calculateMultiFaceShape(BlockState pState) {
         VoxelShape shape = Shapes.empty();
-        shape = Shapes.or(shape,
-                (pState.getValue(HALF) == Half.TOP ? TOP_BY_LAYER : BOTTOM_BY_LAYER)[pState.getValue(POSITIVE_LAYERS)]
-                        .get(Direction.get(AxisDirection.POSITIVE, pState.getValue(AXIS)))
-        );
-        shape = Shapes.or(shape,
-                (pState.getValue(HALF) == Half.TOP ? TOP_BY_LAYER : BOTTOM_BY_LAYER)[pState.getValue(NEGATIVE_LAYERS)]
-                        .get(Direction.get(AxisDirection.NEGATIVE, pState.getValue(AXIS)))
-        );
-        return shape;
+        shape = Shapes.joinUnoptimized(shape, CCSimpleShapes.HALF_LAYER_BOTTOM.get(pState.getValue(AXIS)).get(pState.getValue(NEGATIVE_LAYERS)).toShape(), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, CCSimpleShapes.HALF_LAYER_TOP.get(pState.getValue(AXIS)).get(pState.getValue(POSITIVE_LAYERS)).toShape(), BooleanOp.OR);
+        return shape.optimize();
     }
 
     @SuppressWarnings("deprecation")

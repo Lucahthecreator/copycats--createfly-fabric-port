@@ -2,6 +2,7 @@ package com.copycatsplus.copycats.content.copycat.slope;
 
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
+import com.copycatsplus.copycats.CCSimpleShapes;
 import com.copycatsplus.copycats.foundation.copycat.CCWaterloggedCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICustomCTBlocking;
@@ -160,65 +161,7 @@ public class CopycatSlopeBlock extends CCWaterloggedCopycatBlock implements ISta
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
-        Direction facing = pState.getValue(FACING);
-        boolean isBottom = pState.getValue(HALF) == Half.BOTTOM;
-        Vec3[] triangleVertices = switch (facing) {
-            case WEST -> new Vec3[]{
-                    new Vec3(0, (isBottom ? 0 : 1), 0),
-                    new Vec3(0, (isBottom ? 0 : 1), 0),
-                    new Vec3(1, (isBottom ? 0 : 1), 0),
-                    new Vec3(0, (isBottom ? 1 : 0), 0),
-                    new Vec3(0, (isBottom ? 0 : 1), 1),
-                    new Vec3(0, (isBottom ? 0 : 1), 1),
-                    new Vec3(1, (isBottom ? 0 : 1), 1),
-                    new Vec3(0, (isBottom ? 1 : 0), 1)
-            };
-            case EAST -> new Vec3[]{
-                    new Vec3(1, (isBottom ? 0 : 1), 1),
-                    new Vec3(1, (isBottom ? 0 : 1), 1),
-                    new Vec3(0, (isBottom ? 0 : 1), 1),
-                    new Vec3(1, (isBottom ? 1 : 0), 1),
-                    new Vec3(1, (isBottom ? 0 : 1), 0),
-                    new Vec3(1, (isBottom ? 0 : 1), 0),
-                    new Vec3(0, (isBottom ? 0 : 1), 0),
-                    new Vec3(1, (isBottom ? 1 : 0), 0)
-            };
-            case NORTH -> new Vec3[]{
-                    new Vec3(0, (isBottom ? 0 : 1), 0),
-                    new Vec3(0, (isBottom ? 0 : 1), 0),
-                    new Vec3(0, (isBottom ? 0 : 1), 1),
-                    new Vec3(0, (isBottom ? 1 : 0), 0),
-                    new Vec3(1, (isBottom ? 0 : 1), 0),
-                    new Vec3(1, (isBottom ? 0 : 1), 0),
-                    new Vec3(1, (isBottom ? 0 : 1), 1),
-                    new Vec3(1, (isBottom ? 1 : 0), 0)
-            };
-            case SOUTH -> new Vec3[]{
-                    new Vec3(1, (isBottom ? 0 : 1), 1),
-                    new Vec3(1, (isBottom ? 0 : 1), 1),
-                    new Vec3(1, (isBottom ? 0 : 1), 0),
-                    new Vec3(1, (isBottom ? 1 : 0), 1),
-                    new Vec3(0, (isBottom ? 0 : 1), 1),
-                    new Vec3(0, (isBottom ? 0 : 1), 1),
-                    new Vec3(0, (isBottom ? 0 : 1), 0),
-                    new Vec3(0, (isBottom ? 1 : 0), 1)
-            };
-            default -> throw new AssertionError("Direction shouldn't appear as this is a horizontal facing block only");
-        };
-
-        Vec3[] shape = VoxelUtils.create12Edges(triangleVertices);
-
-        //Accidentally made a corner version
-/*        new Vec3(0.0, (isBottom ? 0 : 1), -0.0),
-                new Vec3(0.0, (isBottom ? 0 : 1), -0.0),
-                new Vec3(0.0, (isBottom ? 0 : 1), -1),
-                new Vec3(1, (isBottom ? 1 : 0), 0),
-                new Vec3(1, (isBottom ? 0 : 1), -0.0),
-                new Vec3(1, (isBottom ? 0 : 1), -0.0),
-                new Vec3(1, (isBottom ? 0 : 1), -1),
-                new Vec3(1, (isBottom ? 1 : 0), 0)*/
-
-        return new NoneVoxelShape((isBottom ? CCShapes.SLOPE_BOTTOM.get(facing) : CCShapes.SLOPE_TOP.get(facing)), shape);
+        return CCSimpleShapes.SLOPE.get(pState.getValue(FACING)).get(pState.getValue(HALF)).toShape();
     }
 
 

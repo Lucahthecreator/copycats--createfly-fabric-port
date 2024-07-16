@@ -2,6 +2,7 @@ package com.copycatsplus.copycats.content.copycat.slab;
 
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
+import com.copycatsplus.copycats.CCSimpleShapes;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
@@ -242,9 +243,9 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock {
         if (type == SlabType.DOUBLE) {
             return Shapes.block();
         } else if (type == SlabType.BOTTOM) {
-            return CCShapes.CASING_8PX.get(axis);
+            return CCSimpleShapes.SLAB_BOTTOM.get(axis).toShape();
         } else {
-            return CCShapes.CASING_8PX_TOP.get(axis);
+            return CCSimpleShapes.SLAB_TOP.get(axis).toShape();
         }
     }
 
