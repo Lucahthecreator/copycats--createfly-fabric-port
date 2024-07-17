@@ -226,26 +226,44 @@ public class CCShapes {
         }
     }
 
-    public static <U> Map<Axis, U> forHorizontalAxes(U factory) {
-        return forAll(HORIZONTAL_AXIS, axis -> applyTransform(factory, axes(axis)));
-    }
-
+    /**
+     * Create a map for all possible values of {@link Axis}. The input shape should be modeled for the Z axis.
+     */
     public static <U> Map<Axis, U> forAxes(U factory) {
         return forAll(AXIS, axis -> applyTransform(factory, axes(axis)));
     }
 
+    /**
+     * Create a map for all possible horizontal values of {@link Axis}. The input shape should be modeled for the Z axis.
+     */
+    public static <U> Map<Axis, U> forHorizontalAxes(U factory) {
+        return forAll(HORIZONTAL_AXIS, axis -> applyTransform(factory, axes(axis)));
+    }
+
+    /**
+     * Create a map for all possible values of {@link Direction}. The input shape should be modeled for the SOUTH direction
+     */
     public static <U> Map<Direction, U> forDirections(U factory) {
         return forAll(FACING, direction -> applyTransform(factory, directions(direction)));
     }
 
+    /**
+     * Create a map for all possible horizontal values of {@link Direction}. The input shape should be modeled for the SOUTH direction
+     */
     public static <U> Map<Direction, U> forHorizontalDirections(U factory) {
         return forAll(HORIZONTAL_FACING, direction -> applyTransform(factory, directions(direction)));
     }
 
+    /**
+     * Create a map for all possible values of {@link Half}. The input shape should be modeled for the BOTTOM half.
+     */
     public static <U> Map<Half, U> forHalves(U factory) {
         return forAll(HALF, halves -> applyTransform(factory, halves(halves)));
     }
 
+    /**
+     * Create a map for all possible values of a property.
+     */
     public static <T extends Comparable<T>, U> Map<T, U> forAll(Property<T> property, Function<T, U> factory) {
         return property.getPossibleValues().stream().collect(
                 Collectors.toMap(
@@ -255,6 +273,9 @@ public class CCShapes {
         );
     }
 
+    /**
+     * Create a map of maps for all possible combinations of two properties.
+     */
     public static <T1 extends Comparable<T1>, T2 extends Comparable<T2>, U> Map<T1, Map<T2, U>> forAll(Property<T1> property1,
                                                                                                        Property<T2> property2,
                                                                                                        BiFunction<T1, T2, U> factory) {
@@ -266,6 +287,9 @@ public class CCShapes {
         );
     }
 
+    /**
+     * Create a map of maps for all possible combinations of three properties.
+     */
     public static <T1 extends Comparable<T1>, T2 extends Comparable<T2>, T3 extends Comparable<T3>, U> Map<T1, Map<T2, Map<T3, U>>> forAll(Property<T1> property1,
                                                                                                                                            Property<T2> property2,
                                                                                                                                            Property<T3> property3,
@@ -278,12 +302,18 @@ public class CCShapes {
         );
     }
 
+    /**
+     * Create a mutable shape consisting of multiple {@link MutableAABB}s.
+     */
     public static MutableShape shape(MutableAABB... boxes) {
         List<MutableAABB> newBoxes = new LinkedList<>();
         Collections.addAll(newBoxes, boxes);
         return new MutableShape(newBoxes, new ArrayList<>());
     }
 
+    /**
+     * Create a mutable line consisting of two {@link MutableVec3}s.
+     */
     public static Pair<MutableVec3, MutableVec3> line(MutableVec3 start, MutableVec3 end) {
         return Pair.of(start, end);
     }
