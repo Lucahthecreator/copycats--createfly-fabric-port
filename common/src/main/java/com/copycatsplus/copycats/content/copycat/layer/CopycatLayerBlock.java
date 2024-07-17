@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.layer;
 
-import com.copycatsplus.copycats.CCSimpleShapes;
+import com.copycatsplus.copycats.CCShapes;
 import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.foundation.copycat.CCWaterloggedCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
@@ -173,7 +173,7 @@ public class CopycatLayerBlock extends CCWaterloggedCopycatBlock implements ISpe
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
-        return CCSimpleShapes.LAYER.get(pState.getValue(FACING)).get(pState.getValue(LAYERS)).toShape();
+        return CCShapes.LAYER.get(pState.getValue(FACING)).get(pState.getValue(LAYERS)).toShape();
     }
 
 

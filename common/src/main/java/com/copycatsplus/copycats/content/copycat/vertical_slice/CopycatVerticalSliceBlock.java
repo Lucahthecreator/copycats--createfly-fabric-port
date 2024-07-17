@@ -1,7 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.vertical_slice;
 
 import com.copycatsplus.copycats.CCShapes;
-import com.copycatsplus.copycats.CCSimpleShapes;
 import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.foundation.copycat.CCWaterloggedCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
@@ -10,7 +9,6 @@ import com.simibubi.create.content.schematics.requirement.ISpecialBlockItemRequi
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.foundation.utility.Iterate;
 import com.simibubi.create.foundation.utility.Pair;
-import com.simibubi.create.foundation.utility.VoxelShaper;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -208,7 +206,7 @@ public class CopycatVerticalSliceBlock extends CCWaterloggedCopycatBlock impleme
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
-        return CCSimpleShapes.VERTICAL_SLICE.get(pState.getValue(FACING)).get(pState.getValue(LAYERS)).toShape();
+        return CCShapes.VERTICAL_SLICE.get(pState.getValue(FACING)).get(pState.getValue(LAYERS)).toShape();
     }
 
 

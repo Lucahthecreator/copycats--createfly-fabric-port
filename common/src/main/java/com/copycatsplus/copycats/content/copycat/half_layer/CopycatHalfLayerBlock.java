@@ -1,17 +1,13 @@
 package com.copycatsplus.copycats.content.copycat.half_layer;
 
 import com.copycatsplus.copycats.CCShapes;
-import com.copycatsplus.copycats.CCSimpleShapes;
 import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.foundation.copycat.multistate.WaterloggedMultiStateCopycatBlock;
-import com.copycatsplus.copycats.utility.BlockFaceUtils;
 import com.google.common.collect.ImmutableMap;
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.StructureTransform;
-import com.simibubi.create.foundation.utility.VoxelShaper;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -300,8 +296,8 @@ public class CopycatHalfLayerBlock extends WaterloggedMultiStateCopycatBlock {
 
     private static VoxelShape calculateMultiFaceShape(BlockState pState) {
         VoxelShape shape = Shapes.empty();
-        shape = Shapes.joinUnoptimized(shape, CCSimpleShapes.HALF_LAYER_BOTTOM.get(pState.getValue(AXIS)).get(pState.getValue(NEGATIVE_LAYERS)).toShape(), BooleanOp.OR);
-        shape = Shapes.joinUnoptimized(shape, CCSimpleShapes.HALF_LAYER_TOP.get(pState.getValue(AXIS)).get(pState.getValue(POSITIVE_LAYERS)).toShape(), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, CCShapes.HALF_LAYER_BOTTOM.get(pState.getValue(AXIS)).get(pState.getValue(NEGATIVE_LAYERS)).toShape(), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, CCShapes.HALF_LAYER_TOP.get(pState.getValue(AXIS)).get(pState.getValue(POSITIVE_LAYERS)).toShape(), BooleanOp.OR);
         return shape.optimize();
     }
 

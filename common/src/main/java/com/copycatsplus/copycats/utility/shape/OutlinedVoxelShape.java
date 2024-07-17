@@ -13,11 +13,11 @@ import java.util.List;
 /*
  * Copied from https://github.com/Fuzss/diagonalblocks
  */
-public class NoneVoxelShape extends ExtensibleVoxelShape {
+public class OutlinedVoxelShape extends ExtensibleVoxelShape {
     private final VoxelShape collisionShape;
     private final List<Pair<Vec3, Vec3>> outlineShapeEdges;
 
-    public NoneVoxelShape(VoxelShape collisionShape, List<Pair<Vec3, Vec3>> outlineShapeEdges) {
+    public OutlinedVoxelShape(VoxelShape collisionShape, List<Pair<Vec3, Vec3>> outlineShapeEdges) {
         super(collisionShape);
         this.collisionShape = collisionShape;
         this.outlineShapeEdges = outlineShapeEdges;

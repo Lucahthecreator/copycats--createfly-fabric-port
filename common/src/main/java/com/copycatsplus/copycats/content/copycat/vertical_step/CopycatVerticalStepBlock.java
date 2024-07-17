@@ -2,7 +2,6 @@ package com.copycatsplus.copycats.content.copycat.vertical_step;
 
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
-import com.copycatsplus.copycats.CCSimpleShapes;
 import com.copycatsplus.copycats.foundation.copycat.CCWaterloggedCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.IStateType;
@@ -160,7 +159,7 @@ public class CopycatVerticalStepBlock extends CCWaterloggedCopycatBlock implemen
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
-        return CCSimpleShapes.VERTICAL_STEP.get(pState.getValue(FACING)).toShape();
+        return CCShapes.VERTICAL_STEP.get(pState.getValue(FACING)).toShape();
     }
 
 
