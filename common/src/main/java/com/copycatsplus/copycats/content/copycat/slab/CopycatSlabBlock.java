@@ -2,13 +2,11 @@ package com.copycatsplus.copycats.content.copycat.slab;
 
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
-import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.foundation.copycat.multistate.WaterloggedMultiStateCopycatBlock;
 import com.copycatsplus.copycats.utility.InteractionUtils;
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.foundation.placement.IPlacementHelper;
 import com.simibubi.create.foundation.placement.PlacementHelpers;
@@ -242,9 +240,9 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock {
         if (type == SlabType.DOUBLE) {
             return Shapes.block();
         } else if (type == SlabType.BOTTOM) {
-            return CCShapes.CASING_8PX.get(axis);
+            return CCShapes.SLAB_BOTTOM.get(axis).toShape();
         } else {
-            return CCShapes.CASING_8PX_TOP.get(axis);
+            return CCShapes.SLAB_TOP.get(axis).toShape();
         }
     }
 
