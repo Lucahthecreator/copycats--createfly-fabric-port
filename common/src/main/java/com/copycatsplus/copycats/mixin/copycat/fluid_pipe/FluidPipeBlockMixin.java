@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.At;
  * <p>
  * The reverse conversion doesn't need to be patched because it can be overridden in {@link CopycatGlassFluidPipeBlock}.
  */
-@Mixin(FluidPipeBlock.class)
+@Mixin(value = FluidPipeBlock.class, priority = 1100) // A higher priority is required to apply the mixin after Create: TFMG
 public class FluidPipeBlockMixin {
     @WrapOperation(
             method = "onWrenched",
