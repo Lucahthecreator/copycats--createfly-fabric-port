@@ -84,6 +84,8 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -671,6 +673,7 @@ public class CCBlocks {
                     .transform(customItemModel("copycat_base", "door"))
                     .register();
 
+    @Environment(EnvType.CLIENT)
     @ExpectPlatform
     public static BakedModel getFluidPipeModel(BakedModel original, CopycatModelCore copycat) {
         throw new AssertionError();
