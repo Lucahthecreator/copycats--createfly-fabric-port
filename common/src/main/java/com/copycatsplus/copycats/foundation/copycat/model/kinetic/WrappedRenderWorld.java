@@ -4,6 +4,7 @@ package com.copycatsplus.copycats.foundation.copycat.model.kinetic;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.jozufozu.flywheel.core.virtual.VirtualEmptyBlockGetter;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
@@ -156,7 +157,12 @@ public class WrappedRenderWorld implements VirtualEmptyBlockGetter {
 
     @Override
     public int getBlockTint(@NotNull BlockPos pos, @NotNull ColorResolver resolver) {
-        Biome plainsBiome = Minecraft.getInstance().getConnection().registryAccess().registryOrThrow(Registries.BIOME).getOrThrow(Biomes.PLAINS);
+        ClientPacketListener connection = Minecraft.getInstance().getConnection();
+        if (connection == null)
+            return GrassColor.getDefaultColor();
+        Biome plainsBiome = connection.registryAccess().registry(Registries.BIOME).map(r -> r.get(Biomes.PLAINS)).orElse(null);
+        if (plainsBiome == null)
+            return GrassColor.getDefaultColor();
         return resolver.getColor(plainsBiome, pos.getX(), pos.getZ());
     }
 }
