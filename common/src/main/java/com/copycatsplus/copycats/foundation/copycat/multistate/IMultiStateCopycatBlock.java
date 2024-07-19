@@ -238,6 +238,11 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
         return InteractionResult.SUCCESS;
     }
 
+    @Nullable
+    default BlockState getAcceptedBlockState(String property, Level pLevel, BlockPos pPos, ItemStack item, Direction face) {
+        return getAcceptedBlockState(pLevel, pPos, item, face);
+    }
+
     @Override
     default InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         // prioritize wrench interactions over others
@@ -254,9 +259,11 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
         if (player == null || !player.mayBuild())
             return InteractionResult.PASS;
 
+        String property = getPropertyFromInteraction(state, level, pos, hit, true);
+
         Direction face = hit.getDirection();
         ItemStack itemInHand = player.getItemInHand(hand);
-        BlockState material = getAcceptedBlockState(level, pos, itemInHand, face);
+        BlockState material = getAcceptedBlockState(property, level, pos, itemInHand, face);
 
         if (material != null)
             material = prepareMaterial(level, pos, state, player, hand, hit, material);
@@ -266,7 +273,6 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
         IMultiStateCopycatBlockEntity copycatBE = getCopycatBlockEntity(level, pos);
         if (copycatBE == null)
             return InteractionResult.PASS;
-        String property = getPropertyFromInteraction(state, level, pos, hit, true);
         if (!partExists(state, property)) return InteractionResult.PASS;
         if (copycatBE.getMaterialItemStorage().getMaterialItem(property).material()
                 .is(material.getBlock())) {
