@@ -5,8 +5,8 @@ import com.copycatsplus.copycats.foundation.copycat.model.assembly.AssemblyTrans
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.CopycatRenderContext;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
-import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
@@ -33,11 +33,13 @@ public class CopycatCogWheelModelCore extends CopycatModelCore {
 
     @Override
     public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
+        Axis axis = state.getValue(CopycatShaftBlock.AXIS);
+
         if (material.getBlock() instanceof CogWheelBlock) {
             context.assemblePiece(
-                    AssemblyTransform.IDENTITY,
-                    vec3(-8, -8, -8),
-                    aabb(32, 32, 32).move(-8, -8, -8),
+                    t -> t.rotateX(axis == Axis.Z ? 90 : 0).rotateZ(axis == Axis.X ? 90 : 0),
+                    vec3(-8, 6, -8),
+                    aabb(32, 4, 32).move(-8, 6, -8),
                     cull(0),
                     noCull(),
                     scale(
@@ -48,11 +50,9 @@ public class CopycatCogWheelModelCore extends CopycatModelCore {
             return;
         }
 
-        Direction.Axis axis = state.getValue(CopycatShaftBlock.AXIS);
-
         for (int i = 0; i < 4; i++) {
             int rotation = i * 90;
-            AssemblyTransform transform = t -> t.rotateZ(rotation).rotateY(axis == Direction.Axis.X ? 90 : 0).rotateX(axis == Direction.Axis.Y ? 90 : 0);
+            AssemblyTransform transform = t -> t.rotateZ(rotation).rotateY(axis == Axis.X ? 90 : 0).rotateX(axis == Axis.Y ? 90 : 0);
             context.assemblePiece(
                     transform,
                     vec3(4, 4, 6),
