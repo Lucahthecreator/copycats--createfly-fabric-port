@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.foundation.copycat;
 
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
+import com.copycatsplus.copycats.utility.BlockEntityUtils;
 import com.copycatsplus.copycats.utility.BlockFaceUtils;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
@@ -103,7 +104,7 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
             if (!canToggleCT(pState, pLevel, pPos))
                 return InteractionResult.PASS;
             fbe.setCTEnabled(!fbe.isCTEnabled());
-            fbe.redraw();
+            BlockEntityUtils.redraw((BlockEntity) fbe);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;

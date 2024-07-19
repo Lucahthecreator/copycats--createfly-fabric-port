@@ -9,10 +9,10 @@ import com.copycatsplus.copycats.foundation.copycat.StateType;
 import com.copycatsplus.copycats.foundation.copycat.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.network.CCPackets;
 import com.copycatsplus.copycats.network.FillCopycatPacket;
+import com.copycatsplus.copycats.utility.BlockEntityUtils;
 import com.copycatsplus.copycats.utility.BlockFaceUtils;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
-import com.simibubi.create.AllKeys;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.foundation.block.IBE;
@@ -186,7 +186,7 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
             if (be == null)
                 return InteractionResult.PASS;
             be.setEnableCT(property, !be.getMaterialItemStorage().getMaterialItem(property).enableCT());
-            be.redraw();
+            BlockEntityUtils.redraw((BlockEntity) be);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;

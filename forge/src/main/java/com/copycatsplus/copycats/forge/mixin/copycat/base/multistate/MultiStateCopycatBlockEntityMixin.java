@@ -33,13 +33,6 @@ public abstract class MultiStateCopycatBlockEntityMixin extends SmartBlockEntity
     }
 
     @Override
-    public void redraw() {
-        if (!isVirtual())
-            requestModelDataUpdate();
-        BlockEntityUtils.redraw(this);
-    }
-
-    @Override
     public @NotNull ModelData getModelData() {
         return KineticCopycatRendererImpl.mergeData(
                 super.getModelData(),
