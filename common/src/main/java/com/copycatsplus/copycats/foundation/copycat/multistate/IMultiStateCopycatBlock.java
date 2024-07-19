@@ -45,6 +45,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -464,6 +465,12 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
         BlockState material = getMaterial(level, pos, property);
         if (AllBlocks.COPYCAT_BASE.has(material)) return false; // copycat_base is incorrectly set to occlude
         return material.canOcclude();
+    }
+
+    @Override
+    default Optional<Boolean> shapeCanOccludeNeighbor(BlockGetter level, BlockPos pos, BlockState state, BlockPos neighborPos, Direction dir) {
+        BlockState neighborState = level.getBlockState(neighborPos);
+        return Optional.of(BlockFaceUtils.facesMatch(level, neighborState, neighborPos, state, pos, dir.getOpposite()));
     }
 
     /**
