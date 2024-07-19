@@ -18,7 +18,6 @@
     "copycat.base.ConnectedTextureBehaviourMixin",
     "copycat.base.CopycatBlockEntityMixin",
     "copycat.base.CopycatBlockMixin",
-    "copycat.base.RotatedPillarCTBehaviourMixin",
     "copycat.base.kinetic.CreateClientMixin",
     "copycat.base.multistate.AirCurrentMixin",
     "copycat.base.multistate.ContraptionMixin",
