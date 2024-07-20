@@ -153,6 +153,7 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock {
 
     @Override
     public boolean isIgnoredConnectivitySide(String property, BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos) {
+        if (fromPos.equals(toPos)) return false; // Compat with Fusion CT: allow connection to self
         BlockState toState = reader.getBlockState(toPos);
         if (reader instanceof ScaledBlockAndTintGetter scaledReader) {
             BlockPos fromTruePos = scaledReader.getTruePos(fromPos);
@@ -164,6 +165,7 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock {
 
     @Override
     public boolean canConnectTexturesToward(String property, BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
+        if (fromPos.equals(toPos)) return true; // Compat with Fusion CT: allow connection to self
         BlockState toState = reader.getBlockState(toPos);
         if (reader instanceof ScaledBlockAndTintGetter scaledReader) {
             BlockPos fromTruePos = scaledReader.getTruePos(fromPos);
