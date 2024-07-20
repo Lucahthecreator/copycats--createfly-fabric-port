@@ -33,7 +33,7 @@ public class CCCreativeTabsImpl extends CCCreativeTabs {
 
     public static final AllCreativeModeTabs.TabInfo FUNCTIONAL_TAB = register("functional", () -> FabricItemGroup.builder()
             .title(Component.translatable("itemGroup.copycats.functional"))
-            .icon(CCBlocks.COPYCAT_DOOR::asStack)
+            .icon(CCBlocks.COPYCAT_COGWHEEL::asStack)
             .displayItems(new DisplayItemsGenerator(FUNCTIONAL))
             .build());
 

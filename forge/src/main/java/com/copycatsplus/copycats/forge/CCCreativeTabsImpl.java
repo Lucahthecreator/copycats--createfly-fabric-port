@@ -30,7 +30,7 @@ public class CCCreativeTabsImpl extends CCCreativeTabs {
             () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.copycats.functional"))
                     .withTabsBefore(MAIN_TAB.getKey())
-                    .icon(CCBlocks.COPYCAT_DOOR::asStack)
+                    .icon(CCBlocks.COPYCAT_COGWHEEL::asStack)
                     .displayItems(new DisplayItemsGenerator(FUNCTIONAL))
                     .build());
 
