@@ -1,5 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.door;
 
+import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.foundation.copycat.model.CopycatModelCore;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.AssemblyTransform;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.CopycatRenderContext;
@@ -8,15 +9,29 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoorHingeSide;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
+import java.util.List;
+
 import static com.copycatsplus.copycats.foundation.copycat.model.assembly.CopycatRenderContext.*;
 import static com.copycatsplus.copycats.foundation.copycat.model.assembly.MutableCullFace.*;
 
 public class CopycatDoorModelCore extends CopycatModelCore {
+
+    @Override
+    public void registerModels(List<ModelEntry> entries) {
+        registerForMultiState(entries, CCBlocks.COPYCAT_DOOR.get(), false);
+        registerForMultiState(entries, CCBlocks.COPYCAT_IRON_DOOR.get(), false);
+    }
+
     @Override
     public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
+        DoubleBlockHalf half = state.getValue(DoorBlock.HALF);
+        if (half == DoubleBlockHalf.LOWER && key.equals(DoubleBlockHalf.UPPER.getSerializedName()))
+            return;
+        if (half == DoubleBlockHalf.UPPER && key.equals(DoubleBlockHalf.LOWER.getSerializedName()))
+            return;
+
         int rot = (int) state.getValue(DoorBlock.FACING).toYRot();
         boolean rightHinge = state.getValue(DoorBlock.HINGE).equals(DoorHingeSide.RIGHT);
-        DoubleBlockHalf half = state.getValue(DoorBlock.HALF);
         boolean open = state.getValue(DoorBlock.OPEN);
         AssemblyTransform transform = t -> t.rotateY(rot);
         if (half == DoubleBlockHalf.LOWER) {
