@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.mixin.copycat.base;
+package com.copycatsplus.copycats.mixin.foundation.copycat;
 
 import com.copycatsplus.copycats.foundation.copycat.ICustomCTBlocking;
 import com.copycatsplus.copycats.foundation.copycat.model.FilteredBlockAndTintGetter;

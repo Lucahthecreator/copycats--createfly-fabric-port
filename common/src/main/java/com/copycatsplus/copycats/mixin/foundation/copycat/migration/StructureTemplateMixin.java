@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.mixin.copycat.base.migration;
+package com.copycatsplus.copycats.mixin.foundation.copycat.migration;
 
 import com.copycatsplus.copycats.foundation.copycat.MigrationManager;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;

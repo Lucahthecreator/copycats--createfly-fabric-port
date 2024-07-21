@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.mixin.copycat.base;
+package com.copycatsplus.copycats.mixin.foundation.copycat;
 
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.simibubi.create.content.decoration.copycat.CopycatBlockEntity;

@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.mixin.copycat.base;
+package com.copycatsplus.copycats.mixin.foundation.copycat;
 
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
