@@ -299,8 +299,8 @@ public class CopycatHalfLayerBlock extends WaterloggedMultiStateCopycatBlock {
 
     private static VoxelShape calculateMultiFaceShape(BlockState pState) {
         VoxelShape shape = Shapes.empty();
-        shape = Shapes.joinUnoptimized(shape, CCShapes.HALF_LAYER_BOTTOM.get(pState.getValue(AXIS)).get(pState.getValue(NEGATIVE_LAYERS)).toShape(), BooleanOp.OR);
-        shape = Shapes.joinUnoptimized(shape, CCShapes.HALF_LAYER_TOP.get(pState.getValue(AXIS)).get(pState.getValue(POSITIVE_LAYERS)).toShape(), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, CCShapes.HALF_LAYER_BOTTOM.get(pState.getValue(AXIS)).get(pState.getValue(HALF)).get(pState.getValue(NEGATIVE_LAYERS)).toShape(), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, CCShapes.HALF_LAYER_TOP.get(pState.getValue(AXIS)).get(pState.getValue(HALF)).get(pState.getValue(POSITIVE_LAYERS)).toShape(), BooleanOp.OR);
         return shape.optimize();
     }
 
