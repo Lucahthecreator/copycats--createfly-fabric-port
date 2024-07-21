@@ -7,10 +7,10 @@
   "mixins": [
     "compat.doubleslabs.DSConfigCommonMixin",
     "compat.registrate.CreateRegistrateMixin",
-    "copycat.base.CopycatBlockEntityMixin",
-    "copycat.base.CopycatBlockMixin",
-    "copycat.base.multistate.MultiStateCopycatBlockEntityMixin",
-    "copycat.base.multistate.MultiStateCopycatBlockMixin",
+    "foundation.copycat.CopycatBlockEntityMixin",
+    "foundation.copycat.CopycatBlockMixin",
+    "foundation.copycat.multistate.MultiStateCopycatBlockEntityMixin",
+    "foundation.copycat.multistate.MultiStateCopycatBlockMixin",
     "network.ServerGamePacketListenerImplMixin"
   ],
   "client": [

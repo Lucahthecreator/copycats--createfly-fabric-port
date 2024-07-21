@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.fabric.mixin.copycat.base;
+package com.copycatsplus.copycats.fabric.mixin.foundation.copycat;
 
 import com.copycatsplus.copycats.foundation.copycat.CCCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;

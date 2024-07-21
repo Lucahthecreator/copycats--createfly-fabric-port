@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.forge.mixin.copycat.base.multistate;
+package com.copycatsplus.copycats.fabric.mixin.foundation.copycat.multistate;
 
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
@@ -6,9 +6,13 @@ import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopyca
 import com.copycatsplus.copycats.foundation.copycat.multistate.MultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelBlock;
 import com.simibubi.create.AllBlocks;
+import io.github.fabricators_of_create.porting_lib.block.*;
+import io.github.fabricators_of_create.porting_lib.enchant.EnchantmentBonusBlock;
+import net.fabricmc.fabric.api.block.BlockPickInteractionAware;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,13 +27,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.extensions.IForgeBlock;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
+import org.spongepowered.asm.mixin.Unique;
 
+import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * Implement platform-specific methods for multi-state copycat blocks.
@@ -40,8 +46,10 @@ import java.util.concurrent.atomic.AtomicReference;
         MultiStateCopycatBlock.class,
         CopycatCogWheelBlock.class
 })
-@Pseudo
-public abstract class MultiStateCopycatBlockMixin extends Block implements IForgeBlock, IMultiStateCopycatBlock {
+public abstract class MultiStateCopycatBlockMixin extends Block implements IMultiStateCopycatBlock,
+        CustomFrictionBlock, CustomSoundTypeBlock, LightEmissiveBlock, ExplosionResistanceBlock,
+        BlockPickInteractionAware, CustomLandingEffectsBlock, CustomRunningEffectsBlock, EnchantmentBonusBlock,
+        ValidSpawnBlock {
 
     public MultiStateCopycatBlockMixin(Properties properties) {
         super(properties);
@@ -61,10 +69,17 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IForg
             IMultiStateCopycatBlockEntity copycatBE = copycatBlock.getCopycatBlockEntity(level, pos);
             if (copycatBE == null)
                 return state.getBlock().getFriction();
-            copycatBE.getMaterialItemStorage().getAllMaterials().forEach(mat -> {
-                count.getAndIncrement();
-                bonus.accumulateAndGet(mat.is(Blocks.AIR) ? state.getFriction(level, pos, entity) : mat.getFriction(level, pos, entity), Float::sum);
-            });
+            copycatBE
+                    .getMaterialItemStorage()
+                    .getAllMaterials()
+                    .forEach(mat -> {
+                        count.getAndIncrement();
+                        bonus.accumulateAndGet(maybeMaterialAs(level, pos, CustomFrictionBlock.class,
+                                mat, (material, frictionBlock) -> frictionBlock.getFriction(material, level, pos, entity),
+                                (material) -> material.is(Blocks.AIR)
+                                        ? state.getBlock().getFriction()
+                                        : material.getBlock().getFriction()), Float::sum);
+                    });
             return bonus.get() / count.get();
         }
         return state.getBlock().getFriction();
@@ -99,19 +114,25 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IForg
             });
             return explosionResistance.get();
         }
-        return state.getBlock().getExplosionResistance(state, level, pos, explosion);
+        return state.getBlock().getExplosionResistance();
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos,
-                                       Player player) {
-        String property = target == null
-                ? null
-                : getPropertyFromInteraction(state, level, pos, target.getLocation(), target instanceof BlockHitResult blockHit ? blockHit.getDirection() : Direction.UP, true);
-        BlockState material = property == null ? ICopycatBlock.getMaterial(level, pos) : IMultiStateCopycatBlock.getMaterial(level, pos, property);
-        if (AllBlocks.COPYCAT_BASE.has(material) || player != null && player.isSteppingCarefully())
-            return new ItemStack(this);
-        return material.getBlock().getCloneItemStack(level, pos, material);
+    public ItemStack getPickedStack(BlockState state, BlockGetter level, BlockPos pos, @Nullable Player player, @Nullable HitResult result) {
+        if (state.getBlock() instanceof IMultiStateCopycatBlock copycatBlock) {
+            String property = result == null
+                    ? null
+                    : copycatBlock.getPropertyFromInteraction(state, level, pos, result.getLocation(), result instanceof BlockHitResult blockHit ? blockHit.getDirection() : Direction.UP, true);
+            BlockState material = property == null ? ICopycatBlock.getMaterial(level, pos) : IMultiStateCopycatBlock.getMaterial(level, pos, property);
+            if (AllBlocks.COPYCAT_BASE.has(material) || player != null && player.isShiftKeyDown())
+                return new ItemStack((Block) copycatBlock);
+            return maybeMaterialAs(
+                    level, pos, BlockPickInteractionAware.class, material,
+                    (mat, block) -> block.getPickedStack(mat, level, pos, player, result),
+                    mat -> mat.getBlock().getCloneItemStack(level, pos, mat)
+            );
+        }
+        return new ItemStack(state.getBlock());
     }
 
     @Override
@@ -125,7 +146,9 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IForg
             if (copycatBE == null)
                 return false;
             mat.set(copycatBE.getMaterialItemStorage().getMaterialItem(property).material());
-            return mat.get().addLandingEffects(level, pos, mat.get(), entity, numberOfParticles);
+            return maybeMaterialAs(level, pos, CustomLandingEffectsBlock.class,
+                    mat.get(), (material, frictionBlock) -> frictionBlock.addLandingEffects(material, level, pos, material, entity, numberOfParticles),
+                    (material) -> false);
         }
         return false;
     }
@@ -141,7 +164,9 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IForg
             if (copycatBE == null)
                 return false;
             mat.set(copycatBE.getMaterialItemStorage().getMaterialItem(property).material());
-            return mat.get().addRunningEffects(level, pos, entity);
+            return maybeMaterialAs(level, pos, CustomRunningEffectsBlock.class,
+                    mat.get(), (material, frictionBlock) -> frictionBlock.addRunningEffects(material, level, pos, entity),
+                    (material) -> false);
         }
         return false;
     }
@@ -154,7 +179,18 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IForg
             IMultiStateCopycatBlockEntity copycatBE = copycatBlock.getCopycatBlockEntity(level, pos);
             if (copycatBE == null)
                 return 0f;
-            copycatBE.getMaterialItemStorage().getAllMaterials().forEach(mat -> bonus.accumulateAndGet(mat.getEnchantPowerBonus(level, pos), Float::max));
+            copycatBE
+                    .getMaterialItemStorage()
+                    .getAllMaterials()
+                    .forEach(mat -> {
+                        bonus.accumulateAndGet(
+                                maybeMaterialAs(level, pos, EnchantmentBonusBlock.class, mat,
+                                        (material, enchantmentBlock) -> enchantmentBlock.getEnchantPowerBonus(material, level, pos),
+                                        (material) -> material.is(BlockTags.ENCHANTMENT_POWER_PROVIDER) ? 1f : 0f
+                                ),
+                                Float::max
+                        );
+                    });
             return bonus.get();
         }
         return 0f;
@@ -167,10 +203,10 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IForg
     }
 
     @Override
-    public void fallOn(@NotNull Level pLevel, @NotNull BlockState state, @NotNull BlockPos pPos, @NotNull Entity pEntity, float p_152430_) {
-        if (state.getBlock() instanceof IMultiStateCopycatBlock copycatBlock) {
+    public void fallOn(@NotNull Level pLevel, @NotNull BlockState pState, @NotNull BlockPos pPos, @NotNull Entity pEntity, float p_152430_) {
+        if (pState.getBlock() instanceof IMultiStateCopycatBlock copycatBlock) {
             BlockHitResult hitResult = pLevel.clip(new ClipContext(pEntity.position(), pEntity.position().add(0, -2, 0), ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, pEntity));
-            String property = copycatBlock.getPropertyFromInteraction(state, pLevel, pPos, hitResult, true);
+            String property = copycatBlock.getPropertyFromInteraction(pState, pLevel, pPos, hitResult, true);
             AtomicReference<BlockState> material = new AtomicReference<>(AllBlocks.COPYCAT_BASE.getDefaultState());
 
             IMultiStateCopycatBlockEntity copycatBE = copycatBlock.getCopycatBlockEntity(pLevel, pPos);
@@ -196,8 +232,17 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IForg
         return pState.getDestroyProgress(pPlayer, pLevel, pPos);
     }
 
+    @Unique
+    private static <T, R> R maybeMaterialAs(BlockGetter level, BlockPos pos, Class<T> clazz, BlockState material,
+                                            BiFunction<BlockState, T, R> ifType, Function<BlockState, R> ifNot) {
+        Block block = material.getBlock();
+        if (clazz.isInstance(block))
+            return ifType.apply(material, clazz.cast(block));
+        return ifNot.apply(material);
+    }
+
     @Override
-    public BlockState getAppearance(BlockState state, BlockAndTintGetter renderView, BlockPos pos, Direction side, @org.jetbrains.annotations.Nullable BlockState sourceState, @org.jetbrains.annotations.Nullable BlockPos sourcePos) {
+    public BlockState getAppearance(BlockState state, BlockAndTintGetter renderView, BlockPos pos, Direction side, @Nullable BlockState sourceState, @Nullable BlockPos sourcePos) {
         return IMultiStateCopycatBlock.getAppearance(this, state, renderView, pos, side, sourceState, sourcePos);
     }
 }

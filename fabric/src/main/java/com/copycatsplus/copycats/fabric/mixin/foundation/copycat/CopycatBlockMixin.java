@@ -1,9 +1,9 @@
-package com.copycatsplus.copycats.forge.mixin.copycat.base;
+package com.copycatsplus.copycats.fabric.mixin.foundation.copycat;
 
+import com.copycatsplus.copycats.content.copycat.door.CopycatDoorBlock;
 import com.copycatsplus.copycats.foundation.copycat.CCCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.button.CopycatButtonBlock;
-import com.copycatsplus.copycats.content.copycat.door.CopycatDoorBlock;
 import com.copycatsplus.copycats.content.copycat.fence.CopycatFenceBlock;
 import com.copycatsplus.copycats.content.copycat.fence_gate.CopycatFenceGateBlock;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlock;
@@ -16,9 +16,13 @@ import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsBlock;
 import com.copycatsplus.copycats.content.copycat.trapdoor.CopycatTrapdoorBlock;
 import com.copycatsplus.copycats.content.copycat.wall.CopycatWallBlock;
 import com.simibubi.create.AllBlocks;
+import io.github.fabricators_of_create.porting_lib.block.*;
+import io.github.fabricators_of_create.porting_lib.enchant.EnchantmentBonusBlock;
+import net.fabricmc.fabric.api.block.BlockPickInteractionAware;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,8 +35,13 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+
+import javax.annotation.Nullable;
+
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import static com.copycatsplus.copycats.foundation.copycat.ICopycatBlock.getMaterial;
 
@@ -55,10 +64,12 @@ import static com.copycatsplus.copycats.foundation.copycat.ICopycatBlock.getMate
         CopycatWallBlock.class,
         CopycatShaftBlock.class,
         CopycatFluidPipeBlock.class,
-        CopycatGlassFluidPipeBlock.class,
-        CopycatDoorBlock.class
+        CopycatGlassFluidPipeBlock.class
 })
-public abstract class CopycatBlockMixin extends Block implements ICopycatBlock {
+public abstract class CopycatBlockMixin extends Block implements ICopycatBlock,
+        CustomFrictionBlock, CustomSoundTypeBlock, LightEmissiveBlock, ExplosionResistanceBlock,
+        BlockPickInteractionAware, CustomLandingEffectsBlock, CustomRunningEffectsBlock, EnchantmentBonusBlock,
+        ValidSpawnBlock {
 
     public CopycatBlockMixin(Properties properties) {
         super(properties);
@@ -71,53 +82,69 @@ public abstract class CopycatBlockMixin extends Block implements ICopycatBlock {
 
     @Override
     public float getFriction(BlockState state, LevelReader level, BlockPos pos, Entity entity) {
-        return getMaterial(level, pos).getFriction(level, pos, entity);
+        return maybeMaterialAs(
+                level, pos, CustomFrictionBlock.class,
+                (material, block) -> block.getFriction(material, level, pos, entity),
+                material -> material.getBlock().getFriction()
+        );
     }
 
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-        return getMaterial(level, pos).getLightEmission(level, pos);
-    }
-
-    @Override
-    public boolean canHarvestBlock(BlockState state, BlockGetter level, BlockPos pos, Player player) {
-        return getMaterial(level, pos).canHarvestBlock(level, pos, player);
+        return maybeMaterialAs(
+                level, pos, LightEmissiveBlock.class,
+                (material, block) -> block.getLightEmission(material, level, pos),
+                BlockStateBase::getLightEmission
+        );
     }
 
     @Override
     public float getExplosionResistance(BlockState state, BlockGetter level, BlockPos pos, Explosion explosion) {
-        return getMaterial(level, pos).getExplosionResistance(level, pos, explosion);
+        return maybeMaterialAs(
+                level, pos, ExplosionResistanceBlock.class,
+                (material, block) -> block.getExplosionResistance(material, level, pos, explosion),
+                material -> material.getBlock().getExplosionResistance()
+        );
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos,
-                                       Player player) {
+    public ItemStack getPickedStack(BlockState state, BlockGetter level, BlockPos pos, @Nullable Player player, @Nullable HitResult result) {
         BlockState material = getMaterial(level, pos);
         if (AllBlocks.COPYCAT_BASE.has(material) || player != null && player.isShiftKeyDown())
             return this.getCloneItemStack(level, pos, state);
-        return material.getCloneItemStack(target, level, pos, player);
+        return maybeMaterialAs(
+                level, pos, BlockPickInteractionAware.class,
+                (mat, block) -> block.getPickedStack(mat, level, pos, player, result),
+                mat -> mat.getBlock().getCloneItemStack(level, pos, mat)
+        );
     }
 
     @Override
     public boolean addLandingEffects(BlockState state1, ServerLevel level, BlockPos pos, BlockState state2,
                                      LivingEntity entity, int numberOfParticles) {
-        return getMaterial(level, pos).addLandingEffects(level, pos, state2, entity, numberOfParticles);
+        return maybeMaterialAs(
+                level, pos, CustomLandingEffectsBlock.class, // duplicate material is not a bug
+                (material, block) -> block.addLandingEffects(material, level, pos, material, entity, numberOfParticles),
+                material -> false // default to vanilla, true cancels
+        );
     }
 
     @Override
     public boolean addRunningEffects(BlockState state, Level level, BlockPos pos, Entity entity) {
-        return getMaterial(level, pos).addRunningEffects(level, pos, entity);
+        return maybeMaterialAs(
+                level, pos, CustomRunningEffectsBlock.class,
+                (material, block) -> block.addRunningEffects(material, level, pos, entity),
+                material -> false // default to vanilla, true cancels
+        );
     }
 
     @Override
     public float getEnchantPowerBonus(BlockState state, LevelReader level, BlockPos pos) {
-        return getMaterial(level, pos).getEnchantPowerBonus(level, pos);
-    }
-
-    @Override
-    public boolean canEntityDestroy(BlockState state, BlockGetter level, BlockPos pos, Entity entity) {
-        return getMaterial(level, pos).canEntityDestroy(level, pos, entity);
+        return maybeMaterialAs(
+                level, pos, EnchantmentBonusBlock.class,
+                (material, block) -> block.getEnchantPowerBonus(material, level, pos),
+                material -> material.is(BlockTags.ENCHANTMENT_POWER_PROVIDER) ? 1f : 0f
+        );
     }
 
     @Override
@@ -139,8 +166,18 @@ public abstract class CopycatBlockMixin extends Block implements ICopycatBlock {
         return getMaterial(pLevel, pPos).getDestroyProgress(pPlayer, pLevel, pPos);
     }
 
+    @Unique
+    private static <T, R> R maybeMaterialAs(BlockGetter level, BlockPos pos, Class<T> clazz,
+                                            BiFunction<BlockState, T, R> ifType, Function<BlockState, R> ifNot) {
+        BlockState material = getMaterial(level, pos);
+        Block block = material.getBlock();
+        if (clazz.isInstance(block))
+            return ifType.apply(material, clazz.cast(block));
+        return ifNot.apply(material);
+    }
+
     @Override
-    public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, @Nullable BlockState queryState, @Nullable BlockPos queryPos) {
-        return ICopycatBlock.getAppearance(this, state, level, pos, side, queryState, queryPos);
+    public BlockState getAppearance(BlockState state, BlockAndTintGetter renderView, BlockPos pos, Direction side, @Nullable BlockState sourceState, @Nullable BlockPos sourcePos) {
+        return ICopycatBlock.getAppearance(this, state, renderView, pos, side, sourceState, sourcePos);
     }
 }

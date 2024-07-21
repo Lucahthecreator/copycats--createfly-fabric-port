@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.fabric.mixin.copycat.base.multistate;
+package com.copycatsplus.copycats.fabric.mixin.foundation.copycat.multistate;
 
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.MultiStateCopycatBlockEntity;
