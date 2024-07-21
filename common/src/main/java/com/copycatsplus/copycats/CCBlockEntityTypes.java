@@ -45,9 +45,9 @@ public class CCBlockEntityTypes {
                             CCBlocks.COPYCAT_VERTICAL_STAIRS,
                             CCBlocks.COPYCAT_SLOPE,
                             CCBlocks.COPYCAT_VERTICAL_SLOPE,
-                            CCBlocks.COPYCAT_SLOPE_LAYER/*,
+                            CCBlocks.COPYCAT_SLOPE_LAYER,
                             CCBlocks.COPYCAT_DOOR,
-                            CCBlocks.COPYCAT_IRON_DOOR*/
+                            CCBlocks.COPYCAT_IRON_DOOR
                     )
                     .register();
 
@@ -57,9 +57,7 @@ public class CCBlockEntityTypes {
                             CCBlocks.COPYCAT_SLAB,
                             CCBlocks.COPYCAT_BYTE,
                             CCBlocks.COPYCAT_HALF_LAYER,
-                            CCBlocks.COPYCAT_BOARD,
-                            CCBlocks.COPYCAT_DOOR,
-                            CCBlocks.COPYCAT_IRON_DOOR
+                            CCBlocks.COPYCAT_BOARD
                     )
                     .register();
 
