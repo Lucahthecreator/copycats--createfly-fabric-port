@@ -239,7 +239,7 @@ public class CopycatHalfPanelBlock extends CCWaterloggedCopycatBlock implements 
             }
         }
         if (mirrorAxis == null) {
-            return super.mirror(pState, pMirror);
+            return pState;
         }
         Direction facing = pState.getValue(FACING);
         Direction offset = pState.getValue(OFFSET);
