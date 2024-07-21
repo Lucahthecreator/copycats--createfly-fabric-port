@@ -126,10 +126,7 @@ public class CopycatSlopeLayerBlock extends CCWaterloggedCopycatBlock implements
 
     @Override
     public ItemRequirement getRequiredItems(BlockState state, BlockEntity blockEntity) {
-        return new ItemRequirement(
-                ItemRequirement.ItemUseType.CONSUME,
-                new ItemStack(asItem(), state.getValue(LAYERS))
-        );
+        return ICopycatBlock.getRequiredItemsForLayer(state, LAYERS);
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.simibubi.create.AllTags;
 import com.simibubi.create.content.contraptions.ITransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.foundation.block.IBE;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -24,6 +25,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.*;
@@ -320,6 +322,16 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
         if (reader.getBlockEntity(targetPos) instanceof ICopycatBlockEntity cbe)
             return cbe.getMaterial();
         return Blocks.AIR.defaultBlockState();
+    }
+
+    /**
+     * Utility to get the required items for a layer of a block state.
+     */
+    static ItemRequirement getRequiredItemsForLayer(BlockState state, IntegerProperty property) {
+        return new ItemRequirement(
+                ItemRequirement.ItemUseType.CONSUME,
+                new ItemStack(state.getBlock().asItem(), state.getValue(property))
+        );
     }
 
     /**

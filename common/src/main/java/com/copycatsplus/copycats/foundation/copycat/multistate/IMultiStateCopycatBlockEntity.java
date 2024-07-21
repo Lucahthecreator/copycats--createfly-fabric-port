@@ -5,6 +5,7 @@ import com.copycatsplus.copycats.utility.BlockEntityUtils;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.redstone.RoseQuartzLampBlock;
+import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
@@ -153,6 +154,15 @@ public interface IMultiStateCopycatBlockEntity extends ICopycatBlockEntity {
     default void setEnableCT(String property, boolean value) {
         getMaterialItemStorage().getMaterialItem(property).setEnableCT(value);
         notifyUpdate();
+    }
+
+    @Override
+    default ItemRequirement getRequiredItems(BlockState state) {
+        return new ItemRequirement(
+                getMaterialItemStorage().getAllConsumedItems().stream()
+                        .map(stack -> new ItemRequirement.StackRequirement(stack, ItemRequirement.ItemUseType.CONSUME))
+                        .toList()
+        );
     }
 
     @Override

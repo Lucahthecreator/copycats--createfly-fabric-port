@@ -15,6 +15,7 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.contraptions.StructureTransform;
+import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.foundation.block.IBE;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -37,6 +38,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -412,6 +415,22 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
     }
 
     void transformStorage(BlockState state, IMultiStateCopycatBlockEntity be, StructureTransform transform);
+
+    /**
+     * Utility to get the required items for a multi-state block where each part is represented by a boolean property.
+     */
+    static ItemRequirement getRequiredItemsForParts(BlockState state, BooleanProperty... property) {
+        int count = 0;
+        for (BooleanProperty part : property) {
+            if (state.getValue(part))
+                count++;
+        }
+        if (count == 0) return ItemRequirement.NONE;
+        return new ItemRequirement(
+                ItemRequirement.ItemUseType.CONSUME,
+                new ItemStack(state.getBlock().asItem(), count)
+        );
+    }
 
     @Override
     default boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
