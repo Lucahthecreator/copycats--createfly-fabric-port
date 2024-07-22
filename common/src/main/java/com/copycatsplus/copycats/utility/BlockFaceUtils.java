@@ -3,6 +3,7 @@ package com.copycatsplus.copycats.utility;
 import com.copycatsplus.copycats.foundation.copycat.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.mixin.copycat.VoxelShapeAccessor;
+import it.unimi.dsi.fastutil.objects.AbstractObject2ByteSortedMap;
 import it.unimi.dsi.fastutil.objects.Object2ByteLinkedOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,8 +14,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.*;
 
+import java.util.function.BiFunction;
+
 public class BlockFaceUtils {
-    private static final ThreadLocal<Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey>> FACE_MATCH_CACHE = ThreadLocal.withInitial(() -> {
+    private static final ThreadLocal<Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey>> OCCLUSION_CACHE = ThreadLocal.withInitial(() -> {
         Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey> cacheMap = new Object2ByteLinkedOpenHashMap<>(2048, 0.25f) {
 
             @Override
@@ -25,68 +28,93 @@ public class BlockFaceUtils {
         return cacheMap;
     });
 
-    public static boolean canShapeOcclude(BlockGetter level, BlockState occludedState, BlockPos occludedPos, BlockState occludingState, BlockPos occludingPos, Direction occludedFace) {
+    private static boolean processBlockFace(BlockGetter level,
+                                            BlockState fromState,
+                                            BlockPos fromPos,
+                                            BlockState toState,
+                                            BlockPos toPos,
+                                            Direction fromFace,
+                                            BiFunction<VoxelShape, VoxelShape, Boolean> operation,
+                                            Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey> cache) {
         if (level instanceof ScaledBlockAndTintGetter scaledWorld) {
             Vec3i scale = scaledWorld.getScale();
-            VoxelShape occludedShape;
-            BlockPos trueOccludedPos = scaledWorld.getTruePos(occludedPos);
-            if (occludedState.getBlock() instanceof IMultiStateCopycatBlock copycatBlock && copycatBlock.vectorScale(occludedState).equals(scale)) {
-                String occludedProperty = scaledWorld.getPropertyForRender(occludedState, occludedPos);
-                if (!copycatBlock.partExists(occludedState, occludedProperty))
+            VoxelShape fromShape;
+            BlockPos truePos = scaledWorld.getTruePos(fromPos);
+            if (fromState.getBlock() instanceof IMultiStateCopycatBlock copycatBlock && copycatBlock.vectorScale(fromState).equals(scale)) {
+                String property = scaledWorld.getPropertyForRender(fromState, fromPos);
+                if (!copycatBlock.partExists(fromState, property))
                     return false;
-                Vec3i occludedInner = copycatBlock.getVectorFromProperty(occludedState, occludedProperty);
-                occludedShape = getPartialFaceShape(occludedState.getOcclusionShape(scaledWorld.getWrapped(), trueOccludedPos),
-                        occludedFace,
-                        occludedInner.getX() / (double) scale.getX(),
-                        occludedInner.getY() / (double) scale.getY(),
-                        occludedInner.getZ() / (double) scale.getZ(),
+                Vec3i inner = copycatBlock.getVectorFromProperty(fromState, property);
+                fromShape = getPartialFaceShape(fromState.getOcclusionShape(scaledWorld.getWrapped(), truePos),
+                        fromFace,
+                        inner.getX() / (double) scale.getX(),
+                        inner.getY() / (double) scale.getY(),
+                        inner.getZ() / (double) scale.getZ(),
                         1.0 / scale.getX(),
                         1.0 / scale.getY(),
                         1.0 / scale.getZ()
                 );
             } else {
-                occludedShape = occludedState.getFaceOcclusionShape(scaledWorld.getWrapped(), trueOccludedPos, occludedFace);
+                fromShape = fromState.getFaceOcclusionShape(scaledWorld.getWrapped(), truePos, fromFace);
             }
-            if (occludedShape.isEmpty()) {
+            if (fromShape.isEmpty()) {
                 return false;
             }
-            VoxelShape occludingShape;
-            BlockPos trueOccludingPos = scaledWorld.getTruePos(occludingPos);
-            if (occludingState.getBlock() instanceof IMultiStateCopycatBlock copycatBlock2 && copycatBlock2.vectorScale(occludingState).equals(scaledWorld.getScale())) {
-                String occludingProperty = scaledWorld.getPropertyForRender(occludingState, occludingPos);
-                Vec3i occludingInner = copycatBlock2.getVectorFromProperty(occludingState, occludingProperty);
-                occludingShape = getPartialFaceShape(occludingState.getOcclusionShape(scaledWorld.getWrapped(), trueOccludingPos),
-                        occludedFace.getOpposite(),
-                        occludingInner.getX() / (double) scale.getX(),
-                        occludingInner.getY() / (double) scale.getY(),
-                        occludingInner.getZ() / (double) scale.getZ(),
+            VoxelShape toShape;
+            BlockPos toTruePos = scaledWorld.getTruePos(toPos);
+            if (toState.getBlock() instanceof IMultiStateCopycatBlock copycatBlock2 && copycatBlock2.vectorScale(toState).equals(scaledWorld.getScale())) {
+                String toProperty = scaledWorld.getPropertyForRender(toState, toPos);
+                Vec3i toInner = copycatBlock2.getVectorFromProperty(toState, toProperty);
+                toShape = getPartialFaceShape(toState.getOcclusionShape(scaledWorld.getWrapped(), toTruePos),
+                        fromFace.getOpposite(),
+                        toInner.getX() / (double) scale.getX(),
+                        toInner.getY() / (double) scale.getY(),
+                        toInner.getZ() / (double) scale.getZ(),
                         1.0 / scale.getX(),
                         1.0 / scale.getY(),
                         1.0 / scale.getZ()
                 );
             } else {
-                occludingShape = occludingState.getFaceOcclusionShape(scaledWorld.getWrapped(), trueOccludingPos, occludedFace.getOpposite());
+                toShape = toState.getFaceOcclusionShape(scaledWorld.getWrapped(), toTruePos, fromFace.getOpposite());
             }
-            return !Shapes.joinIsNotEmpty(occludedShape, occludingShape, BooleanOp.ONLY_FIRST);
+            return operation.apply(fromShape, toShape);
         }
 
-        Block.BlockStatePairKey blockStatePair = new Block.BlockStatePairKey(occludedState, occludingState, occludedFace);
-        Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey> occlusionMap = FACE_MATCH_CACHE.get();
-        byte cached = occlusionMap.getAndMoveToFirst(blockStatePair);
+        Block.BlockStatePairKey blockStatePair = new Block.BlockStatePairKey(fromState, toState, fromFace);
+        byte cached = cache.getAndMoveToFirst(blockStatePair);
         if (cached != 127) {
             return cached == 0;
         }
-        VoxelShape occludedShape = occludedState.getFaceOcclusionShape(level, occludedPos, occludedFace);
-        if (occludedShape.isEmpty()) {
+        VoxelShape fromShape = fromState.getFaceOcclusionShape(level, fromPos, fromFace);
+        if (fromShape.isEmpty()) {
             return false;
         }
-        VoxelShape occludingShape = occludingState.getFaceOcclusionShape(level, occludingPos, occludedFace.getOpposite());
-        boolean mismatch = Shapes.joinIsNotEmpty(occludedShape, occludingShape, BooleanOp.ONLY_FIRST);
-        if (occlusionMap.size() == 2048) {
-            occlusionMap.removeLastByte();
+        VoxelShape toShape = toState.getFaceOcclusionShape(level, toPos, fromFace.getOpposite());
+        boolean mismatch = !operation.apply(fromShape, toShape);
+        if (cache.size() == 2048) {
+            cache.removeLastByte();
         }
-        occlusionMap.putAndMoveToFirst(blockStatePair, (byte) (mismatch ? 1 : 0));
+        cache.putAndMoveToFirst(blockStatePair, (byte) (mismatch ? 1 : 0));
         return !mismatch;
+    }
+
+    /**
+     * Compare the occlusion shape of two blocks to determine if the occluding block completely covers the occluded block, which allows occlusion.
+     */
+    public static boolean canOcclude(BlockGetter level,
+                                     BlockState occludedState,
+                                     BlockPos occludedPos,
+                                     BlockState occludingState,
+                                     BlockPos occludingPos,
+                                     Direction occludedFace) {
+        return processBlockFace(level,
+                occludedState,
+                occludedPos,
+                occludingState,
+                occludingPos,
+                occludedFace,
+                (occluded, occluding) -> !Shapes.joinIsNotEmpty(occluded, occluding, BooleanOp.ONLY_FIRST),
+                OCCLUSION_CACHE.get());
     }
 
     public static VoxelShape getPartialFaceShape(VoxelShape voxelShape, Direction direction, double startX, double startY, double startZ, double sizeX, double sizeY, double sizeZ) {

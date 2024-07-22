@@ -494,7 +494,7 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
     @Override
     default Optional<Boolean> shapeCanOccludeNeighbor(BlockGetter level, BlockPos pos, BlockState state, BlockPos neighborPos, Direction dir) {
         BlockState neighborState = level.getBlockState(neighborPos);
-        return Optional.of(BlockFaceUtils.canShapeOcclude(level, neighborState, neighborPos, state, pos, dir.getOpposite()));
+        return Optional.of(BlockFaceUtils.canOcclude(level, neighborState, neighborPos, state, pos, dir.getOpposite()));
     }
 
     /**
@@ -519,7 +519,7 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
                 ? getMaterial(level, toPos, scaledWorld.getPropertyForRender(neighborState, toPos))
                 : neighborState;
         if (material.skipRendering(neighborMaterial, dir.getOpposite())) {
-            return BlockFaceUtils.canShapeOcclude(level, neighborState, toPos, state, pos, dir.getOpposite());
+            return BlockFaceUtils.canOcclude(level, neighborState, toPos, state, pos, dir.getOpposite());
         }
         return false;
     }
