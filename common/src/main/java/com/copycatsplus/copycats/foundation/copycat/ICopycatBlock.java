@@ -25,7 +25,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.*;
@@ -510,7 +509,7 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
                                      Direction dir) {
         BlockPos toPos = pos.relative(dir);
         if (getMaterial(level, pos).skipRendering(getMaterial(level, toPos), dir.getOpposite())) {
-            return BlockFaceUtils.facesMatch(level, neighborState, toPos, state, pos, dir.getOpposite());
+            return BlockFaceUtils.canShapeOcclude(level, neighborState, toPos, state, pos, dir.getOpposite());
         }
         return false;
     }
