@@ -18,6 +18,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -438,30 +439,59 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
     /**
      * Determines whether textures on an adjacent block should appear connected to the copycat block.
      *
-     * @param reader  The world.
-     * @param state   The state of the copycat block.
-     * @param face    The face of the adjacent block that is being rendered.
-     * @param fromPos The position of the copycat block.
-     * @param toPos   The position of the adjacent block.
+     * @param reader    The world.
+     * @param fromState The state of the copycat block.
+     * @param face      The face of the adjacent block that is being rendered.
+     * @param fromPos   The position of the copycat block.
+     * @param toPos     The position of the adjacent block.
      * @return Whether the adjacent block is not allowed to connect.
      */
-    default boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
+    default boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState fromState, Direction face,
                                               BlockPos fromPos, BlockPos toPos) {
-        return false;
+        BlockState toState = reader.getBlockState(toPos);
+
+        if (toState.getBlock() instanceof ICopycatBlock) {
+            return false; // no need to repeat CT computation since canConnectTexturesToward already handles it
+        }
+
+        Vec3i diff = toPos.subtract(fromPos);
+
+        if (diff.equals(Vec3i.ZERO))
+            return false;
+
+        Direction facing = Direction.fromDelta(diff.getX(), diff.getY(), diff.getZ());
+
+        if (facing != null) {
+            return !BlockFaceUtils.faceMatch(reader, fromState, fromPos, toState, toPos, facing);
+        }
+
+        return true;
     }
 
     /**
      * Determines whether the copycat block can connect its textures towards the adjacent block.
      *
-     * @param reader  The world.
-     * @param fromPos The position of the copycat block.
-     * @param toPos   The position of the adjacent block.
-     * @param state   The state of the copycat block.
+     * @param reader    The world.
+     * @param fromPos   The position of the copycat block.
+     * @param toPos     The position of the adjacent block.
+     * @param fromState The state of the copycat block.
      * @return Whether the copycat block can connect its textures towards the adjacent block.
      */
     default boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos,
-                                             BlockState state) {
-        return true;
+                                             BlockState fromState) {
+        Vec3i diff = toPos.subtract(fromPos);
+
+        if (diff.equals(Vec3i.ZERO))
+            return true;
+
+        Direction facing = Direction.fromDelta(diff.getX(), diff.getY(), diff.getZ());
+
+        if (facing != null) {
+            BlockState toState = reader.getBlockState(toPos);
+            return BlockFaceUtils.faceMatch(reader, fromState, fromPos, toState, toPos, facing);
+        }
+
+        return false;
     }
 
     /**

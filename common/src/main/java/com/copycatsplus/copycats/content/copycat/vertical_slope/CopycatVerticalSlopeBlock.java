@@ -69,63 +69,6 @@ public class CopycatVerticalSlopeBlock extends CCWaterloggedCopycatBlock impleme
     }
 
     @Override
-    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
-                                             BlockPos fromPos, BlockPos toPos) {
-        Direction direction = state.getValue(FACING);
-        BlockState toState = reader.getBlockState(toPos);
-
-        BlockPos diff = toPos.subtract(fromPos);
-        if (diff.equals(Vec3i.ZERO)) {
-            return false;
-        }
-        Direction connectFace = Direction.fromDelta(diff.getX(), diff.getY(), diff.getZ());
-        if (connectFace == null) {
-            return false;
-        }
-
-        if (toState.is(this)) {
-            Direction toDirection = toState.getValue(FACING);
-            if (toDirection == direction) return false;
-
-            if (connectFace == direction.getOpposite() || connectFace == direction.getClockWise())
-                return true;
-            if (connectFace.getOpposite() == toDirection.getOpposite() || connectFace.getOpposite() == toDirection.getClockWise())
-                return true;
-            return false;
-        } else {
-            return !(direction == connectFace || direction.getCounterClockWise() == connectFace);
-        }
-    }
-
-    @Override
-    public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos,
-                                            BlockState state) {
-        BlockState toState = reader.getBlockState(toPos);
-        Direction facing = state.getValue(FACING);
-
-        BlockPos diff = toPos.subtract(fromPos);
-        if (diff.equals(Vec3i.ZERO)) {
-            return true;
-        }
-        Direction face = Direction.fromDelta(diff.getX(), diff.getY(), diff.getZ());
-        if (face == null) {
-            return true;
-        }
-
-        if (toState.is(this)) {
-            try {
-                return toState.getValue(FACING) == facing &&
-                        face.getAxis().isVertical() ||
-                        face.getAxis().isHorizontal();
-            } catch (IllegalStateException ignored) {
-                return false;
-            }
-        } else {
-            return face == facing || face == facing.getCounterClockWise();
-        }
-    }
-
-    @Override
     public Optional<Boolean> blockCTTowards(BlockAndTintGetter reader, BlockState state, BlockPos pos, BlockPos ctPos, BlockPos connectingPos, Direction face) {
         if (reader.getBlockState(ctPos).is(this)) {
             return Optional.of(false);

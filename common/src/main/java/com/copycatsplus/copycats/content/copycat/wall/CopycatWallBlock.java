@@ -98,6 +98,8 @@ public class CopycatWallBlock extends WallBlock implements ICopycatBlock, IBE<CC
     @Override
     public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
                                              BlockPos fromPos, BlockPos toPos) {
+        if (isPole(state)) return ICopycatBlock.super.isIgnoredConnectivitySide(reader, state, face, fromPos, toPos);
+
         BlockState toState = reader.getBlockState(toPos);
         if (!toState.is(this) || !state.is(this)) return true;
 
@@ -113,6 +115,8 @@ public class CopycatWallBlock extends WallBlock implements ICopycatBlock, IBE<CC
 
     @Override
     public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
+        if (isPole(state)) return ICopycatBlock.super.canConnectTexturesToward(reader, fromPos, toPos, state);
+
         BlockState toState = reader.getBlockState(toPos);
         if (!toState.is(this)) return false;
 
@@ -148,6 +152,10 @@ public class CopycatWallBlock extends WallBlock implements ICopycatBlock, IBE<CC
             if (state.getValue(byDirection(face)) == WallSide.NONE) return false;
             return true;
         }
+    }
+
+    private static boolean isPole(BlockState state) {
+        return Arrays.stream(Iterate.horizontalDirections).allMatch(s -> state.getValue(byDirection(s)) == WallSide.NONE);
     }
 
     private boolean canConnectVertically(BlockState state) {
