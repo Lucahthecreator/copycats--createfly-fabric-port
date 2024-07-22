@@ -488,6 +488,9 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
 
         if (facing != null) {
             BlockState toState = reader.getBlockState(toPos);
+            // don't connect to multi-states because we don't know which part of the multi-state we should get materials from
+            if (toState.getBlock() instanceof IMultiStateCopycatBlock)
+                return false;
             return BlockFaceUtils.faceMatch(reader, fromState, fromPos, toState, toPos, facing);
         }
 
