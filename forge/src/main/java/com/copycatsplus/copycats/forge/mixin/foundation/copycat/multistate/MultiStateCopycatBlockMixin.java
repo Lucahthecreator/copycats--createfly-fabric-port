@@ -189,11 +189,11 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IForg
 
             IMultiStateCopycatBlockEntity copycatBE = copycatBlock.getCopycatBlockEntity(pLevel, pPos);
             if (copycatBE == null)
-                return pState.getDestroyProgress(pPlayer, pLevel, pPos);
+                return super.getDestroyProgress(pState, pPlayer, pLevel, pPos);
             material.set(copycatBE.getMaterialItemStorage().getMaterialItem(property).material());
             return material.get().getDestroyProgress(pPlayer, pLevel, pPos);
         }
-        return pState.getDestroyProgress(pPlayer, pLevel, pPos);
+        return super.getDestroyProgress(pState, pPlayer, pLevel, pPos);
     }
 
     @Override
