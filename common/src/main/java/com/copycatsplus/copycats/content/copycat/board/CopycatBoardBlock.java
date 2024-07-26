@@ -326,7 +326,7 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
     }
 
     public static String directionToProperty(Direction direction) {
-        return direction.getName().toLowerCase();
+        return direction.getName().toLowerCase(Locale.ROOT);
     }
 
     private BlockState mapDirections(BlockState pState, Function<Direction, Direction> pDirectionalFunction) {
