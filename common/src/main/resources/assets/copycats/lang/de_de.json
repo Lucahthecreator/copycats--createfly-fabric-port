@@ -1,4 +1,5 @@
 {
+  "block.copycats.copycat_base": "Copycat Basis",
   "block.copycats.copycat_beam": "Copycat Balken",
   "block.copycats.copycat_block": "Copycat Block",
   "block.copycats.copycat_board": "Copycat Brett",
@@ -40,6 +41,7 @@
   "item.copycats.copycat_catwalk": "Copycat Laufsteg",
   "itemGroup.copycats.functional": "Create: Copycats+ | Funktional",
   "itemGroup.copycats.main": "Create: Copycats+",
+  "keyinfo.copycats.fill_copycat": "Copycat mit Material füllen",
   "tooltip.copycats.characteristics.copy_cat.description": "R-Klick auf eine _Katze_.",
   "tooltip.copycats.characteristics.copy_cat.title": "???",
   "tooltip.copycats.characteristics.copycat.description": "R-Klicke mit Material zum _zuweisen_ und _rotieren_. Benutze den Schraubenschlüssel, um _das Material zu entfernen_.",
@@ -50,7 +52,7 @@
   "tooltip.copycats.characteristics.functional.title": "Funktionell",
   "tooltip.copycats.characteristics.ghost.description": "_Keine Kollision_ mit Entities.",
   "tooltip.copycats.characteristics.ghost.title": "Geist",
-  "tooltip.copycats.characteristics.multi_state.description": "Setze _mehrere Kopien_ mit unterschiedlichen Materialien im selben Blockraum.",
+  "tooltip.copycats.characteristics.multi_state.description": "Setze _mehrere Kopien_ mit unterschiedlichen Materialien im selben Blockraum. Halte _%s_ um alle Teile zu füllen.",
   "tooltip.copycats.characteristics.multi_state.title": "Multi-Status",
   "tooltip.copycats.characteristics.pre_assembled.description": "_Einzelne Teile_ nach Platzierung zerlegen.",
   "tooltip.copycats.characteristics.pre_assembled.title": "Vormontiert",
