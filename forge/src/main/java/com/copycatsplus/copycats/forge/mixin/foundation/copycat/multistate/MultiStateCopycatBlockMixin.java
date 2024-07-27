@@ -63,7 +63,7 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IForg
                 return super.getFriction(state, level, pos, entity);
             copycatBE.getMaterialItemStorage().getAllMaterials().forEach(mat -> {
                 count.getAndIncrement();
-                bonus.accumulateAndGet(mat.is(Blocks.AIR) ? state.getFriction(level, pos, entity) : mat.getFriction(level, pos, entity), Float::sum);
+                bonus.accumulateAndGet(mat.is(Blocks.AIR) ? super.getFriction(state, level, pos, entity) : mat.getFriction(level, pos, entity), Float::sum);
             });
             return bonus.get() / count.get();
         }
