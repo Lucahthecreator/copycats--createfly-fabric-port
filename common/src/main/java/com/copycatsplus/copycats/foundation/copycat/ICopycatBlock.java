@@ -508,7 +508,13 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
                                      BlockState neighborState,
                                      Direction dir) {
         BlockPos toPos = pos.relative(dir);
-        if (getMaterial(level, pos).skipRendering(getMaterial(level, toPos), dir.getOpposite())) {
+        BlockState material = state.getBlock() instanceof ICopycatBlock
+                ? getMaterial(level, pos)
+                : state;
+        BlockState neighborMaterial = neighborState.getBlock() instanceof ICopycatBlock
+                ? getMaterial(level, toPos)
+                : neighborState;
+        if (material.skipRendering(neighborMaterial, dir.getOpposite())) {
             return BlockFaceUtils.canOcclude(level, neighborState, toPos, state, pos, dir.getOpposite());
         }
         return false;
