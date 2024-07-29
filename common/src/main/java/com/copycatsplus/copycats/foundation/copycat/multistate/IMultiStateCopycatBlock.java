@@ -334,12 +334,16 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
             if (copycatBE.getMaterialItemStorage().hasCustomMaterial(property))
                 continue;
 
+            boolean freeToApply = copycatBE.getMaterialItemStorage().getAllConsumedItems().stream().anyMatch(s -> s.getItem() == offhandItem.getItem());
+
             copycatBE.setMaterial(property, appliedState);
-            copycatBE.setConsumedItem(property, offhandItem);
+            if (!freeToApply)
+                copycatBE.setConsumedItem(property, offhandItem);
 
             if (placer instanceof Player player && player.isCreative())
                 continue;
-            offhandItem.shrink(1);
+            if (!freeToApply)
+                offhandItem.shrink(1);
             if (offhandItem.isEmpty()) {
                 placer.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
                 break;
