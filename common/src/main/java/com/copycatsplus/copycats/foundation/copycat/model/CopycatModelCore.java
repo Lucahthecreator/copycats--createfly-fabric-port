@@ -4,6 +4,7 @@ import com.copycatsplus.copycats.config.CCConfigs;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.CopycatModelPart;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.CopycatRenderContext;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
+import com.copycatsplus.copycats.utility.BlockUtils;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
@@ -12,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.BiFunction;
 
 /**
  * Block-specific but platform-independent model generation logic for copycats.
@@ -115,6 +117,19 @@ public abstract class CopycatModelCore implements CopycatModelPart {
         return Minecraft.getInstance()
                 .getBlockRenderer()
                 .getBlockModel(state);
+    }
+
+    /**
+     * Helper method to copy block state properties from the copycat to the material before retrieving block model.
+     * This is useful for copycats that allow blocks similar to themselves to be used as materials.
+     */
+    public static ModelGetter updatePropertiesIfMatch(Class<?> clazz) {
+        return (state, mat) -> {
+            if (clazz.isInstance(mat.getBlock())) {
+                return getModelOf(BlockUtils.tryCopyProperties(state, mat));
+            }
+            return getModelOf(mat);
+        };
     }
 
     /**

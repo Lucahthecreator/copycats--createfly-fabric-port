@@ -16,19 +16,10 @@ import static com.copycatsplus.copycats.foundation.copycat.model.assembly.Mutabl
 
 public class CopycatCogWheelModelCore extends CopycatModelCore {
 
-    private static BlockState prepareMaterial(BlockState state, BlockState material) {
-        if (material.getBlock() instanceof CogWheelBlock) {
-            return state.getOptionalValue(CogWheelBlock.AXIS)
-                    .map(val -> material.trySetValue(CogWheelBlock.AXIS, val))
-                    .orElse(material);
-        }
-        return material;
-    }
-
     @Override
     public void registerModels(List<ModelEntry> entries) {
-        entries.add(new ModelEntry(MATERIAL_KEY, (state, mat) -> getModelOf(prepareMaterial(state, mat)), this, EntryType.KINETIC_COPYCAT));
-        entries.add(new ModelEntry("cogwheel", (state, mat) -> getModelOf(prepareMaterial(state, mat)), this, EntryType.KINETIC_COPYCAT));
+        entries.add(new ModelEntry(MATERIAL_KEY, updatePropertiesIfMatch(CogWheelBlock.class), this, EntryType.KINETIC_COPYCAT));
+        entries.add(new ModelEntry("cogwheel", updatePropertiesIfMatch(CogWheelBlock.class), this, EntryType.KINETIC_COPYCAT));
     }
 
     @Override

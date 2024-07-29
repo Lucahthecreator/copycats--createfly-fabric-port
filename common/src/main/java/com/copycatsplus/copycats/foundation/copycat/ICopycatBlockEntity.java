@@ -84,7 +84,13 @@ public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement,
     }
 
     default ICopycatBlock getBlock() {
-        return (ICopycatBlock) getBlockState().getBlock();
+        Block block = getBlockState().getBlock();
+        if (block instanceof ICopycatBlock copycatBlock)
+            return copycatBlock;
+        // the block state might not be a copycat block in some virtual worlds
+        // return sensible defaults in those cases
+        return new ICopycatBlock() {
+        };
     }
 
     default boolean hasCustomMaterial() {
