@@ -295,7 +295,6 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
             if (copycatBE != null)
                 Block.popResource(world, pos, copycatBE.getConsumedItem());
         }
-        world.removeBlockEntity(pos);
     }
 
     default void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {

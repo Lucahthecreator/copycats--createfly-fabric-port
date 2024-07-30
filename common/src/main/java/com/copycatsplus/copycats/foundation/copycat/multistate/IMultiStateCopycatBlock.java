@@ -363,7 +363,6 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
             if (copycatBE != null)
                 copycatBE.getMaterialItemStorage().getAllConsumedItems().forEach(stack -> Block.popResource(level, pos, stack));
         }
-        level.removeBlockEntity(pos);
     }
 
     @Override
