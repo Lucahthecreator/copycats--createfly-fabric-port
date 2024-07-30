@@ -76,7 +76,7 @@ public abstract class CopycatBlockMixin extends Block implements ICopycatBlock {
 
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-        return getMaterial(level, pos).getLightEmission(level, pos);
+        return ICopycatBlock.getMaterialCrossThread(level, pos).getLightEmission(level, pos);
     }
 
     @Override

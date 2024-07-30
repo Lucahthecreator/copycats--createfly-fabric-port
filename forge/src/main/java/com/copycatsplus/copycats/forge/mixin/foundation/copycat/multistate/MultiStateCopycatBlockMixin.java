@@ -5,6 +5,7 @@ import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopyca
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.MultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelBlock;
+import com.copycatsplus.copycats.utility.BlockEntityUtils;
 import com.simibubi.create.AllBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -75,8 +77,8 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IForg
         if (state.getBlock() instanceof IMultiStateCopycatBlock copycatBlock) {
             AtomicInteger light = new AtomicInteger(0);
 
-            IMultiStateCopycatBlockEntity copycatBE = copycatBlock.getCopycatBlockEntity(level, pos);
-            if (copycatBE == null)
+            BlockEntity be = BlockEntityUtils.getBlockEntityCrossThread(level, pos);
+            if (!(be instanceof IMultiStateCopycatBlockEntity copycatBE))
                 return super.getLightEmission(state, level, pos);
             copycatBE.getMaterialItemStorage().getAllMaterials().forEach(bs -> {
                 light.accumulateAndGet(bs.getLightEmission(), Math::max);

@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.foundation.copycat;
 
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
+import com.copycatsplus.copycats.mixin.foundation.copycat.ChunkAccessAccessor;
 import com.copycatsplus.copycats.utility.BlockEntityUtils;
 import com.copycatsplus.copycats.utility.BlockFaceUtils;
 import com.simibubi.create.AllBlocks;
@@ -319,6 +320,16 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
      */
     static BlockState getMaterial(BlockGetter reader, BlockPos targetPos) {
         if (reader.getBlockEntity(targetPos) instanceof ICopycatBlockEntity cbe)
+            return cbe.getMaterial();
+        return Blocks.AIR.defaultBlockState();
+    }
+
+    /**
+     * Get the material of the copycat at the given position when not executing on the main thread.
+     * Block entity access is unsafe on other threads, so this method should be used with caution.
+     */
+    static BlockState getMaterialCrossThread(BlockGetter reader, BlockPos targetPos) {
+        if (BlockEntityUtils.getBlockEntityCrossThread(reader, targetPos) instanceof ICopycatBlockEntity cbe)
             return cbe.getMaterial();
         return Blocks.AIR.defaultBlockState();
     }

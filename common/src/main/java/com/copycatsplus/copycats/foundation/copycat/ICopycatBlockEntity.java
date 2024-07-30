@@ -116,10 +116,7 @@ public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement,
             }
 
         setMaterialInternal(blockState);
-        if (!getLevel().isClientSide()) {
-            notifyUpdate();
-            return;
-        }
+
         BlockEntityUtils.redraw((BlockEntity) this);
     }
 
@@ -201,7 +198,7 @@ public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement,
             self.setMaterialInternal(AllBlocks.COPYCAT_BASE.getDefaultState());
         }
 
-        if (clientPacket && prevMaterial != self.getMaterial())
+        if (prevMaterial != self.getMaterial())
             BlockEntityUtils.redraw((BlockEntity) self); // not calling self.redraw() because Extended Cogwheels overwrites it to be protected
     }
 
