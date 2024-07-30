@@ -3,6 +3,7 @@ package com.copycatsplus.copycats.fabric.mixin.foundation.copycat.multistate;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
+import com.copycatsplus.copycats.foundation.copycat.multistate.MaterialItemStorage;
 import com.copycatsplus.copycats.foundation.copycat.multistate.MultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelBlock;
 import com.copycatsplus.copycats.utility.BlockEntityUtils;
@@ -59,30 +60,48 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IMult
 
     @Override
     public SoundType getSoundType(BlockState state, LevelReader level, BlockPos pos, Entity entity) {
-        return ICopycatBlock.getMaterial(level, pos).getSoundType();
+        if (state.getBlock() instanceof IMultiStateCopycatBlock copycatBlock) {
+            IMultiStateCopycatBlockEntity copycatBE = copycatBlock.getCopycatBlockEntity(level, pos);
+            if (copycatBE == null)
+                return state.getSoundType();
+            for (MaterialItemStorage.MaterialItem materialItem : copycatBE.getMaterialItemStorage().getAllMaterialItems()) {
+                if (materialItem.hasCustomMaterial()) {
+                    return maybeMaterialAs(level, pos, CustomSoundTypeBlock.class, materialItem.material(),
+                            (mat, soundTypeBlock) -> soundTypeBlock.getSoundType(mat, level, pos, entity),
+                            BlockStateBase::getSoundType
+                    );
+                }
+            }
+            return maybeMaterialAs(level, pos, CustomSoundTypeBlock.class, ICopycatBlock.getMaterial(level, pos),
+                    (mat, soundTypeBlock) -> soundTypeBlock.getSoundType(mat, level, pos, entity),
+                    BlockStateBase::getSoundType
+            );
+        } else {
+            return state.getSoundType();
+        }
     }
 
     @Override
     public float getFriction(BlockState state, LevelReader level, BlockPos pos, Entity entity) {
         if (state.getBlock() instanceof IMultiStateCopycatBlock copycatBlock) {
-            AtomicReference<Float> bonus = new AtomicReference<>(0f);
-            AtomicInteger count = new AtomicInteger(0);
+            float bonus = 0f;
+            int count = 0;
 
             IMultiStateCopycatBlockEntity copycatBE = copycatBlock.getCopycatBlockEntity(level, pos);
             if (copycatBE == null)
                 return super.getFriction();
-            copycatBE
-                    .getMaterialItemStorage()
-                    .getAllMaterials()
-                    .forEach(mat -> {
-                        count.getAndIncrement();
-                        bonus.accumulateAndGet(maybeMaterialAs(level, pos, CustomFrictionBlock.class,
-                                mat, (material, frictionBlock) -> frictionBlock.getFriction(material, level, pos, entity),
-                                (material) -> material.is(Blocks.AIR)
-                                        ? super.getFriction()
-                                        : material.getBlock().getFriction()), Float::sum);
-                    });
-            return bonus.get() / count.get();
+            for (String property : copycatBE.getMaterialItemStorage().getAllProperties()) {
+                if (!copycatBlock.partExists(state, property)) continue;
+                BlockState mat = copycatBE.getMaterialItemStorage().getMaterialItem(property).material();
+                count++;
+                bonus += maybeMaterialAs(level, pos, CustomFrictionBlock.class, mat,
+                        (material, frictionBlock) -> frictionBlock.getFriction(material, level, pos, entity),
+                        (material) -> material.is(Blocks.AIR)
+                                ? super.getFriction()
+                                : material.getBlock().getFriction()
+                );
+            }
+            return bonus / count;
         } else {
             return super.getFriction();
         }

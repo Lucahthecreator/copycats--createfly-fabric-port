@@ -50,7 +50,9 @@ public class BlockEntityUtils {
         try {
             if (reader instanceof Level level) {
                 ChunkAccessAccessor chunkAccess = (ChunkAccessAccessor) level.getChunk(targetPos);
-                return chunkAccess.getBlockEntities().get(targetPos);
+                BlockEntity be = chunkAccess.getBlockEntities().get(targetPos);
+                if (be.isRemoved()) return null;
+                return be;
             }
             return null;
         } catch (Exception $) {
