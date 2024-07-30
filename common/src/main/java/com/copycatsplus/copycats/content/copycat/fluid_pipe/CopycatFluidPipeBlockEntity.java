@@ -53,7 +53,7 @@ public class CopycatFluidPipeBlockEntity extends FluidPipeBlockEntity implements
 
     @Override
     public ItemRequirement getRequiredItems(BlockState state) {
-        return ICopycatBlockEntity.super.getRequiredItems(state);
+        return ICopycatBlockEntity.super.getRequiredItems(state).union(super.getRequiredItems(state));
     }
 
     @Override

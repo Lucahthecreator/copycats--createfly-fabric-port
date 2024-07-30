@@ -52,7 +52,7 @@ public class CopycatShaftBlockEntity extends BracketedKineticBlockEntity impleme
 
     @Override
     public ItemRequirement getRequiredItems(BlockState state) {
-        return ICopycatBlockEntity.super.getRequiredItems(state);
+        return ICopycatBlockEntity.super.getRequiredItems(state).union(super.getRequiredItems(state));
     }
 
     @Override

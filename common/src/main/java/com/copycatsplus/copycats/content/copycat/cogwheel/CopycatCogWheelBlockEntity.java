@@ -35,7 +35,7 @@ public class CopycatCogWheelBlockEntity extends BracketedKineticBlockEntity impl
 
     @Override
     public ItemRequirement getRequiredItems(BlockState state) {
-        return IMultiStateCopycatBlockEntity.super.getRequiredItems(state);
+        return IMultiStateCopycatBlockEntity.super.getRequiredItems(state).union(super.getRequiredItems(state));
     }
 
     @Override
