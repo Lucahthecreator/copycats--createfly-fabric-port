@@ -36,6 +36,8 @@ import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -54,6 +56,8 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
  * {@link IBE#getBlockEntityType} in the concrete class, and redirect calls of
  * {@link ICopycatBlock#use},
  * {@link ICopycatBlock#hidesNeighborFace},
+ * {@link ICopycatBlock#rotate},
+ * {@link ICopycatBlock#mirror},
  * {@link ICopycatBlock#setPlacedBy},
  * {@link ICopycatBlock#onRemove} and
  * {@link ICopycatBlock#playerWillDestroy} to this interface.
@@ -344,9 +348,25 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
     }
 
     /**
-     * Transform the block state of the copycat according to the provided transform.
+     * DO NOT override the {@link Block#rotate} implementation with this if the default {@link ICopycatBlock#transform} implementation is used.
+     */
+    default @NotNull BlockState rotate(@NotNull BlockState pState, Rotation pRot) {
+        return transform(pState, new StructureTransform(BlockPos.ZERO, Direction.Axis.Y, pRot, Mirror.NONE));
+    }
+
+    /**
+     * DO NOT override the {@link Block#mirror} implementation with this if the default {@link ICopycatBlock#transform} implementation is used.
+     */
+    default @NotNull BlockState mirror(@NotNull BlockState pState, @NotNull Mirror pMirror) {
+        return transform(pState, new StructureTransform(BlockPos.ZERO, null, Rotation.NONE, pMirror));
+    }
+
+    /**
+     * Transform the block state of the copycat according to the provided transform. Possible transforms include
+     * single-axis rotation of 90 degree increments and mirroring in any axis.
      * <p>
-     * Possible transforms include single-axis rotation of 90 degree increments and mirroring in any axis.
+     * Note: you must override this method if the implementations of {@link ICopycatBlock#rotate} and
+     * {@link ICopycatBlock#mirror} are used.
      */
     @Override
     default BlockState transform(BlockState state, StructureTransform transform) {

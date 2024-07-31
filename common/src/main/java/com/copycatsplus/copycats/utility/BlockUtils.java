@@ -1,5 +1,7 @@
 package com.copycatsplus.copycats.utility;
 
+import com.simibubi.create.content.contraptions.StructureTransform;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 
@@ -16,5 +18,13 @@ public class BlockUtils {
             return to.setValue(property, from.getValue(property));
         }
         return to;
+    }
+
+    public static Direction transformFacing(StructureTransform transform, Direction facing) {
+        if (transform.mirror != null)
+            facing = transform.mirrorFacing(facing);
+        if (transform.rotationAxis != null)
+            facing = transform.rotateFacing(facing);
+        return facing;
     }
 }

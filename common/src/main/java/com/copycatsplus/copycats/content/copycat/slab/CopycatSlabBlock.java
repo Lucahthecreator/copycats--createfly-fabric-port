@@ -289,17 +289,16 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock implemen
     @Override
     public void transformStorage(BlockState state, IMultiStateCopycatBlockEntity be, StructureTransform transform) {
         Axis axis = state.getValue(AXIS);
+        if (axis != Axis.Y && transform.mirror != null) {
+            if (transform.mirror.rotation() == OctahedralGroup.INVERT_Z && axis == Axis.Z || transform.mirror.rotation() == OctahedralGroup.INVERT_X && axis == Axis.X) {
+                be.getMaterialItemStorage().remapStorage(s -> s.equals(Half.BOTTOM.getSerializedName()) ? Half.TOP.getSerializedName() : Half.BOTTOM.getSerializedName());
+            }
+        }
         if (transform.rotationAxis != null && transform.rotationAxis.isVertical()) {
             if (axis == Axis.Y) return;
             if (transform.rotation == Rotation.CLOCKWISE_90 && axis == Axis.X ||
                     transform.rotation == Rotation.CLOCKWISE_180 ||
                     transform.rotation == Rotation.COUNTERCLOCKWISE_90 && axis == Axis.Z) {
-                be.getMaterialItemStorage().remapStorage(s -> s.equals(Half.BOTTOM.getSerializedName()) ? Half.TOP.getSerializedName() : Half.BOTTOM.getSerializedName());
-            }
-        }
-        if (axis == Axis.Y) return;
-        if (transform.mirror != null) {
-            if (transform.mirror.rotation() == OctahedralGroup.INVERT_Z && axis == Axis.Z || transform.mirror.rotation() == OctahedralGroup.INVERT_X && axis == Axis.X) {
                 be.getMaterialItemStorage().remapStorage(s -> s.equals(Half.BOTTOM.getSerializedName()) ? Half.TOP.getSerializedName() : Half.BOTTOM.getSerializedName());
             }
         }
