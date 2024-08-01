@@ -112,7 +112,7 @@ public class BlockUtils {
         return state;
     }
 
-    private static Direction getApparentDirection(BlockState state) {
+    public static Direction getApparentDirection(BlockState state) {
         Direction facing = state.getValue(HORIZONTAL_FACING);
         Half half = state.getValue(HALF);
         boolean positive = facing.getAxisDirection() == Direction.AxisDirection.POSITIVE;
@@ -125,7 +125,7 @@ public class BlockUtils {
         }
     }
 
-    private static BlockState setApparentDirection(BlockState state, Direction direction) {
+    public static BlockState setApparentDirection(BlockState state, Direction direction) {
         Direction.Axis axis = state.getValue(HORIZONTAL_FACING).getAxis();
         if (axis == Direction.Axis.X) {
             return switch (direction) {
