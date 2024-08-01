@@ -60,6 +60,8 @@ import java.util.Set;
  * {@link IMultiStateCopycatBlock#use},
  * {@link IMultiStateCopycatBlock#setPlacedBy},
  * {@link IMultiStateCopycatBlock#hidesNeighborFace},
+ * {@link IMultiStateCopycatBlock#rotate},
+ * {@link IMultiStateCopycatBlock#mirror},
  * {@link Block#getShape},
  * {@link IMultiStateCopycatBlock#onRemove} and
  * {@link IMultiStateCopycatBlock#playerWillDestroy} to this interface.
