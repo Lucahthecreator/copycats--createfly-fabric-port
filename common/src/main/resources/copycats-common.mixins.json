@@ -29,6 +29,7 @@
     "foundation.copycat.ConnectedTextureBehaviourMixin",
     "foundation.copycat.CopycatBlockEntityMixin",
     "foundation.copycat.CopycatBlockMixin",
+    "foundation.copycat.RotatedPillarCTBehaviourMixin",
     "foundation.copycat.kinetic.CreateClientMixin",
     "foundation.copycat.migration.ContraptionMixin",
     "foundation.copycat.migration.LevelChunkMixin",
