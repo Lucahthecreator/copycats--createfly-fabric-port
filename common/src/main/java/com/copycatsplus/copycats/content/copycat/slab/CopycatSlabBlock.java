@@ -116,7 +116,7 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock implemen
 
     @Override
     public Set<String> storageProperties() {
-        return Set.of(SlabType.BOTTOM.getSerializedName(), SlabType.TOP.getSerializedName());
+        return Set.of(SlabType.TOP.getSerializedName(), SlabType.BOTTOM.getSerializedName());
     }
 
     @Override

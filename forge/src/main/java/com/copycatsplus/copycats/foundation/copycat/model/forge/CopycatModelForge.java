@@ -306,7 +306,10 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
         if (material.isEmpty())
             return super.getParticleIcon(data);
 
-        Map.Entry<String, BlockState> key = material.entrySet().stream().findFirst().get();
+        Map.Entry<String, BlockState> key = material.entrySet().stream()
+                .filter(s -> !s.getValue().is(AllBlocks.COPYCAT_BASE.get()))
+                .findFirst()
+                .orElse(material.entrySet().iterator().next());
 
         return getModelOf(key.getValue()).getParticleIcon(getWrappedData(data).get(key.getKey()));
     }

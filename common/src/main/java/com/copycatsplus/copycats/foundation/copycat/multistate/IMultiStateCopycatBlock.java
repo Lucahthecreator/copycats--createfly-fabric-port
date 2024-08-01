@@ -95,6 +95,8 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
 
     /**
      * When it is impossible to determine the specific part involved in an interaction, this property is used.
+     * The return value must be an element returned by {@link IMultiStateCopycatBlock#storageProperties}.
+     * It should represent one of the topmost parts of the copycat.
      */
     String defaultProperty();
 
@@ -105,6 +107,7 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
 
     /**
      * The string keys of all parts that can be stored in the copycat.
+     * Ideally, the keys should be sorted from top to bottom in 3D space.
      */
     Set<String> storageProperties();
 
