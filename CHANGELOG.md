@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bracket-able copycats not dropping the bracket item when broken
 - Bracket-able copycats not requiring a bracket item when placed with a schematicannon
 - Horizontal connected textures not working for Create's pillar blocks
+- Copycats not craftable in Fabric 1.18 due to incorrect item tags
 
 ## 2.0.5 - 2024-07-21
 
