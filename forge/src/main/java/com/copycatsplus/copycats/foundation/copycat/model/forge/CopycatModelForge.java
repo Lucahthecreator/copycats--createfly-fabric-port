@@ -204,7 +204,7 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
         Map<String, ModelData> wrappedDataMap = getWrappedData(data);
         final boolean isVirtual = ModelUtil.isVirtual(data);
         for (CopycatModelCore.ModelEntry entry : entries) {
-            BlockState material = materials.get(entry.key());
+            BlockState material = entry.materialMapper().map(state, materials.get(entry.key()));
 
             if (entry.type().onlyWhenVirtual() && !isVirtual)
                 continue;

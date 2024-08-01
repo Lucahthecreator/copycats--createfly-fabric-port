@@ -16,8 +16,8 @@ public class CopycatShaftModelCore extends CopycatModelCore {
 
     @Override
     public void registerModels(List<ModelEntry> entries) {
-        entries.add(new ModelEntry(MATERIAL_KEY, updatePropertiesIfMatch(ShaftBlock.class), this, EntryType.KINETIC_COPYCAT));
-        entries.add(new ModelEntry("shaft", updatePropertiesIfMatch(ShaftBlock.class), this, EntryType.KINETIC_COPYCAT));
+        entries.add(new ModelEntry(MATERIAL_KEY, ModelGetter.MATERIAL, this, updatePropertiesIfMatch(ShaftBlock.class), EntryType.KINETIC_COPYCAT));
+        entries.add(new ModelEntry("shaft", ModelGetter.MATERIAL, this, updatePropertiesIfMatch(ShaftBlock.class), EntryType.KINETIC_COPYCAT));
     }
 
     @Override

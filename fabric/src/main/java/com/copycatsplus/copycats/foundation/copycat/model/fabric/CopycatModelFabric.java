@@ -125,7 +125,7 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
         final boolean isVirtual = VirtualEmptyBlockGetter.is(blockView);
 
         for (CopycatModelCore.ModelEntry entry : entries) {
-            BlockState material = materials.get(entry.key());
+            BlockState material = entry.materialMapper().map(state, materials.get(entry.key()));
 
             if (material == null && entry.type().useCopycatLogic()) {
                 // Don't skip rendering if the world is empty since we might be rendering a placement helper
@@ -244,7 +244,6 @@ public class CopycatModelFabric extends ForwardingBakedModel implements CustomPa
     protected void prepareModelCore(BlockAndTintGetter blockView, BlockState state, BlockPos pos, Supplier<RandomSource> randomSupplier, BlockState material, Object renderAttachmentData) {
         core.prepareForRender();
     }
-
     @Override
     public TextureAtlasSprite getParticleIcon(Object data) {
         if (data instanceof BlockState state) {

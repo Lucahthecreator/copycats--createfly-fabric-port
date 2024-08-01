@@ -17,7 +17,7 @@ public class CopycatTrapdoorModelCore extends CopycatModelCore {
 
     @Override
     public void registerModels(List<ModelEntry> entries) {
-        entries.add(new ModelEntry(MATERIAL_KEY, updatePropertiesIfMatch(TrapDoorBlock.class), this, EntryType.COPYCAT));
+        entries.add(new ModelEntry(MATERIAL_KEY, ModelGetter.MATERIAL, this, updatePropertiesIfMatch(TrapDoorBlock.class), EntryType.COPYCAT));
     }
 
     @Override
