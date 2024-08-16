@@ -106,6 +106,10 @@ public class WrappedRenderWorld implements VirtualEmptyBlockGetter {
         };
     }
 
+    public BlockAndTintGetter getLevel() {
+        return level;
+    }
+
     @Override
     @Nullable
     public BlockEntity getBlockEntity(@NotNull BlockPos pos) {

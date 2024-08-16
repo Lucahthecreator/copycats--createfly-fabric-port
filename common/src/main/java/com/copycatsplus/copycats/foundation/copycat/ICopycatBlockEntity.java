@@ -19,6 +19,7 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,6 +32,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * An interface with implementation for all simple copycat block entities.
  * <p>
  * Implementors should create a field to store the material, consumed item and CT toggle, and redirect calls of
+ * {@link ICopycatBlockEntity#invalidate},
  * {@link ICopycatBlockEntity#read},
  * {@link ICopycatBlockEntity#writeSafe} and
  * {@link ICopycatBlockEntity#write} to this interface.
@@ -153,6 +155,10 @@ public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement,
     default void setCTEnabled(boolean value) {
         setCTEnabledInternal(value);
         notifyUpdate();
+    }
+
+    default void invalidate() {
+        CopycatMaterialStore.setMaterial(getLevel(), getBlockPos(), Blocks.AIR.defaultBlockState());
     }
 
     @Override

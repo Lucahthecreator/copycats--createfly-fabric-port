@@ -335,16 +335,6 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
     }
 
     /**
-     * Get the material of the copycat at the given position when not executing on the main thread.
-     * Block entity access is unsafe on other threads, so this method should be used with caution.
-     */
-    static BlockState getMaterialCrossThread(BlockGetter reader, BlockPos targetPos) {
-        if (BlockEntityUtils.getBlockEntityCrossThread(reader, targetPos) instanceof ICopycatBlockEntity cbe)
-            return cbe.getMaterial();
-        return Blocks.AIR.defaultBlockState();
-    }
-
-    /**
      * Utility to get the required items for a layer of a block state.
      */
     static ItemRequirement getRequiredItemsForLayer(BlockState state, IntegerProperty property) {
