@@ -207,17 +207,19 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IForg
 
     @Override
     public float getDestroyProgress(@NotNull BlockState pState, @NotNull Player pPlayer, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos) {
-        if (pState.getBlock() instanceof IMultiStateCopycatBlock copycatBlock) {
-            String property = copycatBlock.getPropertyFromInteraction(pState, pLevel, pPos, new BlockHitResult(Vec3.atCenterOf(pPos), Direction.UP, pPos, true), true);
-
-            IMultiStateCopycatBlockEntity copycatBE = copycatBlock.getCopycatBlockEntity(pLevel, pPos);
-            if (copycatBE == null)
-                return super.getDestroyProgress(pState, pPlayer, pLevel, pPos);
-            BlockState material = copycatBE.getMaterialItemStorage().getMaterialItem(property).material();
-            return material.getDestroyProgress(pPlayer, pLevel, pPos);
-        } else {
-            return super.getDestroyProgress(pState, pPlayer, pLevel, pPos);
-        }
+        // It is more convenient to always use a pickaxe than to guess what tool is needed for the copycat
+        return super.getDestroyProgress(pState, pPlayer, pLevel, pPos);
+//        if (pState.getBlock() instanceof IMultiStateCopycatBlock copycatBlock) {
+//            String property = copycatBlock.getPropertyFromInteraction(pState, pLevel, pPos, new BlockHitResult(Vec3.atCenterOf(pPos), Direction.UP, pPos, true), true);
+//
+//            IMultiStateCopycatBlockEntity copycatBE = copycatBlock.getCopycatBlockEntity(pLevel, pPos);
+//            if (copycatBE == null)
+//                return super.getDestroyProgress(pState, pPlayer, pLevel, pPos);
+//            BlockState material = copycatBE.getMaterialItemStorage().getMaterialItem(property).material();
+//            return material.getDestroyProgress(pPlayer, pLevel, pPos);
+//        } else {
+//            return super.getDestroyProgress(pState, pPlayer, pLevel, pPos);
+//        }
     }
 
     @Override
