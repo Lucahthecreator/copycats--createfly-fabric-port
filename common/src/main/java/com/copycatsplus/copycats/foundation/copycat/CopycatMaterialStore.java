@@ -1,10 +1,10 @@
 package com.copycatsplus.copycats.foundation.copycat;
 
+import com.copycatsplus.copycats.compat.FlywheelCompat;
 import com.copycatsplus.copycats.compat.Mods;
 import com.copycatsplus.copycats.compat.SodiumCompat;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.WrappedRenderWorld;
 import com.copycatsplus.copycats.utility.Platform;
-import com.jozufozu.flywheel.core.virtual.VirtualChunk;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -45,7 +45,7 @@ public class CopycatMaterialStore {
     }
 
     private static CopycatMaterialStore get(BlockGetter level) {
-        if (level instanceof WrappedRenderWorld wrapped) {
+        if (Platform.Environment.CLIENT.isCurrent() && level instanceof WrappedRenderWorld wrapped) {
             level = wrapped.getLevel();
         }
         if (Platform.Environment.CLIENT.isCurrent() && Mods.SODIUM.getLoaded()) {
@@ -58,8 +58,12 @@ public class CopycatMaterialStore {
         if (level instanceof LevelChunk chunk) {
             level = chunk.getLevel();
         }
-        if (level instanceof VirtualChunk virtual) {
-            level = virtual.world;
+        if (Platform.Environment.CLIENT.isCurrent() && Mods.FLYWHEEL.getLoaded()) {
+            try {
+                level = FlywheelCompat.unwrapFlywheelLevel(level);
+            } catch (Exception ex) {
+                // Ignore, since Flywheel might not be installed
+            }
         }
         return STORES.computeIfAbsent(level, l -> new CopycatMaterialStore());
     }
