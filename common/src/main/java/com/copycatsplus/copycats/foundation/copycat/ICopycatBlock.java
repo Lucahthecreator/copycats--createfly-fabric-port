@@ -43,6 +43,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
@@ -338,10 +339,13 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
      * Utility to get the required items for a layer of a block state.
      */
     static ItemRequirement getRequiredItemsForLayer(BlockState state, IntegerProperty property) {
-        return new ItemRequirement(
-                ItemRequirement.ItemUseType.CONSUME,
-                new ItemStack(state.getBlock().asItem(), state.getValue(property))
-        );
+        int count = state.getValue(property);
+        if (count == 0)
+            return ItemRequirement.NONE;
+        return new ItemRequirement(IntStream.range(0, count).mapToObj($ -> new ItemRequirement.StackRequirement(
+                new ItemStack(state.getBlock().asItem()),
+                ItemRequirement.ItemUseType.CONSUME
+        )).toList());
     }
 
     /**
