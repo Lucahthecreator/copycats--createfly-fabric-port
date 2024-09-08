@@ -290,6 +290,14 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock implemen
     @Override
     public void transformStorage(BlockState state, IMultiStateCopycatBlockEntity be, StructureTransform transform) {
         Axis axis = state.getValue(AXIS);
+        // the given block state is post-transform, so we need to adjust the axis if the transform is a rotation
+        if (transform.rotationAxis != null && transform.rotation == Rotation.CLOCKWISE_90 || transform.rotation == Rotation.COUNTERCLOCKWISE_90) {
+            axis = switch (axis) {
+                case X -> Direction.Axis.Z;
+                case Z -> Direction.Axis.X;
+                default -> axis;
+            };
+        }
         if (transformFacing(transform, Direction.fromAxisAndDirection(axis, AxisDirection.POSITIVE)).getAxisDirection() == AxisDirection.NEGATIVE) {
             be.getMaterialItemStorage().remapStorage(s -> s.equals(Half.BOTTOM.getSerializedName()) ? Half.TOP.getSerializedName() : Half.BOTTOM.getSerializedName());
         }
