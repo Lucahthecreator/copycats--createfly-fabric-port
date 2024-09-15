@@ -1,8 +1,7 @@
 package com.copycatsplus.copycats.mixin.foundation.copycat;
 
-import com.copycatsplus.copycats.compat.Mods;
 import com.simibubi.create.content.decoration.bracket.BracketBlock;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -16,8 +15,8 @@ public class BlockStateBaseMixin {
             cancellable = true
     )
     private void customOcclusion(CallbackInfoReturnable<Boolean> cir) {
-        BlockState instance = (BlockState) (Object) this;
-        if (instance.getBlockHolder().is(Mods.CREATE.rl("copycat_base"))) {
+        BlockBehaviour.BlockStateBase instance = (BlockBehaviour.BlockStateBase) (Object) this;
+        if (instance.getBlock().getClass().toString().equals("com.copycatsplus.copycats.foundation.copycat.CopycatBaseBlock.class")) {
             cir.setReturnValue(false);
         }
         if (instance.getBlock() instanceof BracketBlock) {
