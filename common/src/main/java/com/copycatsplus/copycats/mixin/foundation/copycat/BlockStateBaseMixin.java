@@ -1,5 +1,6 @@
 package com.copycatsplus.copycats.mixin.foundation.copycat;
 
+import com.copycatsplus.copycats.compat.Mods;
 import com.simibubi.create.content.decoration.bracket.BracketBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,8 +17,12 @@ public class BlockStateBaseMixin {
     )
     private void customOcclusion(CallbackInfoReturnable<Boolean> cir) {
         BlockBehaviour.BlockStateBase instance = (BlockBehaviour.BlockStateBase) (Object) this;
-        if (instance.getBlock().getClass().toString().equals("com.copycatsplus.copycats.foundation.copycat.CopycatBaseBlock.class")) {
-            cir.setReturnValue(false);
+        try {
+            if (instance.getBlockHolder().is(Mods.CREATE.rl("copycat_base"))) {
+                cir.setReturnValue(false);
+            }
+        } catch (IllegalStateException e) {
+            // todo: illegal access if resource location is accessed before registry is initialized
         }
         if (instance.getBlock() instanceof BracketBlock) {
             cir.setReturnValue(false);
