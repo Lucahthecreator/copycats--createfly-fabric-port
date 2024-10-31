@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.shaft;
 
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
+import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntity;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import net.minecraft.core.BlockPos;
@@ -51,8 +52,20 @@ public class CopycatShaftBlockEntity extends BracketedKineticBlockEntity impleme
     }
 
     @Override
+    public void invalidate() {
+        super.invalidate();
+        ICopycatBlockEntity.super.invalidate();
+    }
+
+    @Override
     public ItemRequirement getRequiredItems(BlockState state) {
-        return ICopycatBlockEntity.super.getRequiredItems(state);
+        return ICopycatBlockEntity.super.getRequiredItems(state).union(super.getRequiredItems(state));
+    }
+
+    @Override
+    public void transform(StructureTransform transform) {
+        super.transform(transform);
+        ICopycatBlockEntity.super.transform(transform);
     }
 
     @Override

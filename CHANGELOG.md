@@ -5,6 +5,80 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.1.4 - 2024-09-15
+
+### Fixed
+
+- Fixed an incompatibility with Immersive Engineering due to block states being initialized before the block registry
+
+## 2.1.3 - 2024-09-15
+
+### Changed
+
+- Multistate copycats can now be mined with both pickaxes and axes
+
+### Fixed
+
+- Fixed light sources in copycats again to eliminate thread deadlocks and restore compatibility with Starlight
+- Fixed schematicannon sometimes requiring air to build multistate copycats
+- Fixed copycat slabs not connecting to full blocks
+- Added compatibility with More Culling
+- Fixed occlusion for brackets
+- Fixed the inner face of copycat doors when one side of the door is transparent but the other isn't
+- Fixed connected textures on the top face of copycat stairs
+- Added a workaround for schematicannons not getting the same stack of resources from two separate inventories
+- Fixed a crash in copycat migration when block entities from other mods are not properly registered
+- Fixed copycat slabs being transformed incorrectly in schematics
+
+## 2.1.2 - 2024-08-03
+
+### Fixed
+
+- Fixed stack overflow issue with the lighting patch when starlight is loaded
+- Fixed block transforms on a few blocks
+
+## 2.1.1 - 2024-08-02
+
+### Changed
+
+- All copycats no longer get destroyed by flowing water
+
+### Fixed
+
+- Copycats retaining their textures when broken and placed back down
+
+## 2.1.0 - 2024-08-01
+
+### Changed
+
+- Opted into Neruina's auto report system
+- The migration config option has been reset so that migration is on by default from this version onwards
+- The item models for Copycat Door and Copycat Iron Door are now 3D
+- In addition to Copycat Shafts, Cogwheels and Large Cogwheels, Copycat Trapdoors, Doors, Fences, Fence Gates, Ladders, Pressure Plates and Walls now accept their respective non-copycat counterparts as material
+- All copycats now support mirroring and 180-degree rotations. Those with vertical variants also support 90-degree rotations
+
+### Fixed
+
+- **Copycats not emitting light properly when a light source is used as material**
+- The 2.0 update sale is over. You now need to pay the full material price when building copycats with a schematicannon
+- Incorrect face culling when sodium is installed
+- Incompatibility with Diagonal Walls by disabling DW on Copycat Walls
+- Stack overflow crash when getting the destroy progress of a multi-state copycat
+- Crash when the multi-state copycat block entity isn't removed when the block no longer exists
+- Stack overflow crash when computing block friction/enchantment power for multi-state copycats
+- Incompatibility with Dynamic Crosshair due to state for placement being null
+- Crash due to case conversion with non-default locale
+- Incompatibility with Embeddium on Fabric due to missing Indium classes
+- Incorrect accessibility on the public `StateType` API
+- Face hiding not working in specific configurations
+- Multi-state copycats consuming too many items when they are filled by holding the material in the offhand
+- Incorrect footsteps when walking on multi-state copycats (Forge only)
+- Incorrect particles when running on multi-state copycats
+- Bracket-able copycats not dropping the bracket item when broken
+- Bracket-able copycats not requiring a bracket item when placed with a schematicannon
+- Horizontal connected textures not working for Create's pillar blocks
+- Copycats not craftable in Fabric 1.18 due to incorrect item tags
+
 ## 2.0.5 - 2024-07-21
 
 ### Fixed

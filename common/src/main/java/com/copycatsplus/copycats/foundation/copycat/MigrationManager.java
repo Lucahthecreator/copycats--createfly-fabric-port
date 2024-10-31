@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 public class MigrationManager {
     public static boolean migrationDisabled() {
-        return CCConfigs.safeGetter(() -> CCConfigs.common().disableConversion.get(), false).get();
+        return CCConfigs.safeGetter(() -> CCConfigs.common().disableMigration.get(), false).get();
     }
 
     public static StructureBlockInfo migrateStructure(StructureBlockInfo info) {
@@ -85,6 +85,7 @@ public class MigrationManager {
 
     private static boolean isCopycatAndNeedingConversion(BlockState state, BlockEntity blockEntity) {
         ResourceLocation id = BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(blockEntity.getType());
+        if (id == null) return false;
         ResourceKey<Block> resourceKey = state.getBlock().builtInRegistryHolder().key();
         if (id.toString().equalsIgnoreCase("create:copycat")) {
             if (resourceKey.location().getNamespace().equalsIgnoreCase(Copycats.MODID)) {

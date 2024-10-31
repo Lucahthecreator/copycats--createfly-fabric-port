@@ -10,7 +10,6 @@ import com.jozufozu.flywheel.backend.RenderLayer;
 import com.jozufozu.flywheel.config.BackendType;
 import com.simibubi.create.content.kinetics.base.flwdata.RotatingData;
 import com.simibubi.create.foundation.render.AllMaterialSpecs;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 
 import javax.annotation.Nullable;
@@ -35,7 +34,7 @@ public interface IKineticCopycatBlockInstance {
     ICopycatBlockEntity getBlockEntity();
 
     default Material<RotatingData> getRotatingMaterial() {
-        RenderType type = ItemBlockRenderTypes.getChunkRenderType(getRenderData().material());
+        RenderType type = RenderType.translucent();
         RenderLayer layer = RenderLayer.getLayer(type);
         if (layer == null) layer = RenderLayer.TRANSPARENT;
 

@@ -66,7 +66,7 @@ public class CopycatLadderBlock extends LadderBlock implements ICopycatBlock, IB
     @Override
     public BlockState getStateForPlacement(@NotNull BlockPlaceContext pContext) {
         BlockState stateForPlacement = super.getStateForPlacement(pContext);
-        assert stateForPlacement != null;
+        if (stateForPlacement == null) return null;
         return stateForPlacement.setValue(FACING, pContext.getHorizontalDirection().getOpposite());
     }
 
@@ -106,6 +106,11 @@ public class CopycatLadderBlock extends LadderBlock implements ICopycatBlock, IB
     }
 
     @Override
+    public boolean isAcceptedRegardless(BlockState material) {
+        return material.getBlock() instanceof LadderBlock;
+    }
+
+    @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @javax.annotation.Nullable LivingEntity pPlacer, ItemStack pStack) {
         ICopycatBlock.super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
@@ -114,8 +119,7 @@ public class CopycatLadderBlock extends LadderBlock implements ICopycatBlock, IB
     @SuppressWarnings("deprecation")
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        ICopycatBlock.super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
-        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        ICopycatBlock.super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving, super::onRemove);
     }
 
     @Override

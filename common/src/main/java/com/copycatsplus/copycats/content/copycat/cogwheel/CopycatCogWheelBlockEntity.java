@@ -1,8 +1,8 @@
 package com.copycatsplus.copycats.content.copycat.cogwheel;
 
-import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.MaterialItemStorage;
+import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntity;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -34,8 +34,20 @@ public class CopycatCogWheelBlockEntity extends BracketedKineticBlockEntity impl
     }
 
     @Override
+    public void invalidate() {
+        super.invalidate();
+        IMultiStateCopycatBlockEntity.super.invalidate();
+    }
+
+    @Override
     public ItemRequirement getRequiredItems(BlockState state) {
-        return IMultiStateCopycatBlockEntity.super.getRequiredItems(state);
+        return IMultiStateCopycatBlockEntity.super.getRequiredItems(state).union(super.getRequiredItems(state));
+    }
+
+    @Override
+    public void transform(StructureTransform transform) {
+        super.transform(transform);
+        IMultiStateCopycatBlockEntity.super.transform(transform);
     }
 
     @Override

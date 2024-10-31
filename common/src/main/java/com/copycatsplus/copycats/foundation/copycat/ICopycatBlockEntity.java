@@ -8,6 +8,7 @@ import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.redstone.RoseQuartzLampBlock;
 import com.simibubi.create.content.schematics.requirement.ISpecialBlockEntityItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
+import com.simibubi.create.foundation.blockEntity.IMergeableBE;
 import com.simibubi.create.foundation.utility.IPartialSafeNBT;
 import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -19,6 +20,7 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,6 +33,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * An interface with implementation for all simple copycat block entities.
  * <p>
  * Implementors should create a field to store the material, consumed item and CT toggle, and redirect calls of
+ * {@link ICopycatBlockEntity#invalidate},
  * {@link ICopycatBlockEntity#read},
  * {@link ICopycatBlockEntity#writeSafe} and
  * {@link ICopycatBlockEntity#write} to this interface.
@@ -43,7 +46,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement, ITransformableBlockEntity, IPartialSafeNBT {
+public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement, ITransformableBlockEntity, IPartialSafeNBT, IMergeableBE {
 
     void notifyUpdate();
 
@@ -84,7 +87,13 @@ public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement,
     }
 
     default ICopycatBlock getBlock() {
-        return (ICopycatBlock) getBlockState().getBlock();
+        Block block = getBlockState().getBlock();
+        if (block instanceof ICopycatBlock copycatBlock)
+            return copycatBlock;
+        // the block state might not be a copycat block in some virtual worlds
+        // return sensible defaults in those cases
+        return new ICopycatBlock() {
+        };
     }
 
     default boolean hasCustomMaterial() {
@@ -110,10 +119,7 @@ public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement,
             }
 
         setMaterialInternal(blockState);
-        if (!getLevel().isClientSide()) {
-            notifyUpdate();
-            return;
-        }
+
         BlockEntityUtils.redraw((BlockEntity) this);
     }
 
@@ -152,11 +158,25 @@ public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement,
         notifyUpdate();
     }
 
+    default void invalidate() {
+        CopycatMaterialStore.setMaterial(getLevel(), getBlockPos(), Blocks.AIR.defaultBlockState());
+    }
+
     @Override
     default ItemRequirement getRequiredItems(BlockState state) {
         if (getConsumedItem().isEmpty())
             return ItemRequirement.NONE;
         return new ItemRequirement(ItemRequirement.ItemUseType.CONSUME, getConsumedItem());
+    }
+
+    @Override
+    default void accept(BlockEntity other) {
+        if (other instanceof ICopycatBlockEntity be) {
+            setMaterial(be.getMaterial());
+            setConsumedItem(be.getConsumedItem());
+            setCTEnabled(be.isCTEnabled());
+            BlockEntityUtils.redraw((BlockEntity) this);
+        }
     }
 
     @Override
@@ -195,13 +215,14 @@ public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement,
             self.setMaterialInternal(AllBlocks.COPYCAT_BASE.getDefaultState());
         }
 
-        if (clientPacket && prevMaterial != self.getMaterial())
+        if (prevMaterial != self.getMaterial())
             BlockEntityUtils.redraw((BlockEntity) self); // not calling self.redraw() because Extended Cogwheels overwrites it to be protected
     }
 
     static void writeSafe(ICopycatBlockEntity self, CompoundTag tag) {
         ItemStack stackWithoutNBT = self.getConsumedItem().copy();
         stackWithoutNBT.setTag(null);
+        BlockEntityUtils.saveMetadata((BlockEntity) self, tag);
         write(tag, stackWithoutNBT, self.getMaterial(), self.isCTEnabled());
     }
 

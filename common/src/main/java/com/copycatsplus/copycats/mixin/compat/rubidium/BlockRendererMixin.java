@@ -1,5 +1,7 @@
 package com.copycatsplus.copycats.mixin.compat.rubidium;
 
+import com.copycatsplus.copycats.compat.Mods;
+import com.copycatsplus.copycats.foundation.annotation.ModMixin;
 import com.copycatsplus.copycats.foundation.copycat.multistate.MultiStateRenderManager;
 import com.copycatsplus.copycats.foundation.copycat.multistate.MultiStateTextureAtlasSprite;
 import me.jellysquid.mods.sodium.client.model.color.ColorProvider;
@@ -18,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * <p>
  * Rubidium compatible version of {@link com.copycatsplus.copycats.mixin.foundation.copycat.multistate.ModelBlockRendererMixin}.
  */
+@ModMixin(requiredMods = Mods.SODIUM)
 @Mixin(BlockRenderer.class)
 @Pseudo
 public class BlockRendererMixin {

@@ -5,6 +5,8 @@ import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.foundation.copycat.CCWaterloggedCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.IStateType;
+import com.copycatsplus.copycats.utility.BlockUtils;
+import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.schematics.requirement.ISpecialBlockItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -62,7 +64,7 @@ public class CopycatSlopeLayerBlock extends CCWaterloggedCopycatBlock implements
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState stateForPlacement = super.getStateForPlacement(context);
-        assert stateForPlacement != null;
+        if (stateForPlacement == null) return null;
         BlockPos blockPos = context.getClickedPos();
         BlockState state = context.getLevel().getBlockState(blockPos);
         if (state.is(this)) {
@@ -138,16 +140,12 @@ public class CopycatSlopeLayerBlock extends CCWaterloggedCopycatBlock implements
         return pDirection.getAxis() != facing.getAxis();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public @NotNull BlockState rotate(BlockState state, Rotation rot) {
-        return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public @NotNull BlockState mirror(BlockState state, Mirror mirrorIn) {
-        return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
+    public BlockState transform(BlockState state, StructureTransform transform) {
+        // todo: vertical slope layer not supported yet
+        if (transform.rotationAxis != null && transform.rotationAxis != Direction.Axis.Y && (transform.rotation == Rotation.CLOCKWISE_90 || transform.rotation == Rotation.COUNTERCLOCKWISE_90))
+            transform.rotation = Rotation.NONE;
+        return BlockUtils.transformStepLikeHorizontal(state, transform, defaultBlockState());
     }
 
     @SuppressWarnings("deprecation")

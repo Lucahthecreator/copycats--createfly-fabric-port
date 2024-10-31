@@ -1,7 +1,5 @@
 package com.copycatsplus.copycats.forge.mixin.foundation.copycat;
 
-import com.copycatsplus.copycats.foundation.copycat.CCCopycatBlock;
-import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.content.copycat.button.CopycatButtonBlock;
 import com.copycatsplus.copycats.content.copycat.door.CopycatDoorBlock;
 import com.copycatsplus.copycats.content.copycat.fence.CopycatFenceBlock;
@@ -15,6 +13,9 @@ import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
 import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsBlock;
 import com.copycatsplus.copycats.content.copycat.trapdoor.CopycatTrapdoorBlock;
 import com.copycatsplus.copycats.content.copycat.wall.CopycatWallBlock;
+import com.copycatsplus.copycats.foundation.copycat.CCCopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.CopycatMaterialStore;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.simibubi.create.AllBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -76,7 +77,9 @@ public abstract class CopycatBlockMixin extends Block implements ICopycatBlock {
 
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-        return getMaterial(level, pos).getLightEmission(level, pos);
+        return CopycatMaterialStore.getMaterial(level, pos).left()
+                .map(material -> material.getLightEmission(level, pos))
+                .orElse(super.getLightEmission(state, level, pos));
     }
 
     @Override

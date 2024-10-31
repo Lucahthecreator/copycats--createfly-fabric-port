@@ -18,14 +18,19 @@ public enum Mods {
      * For the feature toggle system
      */
     JEI("jei"),
+    CREATE("create"),
     /**
      * For copycat fence compatibility (only prevents crash)
      */
     ADDITIONAL_PLACEMENTS("additionalplacements"),
     DIAGONAL_FENCES("diagonalfences"),
     DIAGONAL_WALLS("diagonalwalls"),
+    FLYWHEEL("flywheel"),
+    SODIUM("sodium"),
     ATHENA("athena"),
-    INDIUM("indium");
+    INDIUM("indium"),
+    STARLIGHT("starlight"),
+    DOUBLE_SLABS("doubleslabs");
 
     public final String id;
     public final boolean isLoaded;
@@ -52,14 +57,6 @@ public enum Mods {
         return new ResourceLocation(id, path);
     }
 
-    public Item getItem(String id) {
-        return BuiltInRegistries.ITEM.get(rl(id));
-    }
-
-    public Item getItem(ResourceLocation id) {
-        return BuiltInRegistries.ITEM.get(id);
-    }
-
     public boolean getLoaded() {
         return isLoaded;
     }
@@ -67,8 +64,6 @@ public enum Mods {
     /**
      * @return a boolean of whether the mod is loaded or not based on mod id
      */
-
-
     @ExpectPlatform
     public static boolean getLoaded(String id) {
         throw new AssertionError();

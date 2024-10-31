@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
+import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.foundation.block.IBE;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -16,6 +17,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -63,9 +66,8 @@ public abstract class CCCopycatBlock extends Block implements IBE<CCCopycatBlock
     }
 
     @Override
-    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
-        ICopycatBlock.super.onRemove(state, world, pos, newState, isMoving);
-        super.onRemove(state, world, pos, newState, isMoving);
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+        ICopycatBlock.super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving, super::onRemove);
     }
 
     @Override
@@ -73,6 +75,21 @@ public abstract class CCCopycatBlock extends Block implements IBE<CCCopycatBlock
         super.playerWillDestroy(level, pos, state, player);
         ICopycatBlock.super.playerWillDestroy(level, pos, state, player);
     }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public @NotNull BlockState rotate(@NotNull BlockState state, Rotation rot) {
+        return ICopycatBlock.super.rotate(state, rot);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public @NotNull BlockState mirror(@NotNull BlockState state, Mirror mirror) {
+        return ICopycatBlock.super.mirror(state, mirror);
+    }
+
+    @Override
+    public abstract BlockState transform(BlockState state, StructureTransform transform);
 
     @Override
     public Class<CCCopycatBlockEntity> getBlockEntityClass() {

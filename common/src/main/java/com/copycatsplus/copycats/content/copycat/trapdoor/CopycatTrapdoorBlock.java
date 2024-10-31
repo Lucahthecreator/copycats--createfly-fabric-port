@@ -62,14 +62,18 @@ public class CopycatTrapdoorBlock extends TrapDoorBlock implements ICopycatBlock
 
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        ICopycatBlock.super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
-        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        ICopycatBlock.super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving, super::onRemove);
     }
 
     @Override
     public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         ICopycatBlock.super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+    }
+
+    @Override
+    public boolean isAcceptedRegardless(BlockState material) {
+        return material.getBlock() instanceof TrapDoorBlock;
     }
 
     @Override

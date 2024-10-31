@@ -1,8 +1,10 @@
 package com.copycatsplus.copycats.forge.mixin.foundation.copycat.multistate;
 
+import com.copycatsplus.copycats.foundation.copycat.CopycatMaterialStore;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
+import com.copycatsplus.copycats.foundation.copycat.multistate.MaterialItemStorage;
 import com.copycatsplus.copycats.foundation.copycat.multistate.MultiStateCopycatBlock;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelBlock;
 import com.simibubi.create.AllBlocks;
@@ -28,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -49,25 +52,40 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IForg
 
     @Override
     public SoundType getSoundType(BlockState state, LevelReader level, BlockPos pos, Entity entity) {
-        return ICopycatBlock.getMaterial(level, pos).getSoundType();
+        if (state.getBlock() instanceof IMultiStateCopycatBlock copycatBlock) {
+            IMultiStateCopycatBlockEntity copycatBE = copycatBlock.getCopycatBlockEntity(level, pos);
+            if (copycatBE == null)
+                return super.getSoundType(state, level, pos, entity);
+            for (MaterialItemStorage.MaterialItem materialItem : copycatBE.getMaterialItemStorage().getAllMaterialItems()) {
+                if (materialItem.hasCustomMaterial()) {
+                    return materialItem.material().getSoundType(level, pos, entity);
+                }
+            }
+            return ICopycatBlock.getMaterial(level, pos).getSoundType(level, pos, entity);
+        } else {
+            return super.getSoundType(state, level, pos, entity);
+        }
     }
 
     @Override
     public float getFriction(BlockState state, LevelReader level, BlockPos pos, Entity entity) {
         if (state.getBlock() instanceof IMultiStateCopycatBlock copycatBlock) {
-            AtomicReference<Float> bonus = new AtomicReference<>(0f);
-            AtomicInteger count = new AtomicInteger(0);
+            float bonus = 0f;
+            int count = 0;
 
             IMultiStateCopycatBlockEntity copycatBE = copycatBlock.getCopycatBlockEntity(level, pos);
             if (copycatBE == null)
-                return state.getBlock().getFriction();
-            copycatBE.getMaterialItemStorage().getAllMaterials().forEach(mat -> {
-                count.getAndIncrement();
-                bonus.accumulateAndGet(mat.is(Blocks.AIR) ? state.getFriction(level, pos, entity) : mat.getFriction(level, pos, entity), Float::sum);
-            });
-            return bonus.get() / count.get();
+                return super.getFriction(state, level, pos, entity);
+            for (String property : copycatBE.getMaterialItemStorage().getAllProperties()) {
+                if (!copycatBlock.partExists(state, property)) continue;
+                BlockState mat = copycatBE.getMaterialItemStorage().getMaterialItem(property).material();
+                count++;
+                bonus += mat.is(Blocks.AIR) ? super.getFriction(state, level, pos, entity) : mat.getFriction(level, pos, entity);
+            }
+            return bonus / count;
+        } else {
+            return super.getFriction(state, level, pos, entity);
         }
-        return state.getBlock().getFriction();
     }
 
     @Override
@@ -75,15 +93,16 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IForg
         if (state.getBlock() instanceof IMultiStateCopycatBlock copycatBlock) {
             AtomicInteger light = new AtomicInteger(0);
 
-            IMultiStateCopycatBlockEntity copycatBE = copycatBlock.getCopycatBlockEntity(level, pos);
-            if (copycatBE == null)
-                return 0;
-            copycatBE.getMaterialItemStorage().getAllMaterials().forEach(bs -> {
+            Map<String, BlockState> materials = CopycatMaterialStore.getMaterial(level, pos).right().orElse(null);
+            if (materials == null)
+                return super.getLightEmission(state, level, pos);
+            materials.forEach((key, bs) -> {
                 light.accumulateAndGet(bs.getLightEmission(), Math::max);
             });
             return light.get();
+        } else {
+            return super.getLightEmission(state, level, pos);
         }
-        return 0;
     }
 
     @Override
@@ -93,13 +112,14 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IForg
 
             IMultiStateCopycatBlockEntity copycatBE = copycatBlock.getCopycatBlockEntity(level, pos);
             if (copycatBE == null)
-                return state.getBlock().getExplosionResistance();
+                return super.getExplosionResistance(state, level, pos, explosion);
             copycatBE.getMaterialItemStorage().getAllMaterials().forEach(bs -> {
                 explosionResistance.accumulateAndGet(bs.getBlock().getExplosionResistance(), Math::max);
             });
             return explosionResistance.get();
+        } else {
+            return super.getExplosionResistance(state, level, pos, explosion);
         }
-        return state.getBlock().getExplosionResistance(state, level, pos, explosion);
     }
 
     @Override
@@ -119,15 +139,15 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IForg
         if (state1.getBlock() instanceof IMultiStateCopycatBlock copycatBlock) {
             BlockHitResult hitResult = level.clip(new ClipContext(entity.position(), entity.position().add(0, -2, 0), ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, entity));
             String property = copycatBlock.getPropertyFromInteraction(state1, level, pos, hitResult, true);
-            AtomicReference<BlockState> mat = new AtomicReference<>(AllBlocks.COPYCAT_BASE.getDefaultState());
 
             IMultiStateCopycatBlockEntity copycatBE = copycatBlock.getCopycatBlockEntity(level, pos);
             if (copycatBE == null)
-                return false;
-            mat.set(copycatBE.getMaterialItemStorage().getMaterialItem(property).material());
-            return mat.get().addLandingEffects(level, pos, mat.get(), entity, numberOfParticles);
+                return super.addLandingEffects(state1, level, pos, state2, entity, numberOfParticles);
+            BlockState material = copycatBE.getMaterialItemStorage().getMaterialItem(property).material();
+            return material.addLandingEffects(level, pos, material, entity, numberOfParticles);
+        } else {
+            return super.addLandingEffects(state1, level, pos, state2, entity, numberOfParticles);
         }
-        return false;
     }
 
     @Override
@@ -135,15 +155,15 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IForg
         if (state.getBlock() instanceof IMultiStateCopycatBlock copycatBlock) {
             BlockHitResult hitResult = level.clip(new ClipContext(entity.position(), entity.position().add(0, -2, 0), ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, entity));
             String property = copycatBlock.getPropertyFromInteraction(state, level, pos, hitResult, true);
-            AtomicReference<BlockState> mat = new AtomicReference<>(AllBlocks.COPYCAT_BASE.getDefaultState());
 
             IMultiStateCopycatBlockEntity copycatBE = copycatBlock.getCopycatBlockEntity(level, pos);
             if (copycatBE == null)
-                return false;
-            mat.set(copycatBE.getMaterialItemStorage().getMaterialItem(property).material());
-            return mat.get().addRunningEffects(level, pos, entity);
+                return super.addRunningEffects(state, level, pos, entity);
+            BlockState material = copycatBE.getMaterialItemStorage().getMaterialItem(property).material();
+            return material.addRunningEffects(level, pos, entity);
+        } else {
+            return super.addRunningEffects(state, level, pos, entity);
         }
-        return false;
     }
 
     @Override
@@ -153,11 +173,12 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IForg
 
             IMultiStateCopycatBlockEntity copycatBE = copycatBlock.getCopycatBlockEntity(level, pos);
             if (copycatBE == null)
-                return 0f;
+                return super.getEnchantPowerBonus(state, level, pos);
             copycatBE.getMaterialItemStorage().getAllMaterials().forEach(mat -> bonus.accumulateAndGet(mat.getEnchantPowerBonus(level, pos), Float::max));
             return bonus.get();
+        } else {
+            return super.getEnchantPowerBonus(state, level, pos);
         }
-        return 0f;
     }
 
     @Override
@@ -171,29 +192,34 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IForg
         if (state.getBlock() instanceof IMultiStateCopycatBlock copycatBlock) {
             BlockHitResult hitResult = pLevel.clip(new ClipContext(pEntity.position(), pEntity.position().add(0, -2, 0), ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, pEntity));
             String property = copycatBlock.getPropertyFromInteraction(state, pLevel, pPos, hitResult, true);
-            AtomicReference<BlockState> material = new AtomicReference<>(AllBlocks.COPYCAT_BASE.getDefaultState());
 
             IMultiStateCopycatBlockEntity copycatBE = copycatBlock.getCopycatBlockEntity(pLevel, pPos);
-            if (copycatBE == null)
+            if (copycatBE == null) {
+                super.fallOn(pLevel, state, pPos, pEntity, p_152430_);
                 return;
-            material.set(copycatBE.getMaterialItemStorage().getMaterialItem(property).material());
-            material.get().getBlock().fallOn(pLevel, material.get(), pPos, pEntity, p_152430_);
+            }
+            BlockState material = copycatBE.getMaterialItemStorage().getMaterialItem(property).material();
+            material.getBlock().fallOn(pLevel, material, pPos, pEntity, p_152430_);
+        } else {
+            super.fallOn(pLevel, state, pPos, pEntity, p_152430_);
         }
     }
 
     @Override
     public float getDestroyProgress(@NotNull BlockState pState, @NotNull Player pPlayer, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos) {
-        if (pState.getBlock() instanceof IMultiStateCopycatBlock copycatBlock) {
-            String property = copycatBlock.getPropertyFromInteraction(pState, pLevel, pPos, new BlockHitResult(Vec3.atCenterOf(pPos), Direction.UP, pPos, true), true);
-            AtomicReference<BlockState> material = new AtomicReference<>(AllBlocks.COPYCAT_BASE.getDefaultState());
-
-            IMultiStateCopycatBlockEntity copycatBE = copycatBlock.getCopycatBlockEntity(pLevel, pPos);
-            if (copycatBE == null)
-                return pState.getDestroyProgress(pPlayer, pLevel, pPos);
-            material.set(copycatBE.getMaterialItemStorage().getMaterialItem(property).material());
-            return material.get().getDestroyProgress(pPlayer, pLevel, pPos);
-        }
-        return pState.getDestroyProgress(pPlayer, pLevel, pPos);
+        // It is more convenient to always use a pickaxe than to guess what tool is needed for the copycat
+        return super.getDestroyProgress(pState, pPlayer, pLevel, pPos);
+//        if (pState.getBlock() instanceof IMultiStateCopycatBlock copycatBlock) {
+//            String property = copycatBlock.getPropertyFromInteraction(pState, pLevel, pPos, new BlockHitResult(Vec3.atCenterOf(pPos), Direction.UP, pPos, true), true);
+//
+//            IMultiStateCopycatBlockEntity copycatBE = copycatBlock.getCopycatBlockEntity(pLevel, pPos);
+//            if (copycatBE == null)
+//                return super.getDestroyProgress(pState, pPlayer, pLevel, pPos);
+//            BlockState material = copycatBE.getMaterialItemStorage().getMaterialItem(property).material();
+//            return material.getDestroyProgress(pPlayer, pLevel, pPos);
+//        } else {
+//            return super.getDestroyProgress(pState, pPlayer, pLevel, pPos);
+//        }
     }
 
     @Override
