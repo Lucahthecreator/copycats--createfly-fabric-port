@@ -254,6 +254,7 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
         return create(result)
                 .unlockedBy(AllItems.ZINC_INGOT::get)
                 .returns(resultCount)
+                .requiresResultFeature()
                 .viaStonecuttingTag(TaggedIngredients.ZINC::getTag)
                 .create();
     }
@@ -266,6 +267,7 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
         return create(result)
                 .unlockedBy(base)
                 .returns(resultCount)
+                .requiresResultFeature()
                 .viaShapeless(b -> b.requires(base, resultCount).requires(AllItems.ZINC_INGOT));
     }
 
@@ -277,6 +279,7 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
         return create(result)
                 .unlockedBy(() -> base)
                 .returns(resultCount)
+                .requiresResultFeature()
                 .viaShapeless(b -> b.requires(base, resultCount).requires(AllItems.ZINC_INGOT));
     }
 
