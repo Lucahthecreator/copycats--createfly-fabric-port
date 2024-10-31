@@ -72,6 +72,7 @@ import com.copycatsplus.copycats.foundation.tooltip.CopycatCharacteristics;
 import com.copycatsplus.copycats.foundation.tooltip.CopycatDescription;
 import com.copycatsplus.copycats.utility.Platform;
 import com.simibubi.create.AllTags;
+import com.simibubi.create.content.contraptions.BlockMovementChecks;
 import com.simibubi.create.content.contraptions.behaviour.DoorMovingInteraction;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
@@ -103,6 +104,7 @@ import java.util.stream.Collectors;
 import static com.copycatsplus.copycats.CCCustomModels.createBlockModel;
 import static com.copycatsplus.copycats.CCCustomModels.getFluidPipeModel;
 import static com.simibubi.create.AllInteractionBehaviours.interactionBehaviour;
+import static com.simibubi.create.content.contraptions.BlockMovementChecks.*;
 import static com.simibubi.create.foundation.data.CreateRegistrate.blockModel;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
@@ -646,6 +648,7 @@ public class CCBlocks {
                     .transform(FeatureToggle.register(FeatureCategory.FUNCTIONAL))
                     .onRegister(interactionBehaviour(new DoorMovingInteraction()))
                     .onRegister(onClient(() -> createBlockModel(CopycatDoorModelCore::new)))
+                    .onRegister(b -> registerBrittleCheck(state -> state.getBlock() == b ? CheckResult.SUCCESS : CheckResult.PASS))
                     .loot((lr, block) -> lr.add(block, lr.createDoorTable(block)))
                     .item()
                     .onRegister(CopycatDescription.register(
@@ -663,6 +666,7 @@ public class CCBlocks {
                     .transform(FeatureToggle.register(FeatureCategory.FUNCTIONAL))
                     .onRegister(onClient(() -> createBlockModel(CopycatDoorModelCore::new)))
                     .onRegister(interactionBehaviour(new DoorMovingInteraction()))
+                    .onRegister(b -> registerBrittleCheck(state -> state.getBlock() == b ? CheckResult.SUCCESS : CheckResult.PASS))
                     .loot((lr, block) -> lr.add(block, lr.createDoorTable(block)))
                     .item()
                     .onRegister(CopycatDescription.register(
