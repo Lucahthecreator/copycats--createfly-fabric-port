@@ -22,8 +22,8 @@ public class CopycatsImpl {
 
     public CopycatsImpl() {
         bus = FMLJavaModLoadingContext.get().getModEventBus();
-        CCCreativeTabsImpl.register(CopycatsImpl.bus);
         Copycats.init();
+        CCCreativeTabsImpl.register(CopycatsImpl.bus);
 
         CCCraftingConditions.register();
         MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
