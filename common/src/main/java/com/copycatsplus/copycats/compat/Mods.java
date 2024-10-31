@@ -29,7 +29,8 @@ public enum Mods {
     SODIUM("sodium"),
     ATHENA("athena"),
     INDIUM("indium"),
-    STARLIGHT("starlight");
+    STARLIGHT("starlight"),
+    DOUBLE_SLABS("doubleslabs");
 
     public final String id;
     public final boolean isLoaded;
@@ -56,14 +57,6 @@ public enum Mods {
         return new ResourceLocation(id, path);
     }
 
-    public Item getItem(String id) {
-        return BuiltInRegistries.ITEM.get(rl(id));
-    }
-
-    public Item getItem(ResourceLocation id) {
-        return BuiltInRegistries.ITEM.get(id);
-    }
-
     public boolean getLoaded() {
         return isLoaded;
     }
@@ -71,8 +64,6 @@ public enum Mods {
     /**
      * @return a boolean of whether the mod is loaded or not based on mod id
      */
-
-
     @ExpectPlatform
     public static boolean getLoaded(String id) {
         throw new AssertionError();
