@@ -242,6 +242,7 @@ public interface IMultiStateCopycatBlockEntity extends ICopycatBlockEntity {
     }
 
     static void writeSafe(IMultiStateCopycatBlockEntity self, CompoundTag tag) {
+        BlockEntityUtils.saveMetadata((BlockEntity) self, tag);
         tag.put("material_data", self.getMaterialItemStorage().serializeSafe());
     }
 
