@@ -225,24 +225,6 @@ public class CopycatHalfLayerBlock extends WaterloggedMultiStateCopycatBlock imp
     }
 
     @Override
-    public boolean isIgnoredConnectivitySide(String property, BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos) {
-        BlockState toState = reader.getBlockState(toPos);
-        return !toState.is(this);
-    }
-
-    @Override
-    public boolean canConnectTexturesToward(String property, BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
-        BlockState toState = reader.getBlockState(toPos);
-        if (reader instanceof ScaledBlockAndTintGetter scaledReader && toState.is(this)) {
-            String toProperty = scaledReader.getPropertyForRender(toState, toPos);
-            int fromLayers = state.getValue(property.equals(POSITIVE_LAYERS.getName()) ? POSITIVE_LAYERS : NEGATIVE_LAYERS);
-            int toLayers = toState.getValue(toProperty.equals(POSITIVE_LAYERS.getName()) ? POSITIVE_LAYERS : NEGATIVE_LAYERS);
-            return fromLayers == toLayers;
-        }
-        return toState.is(this);
-    }
-
-    @Override
     public BlockState transform(BlockState state, StructureTransform transform) {
         if (transform.mirror != null && transform.mirror != Mirror.NONE) {
             if (transform.mirror.rotation() == OctahedralGroup.INVERT_Y) {

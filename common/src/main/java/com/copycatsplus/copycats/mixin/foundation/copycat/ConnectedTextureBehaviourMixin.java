@@ -1,10 +1,10 @@
 package com.copycatsplus.copycats.mixin.foundation.copycat;
 
+import com.copycatsplus.copycats.foundation.copycat.CopycatExternalContext;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICustomCTBlocking;
 import com.copycatsplus.copycats.foundation.copycat.model.FilteredBlockAndTintGetter;
 import com.copycatsplus.copycats.foundation.copycat.model.ScaledBlockAndTintGetter;
-import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.utility.BlockFaceUtils;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -66,5 +66,17 @@ public class ConnectedTextureBehaviourMixin {
         if (blockingState.getBlock() instanceof ICopycatBlock)
             return BlockFaceUtils.faceMatch(reader, otherState, otherPos, blockingState, blockingPos, face2);
         return original.call(shape, face);
+    }
+
+
+    @WrapOperation(
+            at = @At(value = "INVOKE", target = "Lcom/simibubi/create/foundation/block/connected/ConnectedTextureBehaviour;getCTBlockState(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"),
+            method = "isBeingBlocked"
+    )
+    private BlockState getAppearanceForBlockingLogic(ConnectedTextureBehaviour instance, BlockAndTintGetter reader, BlockState reference, Direction face, BlockPos fromPos, BlockPos toPos, Operation<BlockState> original) {
+        CopycatExternalContext.setForBlockingLogic(true);
+        BlockState state = original.call(instance, reader, reference, face, fromPos, toPos);
+        CopycatExternalContext.setForBlockingLogic(false);
+        return state;
     }
 }

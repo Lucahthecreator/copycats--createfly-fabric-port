@@ -5,6 +5,7 @@ import com.copycatsplus.copycats.compat.AthenaCompat;
 import com.copycatsplus.copycats.compat.Mods;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.IStateType;
+import com.copycatsplus.copycats.foundation.copycat.CopycatExternalContext;
 import com.copycatsplus.copycats.foundation.copycat.StateType;
 import com.copycatsplus.copycats.foundation.copycat.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.network.CCPackets;
@@ -41,9 +42,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -402,7 +400,7 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
             property = block.defaultProperty();
         }
         IMultiStateCopycatBlockEntity be = block.getCopycatBlockEntity(reader, queryPos);
-        if (block.isIgnoredConnectivitySide(property, reader, state, side, pos, queryPos))
+        if (block.isIgnoredConnectivitySide(property, reader, state, side, pos, queryPos, queryState))
             return state;
 
         BlockState material = IMultiStateCopycatBlock.getMaterial(reader, pos, property);
@@ -434,18 +432,6 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
         )).toList());
     }
 
-    @Override
-    default boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
-                                              BlockPos fromPos, BlockPos toPos, BlockState toState) {
-        return isIgnoredConnectivitySide(defaultProperty(), reader, state, face, fromPos, toPos);
-    }
-
-    @Override
-    default boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos,
-                                             BlockState state) {
-        return canConnectTexturesToward(defaultProperty(), reader, fromPos, toPos, state);
-    }
-
     /**
      * Determines whether textures on an adjacent part/block should appear connected to the copycat block part.
      *
@@ -454,10 +440,13 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
      * @param face    The face of the adjacent block/part that is being rendered.
      * @param fromPos The position of the copycat block part.
      * @param toPos   The position of the adjacent block/part.
+     * @param toState The state of the adjacent block/part.
      * @return Whether the adjacent block/part is not allowed to connect.
      */
-    boolean isIgnoredConnectivitySide(String property, BlockAndTintGetter reader, BlockState state, Direction face,
-                                      BlockPos fromPos, BlockPos toPos);
+    default boolean isIgnoredConnectivitySide(String property, BlockAndTintGetter reader, BlockState state, Direction face,
+                                              BlockPos fromPos, BlockPos toPos, BlockState toState) {
+        return isIgnoredConnectivitySide(reader, state, face, fromPos, toPos, toState);
+    }
 
     /**
      * Determines whether the copycat block part can connect its textures towards the adjacent block/part.
@@ -468,8 +457,10 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
      * @param state   The state of the copycat block part.
      * @return Whether the copycat block part can connect its textures towards the adjacent block/part.
      */
-    boolean canConnectTexturesToward(String property, BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos,
-                                     BlockState state);
+    default boolean canConnectTexturesToward(String property, BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos,
+                                             BlockState state) {
+        return canConnectTexturesToward(reader, fromPos, toPos, state);
+    }
 
     @Override
     default boolean canOcclude(BlockGetter level, BlockState state, BlockPos pos) {
@@ -541,7 +532,7 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
             if (pLevel == null || pPos == null)
                 return GrassColor.get(0.5D, 1.0D);
 
-            String renderingProperty = MultiStateRenderManager.getRenderingProperty();
+            String renderingProperty = CopycatExternalContext.getRenderingProperty();
             if (renderingProperty != null) {
                 return Minecraft.getInstance()
                         .getBlockColors()

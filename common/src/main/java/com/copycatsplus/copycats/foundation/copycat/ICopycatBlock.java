@@ -480,8 +480,8 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
     default boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState fromState, Direction face,
                                               BlockPos fromPos, BlockPos toPos, BlockState toState) {
         // !Specific to Create's CT!
-        // A hack to detect if this method is being called in CT blocking logic
-        if (!reader.getBlockState(toPos).equals(toState)) {
+        // A hack to fix blocking logic
+        if (CopycatExternalContext.isForBlockingLogic()) {
             return false;
         }
 
@@ -501,8 +501,10 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
      */
     default boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos,
                                              BlockState fromState) {
+        BlockState toState = reader.getBlockState(toPos);
+
         // If the adjacent block is a copycat, IsIgnoredConnectivitySide has already handled the connection
-        if (reader.getBlockState(toPos).getBlock() instanceof ICopycatBlock) {
+        if (toState.getBlock() instanceof ICopycatBlock) {
             return true;
         }
 
@@ -519,9 +521,6 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
         Direction facing = Direction.fromDelta(diff.getX(), diff.getY(), diff.getZ());
 
         BlockState toState = reader.getBlockState(toPos);
-        // don't connect to multi-states because we don't know which part of the multi-state we should get materials from
-        if (toState.getBlock() instanceof IMultiStateCopycatBlock)
-            return false;
 
         if (facing != null) {
             return BlockFaceUtils.faceMatch(reader, fromState, fromPos, toState, toPos, facing);
