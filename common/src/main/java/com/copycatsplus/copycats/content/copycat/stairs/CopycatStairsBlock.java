@@ -146,7 +146,7 @@ public class CopycatStairsBlock extends StairBlock implements ICopycatBlock, ICu
 
     @Override
     public Optional<Boolean> blockCTTowards(BlockAndTintGetter reader, BlockState state, BlockPos pos, BlockPos ctPos, BlockPos connectingPos, Direction face) {
-        return connectingPos.getY() >= pos.getY() ? Optional.empty() : Optional.of(false);
+        return Optional.of(false);
     }
 
     public boolean supportsExternalFaceHiding(BlockState state) {

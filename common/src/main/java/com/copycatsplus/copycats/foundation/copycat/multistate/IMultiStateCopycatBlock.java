@@ -392,14 +392,6 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
         }
     }
 
-    @Nullable
-    static VoxelShape blockShapeOverride(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        if (pLevel instanceof ScaledBlockAndTintGetter) {
-            return Shapes.block(); // todo: patch the blocking check to consider multistates properly
-        }
-        return null;
-    }
-
     static BlockState getAppearance(IMultiStateCopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
                                     BlockState queryState, BlockPos queryPos) {
         String property;
