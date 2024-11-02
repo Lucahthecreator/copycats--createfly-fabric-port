@@ -8,9 +8,9 @@ import org.jetbrains.annotations.ApiStatus;
 @ApiStatus.Internal
 public class CopycatExternalContext {
     /**
-     * Stores the currently rendering property for multi-state copycats.
+     * Stores the currently rendering property for multi-state copycats. The stored value is thread-local.
      * <p>
-     * The stored value is thread-local and only valid when determining block colors.
+     * This is used when determining block colors and when block shape calculation results in a valid rendering property for getAppearance
      */
     private static final ThreadLocal<String> renderingProperty = new ThreadLocal<>();
     /**

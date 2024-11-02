@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.board;
 
 import com.copycatsplus.copycats.CCShapes;
+import com.copycatsplus.copycats.foundation.copycat.CopycatExternalContext;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICustomCTBlocking;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
@@ -121,7 +122,7 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
     }
 
     @Override
-    public String getPropertyFromRender(String renderingProperty, BlockState state, ScaledBlockAndTintGetter level, Vec3i vector, BlockPos blockPos) {
+    public String getPropertyFromRender(String renderingProperty, BlockState state, BlockGetter level, Vec3i vector, BlockPos blockPos) {
         return renderingProperty;
     }
 
@@ -136,7 +137,7 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
     }
 
     @Override
-    public boolean isIgnoredConnectivitySide(String property, BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos, BlockState toState) {
+    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos, BlockState toState) {
         return !reader.getBlockState(toPos).is(this);
     }
 

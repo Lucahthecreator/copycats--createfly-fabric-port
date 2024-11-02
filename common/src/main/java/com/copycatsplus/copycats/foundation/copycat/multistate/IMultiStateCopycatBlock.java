@@ -8,6 +8,7 @@ import com.copycatsplus.copycats.foundation.copycat.IStateType;
 import com.copycatsplus.copycats.foundation.copycat.CopycatExternalContext;
 import com.copycatsplus.copycats.foundation.copycat.StateType;
 import com.copycatsplus.copycats.foundation.copycat.model.ScaledBlockAndTintGetter;
+import com.copycatsplus.copycats.foundation.copycat.model.assembly.CopycatRenderContext;
 import com.copycatsplus.copycats.network.CCPackets;
 import com.copycatsplus.copycats.network.FillCopycatPacket;
 import com.copycatsplus.copycats.utility.BlockEntityUtils;
@@ -168,7 +169,7 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
 
     default String getPropertyFromRender(String renderingProperty,
                                          BlockState state,
-                                         ScaledBlockAndTintGetter level,
+                                         BlockGetter level,
                                          Vec3i vector,
                                          BlockPos blockPos) {
         Vec3i scale = vectorScale(state);
@@ -392,17 +393,21 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
 
     static BlockState getAppearance(IMultiStateCopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
                                     BlockState queryState, BlockPos queryPos) {
-        String property;
         BlockAndTintGetter reader = Mods.ATHENA.runIfInstalled(() -> () -> AthenaCompat.unwrapAthenaGetter(level)).orElse(level);
+
         if (reader instanceof ScaledBlockAndTintGetter scaledLevel) {
-            property = scaledLevel.getPropertyForRender(state, pos);
+            CopycatExternalContext.setRenderingProperty(scaledLevel.getPropertyForRender(state, pos));
         } else {
-            property = block.defaultProperty();
+            CopycatExternalContext.setRenderingProperty(block.defaultProperty());
         }
-        IMultiStateCopycatBlockEntity be = block.getCopycatBlockEntity(reader, queryPos);
-        if (block.isIgnoredConnectivitySide(property, reader, state, side, pos, queryPos, queryState))
+
+        if (block.isIgnoredConnectivitySide(reader, state, side, pos, queryPos, queryState))
             return state;
 
+        String property;
+        property = CopycatExternalContext.getRenderingProperty();
+        if (property == null)
+            property = block.defaultProperty();
         BlockState material = IMultiStateCopycatBlock.getMaterial(reader, pos, property);
         return material.is(Blocks.AIR) ? AllBlocks.COPYCAT_BASE.getDefaultState() : material;
     }
@@ -430,22 +435,6 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
                 new ItemStack(state.getBlock().asItem()),
                 ItemRequirement.ItemUseType.CONSUME
         )).toList());
-    }
-
-    /**
-     * Determines whether textures on an adjacent part/block should appear connected to the copycat block part.
-     *
-     * @param reader  The world which is scaled by {@link IMultiStateCopycatBlock#vectorScale}.
-     * @param state   The state of the copycat block part.
-     * @param face    The face of the adjacent block/part that is being rendered.
-     * @param fromPos The position of the copycat block part.
-     * @param toPos   The position of the adjacent block/part.
-     * @param toState The state of the adjacent block/part.
-     * @return Whether the adjacent block/part is not allowed to connect.
-     */
-    default boolean isIgnoredConnectivitySide(String property, BlockAndTintGetter reader, BlockState state, Direction face,
-                                              BlockPos fromPos, BlockPos toPos, BlockState toState) {
-        return isIgnoredConnectivitySide(reader, state, face, fromPos, toPos, toState);
     }
 
     /**
