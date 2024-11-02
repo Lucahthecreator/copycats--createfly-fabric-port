@@ -444,7 +444,7 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
 
     @Override
     default boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
-                                              BlockPos fromPos, BlockPos toPos) {
+                                              BlockPos fromPos, BlockPos toPos, BlockState toState) {
         return isIgnoredConnectivitySide(defaultProperty(), reader, state, face, fromPos, toPos);
     }
 

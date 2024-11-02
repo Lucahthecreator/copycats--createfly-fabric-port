@@ -96,8 +96,8 @@ public class CopycatFenceBlock extends FenceBlock implements ICopycatBlock, IBE<
 
     @Override
     public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
-                                             BlockPos fromPos, BlockPos toPos) {
-        if (isPole(state)) return ICopycatBlock.super.isIgnoredConnectivitySide(reader, state, face, fromPos, toPos);
+                                             BlockPos fromPos, BlockPos toPos, BlockState toState) {
+        if (isPole(state)) return ICopycatBlock.super.isIgnoredConnectivitySide(reader, state, face, fromPos, toPos, toState);
         return true;
     }
 
