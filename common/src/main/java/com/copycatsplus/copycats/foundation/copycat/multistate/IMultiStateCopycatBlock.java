@@ -395,7 +395,7 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
                                     BlockState queryState, BlockPos queryPos) {
         BlockAndTintGetter reader = Mods.ATHENA.runIfInstalled(() -> () -> AthenaCompat.unwrapAthenaGetter(level)).orElse(level);
 
-        if (reader instanceof ScaledBlockAndTintGetter scaledLevel) {
+        if (reader instanceof ScaledBlockAndTintGetter scaledLevel && state.getBlock() instanceof IMultiStateCopycatBlock) {
             CopycatExternalContext.setRenderingProperty(scaledLevel.getPropertyForRender(state, pos));
         } else {
             CopycatExternalContext.setRenderingProperty(block.defaultProperty());
@@ -478,33 +478,6 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
     default Optional<Boolean> shapeCanOccludeNeighbor(BlockGetter level, BlockPos pos, BlockState state, BlockPos neighborPos, Direction dir) {
         BlockState neighborState = level.getBlockState(neighborPos);
         return Optional.of(BlockFaceUtils.canOcclude(level, neighborState, neighborPos, state, pos, dir.getOpposite()));
-    }
-
-    /**
-     * Whether this copycat can hide the face of an adjacent block.
-     * <p>
-     * Note that face hiding is different from occlusion, as it is meant for hiding inner faces of transparent blocks.
-     * Face hiding hides the face of the adjacent block if the adjacent block is the same type regardless of whether
-     * this block has occlusion enabled.
-     */
-    static boolean hidesNeighborFace(BlockGetter level,
-                                     BlockPos pos,
-                                     BlockState state,
-                                     BlockState neighborState,
-                                     Direction dir) {
-        BlockPos toPos = pos.relative(dir);
-        if (!(level instanceof ScaledBlockAndTintGetter scaledWorld)) return false;
-        // todo: incomplete face hiding if two multi-states have different orientations
-        BlockState material = state.getBlock() instanceof IMultiStateCopycatBlock
-                ? getMaterial(level, pos, scaledWorld.getPropertyForRender(state, pos))
-                : state;
-        BlockState neighborMaterial = neighborState.getBlock() instanceof IMultiStateCopycatBlock
-                ? getMaterial(level, toPos, scaledWorld.getPropertyForRender(neighborState, toPos))
-                : neighborState;
-        if (material.skipRendering(neighborMaterial, dir.getOpposite())) {
-            return BlockFaceUtils.canOcclude(level, neighborState, toPos, state, pos, dir.getOpposite());
-        }
-        return false;
     }
 
     @Environment(EnvType.CLIENT)

@@ -1,5 +1,6 @@
 package com.copycatsplus.copycats.foundation.copycat;
 
+import com.copycatsplus.copycats.foundation.copycat.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.utility.BlockEntityUtils;
 import com.copycatsplus.copycats.utility.BlockFaceUtils;
@@ -593,15 +594,23 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
                                      BlockState neighborState,
                                      Direction dir) {
         BlockPos toPos = pos.relative(dir);
-        BlockState material = state.getBlock() instanceof ICopycatBlock
-                ? getMaterial(level, pos)
-                : state;
-        BlockState neighborMaterial = neighborState.getBlock() instanceof ICopycatBlock
-                ? getMaterial(level, toPos)
-                : neighborState;
-        if (material.skipRendering(neighborMaterial, dir.getOpposite())) {
-            return BlockFaceUtils.canOcclude(level, neighborState, toPos, state, pos, dir.getOpposite());
+
+        if (level instanceof ScaledBlockAndTintGetter scaledLevel && state.getBlock() instanceof IMultiStateCopycatBlock) {
+            CopycatExternalContext.setRenderingProperty(scaledLevel.getPropertyForRender(state, pos));
+        } else {
+            CopycatExternalContext.setRenderingProperty(null);
         }
+
+        if (BlockFaceUtils.canOcclude(level, neighborState, toPos, state, pos, dir.getOpposite())) {
+            BlockState material = state.getBlock() instanceof IMultiStateCopycatBlock
+                    ? IMultiStateCopycatBlock.getMaterial(level, pos, CopycatExternalContext.getRenderingProperty())
+                    : state.getBlock() instanceof ICopycatBlock ? ICopycatBlock.getMaterial(level, pos) : state;
+            BlockState neighborMaterial = neighborState.getBlock() instanceof IMultiStateCopycatBlock && level instanceof ScaledBlockAndTintGetter scaledLevel
+                    ? IMultiStateCopycatBlock.getMaterial(level, toPos, scaledLevel.getPropertyForRender(neighborState, toPos))
+                    : neighborState.getBlock() instanceof ICopycatBlock ? ICopycatBlock.getMaterial(level, toPos) : neighborState;
+            return material.skipRendering(neighborMaterial, dir.getOpposite());
+        }
+
         return false;
     }
 

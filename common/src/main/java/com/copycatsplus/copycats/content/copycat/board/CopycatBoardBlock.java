@@ -294,7 +294,7 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
                                      BlockState state,
                                      BlockState neighborState,
                                      Direction dir) {
-        return IMultiStateCopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
     @Override

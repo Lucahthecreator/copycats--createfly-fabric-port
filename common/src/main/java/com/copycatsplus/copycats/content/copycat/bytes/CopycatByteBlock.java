@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.bytes;
 
 import com.copycatsplus.copycats.Copycats;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.WaterloggedMultiStateCopycatBlock;
@@ -252,7 +253,7 @@ public class CopycatByteBlock extends WaterloggedMultiStateCopycatBlock implemen
                                      BlockState state,
                                      BlockState neighborState,
                                      Direction dir) {
-        return IMultiStateCopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
     @Override
