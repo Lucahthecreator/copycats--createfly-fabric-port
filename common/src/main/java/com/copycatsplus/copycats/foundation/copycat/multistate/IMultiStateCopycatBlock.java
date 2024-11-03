@@ -59,7 +59,7 @@ import java.util.stream.IntStream;
  * {@link IBE#getBlockEntityType} in the concrete class, and redirect calls of
  * {@link IMultiStateCopycatBlock#use},
  * {@link IMultiStateCopycatBlock#setPlacedBy},
- * {@link IMultiStateCopycatBlock#hidesNeighborFace},
+ * {@link ICopycatBlock#hidesNeighborFace},
  * {@link IMultiStateCopycatBlock#rotate},
  * {@link IMultiStateCopycatBlock#mirror},
  * {@link Block#getShape},
