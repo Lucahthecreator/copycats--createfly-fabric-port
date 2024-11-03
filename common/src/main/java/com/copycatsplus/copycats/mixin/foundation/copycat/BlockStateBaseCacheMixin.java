@@ -8,6 +8,7 @@ import com.simibubi.create.content.decoration.bracket.BracketBlock;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 /**
@@ -15,6 +16,10 @@ import org.spongepowered.asm.mixin.injection.At;
  */
 @Mixin(targets = "net.minecraft.world.level.block.state.BlockBehaviour$BlockStateBase$Cache")
 public class BlockStateBaseCacheMixin {
+
+    @Unique
+    private static final ResourceLocation COPYCAT_BASE = new ResourceLocation(Mods.CREATE.id(), "copycat_base");
+
     @WrapOperation(
             method = "<init>",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;canOcclude()Z")
@@ -22,7 +27,7 @@ public class BlockStateBaseCacheMixin {
     private boolean canCopycatOcclude(BlockState instance,
                                       Operation<Boolean> original) {
         try {
-            if (instance.getBlockHolder().is(new ResourceLocation(Mods.CREATE.id(), "copycat_base"))) {
+            if (instance.getBlockHolder().is(COPYCAT_BASE)) {
                 return false;
             }
         } catch (IllegalStateException e) {
