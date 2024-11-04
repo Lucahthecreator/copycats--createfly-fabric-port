@@ -13,12 +13,13 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
+
+import static com.copycatsplus.copycats.utility.MathUtils.*;
 
 public class BlockFaceUtils {
     private static final ThreadLocal<Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey>> OCCLUSION_CACHE = ThreadLocal.withInitial(() -> {
@@ -206,13 +207,5 @@ public class BlockFaceUtils {
             }
         }
         return parts;
-    }
-
-    private static Vec3i replaceAxis(Vec3i vec, Axis axis, int value) {
-        return switch (axis) {
-            case X -> new Vec3i(value, vec.getY(), vec.getZ());
-            case Y -> new Vec3i(vec.getX(), value, vec.getZ());
-            case Z -> new Vec3i(vec.getX(), vec.getY(), value);
-        };
     }
 }
