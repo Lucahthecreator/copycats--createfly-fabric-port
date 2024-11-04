@@ -2,14 +2,18 @@ package com.copycatsplus.copycats.content.copycat.half_panel;
 
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
-import com.copycatsplus.copycats.content.copycat.base.CTWaterloggedCopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.CCWaterloggedCopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.IStateType;
+import com.copycatsplus.copycats.utility.InteractionUtils;
+import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.equipment.extendoGrip.ExtendoGripItem;
 import com.simibubi.create.foundation.placement.IPlacementHelper;
 import com.simibubi.create.foundation.placement.PlacementHelpers;
 import com.simibubi.create.foundation.placement.PlacementOffset;
 import com.simibubi.create.foundation.placement.PoleHelper;
 import com.simibubi.create.foundation.utility.Iterate;
-import com.simibubi.create.foundation.utility.VoxelShaper;
+import com.simibubi.create.foundation.utility.VecHelper;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
@@ -35,17 +39,21 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-public class CopycatHalfPanelBlock extends CTWaterloggedCopycatBlock {
+import static com.copycatsplus.copycats.utility.BlockUtils.transformFacing;
+
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+public class CopycatHalfPanelBlock extends CCWaterloggedCopycatBlock implements IStateType {
 
     /**
      * The direction where the base of the half panel is facing.
@@ -55,15 +63,6 @@ public class CopycatHalfPanelBlock extends CTWaterloggedCopycatBlock {
      * The direction of the half panel within the block face.
      */
     public static final DirectionProperty OFFSET = DirectionProperty.create("offset", Direction.Plane.HORIZONTAL);
-
-    private static final Map<Direction, VoxelShaper> SHAPE_BY_OFFSET = new HashMap<>();
-
-    static {
-        SHAPE_BY_OFFSET.put(Direction.NORTH, CCShapes.HALF_PANEL_NORTH);
-        SHAPE_BY_OFFSET.put(Direction.SOUTH, CCShapes.HALF_PANEL_SOUTH);
-        SHAPE_BY_OFFSET.put(Direction.EAST, CCShapes.HALF_PANEL_EAST);
-        SHAPE_BY_OFFSET.put(Direction.WEST, CCShapes.HALF_PANEL_WEST);
-    }
 
     private static final int placementHelperId = PlacementHelpers.register(new PlacementHelper());
 
@@ -76,20 +75,12 @@ public class CopycatHalfPanelBlock extends CTWaterloggedCopycatBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
-                                 BlockHitResult ray) {
-
-        if (!player.isShiftKeyDown() && player.mayBuild()) {
-            ItemStack heldItem = player.getItemInHand(hand);
-            IPlacementHelper placementHelper = PlacementHelpers.get(placementHelperId);
-            if (placementHelper.matchesItem(heldItem)) {
-                placementHelper.getOffset(player, world, state, pos, ray)
-                        .placeInWorld(world, (BlockItem) heldItem.getItem(), player, hand, ray);
-                return InteractionResult.SUCCESS;
-            }
-        }
-
-        return super.use(state, world, pos, player, hand, ray);
+    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand,
+                                          @NotNull BlockHitResult ray) {
+        return InteractionUtils.sequential(
+                () -> InteractionUtils.usePlacementHelper(placementHelperId, state, world, pos, player, hand, ray),
+                () -> super.use(state, world, pos, player, hand, ray)
+        );
     }
 
     @Override
@@ -111,9 +102,10 @@ public class CopycatHalfPanelBlock extends CTWaterloggedCopycatBlock {
     @Override
     public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos,
                                             BlockState state) {
+        BlockState toState = reader.getBlockState(toPos);
+        if (!toState.is(this)) return false;
         Direction facing = state.getValue(FACING);
         Direction offset = state.getValue(OFFSET);
-        BlockState toState = reader.getBlockState(toPos);
 
         BlockPos diff = toPos.subtract(fromPos);
         if (diff.equals(Vec3i.ZERO)) {
@@ -142,21 +134,9 @@ public class CopycatHalfPanelBlock extends CTWaterloggedCopycatBlock {
     }
 
     @Override
-    public boolean canFaceBeOccluded(BlockState state, Direction face) {
-        Direction facing = state.getValue(FACING);
-        Direction offset = state.getValue(OFFSET);
-        return face == facing || face == getOffsetFacing(facing, offset) || face.getAxis() == getOffsetAxis(facing, offset);
-    }
-
-    @Override
-    public boolean shouldFaceAlwaysRender(BlockState state, Direction face) {
-        return !canFaceBeOccluded(state, face);
-    }
-
-    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState stateForPlacement = super.getStateForPlacement(context);
-        assert stateForPlacement != null;
+        if (stateForPlacement == null) return null;
 
         Direction facing = context.getClickedFace().getOpposite();
         double offset1, offset2;
@@ -203,7 +183,7 @@ public class CopycatHalfPanelBlock extends CTWaterloggedCopycatBlock {
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
-        return SHAPE_BY_OFFSET.get(pState.getValue(OFFSET)).get(pState.getValue(FACING));
+        return CCShapes.HALF_PANEL.get(pState.getValue(FACING)).get(pState.getValue(OFFSET)).toShape();
     }
 
 
@@ -212,47 +192,31 @@ public class CopycatHalfPanelBlock extends CTWaterloggedCopycatBlock {
     }
 
 
-    public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState,
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
                                      Direction dir) {
-        if (state.is(this) == neighborState.is(this)) {
-            if (getMaterial(level, pos).skipRendering(getMaterial(level, pos.relative(dir)), dir.getOpposite())) {
-                return neighborState.getValue(FACING) == state.getValue(FACING) &&
-                        neighborState.getValue(OFFSET) == state.getValue(OFFSET) &&
-                        getOffsetAxis(state.getValue(FACING), state.getValue(OFFSET)) == dir.getAxis();
-            }
-        }
-
-        return false;
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public @NotNull BlockState rotate(@NotNull BlockState pState, Rotation pRot) {
-        return pState.setValue(FACING, pRot.rotate(pState.getValue(FACING)));
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public @NotNull BlockState mirror(@NotNull BlockState pState, @NotNull Mirror pMirror) {
-        Axis mirrorAxis = null;
-        for (Axis axis : Iterate.axes) {
-            if (pMirror.rotation().inverts(axis)) {
-                mirrorAxis = axis;
-                break;
+    public BlockState transform(BlockState state, StructureTransform transform) {
+        Direction facing = state.getValue(FACING);
+        Direction offset = state.getValue(OFFSET);
+        Vec3i offsetNormal = transform.applyWithoutOffset(new BlockPos(getOffsetFacing(facing, offset).getNormal()));
+        Direction newFacing = transformFacing(transform, facing);
+        Vec3i facingNormal = newFacing.getNormal();
+        if (offsetNormal.getY() != 0) {
+            if (offsetNormal.getX() == 0 && facingNormal.getX() != 0) {
+                offsetNormal = new Vec3i(offsetNormal.getY(), offsetNormal.getX(), offsetNormal.getZ());
+            } else {
+                offsetNormal = new Vec3i(offsetNormal.getX(), offsetNormal.getZ(), offsetNormal.getY());
             }
         }
-        if (mirrorAxis == null) {
-            return super.mirror(pState, pMirror);
-        }
-        Direction facing = pState.getValue(FACING);
-        Direction offset = pState.getValue(OFFSET);
-        if (facing.getAxis() == mirrorAxis) {
-            return pState.setValue(FACING, facing.getOpposite());
-        } else if (offset.getAxis() == mirrorAxis) {
-            return pState.setValue(OFFSET, offset.getOpposite());
-        } else {
-            return pState;
-        }
+        return state
+                .setValue(FACING, newFacing)
+                .setValue(OFFSET, Objects.requireNonNull(Direction.fromDelta(offsetNormal.getX(), offsetNormal.getY(), offsetNormal.getZ())));
     }
 
     /**

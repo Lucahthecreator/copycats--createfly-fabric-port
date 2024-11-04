@@ -1,14 +1,20 @@
 package com.copycatsplus.copycats.content.copycat.bytes;
 
 import com.copycatsplus.copycats.Copycats;
-import com.copycatsplus.copycats.content.copycat.base.CTWaterloggedCopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
+import com.copycatsplus.copycats.foundation.copycat.multistate.WaterloggedMultiStateCopycatBlock;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.math.OctahedralGroup;
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.schematics.requirement.ISpecialBlockItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.foundation.utility.Iterate;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
@@ -33,12 +39,14 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
-public class CopycatByteBlock extends CTWaterloggedCopycatBlock implements ISpecialBlockItemRequirement {
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+public class CopycatByteBlock extends WaterloggedMultiStateCopycatBlock implements ISpecialBlockItemRequirement {
     public static BooleanProperty TOP_NE = BooleanProperty.create("top_northeast");
     public static BooleanProperty TOP_NW = BooleanProperty.create("top_northwest");
     public static BooleanProperty TOP_SE = BooleanProperty.create("top_southeast");
@@ -48,6 +56,21 @@ public class CopycatByteBlock extends CTWaterloggedCopycatBlock implements ISpec
     public static BooleanProperty BOTTOM_SE = BooleanProperty.create("bottom_southeast");
     public static BooleanProperty BOTTOM_SW = BooleanProperty.create("bottom_southwest");
     private final ImmutableMap<BlockState, VoxelShape> shapesCache;
+
+    public static final List<Byte> allBytes;
+    public static final Map<String, Byte> byteMap;
+
+    static {
+        allBytes = new ArrayList<>(8);
+        for (boolean x : Iterate.falseAndTrue) {
+            for (boolean y : Iterate.falseAndTrue) {
+                for (boolean z : Iterate.falseAndTrue) {
+                    allBytes.add(bite(x, y, z));
+                }
+            }
+        }
+        byteMap = allBytes.stream().collect(Collectors.toMap(b -> byByte(b).getName(), b -> b));
+    }
 
     public CopycatByteBlock(Properties properties) {
         super(properties);
@@ -65,28 +88,66 @@ public class CopycatByteBlock extends CTWaterloggedCopycatBlock implements ISpec
     }
 
     @Override
+    public String defaultProperty() {
+        return BOTTOM_NW.getName();
+    }
+
+    @Override
+    public Vec3i vectorScale(BlockState state) {
+        return new Vec3i(2, 2, 2);
+    }
+
+    @Override
+    public boolean partExists(BlockState state, String property) {
+        if (property.equals(TOP_NE.getName())) return state.getValue(TOP_NE);
+        if (property.equals(TOP_NW.getName())) return state.getValue(TOP_NW);
+        if (property.equals(TOP_SE.getName())) return state.getValue(TOP_SE);
+        if (property.equals(TOP_SW.getName())) return state.getValue(TOP_SW);
+        if (property.equals(BOTTOM_NE.getName())) return state.getValue(BOTTOM_NE);
+        if (property.equals(BOTTOM_NW.getName())) return state.getValue(BOTTOM_NW);
+        if (property.equals(BOTTOM_SE.getName())) return state.getValue(BOTTOM_SE);
+        if (property.equals(BOTTOM_SW.getName())) return state.getValue(BOTTOM_SW);
+        return false;
+    }
+
+    @Override
+    public Set<String> storageProperties() {
+        return Set.of(TOP_NE, TOP_NW, TOP_SE, TOP_SW, BOTTOM_NE, BOTTOM_NW, BOTTOM_SE, BOTTOM_SW).stream().map(BooleanProperty::getName).collect(Collectors.toSet());
+    }
+
+    @Override
+    public int getColorIndex(String property) {
+        Byte bite = byteMap.get(property);
+        return bite.x ^ bite.y ^ bite.z ? 1 : 0;
+    }
+
+    @Override
+    public String getPropertyFromInteraction(BlockState state, BlockGetter level, Vec3i hitLocation, BlockPos blockPos, Direction facing, Vec3 unscaledHit) {
+        return byByte(hitLocation.getX() > 0, hitLocation.getY() > 0, hitLocation.getZ() > 0).getName();
+    }
+
+    @Override
+    public Vec3i getVectorFromProperty(BlockState state, String property) {
+        Byte bite = byteMap.get(property);
+        return new Vec3i(bite.x ? 1 : 0, bite.y ? 1 : 0, bite.z ? 1 : 0);
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         super.createBlockStateDefinition(pBuilder.add(TOP_NE, TOP_NW, TOP_SE, TOP_SW, BOTTOM_NE, BOTTOM_NW, BOTTOM_SE, BOTTOM_SW));
     }
 
+
     @Override
-    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos) {
-        return true;
+    public boolean isIgnoredConnectivitySide(String property, BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos) {
+        BlockState toState = reader.getBlockState(toPos);
+        return !toState.is(this);
     }
 
     @Override
-    public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
-        return false;
-    }
-
-    @Override
-    public boolean canFaceBeOccluded(BlockState state, Direction face) {
-        return false;
-    }
-
-    @Override
-    public boolean shouldFaceAlwaysRender(BlockState state, Direction face) {
-        return true;
+    public boolean canConnectTexturesToward(String property, BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
+        BlockState toState = reader.getBlockState(toPos);
+        return toState.is(this);
     }
 
     private static VoxelShape calculateMultiFaceShape(BlockState pState) {
@@ -105,6 +166,8 @@ public class CopycatByteBlock extends CTWaterloggedCopycatBlock implements ISpec
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+        VoxelShape shapeOverride = IMultiStateCopycatBlock.blockShapeOverride(pState, pLevel, pPos, pContext);
+        if (shapeOverride != null) return shapeOverride;
         return Objects.requireNonNull(this.shapesCache.get(pState));
     }
 
@@ -120,7 +183,7 @@ public class CopycatByteBlock extends CTWaterloggedCopycatBlock implements ISpec
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState stateForPlacement = super.getStateForPlacement(context);
-        assert stateForPlacement != null;
+        if (stateForPlacement == null) return null;
         BlockPos blockPos = context.getClickedPos();
         BlockState state = context.getLevel().getBlockState(blockPos);
         Vec3 bias = Vec3.atLowerCornerOf(context.getClickedFace().getNormal()).scale(1 / 16f);
@@ -162,6 +225,7 @@ public class CopycatByteBlock extends CTWaterloggedCopycatBlock implements ISpec
 
     @Override
     public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
+        onWrenched(state, context);
         int byteCount = 0;
         for (Byte bite : allBytes) {
             if (state.getValue(byByte(bite))) byteCount++;
@@ -174,10 +238,12 @@ public class CopycatByteBlock extends CTWaterloggedCopycatBlock implements ISpec
         Vec3 bias = Vec3.atLowerCornerOf(context.getClickedFace().getNormal()).scale(-1 / 16f);
         Byte bite = getByteFromVec(context.getClickLocation().add(bias), context.getClickedPos());
         if (world instanceof ServerLevel) {
-            if (player != null && !player.isCreative()) {
+            if (player != null) {
                 List<ItemStack> drops = Block.getDrops(defaultBlockState().setValue(byByte(bite), true), (ServerLevel) world, pos, world.getBlockEntity(pos), player, context.getItemInHand());
-                for (ItemStack drop : drops) {
-                    player.getInventory().placeItemBackInInventory(drop);
+                if (!player.isCreative()) {
+                    for (ItemStack drop : drops) {
+                        player.getInventory().placeItemBackInInventory(drop);
+                    }
                 }
             }
             BlockPos up = pos.relative(Direction.UP);
@@ -189,31 +255,42 @@ public class CopycatByteBlock extends CTWaterloggedCopycatBlock implements ISpec
 
     @Override
     public ItemRequirement getRequiredItems(BlockState state, BlockEntity blockEntity) {
-        return new ItemRequirement(
-                ItemRequirement.ItemUseType.CONSUME,
-                new ItemStack(asItem(), (int) allBytes.stream().filter(b -> state.getValue(byByte(b))).count())
-        );
+        return IMultiStateCopycatBlock.getRequiredItemsForParts(state, TOP_NE, TOP_NW, TOP_SE, TOP_SW, BOTTOM_NE, BOTTOM_NW, BOTTOM_SE, BOTTOM_SW);
     }
 
-    @SuppressWarnings("deprecation")
+    public boolean supportsExternalFaceHiding(BlockState state) {
+        return true;
+    }
+
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
+                                     Direction dir) {
+        return IMultiStateCopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
+    }
+
     @Override
-    public @NotNull BlockState rotate(@NotNull BlockState pState, @NotNull Rotation pRotation) {
-        if (pRotation == Rotation.CLOCKWISE_90) {
-            return mapBytes(pState, bite -> bite(!bite.z, bite.y, bite.x));
-        } else if (pRotation == Rotation.CLOCKWISE_180) {
-            return mapBytes(pState, bite -> bite(!bite.x, bite.y, !bite.z));
-        } else if (pRotation == Rotation.COUNTERCLOCKWISE_90) {
-            return mapBytes(pState, bite -> bite(bite.z, bite.y, !bite.x));
+    public BlockState transform(BlockState state, StructureTransform transform) {
+        return mapBytes(state, bite -> transformByte(transform, bite));
+    }
+
+    @Override
+    public void transformStorage(BlockState state, IMultiStateCopycatBlockEntity be, StructureTransform transform) {
+        be.getMaterialItemStorage().remapStorage(key -> byByte(transformByte(transform, byteMap.get(key))).getName());
+    }
+
+    private static Byte transformByte(StructureTransform transform, Byte bite) {
+        if (transform.mirror != null && transform.mirror != Mirror.NONE)
+            bite = bite.mirror(transform.mirror);
+        if (transform.rotationAxis != null) {
+            bite = switch (transform.rotationAxis) {
+                case X -> bite.rotateX(transform.rotation);
+                case Y -> bite.rotateY(transform.rotation);
+                case Z -> bite.rotateZ(transform.rotation);
+            };
         }
-        return pState;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public @NotNull BlockState mirror(@NotNull BlockState pState, Mirror pMirror) {
-        boolean invertX = pMirror.rotation() == OctahedralGroup.INVERT_X;
-        boolean invertZ = pMirror.rotation() == OctahedralGroup.INVERT_Z;
-        return mapBytes(pState, bite -> bite(invertX != bite.x, bite.y, invertZ != bite.z));
+        return bite;
     }
 
     public static Vec3 clampToBlockPos(Vec3 vec, BlockPos pos) {
@@ -237,19 +314,6 @@ public class CopycatByteBlock extends CTWaterloggedCopycatBlock implements ISpec
         }
 
         return blockstate;
-    }
-
-    public static final List<Byte> allBytes;
-
-    static {
-        allBytes = new ArrayList<>(8);
-        for (boolean x : Iterate.falseAndTrue) {
-            for (boolean y : Iterate.falseAndTrue) {
-                for (boolean z : Iterate.falseAndTrue) {
-                    allBytes.add(bite(x, y, z));
-                }
-            }
-        }
     }
 
     public static Byte bite(boolean x, boolean y, boolean z) {
@@ -325,6 +389,49 @@ public class CopycatByteBlock extends CTWaterloggedCopycatBlock implements ISpec
 
         public Byte relative(Direction direction) {
             return set(direction.getAxis(), !get(direction.getAxis()));
+        }
+
+        public Byte rotateX(Rotation rotation) {
+            if (rotation == Rotation.CLOCKWISE_90) {
+                return new Byte(this.x, this.z, !this.y);
+            } else if (rotation == Rotation.CLOCKWISE_180) {
+                return new Byte(this.x, this.y, this.z);
+            } else if (rotation == Rotation.COUNTERCLOCKWISE_90) {
+                return new Byte(this.x, !this.z, this.y);
+            } else {
+                return this;
+            }
+        }
+
+        public Byte rotateY(Rotation rotation) {
+            if (rotation == Rotation.CLOCKWISE_90) {
+                return new Byte(!this.z, this.y, this.x);
+            } else if (rotation == Rotation.CLOCKWISE_180) {
+                return new Byte(!this.x, this.y, !this.z);
+            } else if (rotation == Rotation.COUNTERCLOCKWISE_90) {
+                return new Byte(this.z, this.y, !this.x);
+            } else {
+                return this;
+            }
+        }
+
+        public Byte rotateZ(Rotation rotation) {
+            if (rotation == Rotation.CLOCKWISE_90) {
+                return new Byte(this.y, !this.x, this.z);
+            } else if (rotation == Rotation.CLOCKWISE_180) {
+                return new Byte(this.x, this.y, this.z);
+            } else if (rotation == Rotation.COUNTERCLOCKWISE_90) {
+                return new Byte(!this.y, this.x, this.z);
+            } else {
+                return this;
+            }
+        }
+
+        public Byte mirror(Mirror mirror) {
+            boolean invertX = mirror.rotation() == OctahedralGroup.INVERT_X;
+            boolean invertY = mirror.rotation() == OctahedralGroup.INVERT_Y;
+            boolean invertZ = mirror.rotation() == OctahedralGroup.INVERT_Z;
+            return new Byte(invertX != this.x, invertY != this.y, invertZ != this.z);
         }
 
         @Override

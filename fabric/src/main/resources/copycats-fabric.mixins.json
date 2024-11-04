@@ -5,8 +5,17 @@
   "plugin": "com.copycatsplus.copycats.mixin.MixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "HolderReferenceMixin",
+    "compat.indium.GeometryHelperMixin",
+    "compat.moreculling.MoreCullingConfigMixin",
     "compat.registrate.CreateRegistrateMixin",
-    "copycat.base.CopycatModelMixin"
+    "foundation.copycat.CopycatBlockEntityMixin$BlockEntityWithoutAttachmentData",
+    "foundation.copycat.CopycatBlockEntityMixin$FluidPipeData",
+    "foundation.copycat.CopycatBlockEntityMixin$StraightPipeData",
+    "foundation.copycat.CopycatBlockMixin",
+    "foundation.copycat.GeometryHelperMixin",
+    "foundation.copycat.multistate.MultiStateCopycatBlockEntityMixin$BlockEntityWithoutAttachmentData",
+    "foundation.copycat.multistate.MultiStateCopycatBlockMixin"
   ],
   "client": [
     "featuretoggle.SubMenuConfigScreenMixin"
