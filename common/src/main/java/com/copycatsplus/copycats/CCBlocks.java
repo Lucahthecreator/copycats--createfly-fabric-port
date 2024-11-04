@@ -2,6 +2,8 @@ package com.copycatsplus.copycats;
 
 import com.copycatsplus.copycats.config.FeatureCategory;
 import com.copycatsplus.copycats.config.FeatureToggle;
+import com.copycatsplus.copycats.content.copycat.byte_panel.CopycatBytePanelBlock;
+import com.copycatsplus.copycats.content.copycat.byte_panel.CopycatMultiBytePanelModelCore;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelModelCore;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatLargeCogWheelModelCore;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftModelCore;
@@ -222,6 +224,21 @@ public class CCBlocks {
                             CopycatCharacteristics.MULTI_STATE
                     ))
                     .transform(customItemModel("copycat_base", "byte"))
+                    .register();
+
+    public static final BlockEntry<CopycatBytePanelBlock> COPYCAT_BYTE_PANEL =
+            REGISTRATE.block("copycat_byte_panel", CopycatBytePanelBlock::new)
+                    .transform(CCBuilderTransformers.multiCopycat())
+                    .transform(FeatureToggle.register(FeatureCategory.MULTISTATES))
+                    .onRegister(onClient(() -> createBlockModel(CopycatMultiBytePanelModelCore::new)))
+                    .loot(CCLootGen.build(CCLootGen.lootForBytePanels()))
+                    .item()
+                    .onRegister(CopycatDescription.register(
+                            CopycatCharacteristics.COPYCAT,
+                            CopycatCharacteristics.CT_TOGGLE,
+                            CopycatCharacteristics.MULTI_STATE
+                    ))
+                    .transform(customItemModel("copycat_base", "byte_panel"))
                     .register();
 
     public static final BlockEntry<CopycatFenceBlock> COPYCAT_FENCE =
