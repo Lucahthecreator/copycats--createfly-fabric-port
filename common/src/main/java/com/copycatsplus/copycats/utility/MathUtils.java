@@ -13,7 +13,7 @@ public class MathUtils {
         };
     }
 
-    public static Vec3 replaceAxis(Vec3 vec, Direction.Axis axis, int value) {
+    public static Vec3 replaceAxis(Vec3 vec, Direction.Axis axis, double value) {
         return switch (axis) {
             case X -> new Vec3(value, vec.y(), vec.z());
             case Y -> new Vec3(vec.x(), value, vec.z());
