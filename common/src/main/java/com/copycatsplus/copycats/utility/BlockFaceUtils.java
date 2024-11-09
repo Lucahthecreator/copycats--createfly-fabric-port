@@ -4,6 +4,7 @@ import com.copycatsplus.copycats.foundation.copycat.CopycatExternalContext;
 import com.copycatsplus.copycats.foundation.copycat.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.mixin.copycat.VoxelShapeAccessor;
+import com.google.common.math.DoubleMath;
 import it.unimi.dsi.fastutil.objects.Object2ByteLinkedOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -181,10 +182,24 @@ public class BlockFaceUtils {
         VoxelShape bounds = Shapes.box(startX, startY, startZ, endX, endY, endZ);
         voxelShape = Shapes.joinUnoptimized(voxelShape, bounds, BooleanOp.AND);
         int axisSize = ((VoxelShapeAccessor) voxelShape).copycats$getShape().getSize(axis);
+        boolean isEmpty = false;
         if (direction.getAxisDirection() == Direction.AxisDirection.POSITIVE) {
+            isEmpty = DoubleMath.fuzzyCompare(voxelShape.max(axis), switch (axis) {
+                case X -> endX;
+                case Y -> endY;
+                case Z -> endZ;
+            }, 1.0E-7) < 0;
             i = Mth.floor(Mth.clamp(axisSize * axis.choose(endX, endY, endZ), -1, axisSize)) - 1;
         } else {
+            isEmpty = DoubleMath.fuzzyCompare(voxelShape.min(axis), switch (axis) {
+                case X -> startX;
+                case Y -> startY;
+                case Z -> startZ;
+            }, 1.0E-7) > 0;
             i = Mth.floor(Mth.clamp(axisSize * axis.choose(startX, startY, startZ), -1, axisSize));
+        }
+        if (isEmpty) {
+            return Shapes.empty();
         }
         return new SliceShape(voxelShape, axis, i);
     }
