@@ -36,6 +36,7 @@ public class CCBlockEntityTypes {
                             CCBlocks.COPYCAT_LAYER,
                             CCBlocks.COPYCAT_SLICE,
                             CCBlocks.COPYCAT_VERTICAL_SLICE,
+                            CCBlocks.COPYCAT_CORNER_SLICE,
                             CCBlocks.COPYCAT_WOODEN_BUTTON,
                             CCBlocks.COPYCAT_STONE_BUTTON,
                             CCBlocks.COPYCAT_WOODEN_PRESSURE_PLATE,

@@ -25,6 +25,7 @@ public class CCCreativeTabs {
             CCBlocks.COPYCAT_BEAM,
             CCBlocks.COPYCAT_SLICE,
             CCBlocks.COPYCAT_VERTICAL_SLICE,
+            CCBlocks.COPYCAT_CORNER_SLICE,
             CCBlocks.COPYCAT_GHOST_BLOCK,
             CCBlocks.COPYCAT_LAYER,
             CCBlocks.COPYCAT_HALF_PANEL,

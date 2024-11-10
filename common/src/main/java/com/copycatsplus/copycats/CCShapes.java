@@ -78,6 +78,12 @@ public class CCShapes {
                             aabb(layer * 2, 16, layer * 2).move(16 - layer * 2, 0, 16 - layer * 2)
                     )
             ));
+    public static final Map<Direction, Map<Half, Map<Integer, MutableShape>>> CORNER_SLICE =
+            forHorizontalDirections(forHalves(forAll(LAYERS,
+                    layer -> shape(
+                            aabb(layer * 2, layer * 2, layer * 2).move(16 - layer * 2, 0, 16 - layer * 2)
+                    )
+            )));
     public static final Map<Axis, Map<Half, Map<Integer, MutableShape>>> HALF_LAYER_BOTTOM =
             forHorizontalAxes(forHalves(forAll(CopycatHalfLayerBlock.NEGATIVE_LAYERS,
                     layer -> shape(

@@ -149,6 +149,8 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
 
     GeneratedRecipe COPYCAT_VERTICAL_SLICE = copycat(CCBlocks.COPYCAT_VERTICAL_SLICE, 16);
 
+    GeneratedRecipe COPYCAT_CORNER_SLICE = copycat(CCBlocks.COPYCAT_CORNER_SLICE, 16);
+
     GeneratedRecipe COPYCAT_SLICE_CYCLE = conversionCycle(CCBlocks.COPYCAT_SLICE, CCBlocks.COPYCAT_VERTICAL_SLICE);
 
     GeneratedRecipe COPYCAT_HALF_LAYER = copycat(CCBlocks.COPYCAT_HALF_LAYER, 16);

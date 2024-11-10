@@ -1,17 +1,14 @@
 package com.copycatsplus.copycats.content.copycat.byte_panel;
 
-import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.WaterloggedMultiStateCopycatBlock;
-import com.copycatsplus.copycats.utility.MathUtils;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.math.OctahedralGroup;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.schematics.requirement.ISpecialBlockItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
-import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,17 +21,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -46,7 +40,6 @@ import org.joml.Vector2i;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.copycatsplus.copycats.utility.MathUtils.clampToGrid;
@@ -249,13 +242,35 @@ public class CopycatBytePanelBlock extends WaterloggedMultiStateCopycatBlock imp
 
     @Override
     public BlockState transform(BlockState state, StructureTransform transform) {
-//        return mapBytes(state, bite -> transformByte(transform, bite));
+        if (transform.mirror != null && transform.mirror != Mirror.NONE) {
+            Direction facing = state.getValue(FACING);
+            if (transform.mirror.rotation() == OctahedralGroup.INVERT_Y) {
+                state = state
+                        .setValue(BOTTOM_LEFT, state.getValue(TOP_LEFT))
+                        .setValue(BOTTOM_RIGHT, state.getValue(TOP_RIGHT))
+                        .setValue(TOP_LEFT, state.getValue(BOTTOM_LEFT))
+                        .setValue(TOP_RIGHT, state.getValue(BOTTOM_RIGHT))
+                        .setValue(FACING, facing.getOpposite());
+            } else  {
+                state = state
+                        .setValue(BOTTOM_LEFT, state.getValue(BOTTOM_RIGHT))
+                        .setValue(BOTTOM_RIGHT, state.getValue(BOTTOM_LEFT))
+                        .setValue(TOP_LEFT, state.getValue(TOP_RIGHT))
+                        .setValue(TOP_RIGHT, state.getValue(TOP_LEFT));
+                if (transform.mirror.rotation().inverts(facing.getAxis())) {
+                    state = state.setValue(FACING, facing.getOpposite());
+                }
+            }
+        }
+        if (transform.rotationAxis != null) {
+            // TODO
+        }
         return state;
     }
 
     @Override
     public void transformStorage(BlockState state, IMultiStateCopycatBlockEntity be, StructureTransform transform) {
-//        be.getMaterialItemStorage().remapStorage(key -> byByte(transformByte(transform, byteMap.get(key))).getName());
+        // TODO
     }
 
     public static BooleanProperty fromProperty(String property) {

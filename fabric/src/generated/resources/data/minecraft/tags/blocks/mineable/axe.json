@@ -22,6 +22,7 @@
     "copycats:copycat_light_weighted_pressure_plate",
     "copycats:copycat_slab",
     "copycats:copycat_slice",
+    "copycats:copycat_corner_slice",
     "copycats:copycat_stairs",
     "copycats:copycat_vertical_stairs",
     "copycats:copycat_trapdoor",
