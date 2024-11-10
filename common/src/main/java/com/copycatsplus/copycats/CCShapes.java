@@ -110,7 +110,7 @@ public class CCShapes {
                             })
                                     .flipX(side == Side.RIGHT)
             ));
-    private static final int SLOPE_SUBDIVISIONS = 16;
+    private static final int SLOPE_SUBDIVISIONS = 8;
     public static final Map<Direction, Map<Half, MutableShape>> SLOPE =
             forHorizontalDirections(forHalves(shape(
                     IntStream.range(0, SLOPE_SUBDIVISIONS)
