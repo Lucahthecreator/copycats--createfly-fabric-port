@@ -1,95 +1,77 @@
 package com.copycatsplus.copycats.content.copycat.pane;
 
-import com.copycatsplus.copycats.content.copycat.base.ICustomCTBlocking;
-import com.copycatsplus.copycats.content.copycat.base.WaterloggedCopycatWrappedBlock;
+import com.copycatsplus.copycats.CCBlockEntityTypes;
+import com.copycatsplus.copycats.foundation.copycat.CCCopycatBlockEntity;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.IStateType;
+import com.copycatsplus.copycats.utility.InteractionUtils;
+import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.phys.BlockHitResult;
 
-import static net.minecraft.world.level.block.CrossCollisionBlock.*;
+public class CopycatPaneBlock extends IronBarsBlock implements ICopycatBlock, IBE<CCCopycatBlockEntity>, IStateType {
 
-public class CopycatPaneBlock extends WaterloggedCopycatWrappedBlock<WrappedPaneBlock> implements ICustomCTBlocking {
-
-    public static WrappedPaneBlock pane;
     public CopycatPaneBlock(Properties properties) {
         super(properties);
-        registerDefaultState(defaultBlockState()
-                .setValue(NORTH, false)
-                .setValue(SOUTH, false)
-                .setValue(EAST, false)
-                .setValue(WEST, false));
     }
 
     @Override
-    public WrappedPaneBlock getWrappedBlock() {
-        return pane;
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return true;
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> pBuilder) {
-        super.createBlockStateDefinition(pBuilder.add(NORTH, EAST, SOUTH, WEST));
+    public InteractionResult use(BlockState state,
+                                 Level level,
+                                 BlockPos pos,
+                                 Player player,
+                                 InteractionHand hand,
+                                 BlockHitResult hit) {
+        return InteractionUtils.sequential(
+                () -> ICopycatBlock.super.use(state, level, pos, player, hand, hit),
+                () -> super.use(state, level, pos, player, hand, hit)
+        );
     }
 
     @Override
-    public BlockState copyState(BlockState from, BlockState to, boolean includeWaterlogged) {
-        return to
-                .setValue(NORTH, from.getValue(NORTH))
-                .setValue(SOUTH, from.getValue(SOUTH))
-                .setValue(EAST, from.getValue(EAST))
-                .setValue(WEST, from.getValue(WEST))
-                .setValue(WATERLOGGED, includeWaterlogged ? from.getValue(WATERLOGGED) : to.getValue(WATERLOGGED));
+    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @javax.annotation.Nullable LivingEntity pPlacer, ItemStack pStack) {
+        ICopycatBlock.super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
+        super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+        ICopycatBlock.super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving, super::onRemove);
+    }
+
+    @Override
+    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+        ICopycatBlock.super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+    }
+
+    @Override
+    public boolean isAcceptedRegardless(BlockState material) {
+        return material.getBlock() instanceof IronBarsBlock;
     }
 
     @Override
     public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
         return reader.getBlockState(toPos).is(this);
-    }
-
-    @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
-        return pane.getShape(pState, pLevel, pPos, pContext);
-    }
-
-    @Override
-    public @NotNull BlockState updateShape(@NotNull BlockState pState, @NotNull Direction pDirection, @NotNull BlockState pNeighborState, @NotNull LevelAccessor pLevel, @NotNull BlockPos pCurrentPos, @NotNull BlockPos pNeighborPos) {
-        return pane.updateShape(pState, pDirection, pNeighborState, pLevel, pCurrentPos, pNeighborPos);
-    }
-
-    @Override
-    public @NotNull BlockState rotate(@NotNull BlockState pState, @NotNull Rotation pRotation) {
-        return pane.rotate(pState, pRotation);
-    }
-
-    @Override
-    public @NotNull BlockState mirror(@NotNull BlockState pState, @NotNull Mirror pMirror) {
-        return pane.mirror(pState, pMirror);
-    }
-
-    @Override
-    public void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pIsMoving) {
-        pane.onPlace(pState, pLevel, pPos, pOldState, pIsMoving);
-    }
-
-
-    public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState,
-                                     Direction dir) {
-        if (state.is(this) == neighborState.is(this)) {
-            return (getMaterial(level, pos).skipRendering(getMaterial(level, pos.relative(dir)), dir.getOpposite()));
-        }
-
-        return getMaterial(level, pos).skipRendering(neighborState, dir.getOpposite());
     }
 
 
@@ -105,5 +87,15 @@ public class CopycatPaneBlock extends WaterloggedCopycatWrappedBlock<WrappedPane
             case WEST -> WEST;
             default -> throw new IllegalStateException("Direction must be horizontal");
         };
+    }
+
+    @Override
+    public Class<CCCopycatBlockEntity> getBlockEntityClass() {
+        return CCCopycatBlockEntity.class;
+    }
+
+    @Override
+    public BlockEntityType<? extends CCCopycatBlockEntity> getBlockEntityType() {
+        return CCBlockEntityTypes.COPYCAT.get();
     }
 }

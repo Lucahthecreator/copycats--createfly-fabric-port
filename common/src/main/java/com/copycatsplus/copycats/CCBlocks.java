@@ -4,6 +4,8 @@ import com.copycatsplus.copycats.config.FeatureCategory;
 import com.copycatsplus.copycats.config.FeatureToggle;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelModelCore;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatLargeCogWheelModelCore;
+import com.copycatsplus.copycats.content.copycat.pane.CopycatPaneBlock;
+import com.copycatsplus.copycats.content.copycat.pane.CopycatPaneModelCore;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftModelCore;
 import com.copycatsplus.copycats.foundation.copycat.CopycatBaseBlock;
 import com.copycatsplus.copycats.foundation.copycat.WrappedCopycatBlock;
@@ -72,7 +74,6 @@ import com.copycatsplus.copycats.foundation.tooltip.CopycatCharacteristics;
 import com.copycatsplus.copycats.foundation.tooltip.CopycatDescription;
 import com.copycatsplus.copycats.utility.Platform;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.content.contraptions.BlockMovementChecks;
 import com.simibubi.create.content.contraptions.behaviour.DoorMovingInteraction;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
@@ -674,6 +675,28 @@ public class CCBlocks {
                             CopycatCharacteristics.FUNCTIONAL
                     ))
                     .transform(customItemModel("copycat_base", "door"))
+                    .register();
+
+    public static final BlockEntry<CopycatPaneBlock> COPYCAT_PANE =
+            REGISTRATE.block("copycat_pane", CopycatPaneBlock::new)
+                    .transform(CCBuilderTransformers.copycat())
+                    .onRegister(onClient(() -> createBlockModel(CopycatPaneModelCore::new)))
+                    .item()
+                    .onRegister(CopycatDescription.register(
+                            CopycatCharacteristics.COPYCAT
+                    ))
+                    .transform(customItemModel("copycat_base", "pane"))
+                    .register();
+
+    public static final BlockEntry<CopycatPaneBlock> COPYCAT_HORIZONTAL_PANE =
+            REGISTRATE.block("copycat_horizontal_pane", CopycatPaneBlock::new)
+                    .transform(CCBuilderTransformers.copycat())
+                    .onRegister(onClient(() -> createBlockModel(CopycatPaneModelCore::new)))
+                    .item()
+                    .onRegister(CopycatDescription.register(
+                            CopycatCharacteristics.COPYCAT
+                    ))
+                    .transform(customItemModel("copycat_base", "horizontal_pane"))
                     .register();
 
     @ExpectPlatform
