@@ -5,6 +5,7 @@ import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.foundation.copycat.CCWaterloggedCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.IStateType;
+import com.copycatsplus.copycats.utility.BlockUtils;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.schematics.requirement.ISpecialBlockItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
@@ -180,8 +181,7 @@ public class CopycatCornerSliceBlock extends CCWaterloggedCopycatBlock implement
 
     @Override
     public BlockState transform(BlockState state, StructureTransform transform) {
-        // TODO
-        return state;
+        return BlockUtils.transformCornerLike(state, transform);
     }
 
 }
