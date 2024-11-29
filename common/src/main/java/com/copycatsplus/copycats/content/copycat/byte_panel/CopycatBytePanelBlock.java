@@ -12,6 +12,7 @@ import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -23,6 +24,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -240,37 +242,249 @@ public class CopycatBytePanelBlock extends WaterloggedMultiStateCopycatBlock imp
         return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
+    private static BlockState flipFaceVertical(BlockState state) {
+        return state
+                .setValue(TOP_LEFT, state.getValue(BOTTOM_LEFT))
+                .setValue(TOP_RIGHT, state.getValue(BOTTOM_RIGHT))
+                .setValue(BOTTOM_LEFT, state.getValue(TOP_LEFT))
+                .setValue(BOTTOM_RIGHT, state.getValue(TOP_RIGHT));
+    }
+
+    private static void flipFaceVertical(IMultiStateCopycatBlockEntity be) {
+        be.getMaterialItemStorage().remapStorage(key -> {
+            if (key.equals(BOTTOM_LEFT.getName())) return TOP_LEFT.getName();
+            if (key.equals(BOTTOM_RIGHT.getName())) return TOP_RIGHT.getName();
+            if (key.equals(TOP_LEFT.getName())) return BOTTOM_LEFT.getName();
+            if (key.equals(TOP_RIGHT.getName())) return BOTTOM_RIGHT.getName();
+            return key;
+        });
+    }
+
+    private static BlockState flipFaceHorizontal(BlockState state) {
+        return state
+                .setValue(BOTTOM_LEFT, state.getValue(BOTTOM_RIGHT))
+                .setValue(BOTTOM_RIGHT, state.getValue(BOTTOM_LEFT))
+                .setValue(TOP_LEFT, state.getValue(TOP_RIGHT))
+                .setValue(TOP_RIGHT, state.getValue(TOP_LEFT));
+    }
+
+    private static void flipFaceHorizontal(IMultiStateCopycatBlockEntity be) {
+        be.getMaterialItemStorage().remapStorage(key -> {
+            if (key.equals(BOTTOM_RIGHT.getName())) return BOTTOM_LEFT.getName();
+            if (key.equals(BOTTOM_LEFT.getName())) return BOTTOM_RIGHT.getName();
+            if (key.equals(TOP_RIGHT.getName())) return TOP_LEFT.getName();
+            if (key.equals(TOP_LEFT.getName())) return TOP_RIGHT.getName();
+            return key;
+        });
+    }
+
+    private static BlockState rotateFaceCounterClockwise(BlockState state) {
+        return state
+                .setValue(BOTTOM_LEFT, state.getValue(TOP_LEFT))
+                .setValue(TOP_LEFT, state.getValue(TOP_RIGHT))
+                .setValue(TOP_RIGHT, state.getValue(BOTTOM_RIGHT))
+                .setValue(BOTTOM_RIGHT, state.getValue(BOTTOM_LEFT));
+    }
+
+    private static void rotateFaceCounterClockwise(IMultiStateCopycatBlockEntity be) {
+        be.getMaterialItemStorage().remapStorage(key -> {
+            if (key.equals(TOP_LEFT.getName())) return BOTTOM_LEFT.getName();
+            if (key.equals(TOP_RIGHT.getName())) return TOP_LEFT.getName();
+            if (key.equals(BOTTOM_RIGHT.getName())) return TOP_RIGHT.getName();
+            if (key.equals(BOTTOM_LEFT.getName())) return BOTTOM_RIGHT.getName();
+            return key;
+        });
+    }
+
+    private static BlockState rotateFaceClockwise(BlockState state) {
+        return state
+                .setValue(BOTTOM_LEFT, state.getValue(BOTTOM_RIGHT))
+                .setValue(BOTTOM_RIGHT, state.getValue(TOP_RIGHT))
+                .setValue(TOP_RIGHT, state.getValue(TOP_LEFT))
+                .setValue(TOP_LEFT, state.getValue(BOTTOM_LEFT));
+    }
+
+    private static void rotateFaceClockwise(IMultiStateCopycatBlockEntity be) {
+        be.getMaterialItemStorage().remapStorage(key -> {
+            if (key.equals(BOTTOM_RIGHT.getName())) return BOTTOM_LEFT.getName();
+            if (key.equals(TOP_RIGHT.getName())) return BOTTOM_RIGHT.getName();
+            if (key.equals(TOP_LEFT.getName())) return TOP_RIGHT.getName();
+            if (key.equals(BOTTOM_LEFT.getName())) return TOP_LEFT.getName();
+            return key;
+        });
+    }
+
     @Override
     public BlockState transform(BlockState state, StructureTransform transform) {
+        // I am also extremely lost, but I don't see any way to simplify this
         if (transform.mirror != null && transform.mirror != Mirror.NONE) {
             Direction facing = state.getValue(FACING);
             if (transform.mirror.rotation() == OctahedralGroup.INVERT_Y) {
-                state = state
-                        .setValue(BOTTOM_LEFT, state.getValue(TOP_LEFT))
-                        .setValue(BOTTOM_RIGHT, state.getValue(TOP_RIGHT))
-                        .setValue(TOP_LEFT, state.getValue(BOTTOM_LEFT))
-                        .setValue(TOP_RIGHT, state.getValue(BOTTOM_RIGHT))
-                        .setValue(FACING, facing.getOpposite());
-            } else  {
-                state = state
-                        .setValue(BOTTOM_LEFT, state.getValue(BOTTOM_RIGHT))
-                        .setValue(BOTTOM_RIGHT, state.getValue(BOTTOM_LEFT))
-                        .setValue(TOP_LEFT, state.getValue(TOP_RIGHT))
-                        .setValue(TOP_RIGHT, state.getValue(TOP_LEFT));
-                if (transform.mirror.rotation().inverts(facing.getAxis())) {
+                state = flipFaceVertical(state);
+                if (facing.getAxis().isVertical()) {
                     state = state.setValue(FACING, facing.getOpposite());
+                }
+            } else {
+                if (facing.getAxis().isHorizontal() && transform.mirror.rotation().inverts(facing.getAxis())) {
+                    state = flipFaceHorizontal(state).setValue(FACING, facing.getOpposite());
+                } else if (facing.getAxis().isHorizontal()) {
+                    state = flipFaceHorizontal(state);
+                } else if (transform.mirror.rotation().inverts(Axis.X)) {
+                    state = flipFaceHorizontal(state);
+                } else if (transform.mirror.rotation().inverts(Axis.Z)) {
+                    state = flipFaceVertical(state);
+                } else {
+                    state = flipFaceVertical(state).setValue(FACING, facing.getOpposite());
                 }
             }
         }
-        if (transform.rotationAxis != null) {
-            // TODO
+        if (transform.rotationAxis != null && transform.rotation != Rotation.NONE) {
+            Direction facing = state.getValue(FACING);
+            if (transform.rotationAxis.isVertical() && facing.getAxis().isHorizontal()) {
+                state = state.setValue(FACING, transform.rotateFacing(facing));
+            } else if (transform.rotationAxis == facing.getAxis()) {
+                if (facing.getAxisDirection() == Direction.AxisDirection.NEGATIVE) {
+                    for (int i = 0; i < transform.rotation.ordinal(); i++)
+                        state = rotateFaceClockwise(state);
+                } else {
+                    for (int i = 0; i < transform.rotation.ordinal(); i++)
+                        state = rotateFaceCounterClockwise(state);
+                }
+            } else if (facing.getAxis().isVertical()) {
+                if (transform.rotation == Rotation.CLOCKWISE_180) {
+                    if (transform.rotationAxis == Axis.X) {
+                        state = flipFaceVertical(state);
+                    } else {
+                        state = flipFaceHorizontal(state);
+                    }
+                    state = flipFaceVertical(state);
+                } else if (transform.rotationAxis == Axis.X) {
+                    if (facing == Direction.DOWN && transform.rotation == Rotation.CLOCKWISE_90 || facing == Direction.UP && transform.rotation == Rotation.COUNTERCLOCKWISE_90) {
+                        state = state.setValue(FACING, Direction.SOUTH);
+                    } else {
+                        state = flipFaceHorizontal(flipFaceVertical(state)).setValue(FACING, Direction.NORTH);
+                    }
+                } else {
+                    if (facing == Direction.DOWN) {
+                        if (transform.rotation == Rotation.CLOCKWISE_90) {
+                            state = rotateFaceCounterClockwise(state).setValue(FACING, Direction.WEST);
+                        } else {
+                            state = rotateFaceClockwise(state).setValue(FACING, Direction.EAST);
+                        }
+                    } else {
+                        if (transform.rotation == Rotation.CLOCKWISE_90) {
+                            state = rotateFaceCounterClockwise(state).setValue(FACING, Direction.EAST);
+                        } else {
+                            state = rotateFaceClockwise(state).setValue(FACING, Direction.WEST);
+                        }
+                    }
+                }
+            } else {
+                if (transform.rotation == Rotation.CLOCKWISE_180) {
+                    state = flipFaceVertical(state).setValue(FACING, facing.getOpposite());
+                } else if (transform.rotationAxis == Axis.X) {
+                    if (facing == Direction.SOUTH) {
+                        if (transform.rotation == Rotation.CLOCKWISE_90) {
+                            state = state.setValue(FACING, Direction.UP);
+                        } else {
+                            state = state.setValue(FACING, Direction.DOWN);
+                        }
+                    } else {
+                        if (transform.rotation == Rotation.CLOCKWISE_90) {
+                            state = flipFaceHorizontal(flipFaceVertical(state)).setValue(FACING, Direction.DOWN);
+                        } else {
+                            state = flipFaceHorizontal(flipFaceVertical(state)).setValue(FACING, Direction.UP);
+                        }
+                    }
+                } else {
+                    if (facing == Direction.EAST) {
+                        if (transform.rotation == Rotation.CLOCKWISE_90) {
+                            state = rotateFaceCounterClockwise(state).setValue(FACING, Direction.DOWN);
+                        } else {
+                            state = rotateFaceClockwise(state).setValue(FACING, Direction.UP);
+                        }
+                    } else {
+                        if (transform.rotation == Rotation.CLOCKWISE_90) {
+                            state = rotateFaceCounterClockwise(state).setValue(FACING, Direction.UP);
+                        } else {
+                            state = rotateFaceClockwise(state).setValue(FACING, Direction.DOWN);
+                        }
+                    }
+                }
+            }
         }
         return state;
     }
 
     @Override
     public void transformStorage(BlockState state, IMultiStateCopycatBlockEntity be, StructureTransform transform) {
-        // TODO
+        if (transform.mirror != null && transform.mirror != Mirror.NONE) {
+            Direction facing = state.getValue(FACING);
+            if (transform.mirror.rotation() == OctahedralGroup.INVERT_Y) {
+                flipFaceVertical(be);
+            } else {
+                if (facing.getAxis().isHorizontal() && transform.mirror.rotation().inverts(facing.getAxis())) {
+                    flipFaceHorizontal(be);
+                } else if (facing.getAxis().isHorizontal()) {
+                    flipFaceHorizontal(be);
+                } else if (transform.mirror.rotation().inverts(Axis.X)) {
+                    flipFaceHorizontal(be);
+                } else if (transform.mirror.rotation().inverts(Axis.Z)) {
+                    flipFaceVertical(be);
+                } else {
+                    flipFaceVertical(be);
+                }
+            }
+        }
+        if (transform.rotationAxis != null && transform.rotation != Rotation.NONE) {
+            Direction facing = state.getValue(FACING);
+            if (!transform.rotationAxis.isVertical() || !facing.getAxis().isHorizontal()) {
+                if (transform.rotationAxis == facing.getAxis()) {
+                    if (facing.getAxisDirection() == Direction.AxisDirection.NEGATIVE) {
+                        for (int i = 0; i < transform.rotation.ordinal(); i++)
+                            rotateFaceClockwise(be);
+                    } else {
+                        for (int i = 0; i < transform.rotation.ordinal(); i++)
+                            rotateFaceCounterClockwise(be);
+                    }
+                } else if (facing.getAxis().isVertical()) {
+                    if (transform.rotation == Rotation.CLOCKWISE_180) {
+                        if (transform.rotationAxis == Axis.X) {
+                            flipFaceVertical(be);
+                        } else {
+                            flipFaceHorizontal(be);
+                        }
+                        flipFaceVertical(be);
+                    } else if (transform.rotationAxis == Axis.X) {
+                        if ((facing != Direction.UP || transform.rotation != Rotation.CLOCKWISE_90) && (facing != Direction.DOWN || transform.rotation != Rotation.COUNTERCLOCKWISE_90)) {
+                            flipFaceVertical(be);
+                            flipFaceHorizontal(be);
+                        }
+                    } else {
+                        if (transform.rotation == Rotation.CLOCKWISE_90) {
+                            rotateFaceCounterClockwise(be);
+                        } else {
+                            rotateFaceClockwise(be);
+                        }
+                    }
+                } else {
+                    if (transform.rotation == Rotation.CLOCKWISE_180) {
+                        flipFaceVertical(be);
+                    } else if (transform.rotationAxis == Axis.X) {
+                        if (facing != Direction.SOUTH) {
+                            flipFaceVertical(be);
+                            flipFaceHorizontal(be);
+                        }
+                    } else {
+                        if (transform.rotation == Rotation.CLOCKWISE_90) {
+                            rotateFaceCounterClockwise(be);
+                        } else {
+                            rotateFaceClockwise(be);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public static BooleanProperty fromProperty(String property) {
