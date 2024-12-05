@@ -3,7 +3,6 @@ package com.copycatsplus.copycats.content.copycat.pane;
 import com.copycatsplus.copycats.foundation.copycat.model.CopycatModelCore;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.AssemblyTransform;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.CopycatRenderContext;
-import com.copycatsplus.copycats.foundation.copycat.model.assembly.quad.QuadTransform;
 import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.IronBarsBlock;
@@ -24,100 +23,92 @@ public class CopycatPaneModelCore extends CopycatModelCore {
 
     @Override
     public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
-        Set<Direction> present = Direction.stream().filter(dir -> dir.getAxis().isHorizontal()).filter(dir -> state.getValue(CopycatPaneBlock.propertyForDirection(dir))).collect(Collectors.toSet());
-        AssemblyTransform transform = t -> t.rotateY((int) centerRotation(present));
-        context.assemblePiece(transform,
-                vec3(8, 0, 7),
-                aabb(1, 16, 2).move(7, 0, 7),
-                cull(EAST | (present.contains(Direction.SOUTH) ? SOUTH : 0) |
-                        (present.contains(Direction.NORTH) ? NORTH : 0) |
-                        (present.contains(Direction.EAST) ? EAST : 0) |
-                        (present.contains(Direction.WEST) ? WEST : 0)),
-                centerTransforms(present));
-        context.assemblePiece(transform,
-                vec3(7, 0, 7),
-                aabb(1, 16, 2).move(7, 0, 7),
-                cull(WEST | (present.contains(Direction.SOUTH) ? SOUTH : 0) |
-                        (present.contains(Direction.NORTH) ? NORTH : 0) |
-                        (present.contains(Direction.EAST) ? EAST : 0) |
-                        (present.contains(Direction.WEST) ? WEST : 0)),
-                centerTransforms(present));
+        if (material.getBlock() instanceof IronBarsBlock) {
+            context.assembleAll();
+            return;
+        }
+
+        Set<Direction> present = Arrays.stream(Iterate.horizontalDirections).filter(dir -> state.getValue(CopycatPaneBlock.propertyForDirection(dir))).collect(Collectors.toSet());
+
+        if (present.size() == 2 && present.contains(Direction.NORTH) && present.contains(Direction.SOUTH)) {
+            context.assemblePiece(AssemblyTransform.IDENTITY,
+                    vec3(7, 0, 0),
+                    aabb(1, 16, 16).move(0, 0, 0),
+                    cull(EAST)
+            );
+            context.assemblePiece(AssemblyTransform.IDENTITY,
+                    vec3(8, 0, 0),
+                    aabb(1, 16, 16).move(15, 0, 0),
+                    cull(WEST)
+            );
+            return;
+        } else if (present.size() == 2 && present.contains(Direction.EAST) && present.contains(Direction.WEST)) {
+            context.assemblePiece(AssemblyTransform.IDENTITY,
+                    vec3(0, 0, 7),
+                    aabb(16, 16, 1).move(0, 0, 0),
+                    cull(SOUTH)
+            );
+            context.assemblePiece(AssemblyTransform.IDENTITY,
+                    vec3(0, 0, 8),
+                    aabb(16, 16, 1).move(0, 0, 15),
+                    cull(NORTH)
+            );
+            return;
+        } else if (present.size() == 1) {
+            Direction dir = present.iterator().next();
+            AssemblyTransform directionTransform = t -> t.rotateY((int) dir.toYRot());
+            context.assemblePiece(directionTransform,
+                    vec3(7, 0, 7),
+                    aabb(1, 16, 9).move(0, 0, 7),
+                    cull(EAST | NORTH)
+            );
+            context.assemblePiece(directionTransform,
+                    vec3(8, 0, 7),
+                    aabb(1, 16, 9).move(15, 0, 7),
+                    cull(WEST | NORTH)
+            );
+            context.assemblePiece(directionTransform,
+                    vec3(7, 0, 7),
+                    aabb(1, 16, 9).move(7, 0, 7),
+                    cull(UP | DOWN | EAST | WEST | SOUTH)
+            );
+            context.assemblePiece(directionTransform,
+                    vec3(8, 0, 7),
+                    aabb(1, 16, 9).move(8, 0, 7),
+                    cull(UP | DOWN | EAST | WEST | SOUTH)
+            );
+            return;
+        }
 
         for (Direction direction : Iterate.horizontalDirections) {
-            if (state.getValue(CopycatPaneBlock.propertyForDirection(direction))) {
-                AssemblyTransform directionTransform = t -> t.rotateY((int) direction.toYRot());
+            AssemblyTransform directionTransform = t -> t.rotateY((int) direction.toYRot());
+            context.assemblePiece(directionTransform,
+                    vec3(7, 0, 8),
+                    aabb(1, 16, 1).move(0, 0, 8),
+                    cull((present.contains(direction.getClockWise()) ? WEST : 0) |
+                            SOUTH | NORTH | EAST)
+            );
+            if (!present.contains(direction)) {
                 context.assemblePiece(directionTransform,
-                        vec3(7, 0, 9),
-                        aabb(1, 16, 7).move(0, 0, 9),
-                        cull(0),
-                        directionalTransforms(direction));
-                context.assemblePiece(directionTransform,
-                        vec3(8, 0, 9),
-                        aabb(1, 16, 7).move(0, 0, 9),
-                        cull(0),
-                        directionalTransforms(direction));
+                        vec3(7, 0, 8),
+                        aabb(1, 16, 1).move(7, 0, 15),
+                        cull(NORTH | EAST | WEST | UP | DOWN)
+                );
             }
         }
-    }
 
-    private static float centerRotation(Set<Direction> present) {
         for (Direction direction : present) {
-            return switch (direction) {
-                case NORTH -> Direction.NORTH.toYRot();
-                case SOUTH -> Direction.NORTH.toYRot();
-                case WEST -> Direction.WEST.toYRot();
-                case EAST -> Direction.EAST.toYRot();
-                default -> throw new IllegalStateException("Unexpected value: " + direction);
-            };
+            AssemblyTransform directionTransform = t -> t.rotateY((int) direction.toYRot());
+            context.assemblePiece(directionTransform,
+                    vec3(7, 0, 9),
+                    aabb(1, 16, 7).move(0, 0, 9),
+                    cull(EAST | NORTH)
+            );
+            context.assemblePiece(directionTransform,
+                    vec3(8, 0, 9),
+                    aabb(1, 16, 7).move(15, 0, 9),
+                    cull(WEST | NORTH)
+            );
         }
-        return 0f;
-    }
-
-    private static QuadTransform[] centerTransforms(Set<Direction> present) {
-        Set<QuadTransform> transforms = new HashSet<>();
-        for (Direction direction : present) {
-            switch (direction) {
-                case NORTH -> {
-                    transforms.add(uvTranslate(Direction.UP, -8f, 0f));
-                    transforms.add(uvTranslate(Direction.DOWN, -8f, 0f));
-                }
-                case WEST -> {
-                    transforms.add(uvTranslate(Direction.UP, 0f, -7f));
-                    transforms.add(uvTranslate(Direction.DOWN, 0f, -7f));
-                }
-                case SOUTH -> {
-                    transforms.add(uvTranslate(Direction.UP, 0f, 0f));
-                }
-                case EAST -> {
-                    transforms.add(uvTranslate(Direction.UP, 0f, (present.contains(Direction.WEST) ? -7f : -8f)));
-                    transforms.add(uvTranslate(Direction.DOWN, 0f, (present.contains(Direction.WEST) ? -7f : -8f)));
-                }
-                default -> throw new IllegalStateException("Unexpected value: " + direction);
-            }
-        }
-        return transforms.toArray(new QuadTransform[]{});
-    }
-
-    private static QuadTransform[] directionalTransforms(Direction direction) {
-        Set<QuadTransform> transforms = new HashSet<>();
-        switch (direction) {
-            case NORTH -> {
-                transforms.add(uvTranslate(Direction.UP, -15f, 0f));
-                transforms.add(uvTranslate(Direction.DOWN, 15, 0f));
-            }
-            case WEST -> {
-                transforms.add(uvTranslate(Direction.UP, 0f, 0f));
-                transforms.add(uvTranslate(Direction.DOWN, 0f, 0f));
-            }
-            case SOUTH -> {
-                transforms.add(uvTranslate(Direction.UP, 0f, 0f));
-            }
-            case EAST -> {
-                transforms.add(uvTranslate(Direction.UP, 0f, -15f));
-                transforms.add(uvTranslate(Direction.DOWN, 0f, 15f));
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + direction);
-        }
-        return transforms.toArray(new QuadTransform[]{});
     }
 }
