@@ -70,10 +70,14 @@ public class CopycatPaneBlock extends IronBarsBlock implements ICopycatBlock, IB
     }
 
     @Override
+    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos) {
+        return face.getAxis().isVertical() || !reader.getBlockState(toPos).is(this);
+    }
+
+    @Override
     public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
         return reader.getBlockState(toPos).is(this);
     }
-
 
     public boolean supportsExternalFaceHiding(BlockState state) {
         return true;
