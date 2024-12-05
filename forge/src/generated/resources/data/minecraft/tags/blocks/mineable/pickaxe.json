@@ -15,8 +15,6 @@
     "copycats:copycat_half_panel",
     "copycats:copycat_ladder",
     "copycats:copycat_layer",
-    "copycats:copycat_pane",
-    "copycats:copycat_horizontal_pane",
     "copycats:copycat_wooden_pressure_plate",
     "copycats:copycat_stone_pressure_plate",
     "copycats:copycat_heavy_weighted_pressure_plate",
@@ -39,6 +37,8 @@
     "copycats:copycat_fluid_pipe",
     "copycats:copycat_glass_fluid_pipe",
     "copycats:copycat_door",
-    "copycats:copycat_iron_door"
+    "copycats:copycat_iron_door",
+    "copycats:copycat_pane",
+    "copycats:copycat_horizontal_pane"
   ]
 }
