@@ -37,7 +37,8 @@ public class SchematicannonBlockEntityMixin {
      */
     @WrapOperation(
             method = "shouldPlace",
-            at = @At(value = "FIELD", target = "Lcom/simibubi/create/content/schematics/cannon/SchematicannonBlockEntity;replaceBlockEntities:Z")
+            at = @At(value = "FIELD", target = "Lcom/simibubi/create/content/schematics/cannon/SchematicannonBlockEntity;replaceBlockEntities:Z"),
+            remap = false
     )
     private boolean shouldPlace(SchematicannonBlockEntity instance, Operation<Boolean> original, BlockPos pos, BlockState state, BlockEntity be, BlockState toReplace,
                                 BlockState toReplaceOther, boolean isNormalCube) {

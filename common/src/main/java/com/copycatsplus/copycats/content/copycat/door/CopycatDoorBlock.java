@@ -87,7 +87,7 @@ public class CopycatDoorBlock extends DoorBlock implements ICopycatBlock, IBE<CC
 
     @Override
     public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
-                                             BlockPos fromPos, BlockPos toPos) {
+                                             BlockPos fromPos, BlockPos toPos, BlockState toState) {
         return true;
     }
 

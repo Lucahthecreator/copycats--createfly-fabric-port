@@ -11,7 +11,10 @@ import java.util.function.Supplier;
 import static com.copycatsplus.copycats.CCLang.asId;
 
 /**
- * For compatibility with and without another mod present, we have to define load conditions of the specific code
+ * For compatibility with and without another mod present, we have to define load conditions of the specific code.
+ * <p>
+ * Due to this class being used in the {@link com.copycatsplus.copycats.foundation.annotation.ModMixin} annotation,
+ * it cannot reference most Minecraft classes due to this class being loaded before Mixins are applied.
  */
 public enum Mods {
     /**
@@ -45,16 +48,11 @@ public enum Mods {
         this.isLoaded = getLoaded(asId(id));
     }
 
-
     /**
      * @return the mod id
      */
     public String id() {
         return id;
-    }
-
-    public ResourceLocation rl(String path) {
-        return new ResourceLocation(id, path);
     }
 
     public boolean getLoaded() {
