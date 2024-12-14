@@ -33,7 +33,8 @@ public enum Mods {
     ATHENA("athena"),
     INDIUM("indium"),
     STARLIGHT("starlight"),
-    DOUBLE_SLABS("doubleslabs");
+    DOUBLE_SLABS("doubleslabs"),
+    VERTICAL_SLAB_COMPAT("v_slab_compat");
 
     public final String id;
     public final boolean isLoaded;
