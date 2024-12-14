@@ -155,6 +155,10 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
 
     GeneratedRecipe COPYCAT_HALF_LAYER = copycat(CCBlocks.COPYCAT_HALF_LAYER, 16);
 
+    GeneratedRecipe COPYCAT_VERTICAL_HALF_LAYER = copycat(CCBlocks.COPYCAT_VERTICAL_HALF_LAYER, 16);
+
+    GeneratedRecipe COPYCAT_HALF_LAYER_CYCLE = conversionCycle(CCBlocks.COPYCAT_HALF_LAYER, CCBlocks.COPYCAT_VERTICAL_HALF_LAYER);
+
     GeneratedRecipe COPYCAT_LAYER_FROM_HALF_LAYERS = create(CCBlocks.COPYCAT_LAYER).withSuffix("_from_half_layers")
             .unlockedBy(CCBlocks.COPYCAT_HALF_LAYER::get)
             .requiresFeature(CCBlocks.COPYCAT_HALF_LAYER)

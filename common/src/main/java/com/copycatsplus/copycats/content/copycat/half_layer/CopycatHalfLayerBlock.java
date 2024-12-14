@@ -145,7 +145,7 @@ public class CopycatHalfLayerBlock extends WaterloggedMultiStateCopycatBlock imp
             if (state.getValue(targetProp) < 8)
                 return state.cycle(targetProp);
             else {
-                Copycats.LOGGER.warn("Can't figure out where to place a step layer! Please file an issue if you see this.");
+                Copycats.LOGGER.warn("Can't figure out where to place a half layer! Please file an issue if you see this.");
                 return state;
             }
         } else {

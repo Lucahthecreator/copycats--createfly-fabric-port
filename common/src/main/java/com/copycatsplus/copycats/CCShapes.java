@@ -4,6 +4,7 @@ import com.copycatsplus.copycats.CCBlockStateProperties.Side;
 import com.copycatsplus.copycats.CCBlockStateProperties.VerticalStairShape;
 import com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLayerBlock;
 import com.copycatsplus.copycats.content.copycat.half_panel.CopycatHalfPanelBlock;
+import com.copycatsplus.copycats.content.copycat.vertical_half_layer.CopycatVerticalHalfLayerBlock;
 import com.copycatsplus.copycats.content.copycat.vertical_stairs.CopycatVerticalStairBlock;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.AssemblyTransform;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.MutableAABB;
@@ -96,6 +97,18 @@ public class CCShapes {
                             aabb(16, layer * 2, 8).move(0, 0, 8)
                     )
             )));
+    public static final Map<Direction, Map<Integer, MutableShape>> VERTICAL_HALF_LAYER_LEFT =
+            forHorizontalDirections(forAll(CopycatVerticalHalfLayerBlock.LEFT_LAYERS,
+                    layer -> shape(
+                            aabb(8, 16, layer * 2).move(8, 0, 16 - layer * 2)
+                    )
+            ));
+    public static final Map<Direction, Map<Integer, MutableShape>> VERTICAL_HALF_LAYER_RIGHT =
+            forHorizontalDirections(forAll(CopycatVerticalHalfLayerBlock.RIGHT_LAYERS,
+                    layer -> shape(
+                            aabb(8, 16, layer * 2).move(0, 0, 16 - layer * 2)
+                    )
+            ));
     public static final Map<Direction, Map<Side, Map<VerticalStairShape, MutableShape>>> VERTICAL_STAIR =
             forHorizontalDirections(forAll(CopycatVerticalStairBlock.SIDE, CopycatVerticalStairBlock.SHAPE,
                     (side, shape) ->
