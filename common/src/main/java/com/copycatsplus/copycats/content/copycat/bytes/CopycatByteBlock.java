@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.bytes;
 
 import com.copycatsplus.copycats.Copycats;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.WaterloggedMultiStateCopycatBlock;
@@ -137,19 +138,6 @@ public class CopycatByteBlock extends WaterloggedMultiStateCopycatBlock implemen
         super.createBlockStateDefinition(pBuilder.add(TOP_NE, TOP_NW, TOP_SE, TOP_SW, BOTTOM_NE, BOTTOM_NW, BOTTOM_SE, BOTTOM_SW));
     }
 
-
-    @Override
-    public boolean isIgnoredConnectivitySide(String property, BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos) {
-        BlockState toState = reader.getBlockState(toPos);
-        return !toState.is(this);
-    }
-
-    @Override
-    public boolean canConnectTexturesToward(String property, BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
-        BlockState toState = reader.getBlockState(toPos);
-        return toState.is(this);
-    }
-
     private static VoxelShape calculateMultiFaceShape(BlockState pState) {
         VoxelShape shape = Shapes.empty();
         for (Byte bite : allBytes) {
@@ -166,8 +154,6 @@ public class CopycatByteBlock extends WaterloggedMultiStateCopycatBlock implemen
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
-        VoxelShape shapeOverride = IMultiStateCopycatBlock.blockShapeOverride(pState, pLevel, pPos, pContext);
-        if (shapeOverride != null) return shapeOverride;
         return Objects.requireNonNull(this.shapesCache.get(pState));
     }
 
@@ -267,7 +253,7 @@ public class CopycatByteBlock extends WaterloggedMultiStateCopycatBlock implemen
                                      BlockState state,
                                      BlockState neighborState,
                                      Direction dir) {
-        return IMultiStateCopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
     @Override

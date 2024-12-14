@@ -138,7 +138,7 @@ public interface IMultiStateCopycatBlockEntity extends ICopycatBlockEntity {
             }
 
             @Override
-            public boolean isIgnoredConnectivitySide(String property, BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos) {
+            public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos, BlockState toState) {
                 return true;
             }
 

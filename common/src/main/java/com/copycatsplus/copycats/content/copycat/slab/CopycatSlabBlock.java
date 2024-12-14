@@ -171,33 +171,6 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock implemen
     }
 
     @Override
-    public boolean isIgnoredConnectivitySide(String property, BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos) {
-        if (fromPos.equals(toPos)) return false; // Compat with Fusion CT: allow connection to self
-        BlockState toState = reader.getBlockState(toPos);
-        if (reader instanceof ScaledBlockAndTintGetter scaledReader) {
-            BlockPos fromTruePos = scaledReader.getTruePos(fromPos);
-            BlockPos toTruePos = scaledReader.getTruePos(toPos);
-            return fromTruePos.equals(toTruePos);
-        }
-        return toState.is(this) && toState.getValue(AXIS) != state.getValue(AXIS);
-    }
-
-    @Override
-    public boolean canConnectTexturesToward(String property, BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
-        if (fromPos.equals(toPos)) return true; // Compat with Fusion CT: allow connection to self
-        BlockState toState = reader.getBlockState(toPos);
-        if (reader instanceof ScaledBlockAndTintGetter scaledReader) {
-            BlockPos fromTruePos = scaledReader.getTruePos(fromPos);
-            BlockPos toTruePos = scaledReader.getTruePos(toPos);
-            return !fromTruePos.equals(toTruePos) && (
-                    toState.is(this) && toState.getValue(AXIS) == state.getValue(AXIS) ||
-                            !toState.is(this)
-            );
-        }
-        return toState.is(this) && toState.getValue(AXIS) == state.getValue(AXIS);
-    }
-
-    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState stateForPlacement = super.getStateForPlacement(context);
         if (stateForPlacement == null) return null;
@@ -257,8 +230,6 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock implemen
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
-        VoxelShape shapeOverride = IMultiStateCopycatBlock.blockShapeOverride(pState, pLevel, pPos, pContext);
-        if (shapeOverride != null) return shapeOverride;
         SlabType type = pState.getValue(SLAB_TYPE);
         Axis axis = pState.getValue(AXIS);
         if (type == SlabType.DOUBLE) {
@@ -279,7 +250,7 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock implemen
                                      BlockState state,
                                      BlockState neighborState,
                                      Direction dir) {
-        return IMultiStateCopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
     @Override

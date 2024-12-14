@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.mixin.compat.rubidium;
 
 import com.copycatsplus.copycats.compat.Mods;
 import com.copycatsplus.copycats.foundation.annotation.ModMixin;
-import com.copycatsplus.copycats.foundation.copycat.multistate.MultiStateRenderManager;
+import com.copycatsplus.copycats.foundation.copycat.CopycatExternalContext;
 import com.copycatsplus.copycats.foundation.copycat.multistate.MultiStateTextureAtlasSprite;
 import me.jellysquid.mods.sodium.client.model.color.ColorProvider;
 import me.jellysquid.mods.sodium.client.model.quad.BakedQuadView;
@@ -34,7 +34,7 @@ public class BlockRendererMixin {
     )
     private void beforeColor(BlockRenderContext ctx, ColorProvider<BlockState> colorProvider, BakedQuadView quad, CallbackInfoReturnable<int[]> cir) {
         if (quad.getSprite() instanceof MultiStateTextureAtlasSprite sprite)
-            MultiStateRenderManager.setRenderingProperty(sprite.getProperty());
+            CopycatExternalContext.setRenderingProperty(sprite.getProperty());
     }
 
     @Inject(
@@ -47,6 +47,6 @@ public class BlockRendererMixin {
             require = 0
     )
     private void afterColor(BlockRenderContext ctx, ColorProvider<BlockState> colorProvider, BakedQuadView quad, CallbackInfoReturnable<int[]> cir) {
-        MultiStateRenderManager.setRenderingProperty(null);
+        CopycatExternalContext.setRenderingProperty(null);
     }
 }
