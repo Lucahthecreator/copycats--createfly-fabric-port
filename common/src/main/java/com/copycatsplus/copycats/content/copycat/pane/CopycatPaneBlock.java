@@ -3,6 +3,7 @@ package com.copycatsplus.copycats.content.copycat.pane;
 import com.copycatsplus.copycats.CCBlockEntityTypes;
 import com.copycatsplus.copycats.foundation.copycat.CCCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.ICustomCTBlocking;
 import com.copycatsplus.copycats.foundation.copycat.IStateType;
 import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.simibubi.create.foundation.block.IBE;
@@ -22,7 +23,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class CopycatPaneBlock extends IronBarsBlock implements ICopycatBlock, IBE<CCCopycatBlockEntity>, IStateType {
+import java.util.Optional;
+
+public class CopycatPaneBlock extends IronBarsBlock implements ICopycatBlock, IBE<CCCopycatBlockEntity>, IStateType, ICustomCTBlocking {
 
     public CopycatPaneBlock(Properties properties) {
         super(properties);
@@ -78,6 +81,16 @@ public class CopycatPaneBlock extends IronBarsBlock implements ICopycatBlock, IB
     @Override
     public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
         return reader.getBlockState(toPos).is(this);
+    }
+
+    @Override
+    public Optional<Boolean> blockCTTowards(BlockAndTintGetter reader, BlockState state, BlockPos pos, BlockPos ctPos, BlockPos connectingPos, Direction face) {
+        return Optional.of(false);
+    }
+
+    @Override
+    public Optional<Boolean> isCTBlocked(BlockAndTintGetter reader, BlockState state, BlockPos pos, BlockPos connectingPos, BlockPos blockingPos, Direction face) {
+        return Optional.of(false);
     }
 
     public boolean supportsExternalFaceHiding(BlockState state) {
