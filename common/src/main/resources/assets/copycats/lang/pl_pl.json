@@ -1,3 +1,18 @@
 {
-  "block.copycats.copycat_beam": "Belka Kopiująca"
+  "block.copycats.copycat_base": "Naśladowcza Podstawa",
+  "block.copycats.copycat_beam": "Belka Kopiująca",
+  "block.copycats.copycat_block": "Naśladowczy Blok",
+  "block.copycats.copycat_board": "Naśladowcza Deska",
+  "block.copycats.copycat_byte": "Naśladowczy Bajt",
+  "block.copycats.copycat_cogwheel": "Naśladowcze Koło Zębate",
+  "block.copycats.copycat_door": "Naśladowcze drzwi",
+  "block.copycats.copycat_fence": "Naśladowczy Płot",
+  "block.copycats.copycat_fence_gate": "Naśladowcza Furtka",
+  "block.copycats.copycat_fluid_pipe": "Naśladowcza Rura",
+  "block.copycats.copycat_ghost_block": "Naśladowczy Ghost Block",
+  "block.copycats.copycat_glass_fluid_pipe": "Naśladowcza Szklana Rura",
+  "block.copycats.copycat_half_layer": "Naśladowcza Połowa Warstwy",
+  "block.copycats.copycat_half_panel": "Naśladowcza Połowa Panelu",
+  "block.copycats.copycat_heavy_weighted_pressure_plate": "Naśladowcza Ciężka Wagowa Płytka Naciskowa",
+  "block.copycats.copycat_light_weighted_pressure_plate": "Naśladowcza Lekka Wagowa Płytka Naciskowa"
 }
