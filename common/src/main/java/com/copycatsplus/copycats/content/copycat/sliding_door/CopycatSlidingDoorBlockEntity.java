@@ -1,9 +1,11 @@
 package com.copycatsplus.copycats.content.copycat.sliding_door;
 
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
+import com.copycatsplus.copycats.mixin.copycat.sliding_door.SlidingDoorBlockEntityAccessor;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorBlockEntity;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
+import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -19,6 +21,15 @@ public class CopycatSlidingDoorBlockEntity extends SlidingDoorBlockEntity implem
     public CopycatSlidingDoorBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
         ICopycatBlockEntity.super.init();
+    }
+
+    @Override
+    public boolean shouldRenderSpecial(BlockState state) {
+        return super.shouldRenderSpecial(state);
+    }
+
+    public LerpedFloat animation() {
+        return ((SlidingDoorBlockEntityAccessor) this).getAnimation();
     }
 
     @Override

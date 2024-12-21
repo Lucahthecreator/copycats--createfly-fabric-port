@@ -684,7 +684,7 @@ public class CCBlocks {
             REGISTRATE.block("copycat_sliding_door", p -> CopycatSlidingDoorBlock.metal(p, false))
                     .transform(CCBuilderTransformers.copycat())
                     .transform(FeatureToggle.register(FeatureCategory.FUNCTIONAL))
-                    .onRegister(onClient(() -> createBlockModel(CopycatSlidingDoorModelCore::new)))
+                    .onRegister(onClient(() -> createBlockModel(() -> new CopycatSlidingDoorModelCore(false))))
                     .onRegister(interactionBehaviour(new DoorMovingInteraction()))
                     .onRegister(movementBehaviour(new SlidingDoorMovementBehaviour()))
                     .tag(BlockTags.DOORS)
