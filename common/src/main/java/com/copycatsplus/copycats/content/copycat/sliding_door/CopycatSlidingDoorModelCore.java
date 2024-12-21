@@ -50,7 +50,7 @@ public class CopycatSlidingDoorModelCore extends CopycatModelCore {
             context.assemblePiece(transform,
                     vec3(0, 12, 0),
                     aabb(16, 4, 2).move(0, 4, 0),
-                    cull(SOUTH | DOWN));
+                    cull(SOUTH | DOWN | (kinetic ? UP : 0)));
             //Back
             context.assemblePiece(transform,
                     vec3(0, 0, 2),
@@ -59,7 +59,7 @@ public class CopycatSlidingDoorModelCore extends CopycatModelCore {
             context.assemblePiece(transform,
                     vec3(0, 12, 2),
                     aabb(16, 4, 1).move(0, 4, 15),
-                    cull(NORTH | DOWN));
+                    cull(NORTH | DOWN | (kinetic ? UP : 0)));
         } else {
             //Front
             context.assemblePiece(transform,
@@ -69,7 +69,7 @@ public class CopycatSlidingDoorModelCore extends CopycatModelCore {
             context.assemblePiece(transform,
                     vec3(0, 0, 0),
                     aabb(16, 4, 2).move(0, 8, 0),
-                    cull(SOUTH | UP));
+                    cull(SOUTH | UP | (kinetic ? DOWN : 0)));
             //Back
             context.assemblePiece(transform,
                     vec3(0, 4, 2),
@@ -78,7 +78,7 @@ public class CopycatSlidingDoorModelCore extends CopycatModelCore {
             context.assemblePiece(transform,
                     vec3(0, 0, 2),
                     aabb(16, 4, 1).move(0, 8, 15),
-                    cull(NORTH | UP));
+                    cull(NORTH | UP | (kinetic ? DOWN : 0)));
         }
     }
 }

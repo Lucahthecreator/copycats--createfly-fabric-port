@@ -61,11 +61,11 @@ public class CopycatFoldingDoorModelCore extends CopycatModelCore {
                 context.assemblePiece(transform,
                         vec3(offset, 12, 0),
                         aabb(4, 4, 2).move(0, 4, 0),
-                        cull(SOUTH | DOWN | EAST));
+                        cull(SOUTH | DOWN | (kinetic ? UP : 0) | EAST));
                 context.assemblePiece(transform,
                         vec3(offset + 4, 12, 0),
                         aabb(4, 4, 2).move(12, 4, 0),
-                        cull(SOUTH | DOWN | WEST));
+                        cull(SOUTH | DOWN | (kinetic ? UP : 0) | WEST));
                 //Back
                 context.assemblePiece(transform,
                         vec3(offset, 0, 2),
@@ -78,11 +78,11 @@ public class CopycatFoldingDoorModelCore extends CopycatModelCore {
                 context.assemblePiece(transform,
                         vec3(offset, 12, 2),
                         aabb(4, 4, 1).move(0, 4, 15),
-                        cull(NORTH | DOWN | EAST));
+                        cull(NORTH | DOWN | (kinetic ? UP : 0) | EAST));
                 context.assemblePiece(transform,
                         vec3(offset + 4, 12, 2),
                         aabb(4, 4, 1).move(12, 4, 15),
-                        cull(NORTH | DOWN | WEST));
+                        cull(NORTH | DOWN | (kinetic ? UP : 0) | WEST));
             } else {
                 //Front
                 context.assemblePiece(transform,
@@ -96,11 +96,11 @@ public class CopycatFoldingDoorModelCore extends CopycatModelCore {
                 context.assemblePiece(transform,
                         vec3(offset, 0, 0),
                         aabb(4, 4, 2).move(0, 8, 0),
-                        cull(SOUTH | UP | EAST));
+                        cull(SOUTH | UP | (kinetic ? DOWN : 0) | EAST));
                 context.assemblePiece(transform,
                         vec3(offset + 4, 0, 0),
                         aabb(4, 4, 2).move(12, 8, 0),
-                        cull(SOUTH | UP | WEST));
+                        cull(SOUTH | UP | (kinetic ? DOWN : 0) | WEST));
                 //Back
                 context.assemblePiece(transform,
                         vec3(offset, 4, 2),
@@ -113,11 +113,11 @@ public class CopycatFoldingDoorModelCore extends CopycatModelCore {
                 context.assemblePiece(transform,
                         vec3(offset, 0, 2),
                         aabb(4, 4, 1).move(0, 8, 15),
-                        cull(NORTH | UP | EAST));
+                        cull(NORTH | UP | (kinetic ? DOWN : 0) | EAST));
                 context.assemblePiece(transform,
                         vec3(offset + 4, 0, 2),
                         aabb(4, 4, 1).move(12, 8, 15),
-                        cull(NORTH | UP | WEST));
+                        cull(NORTH | UP | (kinetic ? DOWN : 0) | WEST));
             }
         }
     }
