@@ -2,10 +2,11 @@ package com.copycatsplus.copycats.content.copycat.sliding_door;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
+import com.copycatsplus.copycats.utility.BlockEntityUtils;
 import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorBlock;
-import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,7 +23,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
@@ -34,8 +37,16 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public class CopycatSlidingDoorBlock extends SlidingDoorBlock implements ICopycatBlock {
 
+    public static BooleanProperty CT = BooleanProperty.create("ct");
+
     public CopycatSlidingDoorBlock(Properties properties, BlockSetType type, boolean folds) {
         super(properties, type, folds);
+        registerDefaultState(defaultBlockState().setValue(CT, true));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+        super.createBlockStateDefinition(pBuilder.add(CT));
     }
 
     public static CopycatSlidingDoorBlock metal(Properties properties, boolean folds) {
@@ -64,6 +75,21 @@ public class CopycatSlidingDoorBlock extends SlidingDoorBlock implements ICopyca
                 () -> ICopycatBlock.super.use(state, world, pos, player, hand, ray),
                 () -> super.use(state, world, pos, player, hand, ray)
         );
+    }
+
+    @Override
+    public InteractionResult toggleCT(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        if (pPlayer.isShiftKeyDown() && pPlayer.getItemInHand(pHand).equals(ItemStack.EMPTY)) {
+            if (!canToggleCT(pState, pLevel, pPos))
+                return InteractionResult.PASS;
+            pLevel.setBlock(pPos, pState.cycle(CT), 3);
+            BlockEntity be = pLevel.getBlockEntity(pPos);
+            if (!(be instanceof ICopycatBlockEntity fbe))
+                return InteractionResult.PASS;
+            BlockEntityUtils.redraw((BlockEntity) fbe);
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
     }
 
     @Override

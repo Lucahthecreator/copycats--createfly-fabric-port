@@ -38,6 +38,14 @@ public class CopycatSlidingDoorModelCore extends CopycatModelCore {
             return;
         }
 
+        if (state.getValue(CopycatSlidingDoorBlock.CT)) {
+            assembleWithCT(state, context);
+        } else {
+            assembleWithoutCT(state, context);
+        }
+    }
+
+    private void assembleWithCT(BlockState state, CopycatRenderContext context) {
         int rot = (int) state.getValue(DoorBlock.FACING).toYRot();
         DoubleBlockHalf half = state.getValue(DoorBlock.HALF);
         AssemblyTransform transform = t -> t.rotateY(rot);
@@ -79,6 +87,35 @@ public class CopycatSlidingDoorModelCore extends CopycatModelCore {
                     vec3(0, 0, 2),
                     aabb(16, 4, 1).move(0, 8, 15),
                     cull(NORTH | UP | (kinetic ? DOWN : 0)));
+        }
+    }
+
+    private void assembleWithoutCT(BlockState state, CopycatRenderContext context) {
+        int rot = (int) state.getValue(DoorBlock.FACING).toYRot();
+        DoubleBlockHalf half = state.getValue(DoorBlock.HALF);
+        AssemblyTransform transform = t -> t.rotateY(rot);
+        if (half == DoubleBlockHalf.LOWER) {
+            //Front
+            context.assemblePiece(transform,
+                    vec3(0, 0, 0),
+                    aabb(16, 16, 2),
+                    cull(SOUTH | (kinetic ? UP : 0)));
+            //Back
+            context.assemblePiece(transform,
+                    vec3(0, 0, 2),
+                    aabb(16, 16, 1).move(0, 0, 15),
+                    cull(NORTH | (kinetic ? UP : 0)));
+        } else {
+            //Front
+            context.assemblePiece(transform,
+                    vec3(0, 0, 0),
+                    aabb(16, 16, 2).move(0, 0, 0),
+                    cull(SOUTH | (kinetic ? DOWN : 0)));
+            //Back
+            context.assemblePiece(transform,
+                    vec3(0, 0, 2),
+                    aabb(16, 16, 1).move(0, 0, 15),
+                    cull(NORTH | (kinetic ? DOWN : 0)));
         }
     }
 }

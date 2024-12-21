@@ -35,7 +35,14 @@ public class CopycatFoldingDoorModelCore extends CopycatModelCore {
         if (!kinetic && !state.getValue(SlidingDoorBlock.VISIBLE)) {
             return;
         }
+        if (state.getValue(CopycatSlidingDoorBlock.CT)) {
+            assembleWithCT(state, context);
+        } else {
+            assembleWithoutCT(state, context);
+        }
+    }
 
+    private void assembleWithCT(BlockState state, CopycatRenderContext context) {
         for (boolean left : Iterate.falseAndTrue) {
             if (kinetic && left != this.left)
                 continue;
@@ -118,6 +125,61 @@ public class CopycatFoldingDoorModelCore extends CopycatModelCore {
                         vec3(offset + 4, 0, 2),
                         aabb(4, 4, 1).move(12, 8, 15),
                         cull(NORTH | UP | (kinetic ? DOWN : 0) | WEST));
+            }
+        }
+    }
+
+    private void assembleWithoutCT(BlockState state, CopycatRenderContext context) {
+        for (boolean left : Iterate.falseAndTrue) {
+            if (kinetic && left != this.left)
+                continue;
+
+            // The renderer handles rotation and left/right offset when animating
+            // So transforms are only applied to the model when static
+            Direction facing = state.getValue(DoorBlock.FACING);
+            int rot = kinetic ? 270 : (int) facing.toYRot();
+            int offset = left || kinetic ? 8 : 0;
+
+            DoubleBlockHalf half = state.getValue(DoorBlock.HALF);
+            AssemblyTransform transform = t -> t.rotateY(rot);
+            if (half == DoubleBlockHalf.LOWER) {
+                //Front
+                context.assemblePiece(transform,
+                        vec3(offset, 0, 0),
+                        aabb(4, 16, 2).move(0, 0, 0),
+                        cull(SOUTH | (kinetic ? UP : 0) | EAST));
+                context.assemblePiece(transform,
+                        vec3(offset + 4, 0, 0),
+                        aabb(4, 16, 2).move(12, 0, 0),
+                        cull(SOUTH | (kinetic ? UP : 0) | WEST));
+                //Back
+                context.assemblePiece(transform,
+                        vec3(offset, 0, 2),
+                        aabb(4, 16, 1).move(0, 0, 15),
+                        cull(NORTH | (kinetic ? UP : 0) | EAST));
+                context.assemblePiece(transform,
+                        vec3(offset + 4, 0, 2),
+                        aabb(4, 16, 1).move(12, 0, 15),
+                        cull(NORTH | (kinetic ? UP : 0) | WEST));
+            } else {
+                //Front
+                context.assemblePiece(transform,
+                        vec3(offset, 0, 0),
+                        aabb(4, 16, 2).move(0, 0, 0),
+                        cull(SOUTH | (kinetic ? DOWN : 0) | EAST));
+                context.assemblePiece(transform,
+                        vec3(offset + 4, 0, 0),
+                        aabb(4, 16, 2).move(12, 0, 0),
+                        cull(SOUTH | (kinetic ? DOWN : 0) | WEST));
+                //Back
+                context.assemblePiece(transform,
+                        vec3(offset, 0, 2),
+                        aabb(4, 16, 1).move(0, 0, 15),
+                        cull(NORTH | (kinetic ? DOWN : 0) | EAST));
+                context.assemblePiece(transform,
+                        vec3(offset + 4, 0, 2),
+                        aabb(4, 16, 1).move(12, 0, 15),
+                        cull(NORTH | (kinetic ? DOWN : 0) | WEST));
             }
         }
     }

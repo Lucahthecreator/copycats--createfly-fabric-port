@@ -106,8 +106,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.copycatsplus.copycats.CCCustomModels.createBlockModel;
-import static com.copycatsplus.copycats.CCCustomModels.getFluidPipeModel;
+import static com.copycatsplus.copycats.CCCustomModels.*;
 import static com.simibubi.create.AllInteractionBehaviours.interactionBehaviour;
 import static com.simibubi.create.AllMovementBehaviours.movementBehaviour;
 import static com.simibubi.create.content.contraptions.BlockMovementChecks.*;
@@ -631,7 +630,7 @@ public class CCBlocks {
             REGISTRATE.block("copycat_fluid_pipe", CopycatFluidPipeBlock::new)
                     .transform(CCBuilderTransformers.copycat())
                     .transform(FeatureToggle.register(FeatureCategory.FUNCTIONAL, FeatureCategory.CREATE))
-                    .onRegister(onClient(() -> CreateRegistrate.blockModel(() -> model -> getFluidPipeModel(model, new CopycatFluidPipeModelCore()))))
+                    .onRegister(onClient(() -> CreateRegistrate.blockModel(() -> model -> getFluidPipeModel(model, new CopycatFluidPipeModelCore(), false))))
                     .item()
                     .onRegister(CopycatDescription.register(
                             CopycatCharacteristics.COPYCAT,
@@ -644,7 +643,7 @@ public class CCBlocks {
             REGISTRATE.block("copycat_glass_fluid_pipe", CopycatGlassFluidPipeBlock::new)
                     .transform(CCBuilderTransformers.copycat())
                     .blockstate(CCBlockStateGen::glassPipe)
-                    .onRegister(onClient(() -> CreateRegistrate.blockModel(() -> model -> getFluidPipeModel(model, new CopycatStraightPipeModelCore()))))
+                    .onRegister(onClient(() -> CreateRegistrate.blockModel(() -> model -> getFluidPipeModel(model, new CopycatStraightPipeModelCore(), false))))
                     .loot((p, b) -> p.dropOther(b, COPYCAT_FLUID_PIPE.get()))
                     .register();
 
