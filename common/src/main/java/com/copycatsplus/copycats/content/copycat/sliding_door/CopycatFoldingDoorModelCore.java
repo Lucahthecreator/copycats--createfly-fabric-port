@@ -5,6 +5,7 @@ import com.copycatsplus.copycats.foundation.copycat.model.assembly.AssemblyTrans
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.CopycatRenderContext;
 import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorBlock;
 import com.simibubi.create.foundation.utility.Iterate;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -39,11 +40,12 @@ public class CopycatFoldingDoorModelCore extends CopycatModelCore {
             if (kinetic && left != this.left)
                 continue;
 
-            // Several quirks from Create's folding door renderer
-            // models are rotated by 90 degrees when animated
-            int rot = (int) state.getValue(DoorBlock.FACING).toYRot() + (kinetic ? 90 : 0);
-            // Left/right offset is only required when static
+            // The renderer handles rotation and left/right offset when animating
+            // So transforms are only applied to the model when static
+            Direction facing = state.getValue(DoorBlock.FACING);
+            int rot = kinetic ? 270 : (int) facing.toYRot();
             int offset = left || kinetic ? 8 : 0;
+
             DoubleBlockHalf half = state.getValue(DoorBlock.HALF);
             AssemblyTransform transform = t -> t.rotateY(rot);
             if (half == DoubleBlockHalf.LOWER) {

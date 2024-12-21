@@ -8,6 +8,7 @@ import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftModelCore;
 import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatFoldingDoorModelCore;
 import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorBlock;
 import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorModelCore;
+import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorMovementBehaviour;
 import com.copycatsplus.copycats.foundation.copycat.CopycatBaseBlock;
 import com.copycatsplus.copycats.foundation.copycat.WrappedCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.model.CopycatModelCore;
@@ -687,7 +688,7 @@ public class CCBlocks {
                     .transform(FeatureToggle.register(FeatureCategory.FUNCTIONAL))
                     .onRegister(onClient(() -> createBlockModel(() -> new CopycatSlidingDoorModelCore(false))))
                     .onRegister(interactionBehaviour(new DoorMovingInteraction()))
-                    .onRegister(movementBehaviour(new SlidingDoorMovementBehaviour()))
+                    .onRegister(movementBehaviour(new CopycatSlidingDoorMovementBehaviour()))
                     .tag(BlockTags.DOORS)
                     .tag(BlockTags.WOODEN_DOORS) // for villager AI
                     .tag(AllTags.AllBlockTags.NON_DOUBLE_DOOR.tag)
@@ -709,7 +710,7 @@ public class CCBlocks {
                     .transform(FeatureToggle.register(FeatureCategory.FUNCTIONAL))
                     .onRegister(onClient(() -> createBlockModel(() -> new CopycatFoldingDoorModelCore(false, false))))
                     .onRegister(interactionBehaviour(new DoorMovingInteraction()))
-                    .onRegister(movementBehaviour(new SlidingDoorMovementBehaviour()))
+                    .onRegister(movementBehaviour(new CopycatSlidingDoorMovementBehaviour()))
                     .tag(BlockTags.DOORS)
                     .tag(BlockTags.WOODEN_DOORS) // for villager AI
                     .tag(AllTags.AllBlockTags.NON_DOUBLE_DOOR.tag)
