@@ -5,6 +5,7 @@ import com.copycatsplus.copycats.config.FeatureToggle;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelModelCore;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatLargeCogWheelModelCore;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftModelCore;
+import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatFoldingDoorModelCore;
 import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorBlock;
 import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorModelCore;
 import com.copycatsplus.copycats.foundation.copycat.CopycatBaseBlock;
@@ -700,6 +701,28 @@ public class CCBlocks {
                     .tag(ItemTags.DOORS)
                     .tag(AllTags.AllItemTags.CONTRAPTION_CONTROLLED.tag)
                     .transform(customItemModel("copycat_base", "sliding_door"))
+                    .register();
+
+    public static final BlockEntry<CopycatSlidingDoorBlock> COPYCAT_FOLDING_DOOR =
+            REGISTRATE.block("copycat_folding_door", p -> CopycatSlidingDoorBlock.metal(p, true))
+                    .transform(CCBuilderTransformers.copycat())
+                    .transform(FeatureToggle.register(FeatureCategory.FUNCTIONAL))
+                    .onRegister(onClient(() -> createBlockModel(() -> new CopycatFoldingDoorModelCore(false, false))))
+                    .onRegister(interactionBehaviour(new DoorMovingInteraction()))
+                    .onRegister(movementBehaviour(new SlidingDoorMovementBehaviour()))
+                    .tag(BlockTags.DOORS)
+                    .tag(BlockTags.WOODEN_DOORS) // for villager AI
+                    .tag(AllTags.AllBlockTags.NON_DOUBLE_DOOR.tag)
+                    .onRegister(b -> registerBrittleCheck(state -> state.getBlock() == b ? CheckResult.SUCCESS : CheckResult.PASS))
+                    .loot((lr, block) -> lr.add(block, lr.createDoorTable(block)))
+                    .item()
+                    .onRegister(CopycatDescription.register(
+                            CopycatCharacteristics.COPYCAT,
+                            CopycatCharacteristics.FUNCTIONAL
+                    ))
+                    .tag(ItemTags.DOORS)
+                    .tag(AllTags.AllItemTags.CONTRAPTION_CONTROLLED.tag)
+                    .transform(customItemModel("copycat_base", "folding_door"))
                     .register();
 
     @ExpectPlatform

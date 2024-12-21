@@ -47,48 +47,50 @@ public class CopycatSlidingDoorRenderer extends SafeBlockEntityRenderer<CopycatS
                 .add(Vec3.atLowerCornerOf(facing.getNormal())
                         .scale(value2 * 1 / 32f));
 
-        if (((SlidingDoorBlock) blockState.getBlock()).isFoldingDoor()) {
-            boolean flip = blockState.getValue(DoorBlock.HINGE) == DoorHingeSide.RIGHT;
-            for (boolean left : Iterate.trueAndFalse) {
-                SuperByteBuffer partial = left ^ flip ?
-                        IKineticCopycatBlockRenderer.super.getRotatedModel(CCCopycatPartialModels.SLIDING_DOOR, be) :
-                        IKineticCopycatBlockRenderer.super.getRotatedModel(CCCopycatPartialModels.SLIDING_DOOR, be);
-                float f = flip ? -1 : 1;
-
-                partial.translate(0, -1 / 512f, 0)
-                        .translate(Vec3.atLowerCornerOf(facing.getNormal())
-                                .scale(value2 * 1 / 32f));
-                partial.rotateCentered(Direction.UP,
-                        Mth.DEG_TO_RAD * AngleHelper.horizontalAngle(facing.getClockWise()));
-
-                if (flip)
-                    partial.translate(0, 0, 1);
-                partial.rotateY(91 * f * value * value);
-
-                if (!left)
-                    partial.translate(0, 0, f / 2f)
-                            .rotateY(-181 * f * value * value);
-
-                if (flip)
-                    partial.translate(0, 0, -1 / 2f);
-
-                partial.light(light)
-                        .renderInto(ms, vb);
-            }
-
-            return;
-        }
 
         for (DoubleBlockHalf half : DoubleBlockHalf.values()) {
             CopycatSlidingDoorBlockEntity halfBE = half == DoubleBlockHalf.UPPER
                     ? be.getPaired()
                     : be;
-            if (halfBE != null)
+            if (halfBE == null) continue;
+
+            if (((SlidingDoorBlock) blockState.getBlock()).isFoldingDoor()) {
+                boolean flip = blockState.getValue(DoorBlock.HINGE) == DoorHingeSide.RIGHT;
+                for (boolean left : Iterate.trueAndFalse) {
+                    SuperByteBuffer partial = left ^ flip ?
+                            IKineticCopycatBlockRenderer.super.getRotatedModel(CCCopycatPartialModels.FOLDING_DOOR_LEFT, halfBE) :
+                            IKineticCopycatBlockRenderer.super.getRotatedModel(CCCopycatPartialModels.FOLDING_DOOR_RIGHT, halfBE);
+                    float f = flip ? -1 : 1;
+
+                    partial.translate(0, half == DoubleBlockHalf.UPPER ? 1 : 0, 0);
+
+                    partial.translate(0, -1 / 512f, 0)
+                            .translate(Vec3.atLowerCornerOf(facing.getNormal())
+                                    .scale(value2 * 1 / 32f));
+                    partial.rotateCentered(Direction.UP,
+                            Mth.DEG_TO_RAD * AngleHelper.horizontalAngle(facing.getClockWise()));
+
+                    if (flip)
+                        partial.translate(0, 0, 1);
+                    partial.rotateY(91 * f * value * value);
+
+                    if (!left)
+                        partial.translate(0, 0, f / 2f)
+                                .rotateY(-181 * f * value * value);
+
+                    if (flip)
+                        partial.translate(0, 0, -1 / 2f);
+
+                    partial.light(light)
+                            .renderInto(ms, vb);
+                }
+            } else {
                 IKineticCopycatBlockRenderer.super.getRotatedModel(CCCopycatPartialModels.SLIDING_DOOR, halfBE)
                         .translate(0, half == DoubleBlockHalf.UPPER ? 1 - 1 / 512f : 0, 0)
                         .translate(offset)
                         .light(light)
                         .renderInto(ms, vb);
+            }
         }
 
     }

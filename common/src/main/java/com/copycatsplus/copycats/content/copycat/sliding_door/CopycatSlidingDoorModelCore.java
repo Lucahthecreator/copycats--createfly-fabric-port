@@ -24,7 +24,7 @@ public class CopycatSlidingDoorModelCore extends CopycatModelCore {
 
     @Override
     public void registerModels(List<ModelEntry> entries) {
-        entries.add(new ModelEntry(MATERIAL_KEY, ModelGetter.MATERIAL, this, updatePropertiesIfMatch(SlidingDoorBlock.class), kinetic ? EntryType.KINETIC_COPYCAT : EntryType.COPYCAT));
+        entries.add(new ModelEntry(MATERIAL_KEY, ModelGetter.MATERIAL, this, updatePropertiesIfMatch(DoorBlock.class), kinetic ? EntryType.KINETIC_COPYCAT : EntryType.COPYCAT));
     }
 
     @Override

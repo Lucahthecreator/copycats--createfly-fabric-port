@@ -96,7 +96,7 @@ public class CCBlockEntityTypes {
 
     public static final BlockEntityEntry<? extends CopycatSlidingDoorBlockEntity> COPYCAT_SLIDING_DOOR =
             REGISTRATE.blockEntity("copycat_sliding_door", CopycatSlidingDoorBlockEntity::new)
-                    .validBlocks(CCBlocks.COPYCAT_SLIDING_DOOR)
+                    .validBlocks(CCBlocks.COPYCAT_SLIDING_DOOR, CCBlocks.COPYCAT_FOLDING_DOOR)
                     .renderer(() -> CopycatSlidingDoorRenderer::new)
                     .register();
 
