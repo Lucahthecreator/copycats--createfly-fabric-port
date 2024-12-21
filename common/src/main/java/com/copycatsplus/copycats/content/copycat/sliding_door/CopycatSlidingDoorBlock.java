@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.sliding_door;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
+import com.copycatsplus.copycats.content.copycat.door.CopycatDoorBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.utility.BlockEntityUtils;
@@ -37,7 +38,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public class CopycatSlidingDoorBlock extends SlidingDoorBlock implements ICopycatBlock {
 
-    public static BooleanProperty CT = BooleanProperty.create("ct");
+    public static BooleanProperty CT = CopycatDoorBlock.CT;
 
     public CopycatSlidingDoorBlock(Properties properties, BlockSetType type, boolean folds) {
         super(properties, type, folds);
