@@ -44,6 +44,7 @@ public class CCCreativeTabs {
             /* Vanilla */
             CCBlocks.COPYCAT_DOOR,
             CCBlocks.COPYCAT_IRON_DOOR,
+            CCBlocks.COPYCAT_SLIDING_DOOR,
             CCBlocks.COPYCAT_TRAPDOOR,
             CCBlocks.COPYCAT_IRON_TRAPDOOR,
             CCBlocks.COPYCAT_FENCE_GATE,
