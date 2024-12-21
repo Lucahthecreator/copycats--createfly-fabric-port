@@ -1,5 +1,6 @@
 package com.copycatsplus.copycats;
 
+import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.CCCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.MultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelBlockEntity;
@@ -90,6 +91,12 @@ public class CCBlockEntityTypes {
             REGISTRATE.blockEntity("copycat_glass_fluid_pipe", CopycatStraightPipeBlockEntity::new)
                     .validBlocks(CCBlocks.COPYCAT_GLASS_FLUID_PIPE)
                     .renderer(() -> TransparentStraightPipeRenderer::new)
+                    .register();
+
+    public static final BlockEntityEntry<? extends CopycatSlidingDoorBlockEntity> COPYCAT_SLIDING_DOOR =
+            REGISTRATE.blockEntity("copycat_sliding_door", CopycatSlidingDoorBlockEntity::new)
+                    .validBlocks(CCBlocks.COPYCAT_SLIDING_DOOR)
+//                    .renderer(() -> TransparentStraightPipeRenderer::new)
                     .register();
 
     public static void register() {

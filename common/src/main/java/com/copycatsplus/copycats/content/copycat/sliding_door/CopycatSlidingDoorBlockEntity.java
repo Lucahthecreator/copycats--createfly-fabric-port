@@ -1,13 +1,14 @@
 package com.copycatsplus.copycats.content.copycat.sliding_door;
 
-import com.copycatsplus.copycats.content.copycat.base.ICopycatBlockEntity;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
+import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorBlockEntity;
+import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 public class CopycatSlidingDoorBlockEntity extends SlidingDoorBlockEntity implements ICopycatBlockEntity {
 
@@ -15,18 +16,16 @@ public class CopycatSlidingDoorBlockEntity extends SlidingDoorBlockEntity implem
     protected ItemStack consumedItem;
     protected boolean enableCT;
 
-    public CopycatSlidingDoorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-        super(type, pos, state);
+    public CopycatSlidingDoorBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
+        super(typeIn, pos, state);
         ICopycatBlockEntity.super.init();
     }
 
-    @NotNull
     @Override
     public BlockState getMaterial() {
         return material;
     }
 
-    @NotNull
     @Override
     public ItemStack getConsumedItem() {
         return consumedItem;
@@ -38,18 +37,34 @@ public class CopycatSlidingDoorBlockEntity extends SlidingDoorBlockEntity implem
     }
 
     @Override
-    public void setMaterialInternal(@NotNull BlockState material) {
+    public void setMaterialInternal(BlockState material) {
         this.material = material;
     }
 
     @Override
-    public void setConsumedItemInternal(@NotNull ItemStack consumedItem) {
+    public void setConsumedItemInternal(ItemStack consumedItem) {
         this.consumedItem = consumedItem;
     }
 
     @Override
     public void setCTEnabledInternal(boolean value) {
         enableCT = value;
+    }
+
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        ICopycatBlockEntity.super.invalidate();
+    }
+
+    @Override
+    public ItemRequirement getRequiredItems(BlockState state) {
+        return ICopycatBlockEntity.super.getRequiredItems(state).union(super.getRequiredItems(state));
+    }
+
+    @Override
+    public void transform(StructureTransform transform) {
+        ICopycatBlockEntity.super.transform(transform);
     }
 
     @Override
@@ -70,3 +85,4 @@ public class CopycatSlidingDoorBlockEntity extends SlidingDoorBlockEntity implem
         ICopycatBlockEntity.write(this, tag, clientPacket);
     }
 }
+

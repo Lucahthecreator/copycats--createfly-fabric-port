@@ -1,56 +1,41 @@
 package com.copycatsplus.copycats.content.copycat.sliding_door;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
-import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.IStateType;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.utility.InteractionUtils;
-import com.simibubi.create.content.decoration.bracket.BracketBlock;
 import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorBlock;
-import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockAndTintGetter;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CopycatSlidingDoorBlock extends SlidingDoorBlock implements ICopycatBlock, IStateType {
+import javax.annotation.ParametersAreNonnullByDefault;
 
-    public static CopycatSlidingDoorBlock metal(Properties properties, boolean folds) {
-        return new CopycatSlidingDoorBlock(properties, TRAIN_SET_TYPE.get(), folds);
-    }
-
-    public static CopycatSlidingDoorBlock glass(Properties properties, boolean folds) {
-        return new CopycatSlidingDoorBlock(properties, GLASS_SET_TYPE.get(), folds);
-    }
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+public class CopycatSlidingDoorBlock extends SlidingDoorBlock implements ICopycatBlock {
 
     public CopycatSlidingDoorBlock(Properties properties, BlockSetType type, boolean folds) {
         super(properties, type, folds);
     }
 
-    @Nullable
-    @Override
-    public <S extends BlockEntity> BlockEntityTicker<S> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<S> p_153214_) {
-        return null;
+    public static CopycatSlidingDoorBlock metal(Properties properties, boolean folds) {
+        return new CopycatSlidingDoorBlock(properties, TRAIN_SET_TYPE.get(), folds);
     }
 
-    @NotNull
     @Override
     public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
         return InteractionUtils.sequential(
@@ -59,7 +44,6 @@ public class CopycatSlidingDoorBlock extends SlidingDoorBlock implements ICopyca
         );
     }
 
-    @NotNull
     @Override
     public InteractionResult onWrenched(BlockState state, UseOnContext context) {
         return InteractionUtils.sequential(
@@ -68,7 +52,6 @@ public class CopycatSlidingDoorBlock extends SlidingDoorBlock implements ICopyca
         );
     }
 
-    @NotNull
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult ray) {
         return InteractionUtils.sequential(
@@ -90,9 +73,8 @@ public class CopycatSlidingDoorBlock extends SlidingDoorBlock implements ICopyca
     }
 
     @Override
-    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
-        super.onRemove(state, world, pos, newState, isMoving);
-        ICopycatBlock.super.onRemove(state, world, pos, newState, isMoving);
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+        ICopycatBlock.super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving, super::onRemove);
     }
 
     @Override
@@ -102,7 +84,7 @@ public class CopycatSlidingDoorBlock extends SlidingDoorBlock implements ICopyca
     }
 
     @Override
-    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos) {
+    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos, BlockState toState) {
         return true;
     }
 
@@ -113,7 +95,6 @@ public class CopycatSlidingDoorBlock extends SlidingDoorBlock implements ICopyca
 
     @Override
     public BlockEntityType<? extends CopycatSlidingDoorBlockEntity> getBlockEntityType() {
-        return CCBlockEntityTypes.COPYCAT_SLIDING_DOOR_BLOCK_ENTITY.get();
+        return CCBlockEntityTypes.COPYCAT_SLIDING_DOOR.get();
     }
-
 }

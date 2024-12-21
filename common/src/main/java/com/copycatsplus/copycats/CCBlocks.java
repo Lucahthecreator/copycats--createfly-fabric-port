@@ -5,6 +5,8 @@ import com.copycatsplus.copycats.config.FeatureToggle;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelModelCore;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatLargeCogWheelModelCore;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftModelCore;
+import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorBlock;
+import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorModelCore;
 import com.copycatsplus.copycats.foundation.copycat.CopycatBaseBlock;
 import com.copycatsplus.copycats.foundation.copycat.WrappedCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.model.CopycatModelCore;
@@ -74,6 +76,7 @@ import com.copycatsplus.copycats.utility.Platform;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.contraptions.BlockMovementChecks;
 import com.simibubi.create.content.contraptions.behaviour.DoorMovingInteraction;
+import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorMovementBehaviour;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
 import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
@@ -104,6 +107,7 @@ import java.util.stream.Collectors;
 import static com.copycatsplus.copycats.CCCustomModels.createBlockModel;
 import static com.copycatsplus.copycats.CCCustomModels.getFluidPipeModel;
 import static com.simibubi.create.AllInteractionBehaviours.interactionBehaviour;
+import static com.simibubi.create.AllMovementBehaviours.movementBehaviour;
 import static com.simibubi.create.content.contraptions.BlockMovementChecks.*;
 import static com.simibubi.create.foundation.data.CreateRegistrate.blockModel;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
@@ -674,6 +678,28 @@ public class CCBlocks {
                             CopycatCharacteristics.FUNCTIONAL
                     ))
                     .transform(customItemModel("copycat_base", "door"))
+                    .register();
+
+    public static final BlockEntry<CopycatSlidingDoorBlock> COPYCAT_SLIDING_DOOR =
+            REGISTRATE.block("copycat_sliding_door", p -> CopycatSlidingDoorBlock.metal(p, false))
+                    .transform(CCBuilderTransformers.copycat())
+                    .transform(FeatureToggle.register(FeatureCategory.FUNCTIONAL))
+                    .onRegister(onClient(() -> createBlockModel(CopycatSlidingDoorModelCore::new)))
+                    .onRegister(interactionBehaviour(new DoorMovingInteraction()))
+                    .onRegister(movementBehaviour(new SlidingDoorMovementBehaviour()))
+                    .tag(BlockTags.DOORS)
+                    .tag(BlockTags.WOODEN_DOORS) // for villager AI
+                    .tag(AllTags.AllBlockTags.NON_DOUBLE_DOOR.tag)
+                    .onRegister(b -> registerBrittleCheck(state -> state.getBlock() == b ? CheckResult.SUCCESS : CheckResult.PASS))
+                    .loot((lr, block) -> lr.add(block, lr.createDoorTable(block)))
+                    .item()
+                    .onRegister(CopycatDescription.register(
+                            CopycatCharacteristics.COPYCAT,
+                            CopycatCharacteristics.FUNCTIONAL
+                    ))
+                    .tag(ItemTags.DOORS)
+                    .tag(AllTags.AllItemTags.CONTRAPTION_CONTROLLED.tag)
+                    .transform(customItemModel("copycat_base", "sliding_door"))
                     .register();
 
     @ExpectPlatform
