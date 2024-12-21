@@ -28,6 +28,8 @@ public class CCCreativeTabs {
             CCBlocks.COPYCAT_GHOST_BLOCK,
             CCBlocks.COPYCAT_LAYER,
             CCBlocks.COPYCAT_HALF_PANEL,
+            CCBlocks.COPYCAT_PANE,
+            CCBlocks.COPYCAT_HORIZONTAL_PANE,
             /* Multi-states */
             CCBlocks.COPYCAT_BYTE,
             CCBlocks.COPYCAT_BOARD,
