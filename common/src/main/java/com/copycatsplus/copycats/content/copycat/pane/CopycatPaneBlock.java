@@ -6,6 +6,7 @@ import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICustomCTBlocking;
 import com.copycatsplus.copycats.foundation.copycat.IStateType;
 import com.copycatsplus.copycats.utility.InteractionUtils;
+import com.simibubi.create.content.decoration.palettes.ConnectedGlassPaneBlock;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,7 +26,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.Optional;
 
-public class CopycatPaneBlock extends IronBarsBlock implements ICopycatBlock, IBE<CCCopycatBlockEntity>, IStateType, ICustomCTBlocking {
+public class CopycatPaneBlock extends ConnectedGlassPaneBlock implements ICopycatBlock, IBE<CCCopycatBlockEntity>, IStateType, ICustomCTBlocking {
 
     public CopycatPaneBlock(Properties properties) {
         super(properties);
