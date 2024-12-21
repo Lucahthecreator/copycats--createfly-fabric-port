@@ -658,6 +658,7 @@ public class CCBlocks {
                     .item()
                     .onRegister(CopycatDescription.register(
                             CopycatCharacteristics.COPYCAT,
+                            CopycatCharacteristics.CT_TOGGLE,
                             CopycatCharacteristics.FUNCTIONAL
                     ))
                     .tag(ItemTags.DOORS)
@@ -676,6 +677,7 @@ public class CCBlocks {
                     .item()
                     .onRegister(CopycatDescription.register(
                             CopycatCharacteristics.COPYCAT,
+                            CopycatCharacteristics.CT_TOGGLE,
                             CopycatCharacteristics.FUNCTIONAL
                     ))
                     .transform(customItemModel("copycat_base", "door"))
@@ -696,6 +698,7 @@ public class CCBlocks {
                     .item()
                     .onRegister(CopycatDescription.register(
                             CopycatCharacteristics.COPYCAT,
+                            CopycatCharacteristics.CT_TOGGLE,
                             CopycatCharacteristics.FUNCTIONAL
                     ))
                     .tag(ItemTags.DOORS)
@@ -718,6 +721,7 @@ public class CCBlocks {
                     .item()
                     .onRegister(CopycatDescription.register(
                             CopycatCharacteristics.COPYCAT,
+                            CopycatCharacteristics.CT_TOGGLE,
                             CopycatCharacteristics.FUNCTIONAL
                     ))
                     .tag(ItemTags.DOORS)
