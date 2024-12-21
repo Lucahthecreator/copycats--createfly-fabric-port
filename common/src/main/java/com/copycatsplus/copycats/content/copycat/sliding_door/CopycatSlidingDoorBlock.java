@@ -3,7 +3,9 @@ package com.copycatsplus.copycats.content.copycat.sliding_door;
 import com.copycatsplus.copycats.CCBlockEntityTypes;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.utility.InteractionUtils;
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorBlock;
+import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,10 +16,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -60,6 +66,15 @@ public class CopycatSlidingDoorBlock extends SlidingDoorBlock implements ICopyca
         );
     }
 
+    @Override
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pBlock, BlockPos pFromPos, boolean pIsMoving) {
+        super.neighborChanged(pState, pLevel, pPos, pBlock, pFromPos, pIsMoving);
+        getBlockEntityOptional(pLevel, pPos).ifPresent(be -> {
+            if (be instanceof CopycatSlidingDoorBlockEntity copycatBE)
+                copycatBE.updatePaired();
+        });
+    }
+
     @Nullable
     @Override
     public BlockState getAcceptedBlockState(Level pLevel, BlockPos pPos, ItemStack item, Direction face) {
@@ -84,13 +99,47 @@ public class CopycatSlidingDoorBlock extends SlidingDoorBlock implements ICopyca
     }
 
     @Override
-    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos, BlockState toState) {
+    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
+                                             BlockPos fromPos, BlockPos toPos, BlockState toState) {
         return true;
     }
 
     @Override
     public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
         return false;
+    }
+
+    public boolean supportsExternalFaceHiding(BlockState state) {
+        return true;
+    }
+
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
+                                     Direction dir) {
+        BlockPos toPos = pos.relative(dir);
+        BlockState toState = level.getBlockState(toPos);
+        BlockState material = state.getBlock() instanceof ICopycatBlock
+                ? ICopycatBlock.getMaterial(level, pos)
+                : state;
+        BlockState neighborMaterial = neighborState.getBlock() instanceof ICopycatBlock
+                ? ICopycatBlock.getMaterial(level, toPos)
+                : neighborState;
+        if (AllBlocks.COPYCAT_BASE.has(neighborMaterial) && AllBlocks.COPYCAT_BASE.has(material)) {
+            if (dir == Direction.UP && toState.is(this) && toState.getValue(HALF) == DoubleBlockHalf.UPPER) {
+                return true;
+            }
+            if (dir == Direction.DOWN && toState.is(this) && toState.getValue(HALF) == DoubleBlockHalf.LOWER) {
+                return true;
+            }
+        }
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
+    }
+
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return getBlockEntityType().create(pos, state);
     }
 
     @Override

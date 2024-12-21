@@ -1,24 +1,18 @@
 package com.copycatsplus.copycats.content.copycat.sliding_door;
 
-import com.copycatsplus.copycats.CCBlockEntityTypes;
 import com.copycatsplus.copycats.CCCopycatPartialModels;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.IKineticCopycatBlockRenderer;
-import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorBlock;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
 import com.simibubi.create.foundation.render.SuperByteBuffer;
 import com.simibubi.create.foundation.utility.AngleHelper;
-import com.simibubi.create.foundation.utility.Couple;
 import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -87,7 +81,7 @@ public class CopycatSlidingDoorRenderer extends SafeBlockEntityRenderer<CopycatS
 
         for (DoubleBlockHalf half : DoubleBlockHalf.values()) {
             CopycatSlidingDoorBlockEntity halfBE = half == DoubleBlockHalf.UPPER
-                    ? be.getLevel().getBlockEntity(be.getBlockPos().above(), CCBlockEntityTypes.COPYCAT_SLIDING_DOOR.get()).orElse(null)
+                    ? be.getPaired()
                     : be;
             if (halfBE != null)
                 IKineticCopycatBlockRenderer.super.getRotatedModel(CCCopycatPartialModels.SLIDING_DOOR, halfBE)
