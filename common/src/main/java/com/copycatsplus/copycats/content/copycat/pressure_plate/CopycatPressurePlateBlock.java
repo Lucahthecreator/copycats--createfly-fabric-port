@@ -1,7 +1,9 @@
 package com.copycatsplus.copycats.content.copycat.pressure_plate;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
-import com.copycatsplus.copycats.content.copycat.base.*;
+import com.copycatsplus.copycats.foundation.copycat.CCCopycatBlockEntity;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.IStateType;
 import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -13,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.BasePressurePlateBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -20,7 +23,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -54,6 +56,11 @@ public class CopycatPressurePlateBlock extends PressurePlateBlock implements ICo
     }
 
     @Override
+    public boolean isAcceptedRegardless(BlockState material) {
+        return material.getBlock() instanceof BasePressurePlateBlock;
+    }
+
+    @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         ICopycatBlock.super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
@@ -61,8 +68,7 @@ public class CopycatPressurePlateBlock extends PressurePlateBlock implements ICo
 
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        ICopycatBlock.super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
-        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        ICopycatBlock.super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving, super::onRemove);
     }
 
     @Override
@@ -82,7 +88,7 @@ public class CopycatPressurePlateBlock extends PressurePlateBlock implements ICo
     }
 
     @Override
-    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos) {
+    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos, BlockState toState) {
         return true;
     }
 

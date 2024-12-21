@@ -40,6 +40,14 @@ public enum Platform {
                 run.get().run();
         }
 
+        public <T> T getIfCurrent(Supplier<T> supplier) {
+            return isCurrent() ? supplier.get() : null;
+        }
+
+        public <T> T getIfCurrent(Supplier<T> supplier, T defaultValue) {
+            return isCurrent() ? supplier.get() : defaultValue;
+        }
+
         @ApiStatus.Internal
         @ExpectPlatform
         public static Environment getCurrent() {

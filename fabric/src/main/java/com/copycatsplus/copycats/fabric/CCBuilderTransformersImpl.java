@@ -1,8 +1,7 @@
 package com.copycatsplus.copycats.fabric;
 
-import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.multistate.IMultiStateCopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.builders.BlockBuilder;
@@ -18,8 +17,7 @@ public class CCBuilderTransformersImpl {
                 .blockstate((c, p) -> p.simpleBlock(c.get(), p.models()
                         .getExistingFile(p.mcLoc("air"))))
                 .initialProperties(SharedProperties::softMetal)
-                .properties(p -> p.noOcclusion()
-                        .mapColor(MapColor.NONE))
+                .properties(p -> p.noOcclusion().mapColor(MapColor.NONE).forceSolidOn())
                 // fabric: only render base model on cutout. When rendering the wrapped model's material is copied.
                 .addLayer(() -> RenderType::cutout)
                 .color(() -> ICopycatBlock::wrappedColor)
@@ -31,8 +29,7 @@ public class CCBuilderTransformersImpl {
                 .blockstate((c, p) -> p.simpleBlock(c.get(), p.models()
                         .getExistingFile(p.mcLoc("air"))))
                 .initialProperties(SharedProperties::softMetal)
-                .properties(p -> p.noOcclusion()
-                        .mapColor(MapColor.NONE).lightLevel(state -> state.getLightEmission()))
+                .properties(p -> p.noOcclusion().mapColor(MapColor.NONE).forceSolidOn())
                 .addLayer(() -> RenderType::solid)
                 .addLayer(() -> RenderType::cutout)
                 .addLayer(() -> RenderType::cutoutMipped)

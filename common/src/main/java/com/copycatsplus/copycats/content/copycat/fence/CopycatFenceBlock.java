@@ -1,7 +1,9 @@
 package com.copycatsplus.copycats.content.copycat.fence;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
-import com.copycatsplus.copycats.content.copycat.base.*;
+import com.copycatsplus.copycats.foundation.copycat.CCCopycatBlockEntity;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.IStateType;
 import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.Iterate;
@@ -24,12 +26,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-
-import static net.minecraft.world.level.block.CrossCollisionBlock.*;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -63,6 +62,11 @@ public class CopycatFenceBlock extends FenceBlock implements ICopycatBlock, IBE<
     }
 
     @Override
+    public boolean isAcceptedRegardless(BlockState material) {
+        return material.getBlock() instanceof FenceBlock;
+    }
+
+    @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         ICopycatBlock.super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
@@ -71,8 +75,7 @@ public class CopycatFenceBlock extends FenceBlock implements ICopycatBlock, IBE<
     @SuppressWarnings("deprecation")
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        ICopycatBlock.super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
-        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        ICopycatBlock.super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving, super::onRemove);
     }
 
     @Override
@@ -93,21 +96,14 @@ public class CopycatFenceBlock extends FenceBlock implements ICopycatBlock, IBE<
 
     @Override
     public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
-                                             BlockPos fromPos, BlockPos toPos) {
-        BlockState toState = reader.getBlockState(toPos);
-        if (!toState.is(this)) return true;
-        return !canConnectTexturesToward(reader, toPos, fromPos, toState);
+                                             BlockPos fromPos, BlockPos toPos, BlockState toState) {
+        if (isPole(state)) return ICopycatBlock.super.isIgnoredConnectivitySide(reader, state, face, fromPos, toPos, toState);
+        return true;
     }
 
     @Override
     public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
-        BlockState toState = reader.getBlockState(toPos);
-        if (!toState.is(this)) return false;
-        if (toPos.getX() == fromPos.getX() && toPos.getZ() == fromPos.getZ()) {
-            if (toState.is(this)) {
-                return isPole(state) && isPole(toState);
-            }
-        }
+        if (isPole(state)) return ICopycatBlock.super.canConnectTexturesToward(reader, fromPos, toPos, state);
         return false;
     }
 
@@ -124,15 +120,12 @@ public class CopycatFenceBlock extends FenceBlock implements ICopycatBlock, IBE<
     }
 
 
-    public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState,
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
                                      Direction dir) {
-        if (neighborState.getBlock() instanceof FenceBlock || neighborState.getBlock() instanceof CopycatFenceBlock) {
-            if (ICopycatBlock.getMaterial(level, pos).skipRendering(ICopycatBlock.getMaterial(level, pos.relative(dir)), dir.getOpposite()))
-                if (dir.getAxis().isHorizontal())
-                    return state.getValue(byDirection(dir)) && neighborState.getValue(byDirection(dir.getOpposite()));
-        }
-
-        return false;
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
     public static BooleanProperty byDirection(Direction direction) {

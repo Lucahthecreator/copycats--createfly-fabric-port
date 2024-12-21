@@ -2,10 +2,13 @@ package com.copycatsplus.copycats.content.copycat.vertical_slope;
 
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
-import com.copycatsplus.copycats.content.copycat.base.CCWaterloggedCopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.ICustomCTBlocking;
-import com.copycatsplus.copycats.content.copycat.base.IStateType;
+import com.copycatsplus.copycats.foundation.copycat.CCWaterloggedCopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.ICustomCTBlocking;
+import com.copycatsplus.copycats.foundation.copycat.IStateType;
+import com.copycatsplus.copycats.utility.BlockUtils;
 import com.copycatsplus.copycats.utility.InteractionUtils;
+import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.foundation.placement.PlacementHelpers;
 import com.simibubi.create.foundation.placement.PoleHelper;
 import com.simibubi.create.foundation.utility.Iterate;
@@ -68,63 +71,6 @@ public class CopycatVerticalSlopeBlock extends CCWaterloggedCopycatBlock impleme
     }
 
     @Override
-    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
-                                             BlockPos fromPos, BlockPos toPos) {
-        Direction direction = state.getValue(FACING);
-        BlockState toState = reader.getBlockState(toPos);
-
-        BlockPos diff = toPos.subtract(fromPos);
-        if (diff.equals(Vec3i.ZERO)) {
-            return false;
-        }
-        Direction connectFace = Direction.fromDelta(diff.getX(), diff.getY(), diff.getZ());
-        if (connectFace == null) {
-            return false;
-        }
-
-        if (toState.is(this)) {
-            Direction toDirection = toState.getValue(FACING);
-            if (toDirection == direction) return false;
-
-            if (connectFace == direction.getOpposite() || connectFace == direction.getClockWise())
-                return true;
-            if (connectFace.getOpposite() == toDirection.getOpposite() || connectFace.getOpposite() == toDirection.getClockWise())
-                return true;
-            return false;
-        } else {
-            return !(direction == connectFace || direction.getCounterClockWise() == connectFace);
-        }
-    }
-
-    @Override
-    public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos,
-                                            BlockState state) {
-        BlockState toState = reader.getBlockState(toPos);
-        Direction facing = state.getValue(FACING);
-
-        BlockPos diff = toPos.subtract(fromPos);
-        if (diff.equals(Vec3i.ZERO)) {
-            return true;
-        }
-        Direction face = Direction.fromDelta(diff.getX(), diff.getY(), diff.getZ());
-        if (face == null) {
-            return true;
-        }
-
-        if (toState.is(this)) {
-            try {
-                return toState.getValue(FACING) == facing &&
-                        face.getAxis().isVertical() ||
-                        face.getAxis().isHorizontal();
-            } catch (IllegalStateException ignored) {
-                return false;
-            }
-        } else {
-            return face == facing || face == facing.getCounterClockWise();
-        }
-    }
-
-    @Override
     public Optional<Boolean> blockCTTowards(BlockAndTintGetter reader, BlockState state, BlockPos pos, BlockPos ctPos, BlockPos connectingPos, Direction face) {
         if (reader.getBlockState(ctPos).is(this)) {
             return Optional.of(false);
@@ -169,7 +115,7 @@ public class CopycatVerticalSlopeBlock extends CCWaterloggedCopycatBlock impleme
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState stateForPlacement = super.getStateForPlacement(context);
-        assert stateForPlacement != null;
+        if (stateForPlacement == null) return null;
 
         int xOffset = context.getClickLocation().x - context.getClickedPos().getX() > 0.5 ? 1 : -1;
         int zOffset = context.getClickLocation().z - context.getClickedPos().getZ() > 0.5 ? 1 : -1;
@@ -191,7 +137,7 @@ public class CopycatVerticalSlopeBlock extends CCWaterloggedCopycatBlock impleme
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
-        return CCShapes.SLOPE_LEFT.get(pState.getValue(FACING));
+        return CCShapes.VERTICAL_SLOPE.get(pState.getValue(FACING)).toShape();
     }
 
 
@@ -202,40 +148,12 @@ public class CopycatVerticalSlopeBlock extends CCWaterloggedCopycatBlock impleme
 
     public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState,
                                      Direction dir) {
-        if (state.is(this) == neighborState.is(this)) {
-            if (getMaterial(level, pos).skipRendering(getMaterial(level, pos.relative(dir)), dir.getOpposite())) {
-                return dir.getAxis().isVertical() && neighborState.getValue(FACING) == state.getValue(FACING);
-            }
-        }
-
-        return false;
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public @NotNull BlockState rotate(@NotNull BlockState pState, Rotation pRot) {
-        return pState.setValue(FACING, pRot.rotate(pState.getValue(FACING)));
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public @NotNull BlockState mirror(@NotNull BlockState pState, @NotNull Mirror pMirror) {
-        Axis mirrorAxis = null;
-        for (Axis axis : Iterate.axes) {
-            if (pMirror.rotation().inverts(axis)) {
-                mirrorAxis = axis;
-                break;
-            }
-        }
-        if (mirrorAxis == null || mirrorAxis.isVertical()) {
-            return super.mirror(pState, pMirror);
-        }
-        Direction facing = pState.getValue(FACING);
-        if (facing.getAxis() != mirrorAxis) {
-            return pState.setValue(FACING, facing.getClockWise());
-        } else {
-            return pState.setValue(FACING, facing.getCounterClockWise());
-        }
+    public BlockState transform(BlockState state, StructureTransform transform) {
+        return BlockUtils.transformStepLikeVertical(state, transform, CCBlocks.COPYCAT_SLOPE.getDefaultState());
     }
 
     @MethodsReturnNonnullByDefault

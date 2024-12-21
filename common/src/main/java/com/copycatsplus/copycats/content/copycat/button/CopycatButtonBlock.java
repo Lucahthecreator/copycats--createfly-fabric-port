@@ -1,7 +1,9 @@
 package com.copycatsplus.copycats.content.copycat.button;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
-import com.copycatsplus.copycats.content.copycat.base.*;
+import com.copycatsplus.copycats.foundation.copycat.CCCopycatBlockEntity;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.IStateType;
 import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -20,7 +22,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -53,6 +54,11 @@ public class CopycatButtonBlock extends ButtonBlock implements ICopycatBlock, IB
     }
 
     @Override
+    public boolean isAcceptedRegardless(BlockState material) {
+        return material.getBlock() instanceof ButtonBlock;
+    }
+
+    @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         ICopycatBlock.super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
@@ -60,8 +66,7 @@ public class CopycatButtonBlock extends ButtonBlock implements ICopycatBlock, IB
 
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        ICopycatBlock.super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
-        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        ICopycatBlock.super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving, super::onRemove);
     }
 
     @Override
@@ -81,7 +86,7 @@ public class CopycatButtonBlock extends ButtonBlock implements ICopycatBlock, IB
     }
 
     @Override
-    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos) {
+    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos, BlockState toState) {
         return true;
     }
 

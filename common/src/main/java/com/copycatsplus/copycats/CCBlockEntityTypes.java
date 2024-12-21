@@ -1,7 +1,10 @@
 package com.copycatsplus.copycats;
 
-import com.copycatsplus.copycats.content.copycat.base.CCCopycatBlockEntity;
-import com.copycatsplus.copycats.content.copycat.base.multistate.MultiStateCopycatBlockEntity;
+import com.copycatsplus.copycats.foundation.copycat.CCCopycatBlockEntity;
+import com.copycatsplus.copycats.foundation.copycat.multistate.MultiStateCopycatBlockEntity;
+import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelBlockEntity;
+import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelInstance;
+import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelRenderer;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlockEntity;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeRenderer;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatStraightPipeBlockEntity;
@@ -9,9 +12,6 @@ import com.copycatsplus.copycats.content.copycat.ladder.MultiStateCopycatLadderB
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlockEntity;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftInstance;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftRenderer;
-import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorBlockEntity;
-import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorRenderer;
-import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorRenderer;
 import com.simibubi.create.content.fluids.pipes.TransparentStraightPipeRenderer;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
@@ -73,6 +73,13 @@ public class CCBlockEntityTypes {
                     .renderer(() -> CopycatShaftRenderer::new)
                     .register();
 
+    public static final BlockEntityEntry<? extends CopycatCogWheelBlockEntity> COPYCAT_COGWHEEL =
+            REGISTRATE.blockEntity("copycat_cogwheel", CopycatCogWheelBlockEntity::new)
+                    .instance(() -> CopycatCogWheelInstance::new, false)
+                    .validBlocks(CCBlocks.COPYCAT_COGWHEEL, CCBlocks.COPYCAT_LARGE_COGWHEEL)
+                    .renderer(() -> CopycatCogWheelRenderer::new)
+                    .register();
+
     public static final BlockEntityEntry<? extends CopycatFluidPipeBlockEntity> COPYCAT_FLUID_PIPE =
             REGISTRATE.blockEntity("copycat_fluid_pipe", CopycatFluidPipeBlockEntity::new)
                     .validBlocks(CCBlocks.COPYCAT_FLUID_PIPE)
@@ -83,12 +90,6 @@ public class CCBlockEntityTypes {
             REGISTRATE.blockEntity("copycat_glass_fluid_pipe", CopycatStraightPipeBlockEntity::new)
                     .validBlocks(CCBlocks.COPYCAT_GLASS_FLUID_PIPE)
                     .renderer(() -> TransparentStraightPipeRenderer::new)
-                    .register();
-
-    public static final BlockEntityEntry<? extends CopycatSlidingDoorBlockEntity> COPYCAT_SLIDING_DOOR_BLOCK_ENTITY =
-            REGISTRATE.blockEntity("copycat_sliding_door", CopycatSlidingDoorBlockEntity::new)
-                    .validBlocks(CCBlocks.COPYCAT_SLIDING_DOOR)
-                    .renderer(() -> CopycatSlidingDoorRenderer::new)
                     .register();
 
     public static void register() {

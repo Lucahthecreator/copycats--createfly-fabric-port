@@ -1,7 +1,9 @@
 package com.copycatsplus.copycats.content.copycat.wall;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
-import com.copycatsplus.copycats.content.copycat.base.*;
+import com.copycatsplus.copycats.foundation.copycat.CCCopycatBlockEntity;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.IStateType;
 import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.Iterate;
@@ -26,14 +28,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.WallSide;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Arrays;
 
 import static net.minecraft.core.Direction.Axis;
-import static net.minecraft.world.level.block.WallBlock.*;
 
 @SuppressWarnings("deprecation")
 @ParametersAreNonnullByDefault
@@ -68,6 +68,11 @@ public class CopycatWallBlock extends WallBlock implements ICopycatBlock, IBE<CC
     }
 
     @Override
+    public boolean isAcceptedRegardless(BlockState material) {
+        return material.getBlock() instanceof WallBlock;
+    }
+
+    @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         ICopycatBlock.super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
@@ -75,8 +80,7 @@ public class CopycatWallBlock extends WallBlock implements ICopycatBlock, IBE<CC
 
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        ICopycatBlock.super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
-        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        ICopycatBlock.super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving, super::onRemove);
     }
 
     @Override
@@ -97,8 +101,10 @@ public class CopycatWallBlock extends WallBlock implements ICopycatBlock, IBE<CC
 
     @Override
     public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
-                                             BlockPos fromPos, BlockPos toPos) {
-        BlockState toState = reader.getBlockState(toPos);
+                                             BlockPos fromPos, BlockPos toPos, BlockState toState) {
+        if (isPole(state))
+            return ICopycatBlock.super.isIgnoredConnectivitySide(reader, state, face, fromPos, toPos, toState);
+
         if (!toState.is(this) || !state.is(this)) return true;
 
         boolean isCross = true;
@@ -113,6 +119,8 @@ public class CopycatWallBlock extends WallBlock implements ICopycatBlock, IBE<CC
 
     @Override
     public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
+        if (isPole(state)) return ICopycatBlock.super.canConnectTexturesToward(reader, fromPos, toPos, state);
+
         BlockState toState = reader.getBlockState(toPos);
         if (!toState.is(this)) return false;
 
@@ -150,6 +158,10 @@ public class CopycatWallBlock extends WallBlock implements ICopycatBlock, IBE<CC
         }
     }
 
+    private static boolean isPole(BlockState state) {
+        return Arrays.stream(Iterate.horizontalDirections).allMatch(s -> state.getValue(byDirection(s)) == WallSide.NONE);
+    }
+
     private boolean canConnectVertically(BlockState state) {
         if (!state.getValue(WallBlock.UP)) return false;
         for (Direction direction : Iterate.horizontalDirections) {
@@ -163,27 +175,12 @@ public class CopycatWallBlock extends WallBlock implements ICopycatBlock, IBE<CC
         return true;
     }
 
-    public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState,
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
                                      Direction dir) {
-        if (neighborState.getBlock() instanceof WallBlock || neighborState.getBlock() instanceof CopycatWallBlock) {
-            if (ICopycatBlock.getMaterial(level, pos).skipRendering(ICopycatBlock.getMaterial(level, pos.relative(dir)), dir.getOpposite())) {
-                if (dir.getAxis().isHorizontal()) {
-                    WallSide side = state.getValue(byDirection(dir));
-                    return side != WallSide.NONE && side == neighborState.getValue(byDirection(dir.getOpposite()));
-                } else {
-                    if (neighborState.getValue(UP) && !state.getValue(UP)) return false;
-                    return Arrays.stream(Iterate.horizontalDirections).allMatch(s -> {
-                        WallSide neighbor = neighborState.getValue(byDirection(s));
-                        WallSide self = state.getValue(byDirection(s));
-                        if (dir == Direction.UP && self == WallSide.LOW) return false;
-                        if (dir == Direction.DOWN && neighbor == WallSide.LOW) return false;
-                        return self == neighbor;
-                    });
-                }
-            }
-        }
-
-        return false;
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
     public static EnumProperty<WallSide> byDirection(Direction direction) {

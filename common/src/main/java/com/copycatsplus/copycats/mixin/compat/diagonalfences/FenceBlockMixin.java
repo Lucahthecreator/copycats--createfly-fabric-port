@@ -1,6 +1,8 @@
 package com.copycatsplus.copycats.mixin.compat.diagonalfences;
 
-import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
+import com.copycatsplus.copycats.compat.Mods;
+import com.copycatsplus.copycats.foundation.annotation.ModMixin;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import net.minecraft.world.level.block.CrossCollisionBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * <p>
  * This patch has to be applied after Diagonal Fences modifies the FenceBlock class
  */
+@ModMixin(requiredMods = Mods.DIAGONAL_FENCES)
 @Mixin(value = FenceBlock.class, priority = 1100)
 public abstract class FenceBlockMixin extends CrossCollisionBlock {
 

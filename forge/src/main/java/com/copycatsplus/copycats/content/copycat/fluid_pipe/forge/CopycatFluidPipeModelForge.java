@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.fluid_pipe.forge;
 
-import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
-import com.copycatsplus.copycats.content.copycat.base.model.forge.CopycatModelForge;
+import com.copycatsplus.copycats.foundation.copycat.model.CopycatModelCore;
+import com.copycatsplus.copycats.foundation.copycat.model.forge.CopycatModelForge;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeModelCore;
 import com.simibubi.create.content.decoration.bracket.BracketedBlockEntityBehaviour;
 import com.simibubi.create.content.fluids.FluidTransportBehaviour;
@@ -51,6 +51,8 @@ public class CopycatFluidPipeModelForge extends CopycatModelForge {
             @SuppressWarnings("unchecked")
             CopycatModelCore.WithData<CopycatFluidPipeModelCore.PipeModelData> dataCore = (CopycatModelCore.WithData<CopycatFluidPipeModelCore.PipeModelData>) core;
             CopycatFluidPipeModelCore.PipeModelData pipeData = data.get(PIPE_PROPERTY);
+            if (pipeData == null)
+                pipeData = new CopycatFluidPipeModelCore.PipeModelData();
             dataCore.setData(pipeData);
         }
     }

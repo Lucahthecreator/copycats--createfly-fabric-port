@@ -2,8 +2,8 @@ package com.copycatsplus.copycats.content.copycat.shaft;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
 import com.copycatsplus.copycats.CCBlocks;
-import com.copycatsplus.copycats.content.copycat.base.ICustomCTBlocking;
-import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.ICustomCTBlocking;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.google.common.base.Predicates;
 import com.simibubi.create.AllBlocks;
@@ -30,7 +30,6 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,6 +47,10 @@ public class CopycatShaftBlock extends ShaftBlock implements ICopycatBlock, ICus
         super(properties);
     }
 
+    @Override
+    public boolean canToggleCT(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+        return false;
+    }
 
     @Override
     public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
@@ -85,15 +88,19 @@ public class CopycatShaftBlock extends ShaftBlock implements ICopycatBlock, ICus
     }
 
     @Override
+    public boolean isAcceptedRegardless(BlockState material) {
+        return material.getBlock() instanceof ShaftBlock;
+    }
+
+    @Override
     public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(worldIn, pos, state, placer, stack);
         ICopycatBlock.super.setPlacedBy(worldIn, pos, state, placer, stack);
     }
 
     @Override
-    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
-        super.onRemove(state, world, pos, newState, isMoving);
-        ICopycatBlock.super.onRemove(state, world, pos, newState, isMoving);
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+        ICopycatBlock.super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving, super::onRemove);
     }
 
     @Override
@@ -108,7 +115,7 @@ public class CopycatShaftBlock extends ShaftBlock implements ICopycatBlock, ICus
     }
 
     @Override
-    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos) {
+    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos, BlockState toState) {
         return true;
     }
 

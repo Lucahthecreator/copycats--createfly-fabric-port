@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "copycats:wrapped_copycat",
+    "copycats:copycat_base",
     "copycats:copycat_block",
     "copycats:copycat_beam",
     "copycats:copycat_board",
@@ -32,6 +33,8 @@
     "copycats:copycat_vertical_slope",
     "copycats:copycat_slope_layer",
     "copycats:copycat_shaft",
+    "copycats:copycat_cogwheel",
+    "copycats:copycat_large_cogwheel",
     "copycats:copycat_fluid_pipe",
     "copycats:copycat_glass_fluid_pipe",
     "copycats:copycat_door",

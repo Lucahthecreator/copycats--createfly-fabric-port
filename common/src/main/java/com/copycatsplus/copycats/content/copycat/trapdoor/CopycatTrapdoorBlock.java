@@ -1,7 +1,9 @@
 package com.copycatsplus.copycats.content.copycat.trapdoor;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
-import com.copycatsplus.copycats.content.copycat.base.*;
+import com.copycatsplus.copycats.foundation.copycat.CCCopycatBlockEntity;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.IStateType;
 import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -20,12 +22,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-
-import static net.minecraft.world.level.block.TrapDoorBlock.*;
 
 @SuppressWarnings("deprecation")
 @ParametersAreNonnullByDefault
@@ -63,14 +62,18 @@ public class CopycatTrapdoorBlock extends TrapDoorBlock implements ICopycatBlock
 
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        ICopycatBlock.super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
-        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        ICopycatBlock.super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving, super::onRemove);
     }
 
     @Override
     public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         ICopycatBlock.super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+    }
+
+    @Override
+    public boolean isAcceptedRegardless(BlockState material) {
+        return material.getBlock() instanceof TrapDoorBlock;
     }
 
     @Override
@@ -85,7 +88,7 @@ public class CopycatTrapdoorBlock extends TrapDoorBlock implements ICopycatBlock
 
     @Override
     public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
-                                             BlockPos fromPos, BlockPos toPos) {
+                                             BlockPos fromPos, BlockPos toPos, BlockState toState) {
         return true;
     }
 
@@ -97,5 +100,13 @@ public class CopycatTrapdoorBlock extends TrapDoorBlock implements ICopycatBlock
 
     public boolean supportsExternalFaceHiding(BlockState state) {
         return true;
+    }
+
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
+                                     Direction dir) {
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 }

@@ -2,9 +2,11 @@ package com.copycatsplus.copycats.content.copycat.beam;
 
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
-import com.copycatsplus.copycats.content.copycat.base.CCWaterloggedCopycatBlock;
-import com.copycatsplus.copycats.content.copycat.base.IStateType;
+import com.copycatsplus.copycats.foundation.copycat.CCWaterloggedCopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.IStateType;
 import com.copycatsplus.copycats.utility.InteractionUtils;
+import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.foundation.placement.PlacementHelpers;
 import com.simibubi.create.foundation.placement.PoleHelper;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -60,48 +62,6 @@ public class CopycatBeamBlock extends CCWaterloggedCopycatBlock implements IStat
         );
     }
 
-    @Override
-    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
-                                             BlockPos fromPos, BlockPos toPos) {
-        Axis axis = state.getValue(AXIS);
-        BlockState toState = reader.getBlockState(toPos);
-
-        if (toState.is(this)) {
-            // connecting to another copycat beam
-            return toState.getValue(AXIS) != axis;
-        } else {
-            // doesn't connect to any other blocks
-            return true;
-        }
-    }
-
-    @Override
-    public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos,
-                                            BlockState state) {
-        BlockState toState = reader.getBlockState(toPos);
-        if (!toState.is(this)) return false;
-        Axis axis = state.getValue(AXIS);
-
-        BlockPos diff = toPos.subtract(fromPos);
-        if (diff.equals(Vec3i.ZERO)) {
-            return true;
-        }
-        Direction face = Direction.fromDelta(diff.getX(), diff.getY(), diff.getZ());
-        if (face == null) {
-            return false;
-        }
-
-        if (toState.is(this)) {
-            try {
-                return toState.getValue(AXIS) == axis && face.getAxis() == axis;
-            } catch (IllegalStateException ignored) {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
     @SuppressWarnings("deprecation")
     @Override
     public boolean isPathfindable(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull PathComputationType pType) {
@@ -114,7 +74,7 @@ public class CopycatBeamBlock extends CCWaterloggedCopycatBlock implements IStat
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState stateForPlacement = super.getStateForPlacement(context);
-        assert stateForPlacement != null;
+        if (stateForPlacement == null) return null;
         Axis axis = context.getNearestLookingDirection().getAxis();
         return stateForPlacement.setValue(AXIS, axis);
     }
@@ -127,41 +87,28 @@ public class CopycatBeamBlock extends CCWaterloggedCopycatBlock implements IStat
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
-        return CCShapes.CASING_8PX_CENTERED.get(pState.getValue(AXIS));
+        return CCShapes.BEAM.get(pState.getValue(AXIS)).toShape();
     }
 
+    @Override
+    public BlockState transform(BlockState state, StructureTransform transform) {
+        if (transform.rotationAxis != null) {
+            state = state.setValue(AXIS, transform.rotateAxis(state.getValue(AXIS)));
+        }
+        return state;
+    }
 
     public boolean supportsExternalFaceHiding(BlockState state) {
         return true;
     }
 
 
-    public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState,
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
                                      Direction dir) {
-        if (state.is(this) == neighborState.is(this)) {
-            if (getMaterial(level, pos).skipRendering(getMaterial(level, pos.relative(dir)), dir.getOpposite())) {
-                return state.getValue(AXIS) == dir.getAxis() && neighborState.getValue(AXIS) == dir.getAxis();
-            }
-        }
-
-        return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public @NotNull BlockState rotate(@NotNull BlockState state, Rotation rot) {
-        switch (rot) {
-            case COUNTERCLOCKWISE_90, CLOCKWISE_90 -> {
-                return switch (state.getValue(AXIS)) {
-                    case X -> state.setValue(AXIS, Axis.Z);
-                    case Z -> state.setValue(AXIS, Axis.X);
-                    default -> state;
-                };
-            }
-            default -> {
-                return state;
-            }
-        }
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
     @MethodsReturnNonnullByDefault

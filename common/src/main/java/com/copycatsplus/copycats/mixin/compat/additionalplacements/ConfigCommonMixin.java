@@ -1,6 +1,8 @@
 package com.copycatsplus.copycats.mixin.compat.additionalplacements;
 
 import com.copycatsplus.copycats.Copycats;
+import com.copycatsplus.copycats.compat.Mods;
+import com.copycatsplus.copycats.foundation.annotation.ModMixin;
 import com.firemerald.additionalplacements.common.ConfigCommon;
 import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * <p>
  * Will appear to error but works and builds fine.
  */
+@ModMixin(requiredMods = Mods.ADDITIONAL_PLACEMENTS)
 @Pseudo
 @Mixin(value = {ConfigCommon.class})
 public class ConfigCommonMixin {

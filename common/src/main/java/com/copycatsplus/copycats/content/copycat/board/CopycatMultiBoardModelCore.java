@@ -1,18 +1,19 @@
 package com.copycatsplus.copycats.content.copycat.board;
 
 import com.copycatsplus.copycats.CCBlocks;
-import com.copycatsplus.copycats.content.copycat.base.model.CopycatModelCore;
-import com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext;
+import com.copycatsplus.copycats.foundation.copycat.model.CopycatModelCore;
+import com.copycatsplus.copycats.foundation.copycat.model.assembly.CopycatRenderContext;
 import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
-import static com.copycatsplus.copycats.content.copycat.base.model.assembly.MutableCullFace.*;
-import static com.copycatsplus.copycats.content.copycat.base.model.assembly.CopycatRenderContext.*;
+import static com.copycatsplus.copycats.foundation.copycat.model.assembly.CopycatRenderContext.*;
+import static com.copycatsplus.copycats.foundation.copycat.model.assembly.MutableCullFace.*;
 import static com.copycatsplus.copycats.content.copycat.board.CopycatBoardBlock.byDirection;
 
 public class CopycatMultiBoardModelCore extends CopycatModelCore {
@@ -23,7 +24,7 @@ public class CopycatMultiBoardModelCore extends CopycatModelCore {
 
     @Override
     public void registerModels(List<ModelEntry> entries) {
-        registerForMultiState(entries, CCBlocks.COPYCAT_BOARD.get());
+        registerForMultiState(entries, CCBlocks.COPYCAT_BOARD.get(), false);
     }
 
     @Override
@@ -33,7 +34,7 @@ public class CopycatMultiBoardModelCore extends CopycatModelCore {
             sides.put(direction, state.getValue(byDirection(direction)));
         }
 
-        Direction direction = Direction.byName(key.toLowerCase());
+        Direction direction = Direction.byName(key.toLowerCase(Locale.ROOT));
 
         if (!sides.get(direction))
             return;

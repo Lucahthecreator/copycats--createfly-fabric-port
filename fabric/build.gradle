@@ -47,12 +47,20 @@ dependencies {
 
     modImplementation("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
     // because create fabric is a bit broken I think
-    modImplementation("net.minecraftforge:forgeconfigapiport-fabric:${config_port_version}")
+    modApi("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${config_port_version}")
 
-    modLocalRuntime "curse.maven:jade-324717:${jade_fabric_curse_id}"
+    modLocalRuntime("curse.maven:jade-324717:${jade_fabric_curse_id}")
     modLocalRuntime("mezz.jei:jei-${minecraft_version}-fabric:${jei_fabric_version}")
 
-    modImplementation "curse.maven:continuity-531351:${continuity_curse_version}"
+    modImplementation("curse.maven:continuity-531351:${continuity_curse_version}")
+//    modImplementation("blank:continuity-3.0.0:beta.6+1.20.1.build.105")
+    modImplementation("curse.maven:athena-841890:${athena_fabric_curse_id}")
+    modImplementation("curse.maven:indium-459496:${indium_fabric_curse_id}")
+    modLocalRuntime("maven.modrinth:sodium:${sodium_fabric_version}")
+//    modLocalRuntime("maven.modrinth:extended-cogwheels:${extended_cogwheels_fabric_version}")
+    modLocalRuntime("curse.maven:spark-361579:${spark_fabric_curse_id}")
+    modCompileOnly("curse.maven:selene-499980:${moonlight_curse_fabric_id}")
+    modCompileOnly("curse.maven:vertical-slabs-compat-724387:${vertical_slabs_curse_fabric_id}")
 
     annotationProcessor(implementation(include("io.github.llamalad7:mixinextras-fabric:${mixin_extras_version}")))
 

@@ -1,6 +1,8 @@
 package com.copycatsplus.copycats.mixin.compat.additionalplacements;
 
-import com.copycatsplus.copycats.content.copycat.base.ICopycatBlock;
+import com.copycatsplus.copycats.compat.Mods;
+import com.copycatsplus.copycats.foundation.annotation.ModMixin;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.firemerald.additionalplacements.block.AdditionalPlacementBlock;
 import net.minecraft.world.level.block.*;
 import org.spongepowered.asm.mixin.Mixin;
@@ -11,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 /**
  * Always report that our blocks have no extra states added by AdditionalPlacements.
  */
+@ModMixin(requiredMods = Mods.ADDITIONAL_PLACEMENTS)
 @Mixin(
         value = {
                 AdditionalPlacementBlock.class,
