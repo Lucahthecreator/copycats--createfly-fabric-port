@@ -10,6 +10,7 @@ import com.copycatsplus.copycats.content.copycat.ladder.CopycatLadderBlock;
 import com.copycatsplus.copycats.content.copycat.pressure_plate.CopycatPressurePlateBlock;
 import com.copycatsplus.copycats.content.copycat.pressure_plate.CopycatWeightedPressurePlate;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
+import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorBlock;
 import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsBlock;
 import com.copycatsplus.copycats.content.copycat.trapdoor.CopycatTrapdoorBlock;
 import com.copycatsplus.copycats.content.copycat.wall.CopycatWallBlock;
@@ -57,7 +58,8 @@ import static com.copycatsplus.copycats.foundation.copycat.ICopycatBlock.getMate
         CopycatShaftBlock.class,
         CopycatFluidPipeBlock.class,
         CopycatGlassFluidPipeBlock.class,
-        CopycatDoorBlock.class
+        CopycatDoorBlock.class,
+        CopycatSlidingDoorBlock.class
 })
 public abstract class CopycatBlockMixin extends Block implements ICopycatBlock {
 
