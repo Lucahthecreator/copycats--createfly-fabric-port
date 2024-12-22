@@ -10,7 +10,7 @@ import com.copycatsplus.copycats.content.copycat.corner_slice.CopycatCornerSlice
 import com.copycatsplus.copycats.content.copycat.corner_slice.CopycatCornerSliceModelCore;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftModelCore;
 import com.copycatsplus.copycats.content.copycat.vertical_half_layer.CopycatVerticalHalfLayerBlock;
-import com.copycatsplus.copycats.content.copycat.vertical_half_layer.CopycatVerticalHalfLayerModelCore;
+import com.copycatsplus.copycats.content.copycat.vertical_half_layer.CopycatVerticalMultiHalfLayerModelCore;
 import com.copycatsplus.copycats.foundation.copycat.CopycatBaseBlock;
 import com.copycatsplus.copycats.foundation.copycat.WrappedCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.model.CopycatModelCore;
@@ -78,7 +78,6 @@ import com.copycatsplus.copycats.foundation.tooltip.CopycatCharacteristics;
 import com.copycatsplus.copycats.foundation.tooltip.CopycatDescription;
 import com.copycatsplus.copycats.utility.Platform;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.content.contraptions.BlockMovementChecks;
 import com.simibubi.create.content.contraptions.behaviour.DoorMovingInteraction;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
@@ -315,7 +314,7 @@ public class CCBlocks {
             REGISTRATE.block("copycat_vertical_half_layer", CopycatVerticalHalfLayerBlock::new)
                     .transform(CCBuilderTransformers.multiCopycat())
                     .transform(FeatureToggle.register(FeatureCategory.MULTISTATES, FeatureCategory.STACKABLES))
-                    .onRegister(onClient(() -> createBlockModel(CopycatVerticalHalfLayerModelCore::new)))
+                    .onRegister(onClient(() -> createBlockModel(CopycatVerticalMultiHalfLayerModelCore::new)))
                     .loot(CCLootGen.build(
                             CCLootGen.lootForLayers(CopycatVerticalHalfLayerBlock.LEFT_LAYERS),
                             CCLootGen.lootForLayers(CopycatVerticalHalfLayerBlock.RIGHT_LAYERS)
