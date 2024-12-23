@@ -7,7 +7,7 @@ import com.copycatsplus.copycats.content.copycat.fence_gate.CopycatFenceGateBloc
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlock;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatGlassFluidPipeBlock;
 import com.copycatsplus.copycats.content.copycat.ladder.CopycatLadderBlock;
-import com.copycatsplus.copycats.content.copycat.pane.CopycatHorizontalPaneBlock;
+import com.copycatsplus.copycats.content.copycat.horizontal_pane.CopycatHorizontalPaneBlock;
 import com.copycatsplus.copycats.content.copycat.pane.CopycatPaneBlock;
 import com.copycatsplus.copycats.content.copycat.pressure_plate.CopycatPressurePlateBlock;
 import com.copycatsplus.copycats.content.copycat.pressure_plate.CopycatWeightedPressurePlate;

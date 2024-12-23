@@ -1,82 +1,78 @@
-package com.copycatsplus.copycats.content.copycat.pane;
+package com.copycatsplus.copycats.content.copycat.horizontal_pane;
 
-import com.copycatsplus.copycats.CCBlockEntityTypes;
 import com.copycatsplus.copycats.CCBlocks;
-import com.copycatsplus.copycats.foundation.copycat.CCCopycatBlockEntity;
+import com.copycatsplus.copycats.CCShapes;
+import com.copycatsplus.copycats.foundation.copycat.CCWaterloggedCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.IStateType;
-import com.simibubi.create.foundation.block.IBE;
+import com.copycatsplus.copycats.utility.InteractionUtils;
+import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.foundation.placement.IPlacementHelper;
 import com.simibubi.create.foundation.placement.PlacementHelpers;
 import com.simibubi.create.foundation.placement.PlacementOffset;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.IronBarsBlock;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class CopycatHorizontalPaneBlock extends IronBarsBlock implements ICopycatBlock, IBE<CCCopycatBlockEntity>, IStateType {
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+public class CopycatHorizontalPaneBlock extends CCWaterloggedCopycatBlock implements IStateType {
 
     private static final int placementHelperId = PlacementHelpers.register(new PlacementHelper());
-
 
     public CopycatHorizontalPaneBlock(Properties pProperties) {
         super(pProperties);
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        InteractionResult result = super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
-        if (!pPlayer.isShiftKeyDown() && pPlayer.mayBuild()) {
-            ItemStack heldItem = pPlayer.getItemInHand(pHand);
-            IPlacementHelper placementHelper = PlacementHelpers.get(placementHelperId);
-            if (placementHelper.matchesItem(heldItem)) {
-                placementHelper.getOffset(pPlayer, pLevel, pState, pPos, pHit)
-                        .placeInWorld(pLevel, (BlockItem) heldItem.getItem(), pPlayer, pHand, pHit);
-                return result;
-            }
-        }
-        return result;
+    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand,
+                                          @NotNull BlockHitResult ray) {
+        return InteractionUtils.sequential(
+                () -> InteractionUtils.usePlacementHelper(placementHelperId, state, world, pos, player, hand, ray),
+                () -> super.use(state, world, pos, player, hand, ray)
+        );
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public @NotNull VoxelShape getShape(BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+        return CCShapes.HORIZONTAL_PANE.toShape();
     }
 
     @Override
-    public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
-        BlockState toState = reader.getBlockState(toPos);
-        if (!toState.is(this)) return true;
-        return toState.setValue(WATERLOGGED, false) == state.setValue(WATERLOGGED, false);
+    public BlockState transform(BlockState state, StructureTransform transform) {
+        return state;
     }
-
 
     public boolean supportsExternalFaceHiding(BlockState state) {
         return true;
     }
 
-    @Override
-    public Class<CCCopycatBlockEntity> getBlockEntityClass() {
-        return CCCopycatBlockEntity.class;
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
+                                     Direction dir) {
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
-    @Override
-    public BlockEntityType<? extends CCCopycatBlockEntity> getBlockEntityType() {
-        return CCBlockEntityTypes.COPYCAT.get();
-    }
-
+    @MethodsReturnNonnullByDefault
     private static class PlacementHelper implements IPlacementHelper {
-
         @Override
         public Predicate<ItemStack> getItemPredicate() {
             return CCBlocks.COPYCAT_HORIZONTAL_PANE::isIn;
@@ -98,9 +94,9 @@ public class CopycatHorizontalPaneBlock extends IronBarsBlock implements ICopyca
             if (directions.isEmpty())
                 return PlacementOffset.fail();
             else {
-                return PlacementOffset.success(pos.relative(directions.get(0)));
+                return PlacementOffset.success(pos.relative(directions.get(0)), s -> s);
             }
         }
-
     }
+
 }

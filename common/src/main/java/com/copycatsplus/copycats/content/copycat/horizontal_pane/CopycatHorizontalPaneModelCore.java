@@ -1,4 +1,4 @@
-package com.copycatsplus.copycats.content.copycat.pane;
+package com.copycatsplus.copycats.content.copycat.horizontal_pane;
 
 import com.copycatsplus.copycats.foundation.copycat.model.CopycatModelCore;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.AssemblyTransform;
@@ -11,15 +11,13 @@ import static com.copycatsplus.copycats.foundation.copycat.model.assembly.Mutabl
 
 public class CopycatHorizontalPaneModelCore extends CopycatModelCore {
 
-
     @Override
     public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
-        AssemblyTransform transform = t -> t.rotateY(0);
-        context.assemblePiece(transform,
+        context.assemblePiece(AssemblyTransform.IDENTITY,
                 vec3(0, 7, 0),
                 aabb(16, 1, 16),
                 cull(UP));
-        context.assemblePiece(transform,
+        context.assemblePiece(AssemblyTransform.IDENTITY,
                 vec3(0, 8, 0),
                 aabb(16, 1, 16),
                 cull(DOWN));

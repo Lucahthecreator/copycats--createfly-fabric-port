@@ -4,6 +4,8 @@ import com.copycatsplus.copycats.config.FeatureCategory;
 import com.copycatsplus.copycats.config.FeatureToggle;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelModelCore;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatLargeCogWheelModelCore;
+import com.copycatsplus.copycats.content.copycat.horizontal_pane.CopycatHorizontalPaneBlock;
+import com.copycatsplus.copycats.content.copycat.horizontal_pane.CopycatHorizontalPaneModelCore;
 import com.copycatsplus.copycats.content.copycat.pane.CopycatPaneBlock;
 import com.copycatsplus.copycats.content.copycat.pane.CopycatPaneModelCore;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftModelCore;
@@ -680,21 +682,25 @@ public class CCBlocks {
     public static final BlockEntry<CopycatPaneBlock> COPYCAT_PANE =
             REGISTRATE.block("copycat_pane", CopycatPaneBlock::new)
                     .transform(CCBuilderTransformers.copycat())
+                    .transform(FeatureToggle.register())
                     .onRegister(onClient(() -> createBlockModel(CopycatPaneModelCore::new)))
                     .item()
                     .onRegister(CopycatDescription.register(
-                            CopycatCharacteristics.COPYCAT
+                            CopycatCharacteristics.COPYCAT,
+                            CopycatCharacteristics.CT_TOGGLE
                     ))
                     .transform(customItemModel("copycat_base", "pane"))
                     .register();
 
-    public static final BlockEntry<CopycatPaneBlock> COPYCAT_HORIZONTAL_PANE =
-            REGISTRATE.block("copycat_horizontal_pane", CopycatPaneBlock::new)
+    public static final BlockEntry<CopycatHorizontalPaneBlock> COPYCAT_HORIZONTAL_PANE =
+            REGISTRATE.block("copycat_horizontal_pane", CopycatHorizontalPaneBlock::new)
                     .transform(CCBuilderTransformers.copycat())
-                    .onRegister(onClient(() -> createBlockModel(CopycatPaneModelCore::new)))
+                    .transform(FeatureToggle.register())
+                    .onRegister(onClient(() -> createBlockModel(CopycatHorizontalPaneModelCore::new)))
                     .item()
                     .onRegister(CopycatDescription.register(
-                            CopycatCharacteristics.COPYCAT
+                            CopycatCharacteristics.COPYCAT,
+                            CopycatCharacteristics.CT_TOGGLE
                     ))
                     .transform(customItemModel("copycat_base", "horizontal_pane"))
                     .register();
