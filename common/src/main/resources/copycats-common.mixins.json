@@ -15,6 +15,7 @@
     "copycat.cogwheel.CogWheelBlockItemMixin",
     "copycat.door.BlockHelperMixin",
     "copycat.door.SchematicannonBlockEntityMixin",
+    "copycat.flat_pane.IronBarsBlockMixin",
     "copycat.fluid_pipe.FluidPipeBlockMixin",
     "copycat.panel.CopycatPanelBlockMixin",
     "copycat.slab.SeatMovementBehaviourMixin",

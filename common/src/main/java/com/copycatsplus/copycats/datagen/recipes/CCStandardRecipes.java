@@ -212,9 +212,11 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
 
     GeneratedRecipe COPYCAT_IRON_DOOR = copycatWithBaseItem(Items.IRON_DOOR, CCBlocks.COPYCAT_IRON_DOOR, 1);
 
-    GeneratedRecipe COPYCAT_PANE = copycat(CCBlocks.COPYCAT_PANE, 6);
+    GeneratedRecipe COPYCAT_PANE = copycat(CCBlocks.COPYCAT_PANE, 8);
 
-    GeneratedRecipe COPYCAT_HORIZONTAL_PANE = copycat(CCBlocks.COPYCAT_FLAT_PANE, 6);
+    GeneratedRecipe COPYCAT_FLAT_PANE = copycat(CCBlocks.COPYCAT_FLAT_PANE, 8);
+
+    GeneratedRecipe COPYCAT_PANE_CYCLE = conversionCycle(CCBlocks.COPYCAT_PANE, CCBlocks.COPYCAT_FLAT_PANE);
 
     Set<RegistryEntry<? extends Block>> blocksWithoutRecipe = Set.of(
             CCBlocks.COPYCAT_BASE,
