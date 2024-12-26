@@ -4,8 +4,8 @@ import com.copycatsplus.copycats.config.FeatureCategory;
 import com.copycatsplus.copycats.config.FeatureToggle;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelModelCore;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatLargeCogWheelModelCore;
-import com.copycatsplus.copycats.content.copycat.horizontal_pane.CopycatHorizontalPaneBlock;
-import com.copycatsplus.copycats.content.copycat.horizontal_pane.CopycatHorizontalPaneModelCore;
+import com.copycatsplus.copycats.content.copycat.flat_pane.CopycatFlatPaneBlock;
+import com.copycatsplus.copycats.content.copycat.flat_pane.CopycatFlatPaneModelCore;
 import com.copycatsplus.copycats.content.copycat.pane.CopycatPaneBlock;
 import com.copycatsplus.copycats.content.copycat.pane.CopycatPaneModelCore;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftModelCore;
@@ -692,17 +692,17 @@ public class CCBlocks {
                     .transform(customItemModel("copycat_base", "pane"))
                     .register();
 
-    public static final BlockEntry<CopycatHorizontalPaneBlock> COPYCAT_HORIZONTAL_PANE =
-            REGISTRATE.block("copycat_horizontal_pane", CopycatHorizontalPaneBlock::new)
+    public static final BlockEntry<CopycatFlatPaneBlock> COPYCAT_FLAT_PANE =
+            REGISTRATE.block("copycat_flat_pane", CopycatFlatPaneBlock::new)
                     .transform(CCBuilderTransformers.copycat())
                     .transform(FeatureToggle.register())
-                    .onRegister(onClient(() -> createBlockModel(CopycatHorizontalPaneModelCore::new)))
+                    .onRegister(onClient(() -> createBlockModel(CopycatFlatPaneModelCore::new)))
                     .item()
                     .onRegister(CopycatDescription.register(
                             CopycatCharacteristics.COPYCAT,
                             CopycatCharacteristics.CT_TOGGLE
                     ))
-                    .transform(customItemModel("copycat_base", "horizontal_pane"))
+                    .transform(customItemModel("copycat_base", "flat_pane"))
                     .register();
 
     @ExpectPlatform

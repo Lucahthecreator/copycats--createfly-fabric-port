@@ -5,7 +5,7 @@
       "fabric:load_conditions": [
         {
           "condition": "copycats:feature_enabled",
-          "feature": "copycats:copycat_horizontal_pane",
+          "feature": "copycats:copycat_flat_pane",
           "invert": false
         }
       ],
@@ -15,7 +15,7 @@
         "ingredient": {
           "tag": "c:zinc_ingots"
         },
-        "result": "copycats:copycat_horizontal_pane"
+        "result": "copycats:copycat_flat_pane"
       }
     }
   ]

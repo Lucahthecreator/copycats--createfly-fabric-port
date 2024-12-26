@@ -38,6 +38,6 @@
     "copycats:copycat_door",
     "copycats:copycat_iron_door",
     "copycats:copycat_pane",
-    "copycats:copycat_horizontal_pane"
+    "copycats:copycat_flat_pane"
   ]
 }

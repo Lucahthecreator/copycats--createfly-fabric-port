@@ -4,7 +4,7 @@
       "fabric:load_conditions": [
         {
           "condition": "copycats:feature_enabled",
-          "feature": "copycats:copycat_horizontal_pane",
+          "feature": "copycats:copycat_flat_pane",
           "invert": false
         }
       ],
@@ -23,7 +23,7 @@
           },
           "has_the_recipe": {
             "conditions": {
-              "recipe": "copycats:stonecutting/copycat_horizontal_pane"
+              "recipe": "copycats:stonecutting/copycat_flat_pane"
             },
             "trigger": "minecraft:recipe_unlocked"
           }
@@ -36,7 +36,7 @@
         ],
         "rewards": {
           "recipes": [
-            "copycats:stonecutting/copycat_horizontal_pane"
+            "copycats:stonecutting/copycat_flat_pane"
           ]
         },
         "sends_telemetry_event": false
