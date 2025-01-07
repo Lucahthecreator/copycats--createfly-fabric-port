@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.pane;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
+import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.foundation.copycat.CCCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICustomCTBlocking;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.IronBarsBlock;
@@ -76,12 +78,12 @@ public class CopycatPaneBlock extends ConnectedGlassPaneBlock implements ICopyca
     @Override
     public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState fromState, Direction face,
                                              BlockPos fromPos, BlockPos toPos, BlockState toState) {
-        return face.getAxis().isVertical() || !reader.getBlockState(toPos).is(this);
+        return face.getAxis().isVertical() || !reader.getBlockState(toPos).is(this) && !reader.getBlockState(toPos).is(CCBlocks.COPYCAT_FLAT_PANE.get());
     }
 
     @Override
     public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
-        return reader.getBlockState(toPos).is(this);
+        return reader.getBlockState(toPos).is(this) || reader.getBlockState(toPos).is(CCBlocks.COPYCAT_FLAT_PANE.get());
     }
 
     @Override
@@ -96,6 +98,14 @@ public class CopycatPaneBlock extends ConnectedGlassPaneBlock implements ICopyca
 
     public boolean supportsExternalFaceHiding(BlockState state) {
         return true;
+    }
+
+    public boolean hidesNeighborFace(BlockGetter level,
+                                     BlockPos pos,
+                                     BlockState state,
+                                     BlockState neighborState,
+                                     Direction dir) {
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
     public static BooleanProperty propertyForDirection(Direction direction) {

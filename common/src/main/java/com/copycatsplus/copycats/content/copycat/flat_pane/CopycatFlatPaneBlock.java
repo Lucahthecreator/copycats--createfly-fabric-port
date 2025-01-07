@@ -4,6 +4,7 @@ import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
 import com.copycatsplus.copycats.foundation.copycat.CCWaterloggedCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.ICustomCTBlocking;
 import com.copycatsplus.copycats.foundation.copycat.IStateType;
 import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.simibubi.create.content.contraptions.StructureTransform;
@@ -19,6 +20,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -34,12 +36,13 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 @SuppressWarnings("deprecation")
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class CopycatFlatPaneBlock extends CCWaterloggedCopycatBlock implements IStateType {
+public class CopycatFlatPaneBlock extends CCWaterloggedCopycatBlock implements IStateType, ICustomCTBlocking {
 
     public static final EnumProperty<Axis> AXIS = BlockStateProperties.AXIS;
 
@@ -92,6 +95,16 @@ public class CopycatFlatPaneBlock extends CCWaterloggedCopycatBlock implements I
             state = state.setValue(AXIS, transform.rotateAxis(state.getValue(AXIS)));
         }
         return state;
+    }
+
+    @Override
+    public Optional<Boolean> blockCTTowards(BlockAndTintGetter reader, BlockState state, BlockPos pos, BlockPos ctPos, BlockPos connectingPos, Direction face) {
+        return Optional.of(false);
+    }
+
+    @Override
+    public Optional<Boolean> isCTBlocked(BlockAndTintGetter reader, BlockState state, BlockPos pos, BlockPos connectingPos, BlockPos blockingPos, Direction face) {
+        return Optional.of(false);
     }
 
     public boolean supportsExternalFaceHiding(BlockState state) {
