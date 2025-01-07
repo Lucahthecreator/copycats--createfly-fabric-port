@@ -24,6 +24,7 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -95,6 +96,11 @@ public class CopycatFlatPaneBlock extends CCWaterloggedCopycatBlock implements I
             state = state.setValue(AXIS, transform.rotateAxis(state.getValue(AXIS)));
         }
         return state;
+    }
+
+    @Override
+    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState fromState, Direction face, BlockPos fromPos, BlockPos toPos, BlockState toState) {
+        return (toState.getBlock() instanceof IronBarsBlock && face.getAxis().isVertical());
     }
 
     @Override
