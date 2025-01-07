@@ -12,6 +12,7 @@ import com.copycatsplus.copycats.content.copycat.pane.CopycatPaneBlock;
 import com.copycatsplus.copycats.content.copycat.pressure_plate.CopycatPressurePlateBlock;
 import com.copycatsplus.copycats.content.copycat.pressure_plate.CopycatWeightedPressurePlate;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
+import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorBlock;
 import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsBlock;
 import com.copycatsplus.copycats.content.copycat.trapdoor.CopycatTrapdoorBlock;
 import com.copycatsplus.copycats.content.copycat.wall.CopycatWallBlock;
@@ -60,6 +61,7 @@ import static com.copycatsplus.copycats.foundation.copycat.ICopycatBlock.getMate
         CopycatFluidPipeBlock.class,
         CopycatGlassFluidPipeBlock.class,
         CopycatDoorBlock.class,
+        CopycatSlidingDoorBlock.class,
         CopycatPaneBlock.class,
         CopycatFlatPaneBlock.class
 })

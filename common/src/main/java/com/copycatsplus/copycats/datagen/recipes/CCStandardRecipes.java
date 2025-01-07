@@ -214,6 +214,12 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
 
     GeneratedRecipe COPYCAT_PANE = copycat(CCBlocks.COPYCAT_PANE, 8);
 
+    GeneratedRecipe COPYCAT_SLIDING_DOOR = copycat(CCBlocks.COPYCAT_SLIDING_DOOR, 1);
+
+    GeneratedRecipe COPYCAT_FOLDING_DOOR = copycat(CCBlocks.COPYCAT_FOLDING_DOOR, 1);
+
+    GeneratedRecipe COPYCAT_SLIDING_DOOR_CYCLE = conversionCycle(CCBlocks.COPYCAT_SLIDING_DOOR, CCBlocks.COPYCAT_FOLDING_DOOR);
+
     GeneratedRecipe COPYCAT_FLAT_PANE = copycat(CCBlocks.COPYCAT_FLAT_PANE, 8);
 
     GeneratedRecipe COPYCAT_PANE_CYCLE = conversionCycle(CCBlocks.COPYCAT_PANE, CCBlocks.COPYCAT_FLAT_PANE);
