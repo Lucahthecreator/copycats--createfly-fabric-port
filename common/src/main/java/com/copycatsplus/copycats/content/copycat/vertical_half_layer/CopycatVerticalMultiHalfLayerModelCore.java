@@ -33,7 +33,7 @@ public class CopycatVerticalMultiHalfLayerModelCore extends CopycatModelCore {
         boolean positive = key.equals(LEFT_LAYERS.getName());
         int layer = state.getValue(positive ? LEFT_LAYERS : RIGHT_LAYERS);
         if (layer == 0) return;
-        AssemblyTransform transform = t -> t.rotateY(rot + (positive ? 180 : 0));
+        AssemblyTransform transform = t -> t.flipX(!positive).rotateY(rot + 180);
         QuadAutoCull autoCull = autoCull(aabb(8, 16, 16));
         context.assemblePiece(
                 transform,
