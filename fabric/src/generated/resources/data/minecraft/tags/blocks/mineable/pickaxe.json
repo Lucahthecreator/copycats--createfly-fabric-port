@@ -39,7 +39,9 @@
     "copycats:copycat_glass_fluid_pipe",
     "copycats:copycat_door",
     "copycats:copycat_iron_door",
+    "copycats:copycat_pane",
     "copycats:copycat_sliding_door",
-    "copycats:copycat_folding_door"
+    "copycats:copycat_folding_door",
+    "copycats:copycat_flat_pane"
   ]
 }
