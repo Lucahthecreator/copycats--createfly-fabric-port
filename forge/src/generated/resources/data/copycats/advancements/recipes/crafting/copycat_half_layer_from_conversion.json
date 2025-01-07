@@ -9,7 +9,7 @@
               "items": [
                 {
                   "items": [
-                    "copycats:copycat_vertical_half_layer"
+                    "copycats:copycat_stacked_half_layer"
                   ]
                 }
               ]
@@ -39,7 +39,7 @@
       "conditions": [
         {
           "type": "copycats:feature_enabled",
-          "feature": "copycats:copycat_vertical_half_layer",
+          "feature": "copycats:copycat_stacked_half_layer",
           "invert": false
         },
         {

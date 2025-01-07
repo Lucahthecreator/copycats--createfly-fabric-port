@@ -36,6 +36,8 @@ public class CCCreativeTabs {
             CCItems.COPYCAT_CATWALK,
             CCItems.COPYCAT_BOX,
             CCBlocks.COPYCAT_HALF_LAYER,
+            CCBlocks.COPYCAT_VERTICAL_HALF_LAYER,
+            CCBlocks.COPYCAT_STACKED_HALF_LAYER,
             /* Slopes */
             CCBlocks.COPYCAT_SLOPE,
             CCBlocks.COPYCAT_VERTICAL_SLOPE,

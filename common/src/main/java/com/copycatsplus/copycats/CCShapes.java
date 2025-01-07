@@ -4,6 +4,7 @@ import com.copycatsplus.copycats.CCBlockStateProperties.Side;
 import com.copycatsplus.copycats.CCBlockStateProperties.VerticalStairShape;
 import com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLayerBlock;
 import com.copycatsplus.copycats.content.copycat.half_panel.CopycatHalfPanelBlock;
+import com.copycatsplus.copycats.content.copycat.stacked_half_layer.CopycatStackedHalfLayerBlock;
 import com.copycatsplus.copycats.content.copycat.vertical_half_layer.CopycatVerticalHalfLayerBlock;
 import com.copycatsplus.copycats.content.copycat.vertical_stairs.CopycatVerticalStairBlock;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.AssemblyTransform;
@@ -107,6 +108,18 @@ public class CCShapes {
             forHorizontalDirections(forAll(CopycatVerticalHalfLayerBlock.RIGHT_LAYERS,
                     layer -> shape(
                             aabb(8, 16, layer * 2).move(0, 0, 16 - layer * 2)
+                    )
+            ));
+    public static final Map<Direction, Map<Integer, MutableShape>> STACKED_HALF_LAYER_TOP =
+            forHorizontalDirections(forAll(CopycatStackedHalfLayerBlock.TOP_LAYERS,
+                    layer -> shape(
+                            aabb(16, 8, layer * 2).move(0, 8, 16 - layer * 2)
+                    )
+            ));
+    public static final Map<Direction, Map<Integer, MutableShape>> STACKED_HALF_LAYER_BOTTOM =
+            forHorizontalDirections(forAll(CopycatStackedHalfLayerBlock.BOTTOM_LAYERS,
+                    layer -> shape(
+                            aabb(16, 8, layer * 2).move(0, 0, 16 - layer * 2)
                     )
             ));
     public static final Map<Direction, Map<Side, Map<VerticalStairShape, MutableShape>>> VERTICAL_STAIR =

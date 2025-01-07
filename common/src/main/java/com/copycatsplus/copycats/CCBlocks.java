@@ -13,6 +13,8 @@ import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoor
 import com.copycatsplus.copycats.content.copycat.corner_slice.CopycatCornerSliceBlock;
 import com.copycatsplus.copycats.content.copycat.corner_slice.CopycatCornerSliceModelCore;
 import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorMovementBehaviour;
+import com.copycatsplus.copycats.content.copycat.stacked_half_layer.CopycatStackedHalfLayerBlock;
+import com.copycatsplus.copycats.content.copycat.stacked_half_layer.CopycatStackedMultiHalfLayerModelCore;
 import com.copycatsplus.copycats.content.copycat.vertical_half_layer.CopycatVerticalHalfLayerBlock;
 import com.copycatsplus.copycats.content.copycat.vertical_half_layer.CopycatVerticalMultiHalfLayerModelCore;
 import com.copycatsplus.copycats.foundation.copycat.CopycatBaseBlock;
@@ -332,6 +334,25 @@ public class CCBlocks {
                             CopycatCharacteristics.STACKABLE
                     ))
                     .transform(customItemModel("copycat_base", "vertical_half_layer"))
+                    .register();
+
+    public static final BlockEntry<CopycatStackedHalfLayerBlock> COPYCAT_STACKED_HALF_LAYER =
+            REGISTRATE.block("copycat_stacked_half_layer", CopycatStackedHalfLayerBlock::new)
+                    .transform(CCBuilderTransformers.multiCopycat())
+                    .transform(FeatureToggle.register(FeatureCategory.MULTISTATES, FeatureCategory.STACKABLES))
+                    .onRegister(onClient(() -> createBlockModel(CopycatStackedMultiHalfLayerModelCore::new)))
+                    .loot(CCLootGen.build(
+                            CCLootGen.lootForLayers(CopycatStackedHalfLayerBlock.TOP_LAYERS),
+                            CCLootGen.lootForLayers(CopycatStackedHalfLayerBlock.BOTTOM_LAYERS)
+                    ))
+                    .item()
+                    .onRegister(CopycatDescription.register(
+                            CopycatCharacteristics.COPYCAT,
+                            CopycatCharacteristics.CT_TOGGLE,
+                            CopycatCharacteristics.MULTI_STATE,
+                            CopycatCharacteristics.STACKABLE
+                    ))
+                    .transform(customItemModel("copycat_base", "stacked_half_layer"))
                     .register();
 
     public static final BlockEntry<CopycatHalfPanelBlock> COPYCAT_HALF_PANEL =

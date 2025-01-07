@@ -1,18 +1,6 @@
 {
   "advancements": [
     {
-      "fabric:load_conditions": [
-        {
-          "condition": "copycats:feature_enabled",
-          "feature": "copycats:copycat_stacked_half_layer",
-          "invert": false
-        },
-        {
-          "condition": "copycats:feature_enabled",
-          "feature": "copycats:copycat_half_layer",
-          "invert": false
-        }
-      ],
       "advancement": {
         "parent": "minecraft:recipes/root",
         "criteria": {
@@ -21,7 +9,7 @@
               "items": [
                 {
                   "items": [
-                    "copycats:copycat_stacked_half_layer"
+                    "copycats:copycat_vertical_half_layer"
                   ]
                 }
               ]
@@ -30,7 +18,7 @@
           },
           "has_the_recipe": {
             "conditions": {
-              "recipe": "copycats:crafting/copycat_half_layer_from_conversion"
+              "recipe": "copycats:crafting/copycat_stacked_half_layer_from_conversion"
             },
             "trigger": "minecraft:recipe_unlocked"
           }
@@ -43,11 +31,23 @@
         ],
         "rewards": {
           "recipes": [
-            "copycats:crafting/copycat_half_layer_from_conversion"
+            "copycats:crafting/copycat_stacked_half_layer_from_conversion"
           ]
         },
         "sends_telemetry_event": false
-      }
+      },
+      "conditions": [
+        {
+          "type": "copycats:feature_enabled",
+          "feature": "copycats:copycat_vertical_half_layer",
+          "invert": false
+        },
+        {
+          "type": "copycats:feature_enabled",
+          "feature": "copycats:copycat_stacked_half_layer",
+          "invert": false
+        }
+      ]
     }
   ]
 }

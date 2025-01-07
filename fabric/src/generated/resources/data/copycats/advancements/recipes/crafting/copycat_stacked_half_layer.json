@@ -6,11 +6,6 @@
           "condition": "copycats:feature_enabled",
           "feature": "copycats:copycat_stacked_half_layer",
           "invert": false
-        },
-        {
-          "condition": "copycats:feature_enabled",
-          "feature": "copycats:copycat_half_layer",
-          "invert": false
         }
       ],
       "advancement": {
@@ -20,9 +15,7 @@
             "conditions": {
               "items": [
                 {
-                  "items": [
-                    "copycats:copycat_stacked_half_layer"
-                  ]
+                  "tag": "c:zinc_ingots"
                 }
               ]
             },
@@ -30,7 +23,7 @@
           },
           "has_the_recipe": {
             "conditions": {
-              "recipe": "copycats:crafting/copycat_half_layer_from_conversion"
+              "recipe": "copycats:stonecutting/copycat_stacked_half_layer"
             },
             "trigger": "minecraft:recipe_unlocked"
           }
@@ -43,7 +36,7 @@
         ],
         "rewards": {
           "recipes": [
-            "copycats:crafting/copycat_half_layer_from_conversion"
+            "copycats:stonecutting/copycat_stacked_half_layer"
           ]
         },
         "sends_telemetry_event": false

@@ -15,6 +15,7 @@
     "copycats:copycat_ghost_block",
     "copycats:copycat_half_layer",
     "copycats:copycat_vertical_half_layer",
+    "copycats:copycat_stacked_half_layer",
     "copycats:copycat_half_panel",
     "copycats:copycat_ladder",
     "copycats:copycat_layer",
