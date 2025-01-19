@@ -7,7 +7,6 @@ import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.datagen.recipes.gen.CopycatsRecipeProvider;
 import com.copycatsplus.copycats.datagen.recipes.gen.GeneratedRecipeBuilder;
 import com.copycatsplus.copycats.utility.Platform;
-import com.google.common.collect.ImmutableList;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
@@ -213,11 +212,17 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
 
     GeneratedRecipe COPYCAT_IRON_DOOR = copycatWithBaseItem(Items.IRON_DOOR, CCBlocks.COPYCAT_IRON_DOOR, 1);
 
+    GeneratedRecipe COPYCAT_PANE = copycat(CCBlocks.COPYCAT_PANE, 8);
+
     GeneratedRecipe COPYCAT_SLIDING_DOOR = copycat(CCBlocks.COPYCAT_SLIDING_DOOR, 1);
 
     GeneratedRecipe COPYCAT_FOLDING_DOOR = copycat(CCBlocks.COPYCAT_FOLDING_DOOR, 1);
 
     GeneratedRecipe COPYCAT_SLIDING_DOOR_CYCLE = conversionCycle(CCBlocks.COPYCAT_SLIDING_DOOR, CCBlocks.COPYCAT_FOLDING_DOOR);
+
+    GeneratedRecipe COPYCAT_FLAT_PANE = copycat(CCBlocks.COPYCAT_FLAT_PANE, 8);
+
+    GeneratedRecipe COPYCAT_PANE_CYCLE = conversionCycle(CCBlocks.COPYCAT_PANE, CCBlocks.COPYCAT_FLAT_PANE);
 
     Set<RegistryEntry<? extends Block>> blocksWithoutRecipe = Set.of(
             CCBlocks.COPYCAT_BASE,

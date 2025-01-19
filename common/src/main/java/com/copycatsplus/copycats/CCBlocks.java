@@ -4,10 +4,14 @@ import com.copycatsplus.copycats.config.FeatureCategory;
 import com.copycatsplus.copycats.config.FeatureToggle;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelModelCore;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatLargeCogWheelModelCore;
+import com.copycatsplus.copycats.content.copycat.flat_pane.CopycatFlatPaneBlock;
+import com.copycatsplus.copycats.content.copycat.flat_pane.CopycatFlatPaneModelCore;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftModelCore;
 import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatFoldingDoorModelCore;
 import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorBlock;
 import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorModelCore;
+import com.copycatsplus.copycats.content.copycat.pane.CopycatPaneBlock;
+import com.copycatsplus.copycats.content.copycat.pane.CopycatPaneModelCore;
 import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorMovementBehaviour;
 import com.copycatsplus.copycats.foundation.copycat.CopycatBaseBlock;
 import com.copycatsplus.copycats.foundation.copycat.WrappedCopycatBlock;
@@ -76,7 +80,6 @@ import com.copycatsplus.copycats.foundation.tooltip.CopycatCharacteristics;
 import com.copycatsplus.copycats.foundation.tooltip.CopycatDescription;
 import com.copycatsplus.copycats.utility.Platform;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.content.contraptions.BlockMovementChecks;
 import com.simibubi.create.content.contraptions.behaviour.DoorMovingInteraction;
 import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorMovementBehaviour;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
@@ -683,6 +686,19 @@ public class CCBlocks {
                     .transform(customItemModel("copycat_base", "door"))
                     .register();
 
+    public static final BlockEntry<CopycatPaneBlock> COPYCAT_PANE =
+            REGISTRATE.block("copycat_pane", CopycatPaneBlock::new)
+                    .transform(CCBuilderTransformers.copycat())
+                    .transform(FeatureToggle.register())
+                    .onRegister(onClient(() -> createBlockModel(CopycatPaneModelCore::new)))
+                    .item()
+                    .onRegister(CopycatDescription.register(
+                            CopycatCharacteristics.COPYCAT,
+                            CopycatCharacteristics.CT_TOGGLE
+                    ))
+                    .transform(customItemModel("copycat_base", "pane"))
+                    .register();
+
     public static final BlockEntry<CopycatSlidingDoorBlock> COPYCAT_SLIDING_DOOR =
             REGISTRATE.block("copycat_sliding_door", p -> CopycatSlidingDoorBlock.metal(p, false))
                     .transform(CCBuilderTransformers.copycat())
@@ -727,6 +743,19 @@ public class CCBlocks {
                     .tag(ItemTags.DOORS)
                     .tag(AllTags.AllItemTags.CONTRAPTION_CONTROLLED.tag)
                     .transform(customItemModel("copycat_base", "folding_door"))
+                    .register();
+
+    public static final BlockEntry<CopycatFlatPaneBlock> COPYCAT_FLAT_PANE =
+            REGISTRATE.block("copycat_flat_pane", CopycatFlatPaneBlock::new)
+                    .transform(CCBuilderTransformers.copycat())
+                    .transform(FeatureToggle.register())
+                    .onRegister(onClient(() -> createBlockModel(CopycatFlatPaneModelCore::new)))
+                    .item()
+                    .onRegister(CopycatDescription.register(
+                            CopycatCharacteristics.COPYCAT,
+                            CopycatCharacteristics.CT_TOGGLE
+                    ))
+                    .transform(customItemModel("copycat_base", "flat_pane"))
                     .register();
 
     @ExpectPlatform
