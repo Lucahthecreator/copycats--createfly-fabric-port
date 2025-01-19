@@ -15,6 +15,7 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -100,7 +101,40 @@ public class CopycatFlatPaneBlock extends CCWaterloggedCopycatBlock implements I
 
     @Override
     public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState fromState, Direction face, BlockPos fromPos, BlockPos toPos, BlockState toState) {
-        return (toState.getBlock() instanceof IronBarsBlock && face.getAxis().isVertical());
+        toState = reader.getBlockState(toPos);
+        Vec3i diff = toPos.subtract(fromPos);
+        if (diff.equals(Vec3i.ZERO))
+            return false;
+        Direction facing = Direction.fromDelta(diff.getX(), diff.getY(), diff.getZ());
+        if (toState.getBlock() instanceof IronBarsBlock) {
+            if (facing == null)
+                return true;
+            return face.getAxis().isVertical() || fromState.getValue(AXIS) == facing.getAxis();
+        } else if (toState.is(this)) {
+            if (facing == null)
+                return true;
+            return toState.getValue(AXIS) != fromState.getValue(AXIS) || fromState.getValue(AXIS) == facing.getAxis();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState fromState) {
+        BlockState toState = reader.getBlockState(toPos);
+        Vec3i diff = toPos.subtract(fromPos);
+        if (diff.equals(Vec3i.ZERO))
+            return true;
+        Direction facing = Direction.fromDelta(diff.getX(), diff.getY(), diff.getZ());
+        if (toState.getBlock() instanceof IronBarsBlock) {
+            if (facing == null)
+                return false;
+            return fromState.getValue(AXIS) != facing.getAxis();
+        } else if (toState.is(this)) {
+            if (facing == null)
+                return false;
+            return toState.getValue(AXIS) == fromState.getValue(AXIS) && fromState.getValue(AXIS) != facing.getAxis();
+        }
+        return false;
     }
 
     @Override

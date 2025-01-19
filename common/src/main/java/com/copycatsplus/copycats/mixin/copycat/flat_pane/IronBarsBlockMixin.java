@@ -27,4 +27,52 @@ public class IronBarsBlockMixin {
         }
         return original.call(instance, state, solidSide);
     }
+
+    @WrapOperation(
+            method = "getStateForPlacement",
+            at = @At(ordinal = 0, value = "INVOKE", target = "Lnet/minecraft/world/level/block/IronBarsBlock;attachsTo(Lnet/minecraft/world/level/block/state/BlockState;Z)Z")
+    )
+    private boolean attachNorth(IronBarsBlock instance, BlockState state, boolean solidSide, Operation<Boolean> original) {
+        if (state.getBlock() instanceof CopycatFlatPaneBlock) {
+            Axis axis = state.getValue(CopycatFlatPaneBlock.AXIS);
+            return axis != Axis.Y && axis != Direction.NORTH.getAxis();
+        }
+        return original.call(instance, state, solidSide);
+    }
+
+    @WrapOperation(
+            method = "getStateForPlacement",
+            at = @At(ordinal = 1, value = "INVOKE", target = "Lnet/minecraft/world/level/block/IronBarsBlock;attachsTo(Lnet/minecraft/world/level/block/state/BlockState;Z)Z")
+    )
+    private boolean attachSouth(IronBarsBlock instance, BlockState state, boolean solidSide, Operation<Boolean> original) {
+        if (state.getBlock() instanceof CopycatFlatPaneBlock) {
+            Axis axis = state.getValue(CopycatFlatPaneBlock.AXIS);
+            return axis != Axis.Y && axis != Direction.SOUTH.getAxis();
+        }
+        return original.call(instance, state, solidSide);
+    }
+
+    @WrapOperation(
+            method = "getStateForPlacement",
+            at = @At(ordinal = 2, value = "INVOKE", target = "Lnet/minecraft/world/level/block/IronBarsBlock;attachsTo(Lnet/minecraft/world/level/block/state/BlockState;Z)Z")
+    )
+    private boolean attachWest(IronBarsBlock instance, BlockState state, boolean solidSide, Operation<Boolean> original) {
+        if (state.getBlock() instanceof CopycatFlatPaneBlock) {
+            Axis axis = state.getValue(CopycatFlatPaneBlock.AXIS);
+            return axis != Axis.Y && axis != Direction.WEST.getAxis();
+        }
+        return original.call(instance, state, solidSide);
+    }
+
+    @WrapOperation(
+            method = "getStateForPlacement",
+            at = @At(ordinal = 3, value = "INVOKE", target = "Lnet/minecraft/world/level/block/IronBarsBlock;attachsTo(Lnet/minecraft/world/level/block/state/BlockState;Z)Z")
+    )
+    private boolean attachEast(IronBarsBlock instance, BlockState state, boolean solidSide, Operation<Boolean> original) {
+        if (state.getBlock() instanceof CopycatFlatPaneBlock) {
+            Axis axis = state.getValue(CopycatFlatPaneBlock.AXIS);
+            return axis != Axis.Y && axis != Direction.EAST.getAxis();
+        }
+        return original.call(instance, state, solidSide);
+    }
 }

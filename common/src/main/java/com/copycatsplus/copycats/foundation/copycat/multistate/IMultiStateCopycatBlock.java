@@ -393,9 +393,6 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
 
     static BlockState getAppearance(IMultiStateCopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
                                     BlockState queryState, BlockPos queryPos) {
-        // queryState is inconsistent between different CT mods
-        // our assumption is that queryState refers to the true block state (copycat), not the material
-        queryState = level.getBlockState(queryPos);
 
         BlockAndTintGetter reader = Mods.ATHENA.runIfInstalled(() -> () -> AthenaCompat.unwrapAthenaGetter(level)).orElse(level);
 

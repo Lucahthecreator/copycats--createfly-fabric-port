@@ -319,10 +319,6 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
 
     static BlockState getAppearance(ICopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
                                     BlockState queryState, BlockPos queryPos) {
-        // queryState is inconsistent between different CT mods
-        // our assumption is that queryState refers to the true block state (copycat), not the material
-        queryState = level.getBlockState(queryPos);
-
         if (block.isIgnoredConnectivitySide(level, state, side, pos, queryPos, queryState))
             return state;
 
@@ -489,6 +485,10 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
         if (CopycatExternalContext.isForBlockingLogic()) {
             return false;
         }
+
+        // queryState is inconsistent between different CT mods
+        // our assumption is that queryState refers to the true block state (copycat), not the material
+        toState = reader.getBlockState(toPos);
 
         // we are swapping to and from states because we want to consider from the perspective of the block that is trying
         // to display connected textures

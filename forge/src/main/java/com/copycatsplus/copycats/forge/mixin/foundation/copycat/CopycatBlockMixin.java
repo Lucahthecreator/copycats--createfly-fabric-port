@@ -62,8 +62,7 @@ import static com.copycatsplus.copycats.foundation.copycat.ICopycatBlock.getMate
         CopycatGlassFluidPipeBlock.class,
         CopycatDoorBlock.class,
         CopycatSlidingDoorBlock.class,
-        CopycatPaneBlock.class,
-        CopycatFlatPaneBlock.class
+        CopycatPaneBlock.class
 })
 public abstract class CopycatBlockMixin extends Block implements ICopycatBlock {
 
