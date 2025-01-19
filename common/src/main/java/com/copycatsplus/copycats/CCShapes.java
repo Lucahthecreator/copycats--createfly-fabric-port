@@ -99,25 +99,25 @@ public class CCShapes {
                     )
             )));
     public static final Map<Direction, Map<Integer, MutableShape>> VERTICAL_HALF_LAYER_LEFT =
-            forHorizontalDirections(forAll(CopycatVerticalHalfLayerBlock.LEFT_LAYERS,
+            forHorizontalDirections(forAll(CopycatHalfLayerBlock.POSITIVE_LAYERS,
                     layer -> shape(
                             aabb(8, 16, layer * 2).move(8, 0, 16 - layer * 2)
                     )
             ));
     public static final Map<Direction, Map<Integer, MutableShape>> VERTICAL_HALF_LAYER_RIGHT =
-            forHorizontalDirections(forAll(CopycatVerticalHalfLayerBlock.RIGHT_LAYERS,
+            forHorizontalDirections(forAll(CopycatHalfLayerBlock.NEGATIVE_LAYERS,
                     layer -> shape(
                             aabb(8, 16, layer * 2).move(0, 0, 16 - layer * 2)
                     )
             ));
     public static final Map<Direction, Map<Integer, MutableShape>> STACKED_HALF_LAYER_TOP =
-            forHorizontalDirections(forAll(CopycatStackedHalfLayerBlock.TOP_LAYERS,
+            forHorizontalDirections(forAll(CopycatHalfLayerBlock.POSITIVE_LAYERS,
                     layer -> shape(
                             aabb(16, 8, layer * 2).move(0, 8, 16 - layer * 2)
                     )
             ));
     public static final Map<Direction, Map<Integer, MutableShape>> STACKED_HALF_LAYER_BOTTOM =
-            forHorizontalDirections(forAll(CopycatStackedHalfLayerBlock.BOTTOM_LAYERS,
+            forHorizontalDirections(forAll(CopycatHalfLayerBlock.NEGATIVE_LAYERS,
                     layer -> shape(
                             aabb(16, 8, layer * 2).move(0, 0, 16 - layer * 2)
                     )

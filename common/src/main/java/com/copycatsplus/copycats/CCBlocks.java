@@ -85,7 +85,6 @@ import com.copycatsplus.copycats.foundation.tooltip.CopycatDescription;
 import com.copycatsplus.copycats.utility.Platform;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.contraptions.behaviour.DoorMovingInteraction;
-import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorMovementBehaviour;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
 import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
@@ -323,8 +322,8 @@ public class CCBlocks {
                     .transform(FeatureToggle.register(FeatureCategory.MULTISTATES, FeatureCategory.STACKABLES))
                     .onRegister(onClient(() -> createBlockModel(CopycatVerticalMultiHalfLayerModelCore::new)))
                     .loot(CCLootGen.build(
-                            CCLootGen.lootForLayers(CopycatVerticalHalfLayerBlock.LEFT_LAYERS),
-                            CCLootGen.lootForLayers(CopycatVerticalHalfLayerBlock.RIGHT_LAYERS)
+                            CCLootGen.lootForLayers(CopycatHalfLayerBlock.POSITIVE_LAYERS),
+                            CCLootGen.lootForLayers(CopycatHalfLayerBlock.NEGATIVE_LAYERS)
                     ))
                     .item()
                     .onRegister(CopycatDescription.register(
@@ -342,8 +341,8 @@ public class CCBlocks {
                     .transform(FeatureToggle.register(FeatureCategory.MULTISTATES, FeatureCategory.STACKABLES))
                     .onRegister(onClient(() -> createBlockModel(CopycatStackedMultiHalfLayerModelCore::new)))
                     .loot(CCLootGen.build(
-                            CCLootGen.lootForLayers(CopycatStackedHalfLayerBlock.TOP_LAYERS),
-                            CCLootGen.lootForLayers(CopycatStackedHalfLayerBlock.BOTTOM_LAYERS)
+                            CCLootGen.lootForLayers(CopycatHalfLayerBlock.POSITIVE_LAYERS),
+                            CCLootGen.lootForLayers(CopycatHalfLayerBlock.NEGATIVE_LAYERS)
                     ))
                     .item()
                     .onRegister(CopycatDescription.register(

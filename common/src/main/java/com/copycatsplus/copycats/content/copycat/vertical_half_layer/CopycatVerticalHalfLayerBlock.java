@@ -6,7 +6,6 @@ import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.WaterloggedMultiStateCopycatBlock;
 import com.google.common.collect.ImmutableMap;
-import com.mojang.math.OctahedralGroup;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.schematics.requirement.ISpecialBlockItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
@@ -23,14 +22,11 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
@@ -44,8 +40,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Function;
 
+import static com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLayerBlock.*;
 import static net.minecraft.core.Direction.Axis;
 import static net.minecraft.core.Direction.AxisDirection;
 
@@ -55,23 +51,21 @@ public class CopycatVerticalHalfLayerBlock extends WaterloggedMultiStateCopycatB
 
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final IntegerProperty LEFT_LAYERS = IntegerProperty.create("left_layers", 0, 8);
-    public static final IntegerProperty RIGHT_LAYERS = IntegerProperty.create("right_layers", 0, 8);
     private final ImmutableMap<BlockState, VoxelShape> shapesCache;
 
     public CopycatVerticalHalfLayerBlock(Properties pProperties) {
         super(pProperties);
         registerDefaultState(defaultBlockState()
                 .setValue(FACING, Direction.NORTH)
-                .setValue(LEFT_LAYERS, 0)
-                .setValue(RIGHT_LAYERS, 0)
+                .setValue(POSITIVE_LAYERS, 0)
+                .setValue(NEGATIVE_LAYERS, 0)
         );
         this.shapesCache = this.getShapeForEachState(CopycatVerticalHalfLayerBlock::calculateMultiFaceShape);
     }
 
     @Override
     public String defaultProperty() {
-        return LEFT_LAYERS.getName();
+        return POSITIVE_LAYERS.getName();
     }
 
     @Override
@@ -85,31 +79,31 @@ public class CopycatVerticalHalfLayerBlock extends WaterloggedMultiStateCopycatB
 
     @Override
     public boolean partExists(BlockState state, String property) {
-        if (property.equals(LEFT_LAYERS.getName())) {
-            return state.getValue(LEFT_LAYERS) > 0;
-        } else if (property.equals(RIGHT_LAYERS.getName())) {
-            return state.getValue(RIGHT_LAYERS) > 0;
+        if (property.equals(POSITIVE_LAYERS.getName())) {
+            return state.getValue(POSITIVE_LAYERS) > 0;
+        } else if (property.equals(NEGATIVE_LAYERS.getName())) {
+            return state.getValue(NEGATIVE_LAYERS) > 0;
         }
         return false;
     }
 
     @Override
     public Set<String> storageProperties() {
-        return Set.of(LEFT_LAYERS.getName(), RIGHT_LAYERS.getName());
+        return Set.of(POSITIVE_LAYERS.getName(), NEGATIVE_LAYERS.getName());
     }
 
     @Override
     public int getColorIndex(String property) {
-        return property.equals(LEFT_LAYERS.getName()) ? 1 : 0;
+        return property.equals(POSITIVE_LAYERS.getName()) ? 1 : 0;
     }
 
     @Override
     public String getPropertyFromInteraction(BlockState state, BlockGetter level, Vec3i hitLocation, BlockPos blockPos, Direction facing, Vec3 unscaledHit) {
         return switch (state.getValue(FACING)) {
-            case NORTH -> hitLocation.getX() < 0.5 ? LEFT_LAYERS.getName() : RIGHT_LAYERS.getName();
-            case SOUTH -> hitLocation.getX() < 0.5 ? RIGHT_LAYERS.getName() : LEFT_LAYERS.getName();
-            case WEST -> hitLocation.getZ() < 0.5 ? RIGHT_LAYERS.getName() : LEFT_LAYERS.getName();
-            case EAST -> hitLocation.getZ() < 0.5 ? LEFT_LAYERS.getName() : RIGHT_LAYERS.getName();
+            case NORTH -> hitLocation.getX() < 0.5 ? POSITIVE_LAYERS.getName() : NEGATIVE_LAYERS.getName();
+            case SOUTH -> hitLocation.getX() < 0.5 ? NEGATIVE_LAYERS.getName() : POSITIVE_LAYERS.getName();
+            case WEST -> hitLocation.getZ() < 0.5 ? NEGATIVE_LAYERS.getName() : POSITIVE_LAYERS.getName();
+            case EAST -> hitLocation.getZ() < 0.5 ? POSITIVE_LAYERS.getName() : NEGATIVE_LAYERS.getName();
             default -> throw new RuntimeException("Invalid facing");
         };
     }
@@ -117,10 +111,10 @@ public class CopycatVerticalHalfLayerBlock extends WaterloggedMultiStateCopycatB
     @Override
     public Vec3i getVectorFromProperty(BlockState state, String property) {
         return switch (state.getValue(FACING)) {
-            case NORTH -> property.equals(LEFT_LAYERS.getName()) ? new Vec3i(0, 0, 0) : new Vec3i(1, 0, 0);
-            case SOUTH -> property.equals(LEFT_LAYERS.getName()) ? new Vec3i(1, 0, 0) : new Vec3i(0, 0, 0);
-            case WEST -> property.equals(LEFT_LAYERS.getName()) ? new Vec3i(0, 0, 1) : new Vec3i(0, 0, 0);
-            case EAST -> property.equals(LEFT_LAYERS.getName()) ? new Vec3i(0, 0, 0) : new Vec3i(0, 0, 1);
+            case NORTH -> property.equals(POSITIVE_LAYERS.getName()) ? new Vec3i(0, 0, 0) : new Vec3i(1, 0, 0);
+            case SOUTH -> property.equals(POSITIVE_LAYERS.getName()) ? new Vec3i(1, 0, 0) : new Vec3i(0, 0, 0);
+            case WEST -> property.equals(POSITIVE_LAYERS.getName()) ? new Vec3i(0, 0, 1) : new Vec3i(0, 0, 0);
+            case EAST -> property.equals(POSITIVE_LAYERS.getName()) ? new Vec3i(0, 0, 0) : new Vec3i(0, 0, 1);
             default -> throw new RuntimeException("Invalid facing");
         };
     }
@@ -134,10 +128,10 @@ public class CopycatVerticalHalfLayerBlock extends WaterloggedMultiStateCopycatB
         if (state.is(this)) {
             String property = getPropertyFromInteraction(state, context.getLevel(), blockPos, context.getClickLocation(), context.getClickedFace(), false);
             IntegerProperty targetProp;
-            if (property.equals(LEFT_LAYERS.getName())) {
-                targetProp = LEFT_LAYERS;
+            if (property.equals(POSITIVE_LAYERS.getName())) {
+                targetProp = POSITIVE_LAYERS;
             } else {
-                targetProp = RIGHT_LAYERS;
+                targetProp = NEGATIVE_LAYERS;
             }
             if (state.getValue(targetProp) < 8)
                 return state.cycle(targetProp);
@@ -155,11 +149,11 @@ public class CopycatVerticalHalfLayerBlock extends WaterloggedMultiStateCopycatB
             if (facing.getAxis() == Axis.X) {
                 return stateForPlacement
                         .setValue(FACING, facing)
-                        .setValue((facing.getAxisDirection() == AxisDirection.NEGATIVE) == (clickPosition.z >= 0.5f) ? LEFT_LAYERS : RIGHT_LAYERS, 1);
+                        .setValue((facing.getAxisDirection() == AxisDirection.NEGATIVE) == (clickPosition.z >= 0.5f) ? POSITIVE_LAYERS : NEGATIVE_LAYERS, 1);
             } else {
                 return stateForPlacement
                         .setValue(FACING, facing)
-                        .setValue((facing.getAxisDirection() == AxisDirection.NEGATIVE) == (clickPosition.x < 0.5f) ? LEFT_LAYERS : RIGHT_LAYERS, 1);
+                        .setValue((facing.getAxisDirection() == AxisDirection.NEGATIVE) == (clickPosition.x < 0.5f) ? POSITIVE_LAYERS : NEGATIVE_LAYERS, 1);
             }
         }
     }
@@ -174,17 +168,17 @@ public class CopycatVerticalHalfLayerBlock extends WaterloggedMultiStateCopycatB
         }
         String property = getPropertyFromInteraction(state, context.getLevel(), context.getClickedPos(), context.getClickLocation(), context.getClickedFace(), false);
         IntegerProperty targetProp;
-        if (property.equals(LEFT_LAYERS.getName())) {
-            targetProp = LEFT_LAYERS;
+        if (property.equals(POSITIVE_LAYERS.getName())) {
+            targetProp = POSITIVE_LAYERS;
         } else {
-            targetProp = RIGHT_LAYERS;
+            targetProp = NEGATIVE_LAYERS;
         }
         return state.getValue(targetProp) != 8;
     }
 
     @Override
     public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
-        if (state.getValue(LEFT_LAYERS) + state.getValue(RIGHT_LAYERS) <= 1)
+        if (state.getValue(POSITIVE_LAYERS) + state.getValue(NEGATIVE_LAYERS) <= 1)
             return super.onSneakWrenched(state, context);
 
         Level world = context.getLevel();
@@ -193,10 +187,10 @@ public class CopycatVerticalHalfLayerBlock extends WaterloggedMultiStateCopycatB
 
         String property = getPropertyFromInteraction(state, context.getLevel(), context.getClickedPos(), context.getClickLocation(), context.getClickedFace(), true);
         IntegerProperty targetProp;
-        if (property.equals(LEFT_LAYERS.getName())) {
-            targetProp = LEFT_LAYERS;
+        if (property.equals(POSITIVE_LAYERS.getName())) {
+            targetProp = POSITIVE_LAYERS;
         } else {
-            targetProp = RIGHT_LAYERS;
+            targetProp = NEGATIVE_LAYERS;
         }
 
         if (state.getValue(targetProp) == 1)
@@ -204,7 +198,7 @@ public class CopycatVerticalHalfLayerBlock extends WaterloggedMultiStateCopycatB
         if (world instanceof ServerLevel serverLevel) {
             if (player != null) {
                 List<ItemStack> drops = Block.getDrops(
-                        state.setValue(LEFT_LAYERS, 0).setValue(RIGHT_LAYERS, 0).setValue(targetProp, 1),
+                        state.setValue(POSITIVE_LAYERS, 0).setValue(NEGATIVE_LAYERS, 0).setValue(targetProp, 1),
                         serverLevel, pos, world.getBlockEntity(pos), player, context.getItemInHand());
                 if (!player.isCreative()) {
                     for (ItemStack drop : drops) {
@@ -222,18 +216,18 @@ public class CopycatVerticalHalfLayerBlock extends WaterloggedMultiStateCopycatB
 
     @Override
     public ItemRequirement getRequiredItems(BlockState state, BlockEntity blockEntity) {
-        return ICopycatBlock.getRequiredItemsForLayer(state, LEFT_LAYERS).union(ICopycatBlock.getRequiredItemsForLayer(state, RIGHT_LAYERS));
+        return ICopycatBlock.getRequiredItemsForLayer(state, POSITIVE_LAYERS).union(ICopycatBlock.getRequiredItemsForLayer(state, NEGATIVE_LAYERS));
     }
 
     @Override
     public BlockState transform(BlockState state, StructureTransform transform) {
-        // todo
-        return state;
+        return fromTransformableState(state, toTransformableState(state).transform(transform));
     }
 
     @Override
     public void transformStorage(BlockState state, IMultiStateCopycatBlockEntity be, StructureTransform transform) {
-        // todo
+        state = fromTransformableState(state, toTransformableState(state).untransform(transform));
+        fromTransformableStorage(state, be, toTransformableStorage(state, be).transform(transform));
     }
 
     @SuppressWarnings("deprecation")
@@ -244,13 +238,13 @@ public class CopycatVerticalHalfLayerBlock extends WaterloggedMultiStateCopycatB
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        super.createBlockStateDefinition(pBuilder.add(FACING, LEFT_LAYERS, RIGHT_LAYERS));
+        super.createBlockStateDefinition(pBuilder.add(FACING, POSITIVE_LAYERS, NEGATIVE_LAYERS));
     }
 
     private static VoxelShape calculateMultiFaceShape(BlockState pState) {
         VoxelShape shape = Shapes.empty();
-        shape = Shapes.joinUnoptimized(shape, CCShapes.VERTICAL_HALF_LAYER_LEFT.get(pState.getValue(FACING)).get(pState.getValue(LEFT_LAYERS)).toShape(), BooleanOp.OR);
-        shape = Shapes.joinUnoptimized(shape, CCShapes.VERTICAL_HALF_LAYER_RIGHT.get(pState.getValue(FACING)).get(pState.getValue(RIGHT_LAYERS)).toShape(), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, CCShapes.VERTICAL_HALF_LAYER_LEFT.get(pState.getValue(FACING)).get(pState.getValue(POSITIVE_LAYERS)).toShape(), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, CCShapes.VERTICAL_HALF_LAYER_RIGHT.get(pState.getValue(FACING)).get(pState.getValue(NEGATIVE_LAYERS)).toShape(), BooleanOp.OR);
         return shape.optimize();
     }
 

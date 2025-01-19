@@ -6,11 +6,12 @@ import com.copycatsplus.copycats.foundation.copycat.model.assembly.AssemblyTrans
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.CopycatRenderContext;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.quad.QuadAutoCull;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.Half;
 
 import java.util.List;
 import java.util.Objects;
 
+import static com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLayerBlock.NEGATIVE_LAYERS;
+import static com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLayerBlock.POSITIVE_LAYERS;
 import static com.copycatsplus.copycats.content.copycat.vertical_half_layer.CopycatVerticalHalfLayerBlock.*;
 import static com.copycatsplus.copycats.foundation.copycat.model.assembly.CopycatRenderContext.*;
 import static com.copycatsplus.copycats.foundation.copycat.model.assembly.MutableCullFace.*;
@@ -24,14 +25,14 @@ public class CopycatVerticalMultiHalfLayerModelCore extends CopycatModelCore {
 
     @Override
     public void emitCopycatQuads(String key, BlockState state, CopycatRenderContext context, BlockState material) {
-        if (Objects.equals(key, LEFT_LAYERS.getName()) && state.getValue(LEFT_LAYERS) == 0)
+        if (Objects.equals(key, POSITIVE_LAYERS.getName()) && state.getValue(POSITIVE_LAYERS) == 0)
             return;
-        if (Objects.equals(key, RIGHT_LAYERS.getName()) && state.getValue(RIGHT_LAYERS) == 0)
+        if (Objects.equals(key, NEGATIVE_LAYERS.getName()) && state.getValue(NEGATIVE_LAYERS) == 0)
             return;
 
         int rot = (int) state.getValue(FACING).toYRot();
-        boolean positive = key.equals(LEFT_LAYERS.getName());
-        int layer = state.getValue(positive ? LEFT_LAYERS : RIGHT_LAYERS);
+        boolean positive = key.equals(POSITIVE_LAYERS.getName());
+        int layer = state.getValue(positive ? POSITIVE_LAYERS : NEGATIVE_LAYERS);
         if (layer == 0) return;
         AssemblyTransform transform = t -> t.flipX(!positive).rotateY(rot + 180);
         QuadAutoCull autoCull = autoCull(aabb(8, 16, 16));
