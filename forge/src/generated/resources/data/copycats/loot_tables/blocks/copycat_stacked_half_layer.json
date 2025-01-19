@@ -11,7 +11,7 @@
           "block": "copycats:copycat_stacked_half_layer",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "top_layers": "1"
+            "positive_layers": "1"
           }
         }
       ],
@@ -40,7 +40,7 @@
           "block": "copycats:copycat_stacked_half_layer",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "top_layers": "2"
+            "positive_layers": "2"
           }
         }
       ],
@@ -69,7 +69,7 @@
           "block": "copycats:copycat_stacked_half_layer",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "top_layers": "3"
+            "positive_layers": "3"
           }
         }
       ],
@@ -98,7 +98,7 @@
           "block": "copycats:copycat_stacked_half_layer",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "top_layers": "4"
+            "positive_layers": "4"
           }
         }
       ],
@@ -127,7 +127,7 @@
           "block": "copycats:copycat_stacked_half_layer",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "top_layers": "5"
+            "positive_layers": "5"
           }
         }
       ],
@@ -156,7 +156,7 @@
           "block": "copycats:copycat_stacked_half_layer",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "top_layers": "6"
+            "positive_layers": "6"
           }
         }
       ],
@@ -185,7 +185,7 @@
           "block": "copycats:copycat_stacked_half_layer",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "top_layers": "7"
+            "positive_layers": "7"
           }
         }
       ],
@@ -214,7 +214,7 @@
           "block": "copycats:copycat_stacked_half_layer",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "top_layers": "8"
+            "positive_layers": "8"
           }
         }
       ],
@@ -243,7 +243,7 @@
           "block": "copycats:copycat_stacked_half_layer",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "bottom_layers": "1"
+            "negative_layers": "1"
           }
         }
       ],
@@ -272,7 +272,7 @@
           "block": "copycats:copycat_stacked_half_layer",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "bottom_layers": "2"
+            "negative_layers": "2"
           }
         }
       ],
@@ -301,7 +301,7 @@
           "block": "copycats:copycat_stacked_half_layer",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "bottom_layers": "3"
+            "negative_layers": "3"
           }
         }
       ],
@@ -330,7 +330,7 @@
           "block": "copycats:copycat_stacked_half_layer",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "bottom_layers": "4"
+            "negative_layers": "4"
           }
         }
       ],
@@ -359,7 +359,7 @@
           "block": "copycats:copycat_stacked_half_layer",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "bottom_layers": "5"
+            "negative_layers": "5"
           }
         }
       ],
@@ -388,7 +388,7 @@
           "block": "copycats:copycat_stacked_half_layer",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "bottom_layers": "6"
+            "negative_layers": "6"
           }
         }
       ],
@@ -417,7 +417,7 @@
           "block": "copycats:copycat_stacked_half_layer",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "bottom_layers": "7"
+            "negative_layers": "7"
           }
         }
       ],
@@ -446,7 +446,7 @@
           "block": "copycats:copycat_stacked_half_layer",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "bottom_layers": "8"
+            "negative_layers": "8"
           }
         }
       ],
