@@ -50,7 +50,9 @@ public class CCBlockEntityTypes {
                             CCBlocks.COPYCAT_VERTICAL_SLOPE,
                             CCBlocks.COPYCAT_SLOPE_LAYER,
                             CCBlocks.COPYCAT_DOOR,
-                            CCBlocks.COPYCAT_IRON_DOOR
+                            CCBlocks.COPYCAT_IRON_DOOR,
+                            CCBlocks.COPYCAT_PANE,
+                            CCBlocks.COPYCAT_FLAT_PANE
                     )
                     .register();
 

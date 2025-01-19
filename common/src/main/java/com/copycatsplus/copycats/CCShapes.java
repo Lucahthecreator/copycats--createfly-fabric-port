@@ -98,6 +98,9 @@ public class CCShapes {
                             aabb(16, layer * 2, 8).move(0, 0, 8)
                     )
             )));
+    public static final Map<Axis, MutableShape> HORIZONTAL_PANE = forAxes(shape(
+            aabb(16, 16, 2).move(0, 0, 7)
+    ));
     public static final Map<Direction, Map<Integer, MutableShape>> VERTICAL_HALF_LAYER_LEFT =
             forHorizontalDirections(forAll(CopycatHalfLayerBlock.POSITIVE_LAYERS,
                     layer -> shape(
