@@ -613,7 +613,8 @@ public class CCBlocks {
                     .onRegister(onClient(() -> createBlockModel(CopycatWallModelCore::new)))
                     .item()
                     .onRegister(CopycatDescription.register(
-                            CopycatCharacteristics.COPYCAT
+                            CopycatCharacteristics.COPYCAT,
+                            CopycatCharacteristics.CT_TOGGLE
                     ))
                     .tag(CCTags.Items.COPYCAT_WALL.tag)
                     .transform(customItemModel("copycat_base", "wall"))
