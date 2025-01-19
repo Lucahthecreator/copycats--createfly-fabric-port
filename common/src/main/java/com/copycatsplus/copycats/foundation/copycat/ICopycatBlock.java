@@ -319,6 +319,10 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
 
     static BlockState getAppearance(ICopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
                                     BlockState queryState, BlockPos queryPos) {
+        // queryState is inconsistent between different CT mods
+        // our assumption is that queryState refers to the true block state (copycat), not the material
+        queryState = level.getBlockState(queryPos);
+
         if (block.isIgnoredConnectivitySide(level, state, side, pos, queryPos, queryState))
             return state;
 
