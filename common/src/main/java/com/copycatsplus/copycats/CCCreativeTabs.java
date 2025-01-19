@@ -25,6 +25,7 @@ public class CCCreativeTabs {
             CCBlocks.COPYCAT_BEAM,
             CCBlocks.COPYCAT_SLICE,
             CCBlocks.COPYCAT_VERTICAL_SLICE,
+            CCBlocks.COPYCAT_CORNER_SLICE,
             CCBlocks.COPYCAT_GHOST_BLOCK,
             CCBlocks.COPYCAT_LAYER,
             CCBlocks.COPYCAT_HALF_PANEL,
@@ -32,10 +33,13 @@ public class CCCreativeTabs {
             CCBlocks.COPYCAT_FLAT_PANE,
             /* Multi-states */
             CCBlocks.COPYCAT_BYTE,
+            CCBlocks.COPYCAT_BYTE_PANEL,
             CCBlocks.COPYCAT_BOARD,
             CCItems.COPYCAT_CATWALK,
             CCItems.COPYCAT_BOX,
             CCBlocks.COPYCAT_HALF_LAYER,
+            CCBlocks.COPYCAT_VERTICAL_HALF_LAYER,
+            CCBlocks.COPYCAT_STACKED_HALF_LAYER,
             /* Slopes */
             CCBlocks.COPYCAT_SLOPE,
             CCBlocks.COPYCAT_VERTICAL_SLOPE,

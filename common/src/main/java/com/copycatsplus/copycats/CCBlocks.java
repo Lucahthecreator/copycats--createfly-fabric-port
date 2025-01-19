@@ -2,6 +2,8 @@ package com.copycatsplus.copycats;
 
 import com.copycatsplus.copycats.config.FeatureCategory;
 import com.copycatsplus.copycats.config.FeatureToggle;
+import com.copycatsplus.copycats.content.copycat.byte_panel.CopycatBytePanelBlock;
+import com.copycatsplus.copycats.content.copycat.byte_panel.CopycatMultiBytePanelModelCore;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelModelCore;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatLargeCogWheelModelCore;
 import com.copycatsplus.copycats.content.copycat.flat_pane.CopycatFlatPaneBlock;
@@ -12,7 +14,13 @@ import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoor
 import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorModelCore;
 import com.copycatsplus.copycats.content.copycat.pane.CopycatPaneBlock;
 import com.copycatsplus.copycats.content.copycat.pane.CopycatPaneModelCore;
+import com.copycatsplus.copycats.content.copycat.corner_slice.CopycatCornerSliceBlock;
+import com.copycatsplus.copycats.content.copycat.corner_slice.CopycatCornerSliceModelCore;
 import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorMovementBehaviour;
+import com.copycatsplus.copycats.content.copycat.stacked_half_layer.CopycatStackedHalfLayerBlock;
+import com.copycatsplus.copycats.content.copycat.stacked_half_layer.CopycatStackedMultiHalfLayerModelCore;
+import com.copycatsplus.copycats.content.copycat.vertical_half_layer.CopycatVerticalHalfLayerBlock;
+import com.copycatsplus.copycats.content.copycat.vertical_half_layer.CopycatVerticalMultiHalfLayerModelCore;
 import com.copycatsplus.copycats.foundation.copycat.CopycatBaseBlock;
 import com.copycatsplus.copycats.foundation.copycat.WrappedCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.model.CopycatModelCore;
@@ -81,7 +89,6 @@ import com.copycatsplus.copycats.foundation.tooltip.CopycatDescription;
 import com.copycatsplus.copycats.utility.Platform;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.contraptions.behaviour.DoorMovingInteraction;
-import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorMovementBehaviour;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
 import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
@@ -232,6 +239,21 @@ public class CCBlocks {
                     .transform(customItemModel("copycat_base", "byte"))
                     .register();
 
+    public static final BlockEntry<CopycatBytePanelBlock> COPYCAT_BYTE_PANEL =
+            REGISTRATE.block("copycat_byte_panel", CopycatBytePanelBlock::new)
+                    .transform(CCBuilderTransformers.multiCopycat())
+                    .transform(FeatureToggle.register(FeatureCategory.MULTISTATES))
+                    .onRegister(onClient(() -> createBlockModel(CopycatMultiBytePanelModelCore::new)))
+                    .loot(CCLootGen.build(CCLootGen.lootForBytePanels()))
+                    .item()
+                    .onRegister(CopycatDescription.register(
+                            CopycatCharacteristics.COPYCAT,
+                            CopycatCharacteristics.CT_TOGGLE,
+                            CopycatCharacteristics.MULTI_STATE
+                    ))
+                    .transform(customItemModel("copycat_base", "byte_panel"))
+                    .register();
+
     public static final BlockEntry<CopycatFenceBlock> COPYCAT_FENCE =
             REGISTRATE.block("copycat_fence", CopycatFenceBlock::new)
                     .transform(CCBuilderTransformers.copycat())
@@ -296,6 +318,44 @@ public class CCBlocks {
                             CopycatCharacteristics.STACKABLE
                     ))
                     .transform(customItemModel("copycat_base", "half_layer"))
+                    .register();
+
+    public static final BlockEntry<CopycatVerticalHalfLayerBlock> COPYCAT_VERTICAL_HALF_LAYER =
+            REGISTRATE.block("copycat_vertical_half_layer", CopycatVerticalHalfLayerBlock::new)
+                    .transform(CCBuilderTransformers.multiCopycat())
+                    .transform(FeatureToggle.register(FeatureCategory.MULTISTATES, FeatureCategory.STACKABLES))
+                    .onRegister(onClient(() -> createBlockModel(CopycatVerticalMultiHalfLayerModelCore::new)))
+                    .loot(CCLootGen.build(
+                            CCLootGen.lootForLayers(CopycatHalfLayerBlock.POSITIVE_LAYERS),
+                            CCLootGen.lootForLayers(CopycatHalfLayerBlock.NEGATIVE_LAYERS)
+                    ))
+                    .item()
+                    .onRegister(CopycatDescription.register(
+                            CopycatCharacteristics.COPYCAT,
+                            CopycatCharacteristics.CT_TOGGLE,
+                            CopycatCharacteristics.MULTI_STATE,
+                            CopycatCharacteristics.STACKABLE
+                    ))
+                    .transform(customItemModel("copycat_base", "vertical_half_layer"))
+                    .register();
+
+    public static final BlockEntry<CopycatStackedHalfLayerBlock> COPYCAT_STACKED_HALF_LAYER =
+            REGISTRATE.block("copycat_stacked_half_layer", CopycatStackedHalfLayerBlock::new)
+                    .transform(CCBuilderTransformers.multiCopycat())
+                    .transform(FeatureToggle.register(FeatureCategory.MULTISTATES, FeatureCategory.STACKABLES))
+                    .onRegister(onClient(() -> createBlockModel(CopycatStackedMultiHalfLayerModelCore::new)))
+                    .loot(CCLootGen.build(
+                            CCLootGen.lootForLayers(CopycatHalfLayerBlock.POSITIVE_LAYERS),
+                            CCLootGen.lootForLayers(CopycatHalfLayerBlock.NEGATIVE_LAYERS)
+                    ))
+                    .item()
+                    .onRegister(CopycatDescription.register(
+                            CopycatCharacteristics.COPYCAT,
+                            CopycatCharacteristics.CT_TOGGLE,
+                            CopycatCharacteristics.MULTI_STATE,
+                            CopycatCharacteristics.STACKABLE
+                    ))
+                    .transform(customItemModel("copycat_base", "stacked_half_layer"))
                     .register();
 
     public static final BlockEntry<CopycatHalfPanelBlock> COPYCAT_HALF_PANEL =
@@ -437,6 +497,21 @@ public class CCBlocks {
                             CopycatCharacteristics.STACKABLE
                     ))
                     .transform(customItemModel("copycat_base", "slice"))
+                    .register();
+
+    public static final BlockEntry<CopycatCornerSliceBlock> COPYCAT_CORNER_SLICE =
+            REGISTRATE.block("copycat_corner_slice", CopycatCornerSliceBlock::new)
+                    .transform(CCBuilderTransformers.copycat())
+                    .transform(FeatureToggle.register(FeatureCategory.STACKABLES))
+                    .onRegister(onClient(() -> createBlockModel(CopycatCornerSliceModelCore::new)))
+                    .loot(CCLootGen.build(CCLootGen.lootForLayers()))
+                    .item()
+                    .onRegister(CopycatDescription.register(
+                            CopycatCharacteristics.COPYCAT,
+                            CopycatCharacteristics.CT_TOGGLE,
+                            CopycatCharacteristics.STACKABLE
+                    ))
+                    .transform(customItemModel("copycat_base", "corner_slice"))
                     .register();
 
     public static final BlockEntry<CopycatStairsBlock> COPYCAT_STAIRS =

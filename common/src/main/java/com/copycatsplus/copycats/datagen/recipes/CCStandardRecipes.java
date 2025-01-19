@@ -140,15 +140,25 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
 
     GeneratedRecipe COPYCAT_BYTE = copycat(CCBlocks.COPYCAT_BYTE, 8);
 
+    GeneratedRecipe COPYCAT_BYTE_PANEL = copycat(CCBlocks.COPYCAT_BYTE_PANEL, 16);
+
     GeneratedRecipe COPYCAT_LAYER = copycat(CCBlocks.COPYCAT_LAYER, 8);
 
     GeneratedRecipe COPYCAT_SLICE = copycat(CCBlocks.COPYCAT_SLICE, 16);
 
     GeneratedRecipe COPYCAT_VERTICAL_SLICE = copycat(CCBlocks.COPYCAT_VERTICAL_SLICE, 16);
 
+    GeneratedRecipe COPYCAT_CORNER_SLICE = copycat(CCBlocks.COPYCAT_CORNER_SLICE, 16);
+
     GeneratedRecipe COPYCAT_SLICE_CYCLE = conversionCycle(CCBlocks.COPYCAT_SLICE, CCBlocks.COPYCAT_VERTICAL_SLICE);
 
     GeneratedRecipe COPYCAT_HALF_LAYER = copycat(CCBlocks.COPYCAT_HALF_LAYER, 16);
+
+    GeneratedRecipe COPYCAT_VERTICAL_HALF_LAYER = copycat(CCBlocks.COPYCAT_VERTICAL_HALF_LAYER, 16);
+
+    GeneratedRecipe COPYCAT_STACKED_HALF_LAYER = copycat(CCBlocks.COPYCAT_STACKED_HALF_LAYER, 16);
+
+    GeneratedRecipe COPYCAT_HALF_LAYER_CYCLE = conversionCycle(CCBlocks.COPYCAT_HALF_LAYER, CCBlocks.COPYCAT_VERTICAL_HALF_LAYER, CCBlocks.COPYCAT_STACKED_HALF_LAYER);
 
     GeneratedRecipe COPYCAT_LAYER_FROM_HALF_LAYERS = create(CCBlocks.COPYCAT_LAYER).withSuffix("_from_half_layers")
             .unlockedBy(CCBlocks.COPYCAT_HALF_LAYER::get)
