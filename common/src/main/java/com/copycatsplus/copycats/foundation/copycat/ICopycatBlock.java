@@ -600,14 +600,14 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
         BlockPos toPos = pos.relative(dir);
 
         if (level instanceof ScaledBlockAndTintGetter scaledLevel && state.getBlock() instanceof IMultiStateCopycatBlock) {
-            CopycatExternalContext.setRenderingProperty(scaledLevel.getPropertyForRender(state, pos));
+            CopycatExternalContext.setPropertyForAppearance(scaledLevel.getPropertyForRender(state, pos));
         } else {
-            CopycatExternalContext.setRenderingProperty(null);
+            CopycatExternalContext.setPropertyForAppearance(null);
         }
 
         if (BlockFaceUtils.canOcclude(level, neighborState, toPos, state, pos, dir.getOpposite())) {
             BlockState material = state.getBlock() instanceof IMultiStateCopycatBlock
-                    ? IMultiStateCopycatBlock.getMaterial(level, pos, CopycatExternalContext.getRenderingProperty())
+                    ? IMultiStateCopycatBlock.getMaterial(level, pos, CopycatExternalContext.getPropertyForAppearance())
                     : state.getBlock() instanceof ICopycatBlock ? ICopycatBlock.getMaterial(level, pos) : state;
             BlockState neighborMaterial = neighborState.getBlock() instanceof IMultiStateCopycatBlock && level instanceof ScaledBlockAndTintGetter scaledLevel
                     ? IMultiStateCopycatBlock.getMaterial(level, toPos, scaledLevel.getPropertyForRender(neighborState, toPos))

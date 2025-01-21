@@ -30,6 +30,7 @@ public enum Mods {
     DIAGONAL_WALLS("diagonalwalls"),
     FLYWHEEL("flywheel"),
     SODIUM("sodium"),
+    RUBIDIUM("rubidium"),
     ATHENA("athena"),
     INDIUM("indium"),
     STARLIGHT("starlight"),

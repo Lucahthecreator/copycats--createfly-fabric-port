@@ -397,16 +397,16 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
         BlockAndTintGetter reader = Mods.ATHENA.runIfInstalled(() -> () -> AthenaCompat.unwrapAthenaGetter(level)).orElse(level);
 
         if (reader instanceof ScaledBlockAndTintGetter scaledLevel && state.getBlock() instanceof IMultiStateCopycatBlock) {
-            CopycatExternalContext.setRenderingProperty(scaledLevel.getPropertyForRender(state, pos));
+            CopycatExternalContext.setPropertyForAppearance(scaledLevel.getPropertyForRender(state, pos));
         } else {
-            CopycatExternalContext.setRenderingProperty(block.defaultProperty());
+            CopycatExternalContext.setPropertyForAppearance(block.defaultProperty());
         }
 
         if (block.isIgnoredConnectivitySide(reader, state, side, pos, queryPos, queryState))
             return state;
 
         String property;
-        property = CopycatExternalContext.getRenderingProperty();
+        property = CopycatExternalContext.getPropertyForAppearance();
         if (property == null)
             property = block.defaultProperty();
         BlockState material = IMultiStateCopycatBlock.getMaterial(reader, pos, property);
@@ -495,7 +495,7 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
             if (pLevel == null || pPos == null)
                 return GrassColor.get(0.5D, 1.0D);
 
-            String renderingProperty = CopycatExternalContext.getRenderingProperty();
+            String renderingProperty = CopycatExternalContext.getPropertyForBlockColor();
             if (renderingProperty != null) {
                 return Minecraft.getInstance()
                         .getBlockColors()

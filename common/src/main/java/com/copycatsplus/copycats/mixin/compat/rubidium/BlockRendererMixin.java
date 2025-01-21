@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * <p>
  * Rubidium compatible version of {@link com.copycatsplus.copycats.mixin.foundation.copycat.multistate.ModelBlockRendererMixin}.
  */
-@ModMixin(requiredMods = Mods.SODIUM)
+@ModMixin(requiredMods = {Mods.RUBIDIUM, Mods.SODIUM})
 @Mixin(BlockRenderer.class)
 @Pseudo
 public class BlockRendererMixin {
@@ -34,7 +34,7 @@ public class BlockRendererMixin {
     )
     private void beforeColor(BlockRenderContext ctx, ColorProvider<BlockState> colorProvider, BakedQuadView quad, CallbackInfoReturnable<int[]> cir) {
         if (quad.getSprite() instanceof MultiStateTextureAtlasSprite sprite)
-            CopycatExternalContext.setRenderingProperty(sprite.getProperty());
+            CopycatExternalContext.setPropertyForBlockColor(sprite.getProperty());
     }
 
     @Inject(
@@ -47,6 +47,6 @@ public class BlockRendererMixin {
             require = 0
     )
     private void afterColor(BlockRenderContext ctx, ColorProvider<BlockState> colorProvider, BakedQuadView quad, CallbackInfoReturnable<int[]> cir) {
-        CopycatExternalContext.setRenderingProperty(null);
+        CopycatExternalContext.setPropertyForBlockColor(null);
     }
 }

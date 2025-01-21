@@ -15,6 +15,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ModMixin {
 
+    /**
+     * The mixin should only be enabled if any of these mods are present
+     */
     Mods[] requiredMods();
 
     boolean applyIfPresent() default true;

@@ -121,9 +121,9 @@ public class BlockFaceUtils {
                         1.0 / toScale.getZ()
                 );
                 if (operation.apply(fromShape, toShape)) {
-                    String property = CopycatExternalContext.getRenderingProperty();
+                    String property = CopycatExternalContext.getPropertyForAppearance();
                     if (property == null) property = copycatBlock.defaultProperty();
-                    CopycatExternalContext.setRenderingProperty(copycatBlock.getPropertyFromRender(property, toState, world, part, toTruePos));
+                    CopycatExternalContext.setPropertyForAppearance(copycatBlock.getPropertyFromRender(property, toState, world, part, toTruePos));
                     return true;
                 }
             }
@@ -131,7 +131,7 @@ public class BlockFaceUtils {
         if (toShape == null) {
             toShape = toState.getFaceOcclusionShape(level, toPos, fromFace.getOpposite());
         }
-        CopycatExternalContext.setRenderingProperty(null);
+        CopycatExternalContext.setPropertyForAppearance(null);
         return operation.apply(fromShape, toShape);
     }
 
