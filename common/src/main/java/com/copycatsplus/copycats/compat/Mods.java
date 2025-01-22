@@ -28,6 +28,7 @@ public enum Mods {
     ADDITIONAL_PLACEMENTS("additionalplacements"),
     DIAGONAL_FENCES("diagonalfences"),
     DIAGONAL_WALLS("diagonalwalls"),
+    DIAGONAL_WINDOWS("diagonalwindows"),
     FLYWHEEL("flywheel"),
     SODIUM("sodium"),
     RUBIDIUM("rubidium"),
