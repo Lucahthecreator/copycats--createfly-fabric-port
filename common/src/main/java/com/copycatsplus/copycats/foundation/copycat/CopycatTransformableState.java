@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.foundation.copycat;
 
 import com.simibubi.create.content.contraptions.StructureTransform;
+import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -92,8 +93,21 @@ public class CopycatTransformableState<T> {
             return this;
         }
 
+        /**
+         * Equivalent to {@link StructureTransform#unapplyWithoutOffset(Vec3)} but reimplemented to avoid crash in Create 0.5.1f.
+         */
+        private static Vec3 unapplyWithoutOffset(StructureTransform transform, Vec3 globalVec) {
+            Vec3 vec = globalVec;
+            if (transform.rotationAxis != null)
+                vec = VecHelper.rotateCentered(vec, -transform.angle, transform.rotationAxis);
+            if (transform.mirror != null)
+                vec = VecHelper.mirrorCentered(vec, transform.mirror);
+
+            return vec;
+        }
+
         public Part<T> untransform(StructureTransform transform) {
-            Vec3 transformed = transform.unapplyWithoutOffset(new Vec3(vector.getX() / 16d, vector.getY() / 16d, vector.getZ() / 16d));
+            Vec3 transformed = unapplyWithoutOffset(transform, new Vec3(vector.getX() / 16d, vector.getY() / 16d, vector.getZ() / 16d));
             vector = new Vec3i((int) Math.round(transformed.x * 16), (int) Math.round(transformed.y * 16), (int) Math.round(transformed.z * 16));
             return this;
         }
