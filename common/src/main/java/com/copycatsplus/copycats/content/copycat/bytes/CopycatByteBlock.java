@@ -261,7 +261,14 @@ public class CopycatByteBlock extends WaterloggedMultiStateCopycatBlock implemen
 
     @Override
     public void transformStorage(BlockState state, IMultiStateCopycatBlockEntity be, StructureTransform transform) {
-        be.getMaterialItemStorage().remapStorage(key -> byByte(transformByte(transform, byteMap.get(key))).getName());
+        be.getMaterialItemStorage().remapStorage(key -> {
+            Byte bite = byteMap.get(key);
+            if (bite == null) {
+                Copycats.LOGGER.debug("Can't find byte for key {} in {}. NBT data for this copycat byte might be corrupt.", key, state);
+                return key;
+            }
+            return byByte(transformByte(transform, bite)).getName();
+        });
     }
 
     private static Byte transformByte(StructureTransform transform, Byte bite) {
