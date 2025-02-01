@@ -2,10 +2,12 @@ package com.copycatsplus.copycats.content.copycat.slab;
 
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
+import com.copycatsplus.copycats.foundation.copycat.CopycatTransformableState;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.model.ScaledBlockAndTintGetter;
+import com.copycatsplus.copycats.foundation.copycat.multistate.MaterialItemStorage;
 import com.copycatsplus.copycats.foundation.copycat.multistate.WaterloggedMultiStateCopycatBlock;
 import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.mojang.math.OctahedralGroup;
@@ -253,25 +255,82 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock implemen
         return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }
 
+    public static CopycatTransformableState<Void> toTransformableState(BlockState state) {
+        return CopycatTransformableState.create(t -> {
+            Direction facing = getApparentDirection(state);
+            Vec3i normal = facing.getNormal();
+            Vec3i part = new Vec3i(normal.getX() == 0 ? 8 : normal.getX() > 0 ? 16 : 0,
+                    normal.getY() == 0 ? 8 : normal.getY() > 0 ? 16 : 0,
+                    normal.getZ() == 0 ? 8 : normal.getZ() > 0 ? 16 : 0);
+            t.addPart(part.getX(), part.getY(), part.getZ());
+            if (state.getValue(SLAB_TYPE) == SlabType.DOUBLE) {
+                Vec3i part2 = new Vec3i(16, 16, 16).subtract(part);
+                t.addPart(part2.getX(), part2.getY(), part2.getZ());
+            }
+        });
+    }
+
+    public static CopycatTransformableState<MaterialItemStorage.MaterialItem> toTransformableStorage(BlockState state, IMultiStateCopycatBlockEntity be) {
+        return CopycatTransformableState.create(t -> {
+            Direction facing = getApparentDirection(state);
+            Vec3i normal = facing.getNormal();
+            Vec3i part = new Vec3i(normal.getX() == 0 ? 8 : normal.getX() > 0 ? 16 : 0,
+                    normal.getY() == 0 ? 8 : normal.getY() > 0 ? 16 : 0,
+                    normal.getZ() == 0 ? 8 : normal.getZ() > 0 ? 16 : 0);
+            t.addPart(
+                    part.getX(), part.getY(), part.getZ()
+            ).setData(be.getMaterialItemStorage().getMaterialItem(
+                    facing.getAxisDirection() == AxisDirection.POSITIVE ? Half.TOP.getSerializedName() : Half.BOTTOM.getSerializedName()
+            ));
+            if (state.getValue(SLAB_TYPE) == SlabType.DOUBLE) {
+                Vec3i part2 = new Vec3i(16, 16, 16).subtract(part);
+                t.addPart(
+                        part2.getX(), part2.getY(), part2.getZ()
+                ).setData(be.getMaterialItemStorage().getMaterialItem(
+                        facing.getAxisDirection() == AxisDirection.POSITIVE ? Half.BOTTOM.getSerializedName() : Half.TOP.getSerializedName()
+                ));
+            }
+        });
+    }
+
+    public static BlockState fromTransformableState(BlockState state, CopycatTransformableState<Void> transformableState) {
+        SlabType type;
+        Axis axis;
+        CopycatTransformableState.Part<Void> part = transformableState.parts.get(0);
+        if (part.vector.getX() != 8) {
+            axis = Axis.X;
+            type = part.vector.getX() > 8 ? SlabType.TOP : SlabType.BOTTOM;
+        } else if (part.vector.getY() != 8) {
+            axis = Axis.Y;
+            type = part.vector.getY() > 8 ? SlabType.TOP : SlabType.BOTTOM;
+        } else {
+            axis = Axis.Z;
+            type = part.vector.getZ() > 8 ? SlabType.TOP : SlabType.BOTTOM;
+        }
+        if (transformableState.parts.size() == 2) {
+            type = SlabType.DOUBLE;
+        }
+        return state.setValue(AXIS, axis).setValue(SLAB_TYPE, type);
+    }
+
+    public static void fromTransformableStorage(BlockState state, IMultiStateCopycatBlockEntity be, CopycatTransformableState<MaterialItemStorage.MaterialItem> transformableState) {
+        for (CopycatTransformableState.Part<MaterialItemStorage.MaterialItem> part : transformableState.parts) {
+            be.getMaterialItemStorage().storeMaterialItem(
+                    part.vector.getX() > 8 || part.vector.getY() > 8 || part.vector.getZ() > 8 ? Half.TOP.getSerializedName() : Half.BOTTOM.getSerializedName(),
+                    part.data
+            );
+        }
+    }
+
     @Override
     public BlockState transform(BlockState state, StructureTransform transform) {
-        return setApparentDirection(state, transformFacing(transform, getApparentDirection(state)));
+        return fromTransformableState(state, toTransformableState(state).transform(transform));
     }
 
     @Override
     public void transformStorage(BlockState state, IMultiStateCopycatBlockEntity be, StructureTransform transform) {
-        Axis axis = state.getValue(AXIS);
-        // the given block state is post-transform, so we need to adjust the axis if the transform is a rotation
-        if (transform.rotationAxis != null && transform.rotation == Rotation.CLOCKWISE_90 || transform.rotation == Rotation.COUNTERCLOCKWISE_90) {
-            axis = switch (axis) {
-                case X -> Direction.Axis.Z;
-                case Z -> Direction.Axis.X;
-                default -> axis;
-            };
-        }
-        if (transformFacing(transform, Direction.fromAxisAndDirection(axis, AxisDirection.POSITIVE)).getAxisDirection() == AxisDirection.NEGATIVE) {
-            be.getMaterialItemStorage().remapStorage(s -> s.equals(Half.BOTTOM.getSerializedName()) ? Half.TOP.getSerializedName() : Half.BOTTOM.getSerializedName());
-        }
+        state = fromTransformableState(state, toTransformableState(state).untransform(transform));
+        fromTransformableStorage(state, be, toTransformableStorage(state, be).transform(transform));
     }
 
     /**
