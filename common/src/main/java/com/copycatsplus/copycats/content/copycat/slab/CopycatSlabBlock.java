@@ -315,9 +315,11 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock implemen
     }
 
     public static void fromTransformableStorage(BlockState state, IMultiStateCopycatBlockEntity be, CopycatTransformableState<MaterialItemStorage.MaterialItem> transformableState) {
+        // We need to clean the storage before assigning the transformed data back
         for (String property : be.getMaterialItemStorage().getAllProperties()) {
             be.getMaterialItemStorage().storeMaterialItem(property, new MaterialItemStorage.MaterialItem(AllBlocks.COPYCAT_BASE.getDefaultState(), ItemStack.EMPTY));
         }
+
         for (CopycatTransformableState.Part<MaterialItemStorage.MaterialItem> part : transformableState.parts) {
             be.getMaterialItemStorage().storeMaterialItem(
                     part.vector.getX() > 8 || part.vector.getY() > 8 || part.vector.getZ() > 8 ? Half.TOP.getSerializedName() : Half.BOTTOM.getSerializedName(),
