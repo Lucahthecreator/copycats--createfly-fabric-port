@@ -121,7 +121,7 @@ public class CopycatVerticalStairBlock extends CCWaterloggedCopycatBlock impleme
         }
         boolean left = canConnect(state, level, pos, facing.getCounterClockWise());
         boolean leftParity = getHorizontalParity(state, level, pos, facing.getCounterClockWise());
-        if (left && (verticalDirection == null || verticalDirection == Direction.DOWN && side == leftParity || verticalDirection == Direction.UP && side != leftParity)) {
+        if (left) {
             horizontalConnection = false;
             if (verticalDirection == null) {
                 verticalDirection = leftParity == side ? Direction.DOWN : Direction.UP;
@@ -129,10 +129,10 @@ public class CopycatVerticalStairBlock extends CCWaterloggedCopycatBlock impleme
         } else {
             boolean right = canConnect(state, level, pos, facing.getClockWise());
             boolean rightParity = getHorizontalParity(state, level, pos, facing.getClockWise());
-            if (right && (verticalDirection == null || verticalDirection == Direction.UP && side == rightParity || verticalDirection == Direction.DOWN && side != rightParity)) {
+            if (right) {
                 horizontalConnection = true;
                 if (verticalDirection == null) {
-                    verticalDirection = rightParity == side ? Direction.UP : Direction.DOWN;
+                    verticalDirection = rightParity == side ? Direction.DOWN : Direction.UP;
                 }
             }
         }
@@ -164,7 +164,7 @@ public class CopycatVerticalStairBlock extends CCWaterloggedCopycatBlock impleme
         BlockState blockState = level.getBlockState(pos.relative(face));
         if (!isStairs(blockState)) return false;
         if (blockState.getBlock() instanceof CopycatVerticalStairBlock) {
-            return (state.getValue(FACING).getCounterClockWise() == face) == blockState.getValue(SIDE).isRight();
+            return ((state.getValue(FACING).getCounterClockWise() == face) == state.getValue(SIDE).isRight()) == blockState.getValue(SIDE).isRight();
         } else {
             return blockState.getValue(StairBlock.HALF) == Half.TOP;
         }
@@ -178,7 +178,7 @@ public class CopycatVerticalStairBlock extends CCWaterloggedCopycatBlock impleme
         Direction otherFacing = blockState.getValue(FACING);
         if (selfFacing == otherFacing.getOpposite()) return false;
         if (selfFacing == otherFacing && face.getAxis() != selfFacing.getAxis()) return true;
-        return selfFacing != otherFacing;
+        return selfFacing == otherFacing;
     }
 
     public static boolean isStairs(BlockState state) {
