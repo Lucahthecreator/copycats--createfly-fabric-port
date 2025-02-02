@@ -11,6 +11,7 @@ import com.copycatsplus.copycats.foundation.copycat.multistate.MaterialItemStora
 import com.copycatsplus.copycats.foundation.copycat.multistate.WaterloggedMultiStateCopycatBlock;
 import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.mojang.math.OctahedralGroup;
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.schematics.requirement.ISpecialBlockItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
@@ -314,6 +315,9 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock implemen
     }
 
     public static void fromTransformableStorage(BlockState state, IMultiStateCopycatBlockEntity be, CopycatTransformableState<MaterialItemStorage.MaterialItem> transformableState) {
+        for (String property : be.getMaterialItemStorage().getAllProperties()) {
+            be.getMaterialItemStorage().storeMaterialItem(property, new MaterialItemStorage.MaterialItem(AllBlocks.COPYCAT_BASE.getDefaultState(), ItemStack.EMPTY));
+        }
         for (CopycatTransformableState.Part<MaterialItemStorage.MaterialItem> part : transformableState.parts) {
             be.getMaterialItemStorage().storeMaterialItem(
                     part.vector.getX() > 8 || part.vector.getY() > 8 || part.vector.getZ() > 8 ? Half.TOP.getSerializedName() : Half.BOTTOM.getSerializedName(),
