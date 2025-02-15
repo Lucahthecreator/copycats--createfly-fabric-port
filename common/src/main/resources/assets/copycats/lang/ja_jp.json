@@ -38,5 +38,5 @@
   "item.copycats.copycat_catwalk": "コピーキャットウォーク",
   "itemGroup.copycats.functional": "Create: Copycats+ | 機能的ブロック",
   "itemGroup.copycats.main": "Create: Copycats+ | 装飾用ブロック",
-  "tooltip.copycats.characteristics.ct_toggle.title": "テクスチャ接続切替"
+  "tooltip.copycats.characteristics.ct_toggle.title": "CT切替"
 }
