@@ -1,5 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.sliding_door;
 
+import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.mixin.copycat.sliding_door.SlidingDoorBlockEntityAccessor;
 import com.simibubi.create.content.contraptions.StructureTransform;
@@ -49,9 +50,17 @@ public class CopycatSlidingDoorBlockEntity extends SlidingDoorBlockEntity implem
 
     public void updatePaired() {
         if (getBlockState().getValue(HALF) == DoubleBlockHalf.LOWER) {
-            paired = (CopycatSlidingDoorBlockEntity) level.getBlockEntity(worldPosition.above());
+            if (level.getBlockEntity(worldPosition.above()) instanceof CopycatSlidingDoorBlockEntity) {
+                paired = (CopycatSlidingDoorBlockEntity) level.getBlockEntity(worldPosition.above());
+            } else {
+                Copycats.LOGGER.error("Something has gone wrong and the paired block(above) doesn't exist for the door({})", worldPosition);
+            }
         } else {
-            paired = (CopycatSlidingDoorBlockEntity) level.getBlockEntity(worldPosition.below());
+            if (level.getBlockEntity(worldPosition.below()) instanceof CopycatSlidingDoorBlockEntity) {
+                paired = (CopycatSlidingDoorBlockEntity) level.getBlockEntity(worldPosition.below());
+            } else {
+                Copycats.LOGGER.error("Something has gone wrong and the paired block(below) doesn't exist for the door({})", worldPosition);
+            }
         }
     }
 
