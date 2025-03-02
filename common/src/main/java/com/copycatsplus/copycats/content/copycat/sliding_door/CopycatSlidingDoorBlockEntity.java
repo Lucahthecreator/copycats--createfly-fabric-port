@@ -70,7 +70,7 @@ public class CopycatSlidingDoorBlockEntity extends SlidingDoorBlockEntity implem
 
     @Override
     public boolean shouldRenderSpecial(BlockState state) {
-        return state.getValue(HALF) == DoubleBlockHalf.LOWER && super.shouldRenderSpecial(state);
+        return super.shouldRenderSpecial(state);
     }
 
     public LerpedFloat animation() {
