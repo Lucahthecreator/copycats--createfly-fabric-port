@@ -8,6 +8,7 @@ import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopyca
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.foundation.copycat.multistate.WaterloggedMultiStateCopycatBlock;
+import com.copycatsplus.copycats.utility.BlockFaceUtils;
 import com.google.common.collect.ImmutableMap;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.schematics.requirement.ISpecialBlockItemRequirement;
@@ -63,6 +64,7 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
     public static BooleanProperty WEST = BlockStateProperties.WEST;
     public static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = PipeBlock.PROPERTY_BY_DIRECTION;
     private final ImmutableMap<BlockState, VoxelShape> shapesCache;
+    private final Map<String, Map<Direction, VoxelShape>> partialFaceCache = new HashMap<>();
 
     public CopycatBoardBlock(Properties properties) {
         super(properties);
@@ -174,6 +176,13 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
         return Objects.requireNonNull(this.shapesCache.get(pState));
+    }
+
+    @Override
+    public VoxelShape getPartialFaceShape(BlockGetter level, BlockState state, String property, Direction face) {
+        return partialFaceCache
+                .computeIfAbsent(property, p -> new HashMap<>())
+                .computeIfAbsent(face, d -> BlockFaceUtils.getPartialFaceShape(level, state, property, face));
     }
 
     @Override

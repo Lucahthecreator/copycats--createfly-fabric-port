@@ -5,6 +5,7 @@ import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.WaterloggedMultiStateCopycatBlock;
+import com.copycatsplus.copycats.utility.BlockFaceUtils;
 import com.google.common.collect.ImmutableMap;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.schematics.requirement.ISpecialBlockItemRequirement;
@@ -37,9 +38,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLayerBlock.*;
 import static net.minecraft.core.Direction.Axis;
@@ -52,6 +51,7 @@ public class CopycatVerticalHalfLayerBlock extends WaterloggedMultiStateCopycatB
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     private final ImmutableMap<BlockState, VoxelShape> shapesCache;
+    private final Map<String, Map<Direction, Map<Direction, VoxelShape>>> partialFaceCache = new HashMap<>();
 
     public CopycatVerticalHalfLayerBlock(Properties pProperties) {
         super(pProperties);
@@ -252,6 +252,14 @@ public class CopycatVerticalHalfLayerBlock extends WaterloggedMultiStateCopycatB
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
         return Objects.requireNonNull(this.shapesCache.get(pState));
+    }
+
+    @Override
+    public VoxelShape getPartialFaceShape(BlockGetter level, BlockState state, String property, Direction face) {
+        return partialFaceCache
+                .computeIfAbsent(property, p -> new HashMap<>())
+                .computeIfAbsent(state.getValue(FACING), d -> new HashMap<>())
+                .computeIfAbsent(face, d -> BlockFaceUtils.getPartialFaceShape(level, state, property, face));
     }
 
     public boolean supportsExternalFaceHiding(BlockState state) {

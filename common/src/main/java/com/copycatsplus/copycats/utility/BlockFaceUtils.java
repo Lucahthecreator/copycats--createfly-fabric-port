@@ -65,15 +65,7 @@ public class BlockFaceUtils {
                 if (!copycatBlock.partExists(fromState, property))
                     return false;
                 inner = copycatBlock.getVectorFromProperty(fromState, property);
-                fromShape = getPartialFaceShape(fromState.getOcclusionShape(scaledWorld.getWrapped(), truePos),
-                        fromFace,
-                        inner.getX() / (double) scale.getX(),
-                        inner.getY() / (double) scale.getY(),
-                        inner.getZ() / (double) scale.getZ(),
-                        1.0 / scale.getX(),
-                        1.0 / scale.getY(),
-                        1.0 / scale.getZ()
-                );
+                fromShape = copycatBlock.getPartialFaceShape(scaledWorld, fromState, property, fromFace);
             }
         }
         if (fromShape == null) {
@@ -84,46 +76,52 @@ public class BlockFaceUtils {
         }
 
         VoxelShape toShape = null;
-        List<Vec3i> potentialParts = null;
+        List<String> potentialParts = null;
         if (toState.getBlock() instanceof IMultiStateCopycatBlock copycatBlock) {
             Vec3i toScale = copycatBlock.vectorScale(toState);
             Axis connectingAxis = fromFace.getAxis();
             BlockGetter world = level;
             BlockPos toTruePos = toPos;
+            String fallbackProperty = copycatBlock.defaultProperty();
             if (level instanceof ScaledBlockAndTintGetter scaledWorld) {
                 world = scaledWorld.getWrapped();
                 toTruePos = scaledWorld.getTruePos(toPos);
+                fallbackProperty = scaledWorld.getRenderingProperty();
                 if (toTruePos.equals(truePos)) {
-                    String toProperty = scaledWorld.getPropertyForRender(toState, toPos);
-                    potentialParts = List.of(copycatBlock.getVectorFromProperty(toState, toProperty));
+                    potentialParts = List.of(scaledWorld.getPropertyForRender(toState, toPos));
                 }
             }
             if (potentialParts == null) {
                 if (replaceAxis(scale, connectingAxis, 0).equals(replaceAxis(toScale, connectingAxis, 0))) {
-                    potentialParts = List.of(replaceAxis(inner, connectingAxis,
+                    potentialParts = List.of(copycatBlock.getPropertyFromRender(fallbackProperty, toState, world, replaceAxis(inner, connectingAxis,
                             fromFace.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 0 : (toScale.get(connectingAxis) - 1)
-                    ));
+                    ), toTruePos));
                 } else {
-                    potentialParts = getOverlappingParts(toScale, connectingAxis,
-                            fromFace.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 0 : (toScale.get(connectingAxis) - 1)
-                    );
+                    potentialParts = new ArrayList<>(4);
+                    int connectingPart = fromFace.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 0 : (toScale.get(connectingAxis) - 1);
+                    Axis axis1 = switch (connectingAxis) {
+                        case X -> Axis.Y;
+                        case Y -> Axis.Z;
+                        case Z -> Axis.X;
+                    };
+                    Axis axis2 = switch (connectingAxis) {
+                        case X -> Axis.Z;
+                        case Y -> Axis.X;
+                        case Z -> Axis.Y;
+                    };
+                    for (int i = 0; i < toScale.get(axis1); i++) {
+                        for (int j = 0; j < toScale.get(axis2); j++) {
+                            potentialParts.add(copycatBlock.getPropertyFromRender(fallbackProperty, toState, world, replaceAxis(replaceAxis(new Vec3i(connectingPart, connectingPart, connectingPart), axis1, i), axis2, j), toTruePos));
+                        }
+                    }
                 }
             }
-            VoxelShape baseShape = toState.getOcclusionShape(world, toTruePos);
-            for (Vec3i part : potentialParts) {
-                toShape = getPartialFaceShape(baseShape,
-                        fromFace.getOpposite(),
-                        part.getX() / (double) toScale.getX(),
-                        part.getY() / (double) toScale.getY(),
-                        part.getZ() / (double) toScale.getZ(),
-                        1.0 / toScale.getX(),
-                        1.0 / toScale.getY(),
-                        1.0 / toScale.getZ()
-                );
+            for (String partProp : potentialParts) {
+                toShape = copycatBlock.getPartialFaceShape(world, toState, partProp, fromFace.getOpposite());
                 if (operation.apply(fromShape, toShape)) {
                     String property = CopycatExternalContext.getPropertyForAppearance();
                     if (property == null) property = copycatBlock.defaultProperty();
-                    CopycatExternalContext.setPropertyForAppearance(copycatBlock.getPropertyFromRender(property, toState, world, part, toTruePos));
+                    CopycatExternalContext.setPropertyForAppearance(copycatBlock.getPropertyFromRender(property, toState, world, copycatBlock.getVectorFromProperty(toState, partProp), toTruePos));
                     return true;
                 }
             }
@@ -173,9 +171,25 @@ public class BlockFaceUtils {
                 MATCH_CACHE.get());
     }
 
-    public static VoxelShape getPartialFaceShape(VoxelShape voxelShape, Direction direction, double startX, double startY, double startZ, double sizeX, double sizeY, double sizeZ) {
+    public static VoxelShape getPartialFaceShape(BlockGetter level, BlockState state, String property, Direction face) {
+        IMultiStateCopycatBlock copycatBlock = (IMultiStateCopycatBlock) state.getBlock();
+        if (!copycatBlock.partExists(state, property)) {
+            return Shapes.empty();
+        }
+        Vec3i scale = copycatBlock.vectorScale(state);
+        Vec3i part = copycatBlock.getVectorFromProperty(state, property);
+        return getPartialFaceShape(state.getOcclusionShape(level, BlockPos.ZERO), face, part, scale);
+    }
+
+    public static VoxelShape getPartialFaceShape(VoxelShape voxelShape, Direction direction, Vec3i part, Vec3i scale) {
         int i;
         Axis axis = direction.getAxis();
+        double startX = part.getX() / (double) scale.getX();
+        double startY = part.getY() / (double) scale.getY();
+        double startZ = part.getZ() / (double) scale.getZ();
+        double sizeX = 1.0 / scale.getX();
+        double sizeY = 1.0 / scale.getY();
+        double sizeZ = 1.0 / scale.getZ();
         double endX = startX + sizeX;
         double endY = startY + sizeY;
         double endZ = startZ + sizeZ;
@@ -202,25 +216,5 @@ public class BlockFaceUtils {
             return Shapes.empty();
         }
         return new SliceShape(voxelShape, axis, i);
-    }
-
-    private static List<Vec3i> getOverlappingParts(Vec3i toScale, Axis connectingAxis, int connectingPart) {
-        Axis axis1 = switch (connectingAxis) {
-            case X -> Axis.Y;
-            case Y -> Axis.Z;
-            case Z -> Axis.X;
-        };
-        Axis axis2 = switch (connectingAxis) {
-            case X -> Axis.Z;
-            case Y -> Axis.X;
-            case Z -> Axis.Y;
-        };
-        List<Vec3i> parts = new ArrayList<>(4);
-        for (int i = 0; i < toScale.get(axis1); i++) {
-            for (int j = 0; j < toScale.get(axis2); j++) {
-                parts.add(replaceAxis(replaceAxis(new Vec3i(connectingPart, connectingPart, connectingPart), axis1, i), axis2, j));
-            }
-        }
-        return parts;
     }
 }

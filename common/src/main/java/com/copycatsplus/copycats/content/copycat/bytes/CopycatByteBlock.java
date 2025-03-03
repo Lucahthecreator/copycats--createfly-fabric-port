@@ -5,6 +5,7 @@ import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.WaterloggedMultiStateCopycatBlock;
+import com.copycatsplus.copycats.utility.BlockFaceUtils;
 import com.copycatsplus.copycats.utility.MathUtils;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.math.OctahedralGroup;
@@ -55,6 +56,7 @@ public class CopycatByteBlock extends WaterloggedMultiStateCopycatBlock implemen
     public static BooleanProperty BOTTOM_SE = BooleanProperty.create("bottom_southeast");
     public static BooleanProperty BOTTOM_SW = BooleanProperty.create("bottom_southwest");
     private final ImmutableMap<BlockState, VoxelShape> shapesCache;
+    private final Map<String, Map<Direction, VoxelShape>> partialFaceCache = new HashMap<>();
 
     public static final List<Byte> allBytes;
     public static final Map<String, Byte> byteMap;
@@ -153,6 +155,13 @@ public class CopycatByteBlock extends WaterloggedMultiStateCopycatBlock implemen
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
         return Objects.requireNonNull(this.shapesCache.get(pState));
+    }
+
+    @Override
+    public VoxelShape getPartialFaceShape(BlockGetter level, BlockState state, String property, Direction face) {
+        return partialFaceCache
+                .computeIfAbsent(property, p -> new HashMap<>())
+                .computeIfAbsent(face, d -> BlockFaceUtils.getPartialFaceShape(level, state, property, face));
     }
 
     @Override
