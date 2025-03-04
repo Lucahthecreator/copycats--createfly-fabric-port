@@ -41,10 +41,11 @@ public class BlockFaceUtils {
             return cacheMap;
         });
         ShapeKey key = new ShapeKey(fromShape, toShape);
-        byte result = cache.getByte(key);
+        byte result = cache.getAndMoveToFirst(key);
         if (result == 127) {
             boolean value = operation.apply(fromShape, toShape);
-            cache.put(key, (byte) (value ? 1 : 0));
+            if (cache.size() >= 2048) cache.removeLastByte();
+            cache.putAndMoveToFirst(key, (byte) (value ? 1 : 0));
             return value;
         } else {
             return result == 1;
