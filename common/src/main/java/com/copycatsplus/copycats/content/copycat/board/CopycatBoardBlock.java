@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.board;
 
 import com.copycatsplus.copycats.CCShapes;
+import com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLayerBlock;
 import com.copycatsplus.copycats.foundation.copycat.CopycatExternalContext;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICustomCTBlocking;
@@ -64,7 +65,10 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
     public static BooleanProperty WEST = BlockStateProperties.WEST;
     public static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = PipeBlock.PROPERTY_BY_DIRECTION;
     private final ImmutableMap<BlockState, VoxelShape> shapesCache;
-    private final Map<String, Map<Direction, VoxelShape>> partialFaceCache = new HashMap<>();
+    private final ImmutableMap<FaceData, VoxelShape> partialFaceCache;
+
+    public static record FaceData(String property, Direction direction) {
+    }
 
     public CopycatBoardBlock(Properties properties) {
         super(properties);
@@ -77,6 +81,20 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
                 .setValue(WEST, false)
         );
         this.shapesCache = this.getShapeForEachState(CopycatBoardBlock::calculateMultifaceShape);
+        ImmutableMap.Builder<FaceData, VoxelShape> builder = ImmutableMap.builder();
+        BlockState state = defaultBlockState()
+                .setValue(UP, true)
+                .setValue(DOWN, true)
+                .setValue(NORTH, true)
+                .setValue(SOUTH, true)
+                .setValue(EAST, true)
+                .setValue(WEST, true);
+        for (String property : storageProperties()) {
+            for (Direction face : Direction.values()) {
+                builder.put(new FaceData(property, face), BlockFaceUtils.getPartialFaceShape(null, state, property, face));
+            }
+        }
+        this.partialFaceCache = builder.build();
     }
 
     @Override
@@ -180,9 +198,11 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
 
     @Override
     public VoxelShape getPartialFaceShape(BlockGetter level, BlockState state, String property, Direction face) {
-        return partialFaceCache
-                .computeIfAbsent(property, p -> new HashMap<>())
-                .computeIfAbsent(face, d -> BlockFaceUtils.getPartialFaceShape(level, state, property, face));
+        if (!partExists(state, property)) return Shapes.empty();
+        return Objects.requireNonNull(partialFaceCache.getOrDefault(
+                new FaceData(property, face),
+                Shapes.empty()
+        ));
     }
 
     @Override

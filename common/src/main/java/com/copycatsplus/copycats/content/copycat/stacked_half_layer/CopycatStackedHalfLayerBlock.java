@@ -2,6 +2,7 @@ package com.copycatsplus.copycats.content.copycat.stacked_half_layer;
 
 import com.copycatsplus.copycats.CCShapes;
 import com.copycatsplus.copycats.Copycats;
+import com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLayerBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.WaterloggedMultiStateCopycatBlock;
@@ -28,6 +29,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
@@ -39,6 +41,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLayerBlock.*;
 
@@ -49,7 +52,10 @@ public class CopycatStackedHalfLayerBlock extends WaterloggedMultiStateCopycatBl
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     private final ImmutableMap<BlockState, VoxelShape> shapesCache;
-    private final Map<String, Map<Direction, Map<Direction, VoxelShape>>> partialFaceCache = new HashMap<>();
+    private final ImmutableMap<FaceData, VoxelShape> partialFaceCache;
+
+    private static record FaceData(String property, Direction facing, int layers, Direction face) {
+    }
 
     public CopycatStackedHalfLayerBlock(Properties pProperties) {
         super(pProperties);
@@ -59,6 +65,17 @@ public class CopycatStackedHalfLayerBlock extends WaterloggedMultiStateCopycatBl
                 .setValue(NEGATIVE_LAYERS, 0)
         );
         this.shapesCache = this.getShapeForEachState(CopycatStackedHalfLayerBlock::calculateMultiFaceShape);
+        ImmutableMap.Builder<FaceData, VoxelShape> builder = ImmutableMap.builder();
+        for (String property : storageProperties()) {
+            for (Direction facing : FACING.getPossibleValues()) {
+                for (int layers : POSITIVE_LAYERS.getPossibleValues()) {
+                    for (Direction face : Direction.values()) {
+                        builder.put(new FaceData(property, facing, layers, face), BlockFaceUtils.getPartialFaceShape(null, defaultBlockState().setValue(FACING, facing).setValue(NEGATIVE_LAYERS, layers).setValue(POSITIVE_LAYERS, layers), property, face));
+                    }
+                }
+            }
+        }
+        this.partialFaceCache = builder.build();
     }
 
     @Override
@@ -232,10 +249,11 @@ public class CopycatStackedHalfLayerBlock extends WaterloggedMultiStateCopycatBl
 
     @Override
     public VoxelShape getPartialFaceShape(BlockGetter level, BlockState state, String property, Direction face) {
-        return partialFaceCache
-                .computeIfAbsent(property, p -> new HashMap<>())
-                .computeIfAbsent(state.getValue(FACING), d -> new HashMap<>())
-                .computeIfAbsent(face, d -> BlockFaceUtils.getPartialFaceShape(level, state, property, face));
+        if (!partExists(state, property)) return Shapes.empty();
+        return Objects.requireNonNull(partialFaceCache.getOrDefault(
+                new FaceData(property, state.getValue(FACING), state.getValue(property.equals(NEGATIVE_LAYERS.getName()) ? NEGATIVE_LAYERS : POSITIVE_LAYERS), face),
+                Shapes.empty()
+        ));
     }
 
     public boolean supportsExternalFaceHiding(BlockState state) {

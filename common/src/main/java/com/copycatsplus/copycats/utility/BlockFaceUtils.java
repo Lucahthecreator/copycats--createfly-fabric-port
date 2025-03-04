@@ -177,9 +177,6 @@ public class BlockFaceUtils {
 
     public static VoxelShape getPartialFaceShape(BlockGetter level, BlockState state, String property, Direction face) {
         IMultiStateCopycatBlock copycatBlock = (IMultiStateCopycatBlock) state.getBlock();
-        if (!copycatBlock.partExists(state, property)) {
-            return Shapes.empty();
-        }
         Vec3i scale = copycatBlock.vectorScale(state);
         Vec3i part = copycatBlock.getVectorFromProperty(state, property);
         return getPartialFaceShape(state.getOcclusionShape(level, BlockPos.ZERO), face, part, scale);

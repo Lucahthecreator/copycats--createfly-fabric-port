@@ -67,9 +67,9 @@ public class CopycatHalfLayerBlock extends WaterloggedMultiStateCopycatBlock imp
     public static final IntegerProperty POSITIVE_LAYERS = IntegerProperty.create("positive_layers", 0, 8);
     public static final IntegerProperty NEGATIVE_LAYERS = IntegerProperty.create("negative_layers", 0, 8);
     private final ImmutableMap<BlockState, VoxelShape> shapesCache;
-    private final Map<String, Map<FaceData, Map<Direction, VoxelShape>>> partialFaceCache = new HashMap<>();
+    private final ImmutableMap<FaceData, VoxelShape> partialFaceCache;
 
-    private static record FaceData(Axis axis, Half half, int layers) {
+    private static record FaceData(String property, Axis axis, Half half, int layers, Direction face) {
     }
 
     public CopycatHalfLayerBlock(Properties pProperties) {
@@ -81,6 +81,19 @@ public class CopycatHalfLayerBlock extends WaterloggedMultiStateCopycatBlock imp
                 .setValue(NEGATIVE_LAYERS, 0)
         );
         this.shapesCache = this.getShapeForEachState(CopycatHalfLayerBlock::calculateMultiFaceShape);
+        ImmutableMap.Builder<FaceData, VoxelShape> builder = ImmutableMap.builder();
+        for (String property : storageProperties()) {
+            for (Axis axis : AXIS.getPossibleValues()) {
+                for (Half half : HALF.getPossibleValues()) {
+                    for (int layers : POSITIVE_LAYERS.getPossibleValues()) {
+                        for (Direction face : Direction.values()) {
+                            builder.put(new FaceData(property, axis, half, layers, face), BlockFaceUtils.getPartialFaceShape(null, defaultBlockState().setValue(AXIS, axis).setValue(HALF, half).setValue(NEGATIVE_LAYERS, layers).setValue(POSITIVE_LAYERS, layers), property, face));
+                        }
+                    }
+                }
+            }
+        }
+        this.partialFaceCache = builder.build();
     }
 
     @Override
@@ -379,10 +392,11 @@ public class CopycatHalfLayerBlock extends WaterloggedMultiStateCopycatBlock imp
 
     @Override
     public VoxelShape getPartialFaceShape(BlockGetter level, BlockState state, String property, Direction face) {
-        return partialFaceCache
-                .computeIfAbsent(property, p -> new HashMap<>())
-                .computeIfAbsent(new FaceData(state.getValue(AXIS), state.getValue(HALF), state.getValue(property.equals(NEGATIVE_LAYERS.getName()) ? NEGATIVE_LAYERS : POSITIVE_LAYERS)), d -> new HashMap<>())
-                .computeIfAbsent(face, d -> BlockFaceUtils.getPartialFaceShape(level, state, property, face));
+        if (!partExists(state, property)) return Shapes.empty();
+        return Objects.requireNonNull(partialFaceCache.getOrDefault(
+                new FaceData(property, state.getValue(AXIS), state.getValue(HALF), state.getValue(property.equals(NEGATIVE_LAYERS.getName()) ? NEGATIVE_LAYERS : POSITIVE_LAYERS), face),
+                Shapes.empty()
+        ));
     }
 
     public boolean supportsExternalFaceHiding(BlockState state) {
