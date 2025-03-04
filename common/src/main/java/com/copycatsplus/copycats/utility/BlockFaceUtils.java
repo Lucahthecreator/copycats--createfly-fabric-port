@@ -12,37 +12,44 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 
 import static com.copycatsplus.copycats.utility.MathUtils.*;
 
 public class BlockFaceUtils {
-    private static final ThreadLocal<Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey>> OCCLUSION_CACHE = ThreadLocal.withInitial(() -> {
-        Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey> cacheMap = new Object2ByteLinkedOpenHashMap<>(2048, 0.25f) {
 
-            @Override
-            protected void rehash(int i) {
-            }
-        };
-        cacheMap.defaultReturnValue((byte) 127);
-        return cacheMap;
-    });
-    private static final ThreadLocal<Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey>> MATCH_CACHE = ThreadLocal.withInitial(() -> {
-        Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey> cacheMap = new Object2ByteLinkedOpenHashMap<>(2048, 0.25f) {
+    private static final ThreadLocal<Map<BiFunction<VoxelShape, VoxelShape, Boolean>, Object2ByteLinkedOpenHashMap<ShapeKey>>> SHAPE_OP_CACHE = ThreadLocal.withInitial(HashMap::new);
 
-            @Override
-            protected void rehash(int i) {
-            }
-        };
-        cacheMap.defaultReturnValue((byte) 127);
-        return cacheMap;
-    });
+    public static record ShapeKey(VoxelShape fromShape, VoxelShape toShape) {
+    }
+
+    private static boolean invokeCachedOperation(BiFunction<VoxelShape, VoxelShape, Boolean> operation, VoxelShape fromShape, VoxelShape toShape) {
+        Object2ByteLinkedOpenHashMap<ShapeKey> cache = SHAPE_OP_CACHE.get().computeIfAbsent(operation, op -> {
+            Object2ByteLinkedOpenHashMap<ShapeKey> cacheMap = new Object2ByteLinkedOpenHashMap<>(2048, 0.25f) {
+                @Override
+                protected void rehash(int i) {
+                }
+            };
+            cacheMap.defaultReturnValue((byte) 127);
+            return cacheMap;
+        });
+        ShapeKey key = new ShapeKey(fromShape, toShape);
+        byte result = cache.getByte(key);
+        if (result == 127) {
+            boolean value = operation.apply(fromShape, toShape);
+            cache.put(key, (byte) (value ? 1 : 0));
+            return value;
+        } else {
+            return result == 1;
+        }
+    }
 
     private static boolean processBlockFace(BlockGetter level,
                                             BlockState fromState,
@@ -50,8 +57,7 @@ public class BlockFaceUtils {
                                             BlockState toState,
                                             BlockPos toPos,
                                             Direction fromFace,
-                                            BiFunction<VoxelShape, VoxelShape, Boolean> operation,
-                                            Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey> cache) {
+                                            BiFunction<VoxelShape, VoxelShape, Boolean> operation) {
         VoxelShape fromShape = null;
         Vec3i scale = new Vec3i(1, 1, 1);
         Vec3i inner = new Vec3i(0, 0, 0);
@@ -118,7 +124,7 @@ public class BlockFaceUtils {
             }
             for (String partProp : potentialParts) {
                 toShape = copycatBlock.getPartialFaceShape(world, toState, partProp, fromFace.getOpposite());
-                if (operation.apply(fromShape, toShape)) {
+                if (invokeCachedOperation(operation, fromShape, toShape)) {
                     String property = CopycatExternalContext.getPropertyForAppearance();
                     if (property == null) property = copycatBlock.defaultProperty();
                     CopycatExternalContext.setPropertyForAppearance(copycatBlock.getPropertyFromRender(property, toState, world, copycatBlock.getVectorFromProperty(toState, partProp), toTruePos));
@@ -130,7 +136,7 @@ public class BlockFaceUtils {
             toShape = toState.getFaceOcclusionShape(level, toPos, fromFace.getOpposite());
         }
         CopycatExternalContext.setPropertyForAppearance(null);
-        return operation.apply(fromShape, toShape);
+        return invokeCachedOperation(operation, fromShape, toShape);
     }
 
     /**
@@ -148,8 +154,7 @@ public class BlockFaceUtils {
                 occludingState,
                 occludingPos,
                 occludedFace,
-                (occluded, occluding) -> !Shapes.joinIsNotEmpty(occluded, occluding, BooleanOp.ONLY_FIRST),
-                OCCLUSION_CACHE.get());
+                (occluded, occluding) -> !Shapes.joinIsNotEmpty(occluded, occluding, BooleanOp.ONLY_FIRST));
     }
 
     /**
@@ -167,8 +172,7 @@ public class BlockFaceUtils {
                 toState,
                 toPos,
                 fromFace,
-                (from, to) -> !Shapes.joinIsNotEmpty(from, to, BooleanOp.NOT_SAME),
-                MATCH_CACHE.get());
+                (from, to) -> !Shapes.joinIsNotEmpty(from, to, BooleanOp.NOT_SAME));
     }
 
     public static VoxelShape getPartialFaceShape(BlockGetter level, BlockState state, String property, Direction face) {
