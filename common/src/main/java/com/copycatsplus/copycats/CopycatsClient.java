@@ -3,7 +3,7 @@ package com.copycatsplus.copycats;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.KineticCopycatRenderer;
 import com.copycatsplus.copycats.utility.LogicalSidedProvider;
 import com.copycatsplus.copycats.network.CCPackets;
-import com.simibubi.create.foundation.render.SuperByteBufferCache;
+import net.createmod.catnip.render.SuperByteBufferCache;
 import net.minecraft.client.Minecraft;
 
 public class CopycatsClient {

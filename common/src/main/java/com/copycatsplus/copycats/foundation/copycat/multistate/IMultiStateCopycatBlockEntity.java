@@ -6,7 +6,7 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.redstone.RoseQuartzLampBlock;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
-import com.simibubi.create.foundation.utility.Iterate;
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -230,7 +230,7 @@ public interface IMultiStateCopycatBlockEntity extends ICopycatBlockEntity {
     }
 
     @Override
-    default void transform(StructureTransform transform) {
+    default void transform(BlockEntity blockEntity, StructureTransform transform) {
         getBlock().transformStorage(this.getBlockState(), this, transform);
         for (String key : getMaterialItemStorage().getAllProperties()) {
             getMaterialItemStorage().getMaterialItem(key).setMaterial(transform.apply(getMaterialItemStorage().getMaterialItem(key).material()));

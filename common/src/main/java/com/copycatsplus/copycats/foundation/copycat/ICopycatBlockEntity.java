@@ -3,14 +3,14 @@ package com.copycatsplus.copycats.foundation.copycat;
 import com.copycatsplus.copycats.utility.BlockEntityUtils;
 import com.copycatsplus.copycats.utility.ItemUtils;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.contraptions.ITransformableBlockEntity;
+import com.simibubi.create.api.contraption.transformable.TransformableBlockEntity;
+import com.simibubi.create.api.schematic.nbt.PartialSafeNBT;
+import com.simibubi.create.api.schematic.requirement.SpecialBlockEntityItemRequirement;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.redstone.RoseQuartzLampBlock;
-import com.simibubi.create.content.schematics.requirement.ISpecialBlockEntityItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.foundation.blockEntity.IMergeableBE;
-import com.simibubi.create.foundation.utility.IPartialSafeNBT;
-import com.simibubi.create.foundation.utility.Iterate;
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -46,7 +46,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement, ITransformableBlockEntity, IPartialSafeNBT, IMergeableBE {
+public interface ICopycatBlockEntity extends SpecialBlockEntityItemRequirement, TransformableBlockEntity, PartialSafeNBT, IMergeableBE {
 
     void notifyUpdate();
 
@@ -180,7 +180,7 @@ public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement,
     }
 
     @Override
-    default void transform(StructureTransform transform) {
+    default void transform(BlockEntity blockEntity, StructureTransform transform) {
         setMaterialInternal(transform.apply(getMaterial()));
         notifyUpdate();
     }

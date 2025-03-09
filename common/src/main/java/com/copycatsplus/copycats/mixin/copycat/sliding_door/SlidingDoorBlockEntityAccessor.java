@@ -8,5 +8,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(SlidingDoorBlockEntity.class)
 public interface SlidingDoorBlockEntityAccessor {
     @Accessor
-    LerpedFloat getAnimation();
+    net.createmod.catnip.animation.LerpedFloat getAnimation();
 }

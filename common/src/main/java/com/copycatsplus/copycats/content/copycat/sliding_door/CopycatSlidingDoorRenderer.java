@@ -6,9 +6,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorBlock;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
-import com.simibubi.create.foundation.utility.AngleHelper;
-import com.simibubi.create.foundation.utility.Iterate;
+import net.createmod.catnip.data.Iterate;
+import net.createmod.catnip.math.AngleHelper;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -56,8 +56,8 @@ public class CopycatSlidingDoorRenderer extends SafeBlockEntityRenderer<CopycatS
                 partial.translate(0, -1 / 512f, 0)
                         .translate(Vec3.atLowerCornerOf(facing.getNormal())
                                 .scale(value2 * 1 / 32f));
-                partial.rotateCentered(Direction.UP,
-                        Mth.DEG_TO_RAD * AngleHelper.horizontalAngle(facing.getClockWise()));
+                partial.rotateCentered(
+                        Mth.DEG_TO_RAD * AngleHelper.horizontalAngle(facing.getClockWise()), Direction.UP);
 
                 if (flip)
                     partial.translate(0, 0, 1);
@@ -79,5 +79,10 @@ public class CopycatSlidingDoorRenderer extends SafeBlockEntityRenderer<CopycatS
                     .light(light)
                     .renderInto(ms, vb);
         }
+    }
+
+    @Override
+    public void render(CopycatSlidingDoorBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+        this.renderSafe(blockEntity, partialTick, poseStack, buffer, packedLight, packedOverlay);
     }
 }

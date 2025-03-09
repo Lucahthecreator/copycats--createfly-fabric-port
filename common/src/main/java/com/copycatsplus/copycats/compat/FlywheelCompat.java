@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.compat;
 
-import com.jozufozu.flywheel.core.virtual.VirtualChunk;
+import com.simibubi.create.foundation.virtualWorld.VirtualChunk;
 import net.minecraft.world.level.BlockGetter;
 
 public class FlywheelCompat {

@@ -2,26 +2,22 @@ package com.copycatsplus.copycats.content.copycat.slab;
 
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
-import com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLayerBlock;
 import com.copycatsplus.copycats.foundation.copycat.CopycatTransformableState;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
-import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
-import com.copycatsplus.copycats.foundation.copycat.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.foundation.copycat.multistate.MaterialItemStorage;
 import com.copycatsplus.copycats.foundation.copycat.multistate.WaterloggedMultiStateCopycatBlock;
 import com.copycatsplus.copycats.utility.BlockFaceUtils;
 import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.google.common.collect.ImmutableMap;
-import com.mojang.math.OctahedralGroup;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.api.schematic.requirement.SpecialBlockItemRequirement;
 import com.simibubi.create.content.contraptions.StructureTransform;
-import com.simibubi.create.content.schematics.requirement.ISpecialBlockItemRequirement;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
-import com.simibubi.create.foundation.placement.IPlacementHelper;
-import com.simibubi.create.foundation.placement.PlacementHelpers;
-import com.simibubi.create.foundation.placement.PlacementOffset;
-import com.simibubi.create.foundation.utility.Iterate;
+import net.createmod.catnip.placement.IPlacementHelper;
+import net.createmod.catnip.placement.PlacementHelpers;
+import net.createmod.catnip.placement.PlacementOffset;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -35,7 +31,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -58,11 +53,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
 import java.util.function.Predicate;
 
-import static com.copycatsplus.copycats.utility.BlockUtils.transformFacing;
-
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock implements ISpecialBlockItemRequirement {
+public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock implements SpecialBlockItemRequirement {
 
     public static final EnumProperty<Axis> AXIS = BlockStateProperties.AXIS;
     public static final EnumProperty<SlabType> SLAB_TYPE = BlockStateProperties.SLAB_TYPE;
@@ -172,7 +165,7 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock implemen
             }
             BlockPos up = pos.relative(Direction.UP);
             world.setBlockAndUpdate(pos, state.setValue(SLAB_TYPE, property.equals(SlabType.BOTTOM.getSerializedName()) ? SlabType.TOP : SlabType.BOTTOM).updateShape(Direction.UP, world.getBlockState(up), world, pos, up));
-            playRemoveSound(world, pos);
+            IWrenchable.playRemoveSound(world, pos);
         }
         return InteractionResult.SUCCESS;
     }

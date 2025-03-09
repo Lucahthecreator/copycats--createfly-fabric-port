@@ -8,6 +8,7 @@ import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -65,9 +66,9 @@ public class CopycatFluidPipeBlockEntity extends FluidPipeBlockEntity implements
     }
 
     @Override
-    public void transform(StructureTransform transform) {
-        super.transform(transform);
-        ICopycatBlockEntity.super.transform(transform);
+    public void transform(BlockEntity blockEntity, StructureTransform transform) {
+        super.transform(blockEntity, transform);
+        ICopycatBlockEntity.super.transform(blockEntity, transform);
     }
 
     @Override

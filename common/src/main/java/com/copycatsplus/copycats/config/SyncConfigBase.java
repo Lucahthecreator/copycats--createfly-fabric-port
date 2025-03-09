@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.config;
 
-import com.simibubi.create.foundation.config.ConfigBase;
+import net.createmod.catnip.config.ConfigBase;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.fml.config.ModConfig;
 

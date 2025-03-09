@@ -3,17 +3,18 @@ package com.copycatsplus.copycats.foundation.copycat.model.kinetic;
 import com.copycatsplus.copycats.CopycatsClient;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
-import com.jozufozu.flywheel.core.model.BlockModel;
-import com.jozufozu.flywheel.core.model.ShadeSeparatedBufferedData;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
-import com.simibubi.create.foundation.render.SuperByteBufferCache;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.createmod.catnip.render.ShadeSeparatingSuperByteBuffer;
+import net.createmod.catnip.render.SuperByteBuffer;
+import net.createmod.catnip.render.SuperByteBufferCache;
+import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.resources.model.BakedModel;
 
 /**
  * Helper class to render kinetic copycat models.
  */
+//TODO: Figure out the changes in here
 public class KineticCopycatRenderer {
     public static final SuperByteBufferCache.Compartment<KineticCopycatRenderData> KINETIC_COPYCAT = new SuperByteBufferCache.Compartment<>();
 
@@ -32,25 +33,25 @@ public class KineticCopycatRenderer {
     }
 
     public static BlockModel getInstanceModel(ICopycatPartialModel partialModel, ICopycatBlockEntity be, KineticCopycatRenderData renderData) {
-        ShadeSeparatedBufferedData data = getCopycatBuffer(partialModel.getModel(), be);
+        ShadeSeparatingSuperByteBuffer data = getCopycatBuffer(partialModel.getModel(), be);
         BlockModel blockModel = new BlockModel(data, renderData.toString());
-        data.release();
+        data.reset();
         return blockModel;
     }
 
     public static SuperByteBuffer copycatRender(ICopycatPartialModel partialModel, ICopycatBlockEntity be) {
-        ShadeSeparatedBufferedData bufferedData = getCopycatBuffer(partialModel.getModel(), be);
+        ShadeSeparatingSuperByteBuffer bufferedData = getCopycatBuffer(partialModel.getModel(), be);
         SuperByteBuffer sbb = new SuperByteBuffer(bufferedData);
-        bufferedData.release();
+        bufferedData.reset();
         return sbb;
     }
 
-    public static ShadeSeparatedBufferedData getCopycatBuffer(BakedModel partialModel, ICopycatBlockEntity be) {
+    public static ShadeSeparatingSuperByteBuffer getCopycatBuffer(BakedModel partialModel, ICopycatBlockEntity be) {
         return getCopycatBuffer(partialModel, be, new PoseStack());
     }
 
     @ExpectPlatform
-    public static ShadeSeparatedBufferedData getCopycatBuffer(BakedModel model, ICopycatBlockEntity be, PoseStack ms) {
+    public static ShadeSeparatingSuperByteBuffer getCopycatBuffer(BakedModel model, ICopycatBlockEntity be, PoseStack ms) {
         return null;
     }
 }

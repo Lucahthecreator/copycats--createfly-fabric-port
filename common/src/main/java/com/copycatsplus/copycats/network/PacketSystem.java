@@ -2,7 +2,6 @@ package com.copycatsplus.copycats.network;
 
 import com.copycatsplus.copycats.Copycats;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
-import com.simibubi.create.foundation.utility.Components;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import io.netty.buffer.Unpooled;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -190,7 +189,7 @@ public abstract class PacketSystem {
         public void handle(Minecraft mc) {
             if (CCPackets.PACKETS.version == serverVersion)
                 return;
-            Component error = Components.literal("Create: Copycats+ on the client uses a different network format than the server.")
+            Component error = Component.literal("Create: Copycats+ on the client uses a different network format than the server.")
                     .append(" You should use the same version of the mod on both sides.");
             mc.getConnection().onDisconnect(error);
         }

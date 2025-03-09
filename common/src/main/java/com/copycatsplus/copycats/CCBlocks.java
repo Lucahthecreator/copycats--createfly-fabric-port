@@ -87,14 +87,15 @@ import com.copycatsplus.copycats.foundation.tooltip.CopycatCharacteristics;
 import com.copycatsplus.copycats.foundation.tooltip.CopycatDescription;
 import com.copycatsplus.copycats.utility.Platform;
 import com.simibubi.create.AllTags;
+import com.simibubi.create.api.contraption.BlockMovementChecks;
 import com.simibubi.create.content.contraptions.behaviour.DoorMovingInteraction;
 import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorMovementBehaviour;
-import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
 import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
 import com.simibubi.create.foundation.data.BuilderTransformers;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
+import com.simibubi.create.infrastructure.config.CStress;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -117,14 +118,15 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.copycatsplus.copycats.CCCustomModels.*;
-import static com.simibubi.create.AllInteractionBehaviours.interactionBehaviour;
-import static com.simibubi.create.AllMovementBehaviours.movementBehaviour;
-import static com.simibubi.create.content.contraptions.BlockMovementChecks.*;
+import static com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour.interactionBehaviour;
+import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
+import static com.simibubi.create.api.contraption.BlockMovementChecks.CheckResult;
+import static com.simibubi.create.api.contraption.BlockMovementChecks.registerBrittleCheck;
 import static com.simibubi.create.foundation.data.CreateRegistrate.blockModel;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "deprecated"})
 //noinspection unchecked
 public class CCBlocks {
 
@@ -665,7 +667,7 @@ public class CCBlocks {
             REGISTRATE.block("copycat_shaft", CopycatShaftBlock::new)
                     .transform(CCBuilderTransformers.copycat())
                     .transform(FeatureToggle.register(FeatureCategory.FUNCTIONAL, FeatureCategory.CREATE))
-                    .transform(BlockStressDefaults.setNoImpact())
+                    .transform(CStress.setNoImpact())
                     .onRegister(onClient(() -> createBlockModel(BracketedKineticBlockModel::new, () -> CopycatModelCore.kinetic(new CopycatShaftModelCore()))))
                     .item()
                     .onRegister(CopycatDescription.register(
@@ -679,7 +681,7 @@ public class CCBlocks {
             REGISTRATE.block("copycat_cogwheel", CopycatCogWheelBlock::small)
                     .transform(CCBuilderTransformers.copycat())
                     .transform(FeatureToggle.register(FeatureCategory.MULTISTATES, FeatureCategory.FUNCTIONAL, FeatureCategory.CREATE))
-                    .transform(BlockStressDefaults.setNoImpact())
+                    .transform(CStress.setNoImpact())
                     .onRegister(onClient(() -> createBlockModel(BracketedKineticBlockModel::new, () -> CopycatModelCore.kinetic(new CopycatShaftModelCore(), new CopycatCogWheelModelCore()))))
                     .item(CogwheelBlockItem::new)
                     .onRegister(CopycatDescription.register(
@@ -694,7 +696,7 @@ public class CCBlocks {
             REGISTRATE.block("copycat_large_cogwheel", CopycatCogWheelBlock::large)
                     .transform(CCBuilderTransformers.copycat())
                     .transform(FeatureToggle.register(FeatureCategory.MULTISTATES, FeatureCategory.FUNCTIONAL, FeatureCategory.CREATE))
-                    .transform(BlockStressDefaults.setNoImpact())
+                    .transform(CStress.setNoImpact())
                     .onRegister(onClient(() -> createBlockModel(BracketedKineticBlockModel::new, () -> CopycatModelCore.kinetic(new CopycatShaftModelCore(), new CopycatLargeCogWheelModelCore()))))
                     .item(CogwheelBlockItem::new)
                     .onRegister(CopycatDescription.register(

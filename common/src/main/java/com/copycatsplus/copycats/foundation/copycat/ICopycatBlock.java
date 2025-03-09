@@ -7,12 +7,12 @@ import com.copycatsplus.copycats.utility.BlockFaceUtils;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.content.contraptions.ITransformableBlock;
+import com.simibubi.create.api.contraption.transformable.TransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.utility.Iterate;
+import net.createmod.catnip.data.Iterate;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -72,7 +72,7 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBlock {
+public interface ICopycatBlock extends IWrenchable, IStateType, TransformableBlock {
 
     @Nullable
     default ICopycatBlockEntity getCopycatBlockEntity(BlockGetter worldIn, BlockPos pos) {

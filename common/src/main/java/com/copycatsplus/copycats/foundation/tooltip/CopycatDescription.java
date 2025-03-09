@@ -1,13 +1,14 @@
 package com.copycatsplus.copycats.foundation.tooltip;
 
+import com.copycatsplus.copycats.CCLang;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.TooltipModifier;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Iterate;
-import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.Pair;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.createmod.catnip.data.Iterate;
+import net.createmod.catnip.data.Pair;
+import net.createmod.catnip.lang.FontHelper;
+import net.createmod.catnip.utility.lang.Components;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
@@ -66,10 +67,10 @@ public class CopycatDescription {
             longDescription.addAll(pair.getSecond());
         }
 
-        String[] holdDesc = Lang.translateDirect("tooltip.holdForDescription", "$")
+        String[] holdDesc = CCLang.translateDirect("tooltip.holdForDescription", "$")
                 .getString()
                 .split("\\$");
-        MutableComponent keyShift = Lang.translateDirect("tooltip.keyShift");
+        MutableComponent keyShift = CCLang.translateDirect("tooltip.keyShift");
         for (boolean shift : Iterate.falseAndTrue) {
             MutableComponent tabBuilder = Components.empty();
             tabBuilder.append(Components.literal(holdDesc[0]).withStyle(DARK_GRAY));
@@ -123,7 +124,7 @@ public class CopycatDescription {
 
             descriptions.put(characteristics, Pair.of(
                     List.of(Components.literal("- " + cachedLanguage.getOrDefault(titleKey)).withStyle(GRAY)),
-                    TooltipHelper.cutStringTextComponent(String.format(cachedLanguage.getOrDefault(descKey), cachedArgs.get(characteristics.getSerializedName()).toArray()), TooltipHelper.Palette.STANDARD_CREATE)
+                    TooltipHelper.cutStringTextComponent(String.format(cachedLanguage.getOrDefault(descKey), cachedArgs.get(characteristics.getSerializedName()).toArray()), FontHelper.Palette.STANDARD_CREATE)
             ));
         }
     }

@@ -3,7 +3,7 @@ package com.copycatsplus.copycats.content.copycat.wall;
 import com.copycatsplus.copycats.foundation.copycat.model.CopycatModelCore;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.CopycatRenderContext;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.AssemblyTransform;
-import com.simibubi.create.foundation.utility.Iterate;
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.WallBlock;

@@ -1,7 +1,6 @@
 package com.copycatsplus.copycats.foundation.copycat.multistate;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
-import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.MethodsReturnNonnullByDefault;

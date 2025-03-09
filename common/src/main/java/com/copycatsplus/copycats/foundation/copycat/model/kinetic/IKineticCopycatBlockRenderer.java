@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.foundation.copycat.model.kinetic;
 
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
+import net.createmod.catnip.render.SuperByteBuffer;
 
 /**
  * An interface with implementation for kinetic copycats renderers.

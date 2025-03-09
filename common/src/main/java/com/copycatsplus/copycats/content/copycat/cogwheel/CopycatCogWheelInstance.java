@@ -4,11 +4,6 @@ import com.copycatsplus.copycats.CCCopycatPartialModels;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.IMultiStateKineticCopycatBlockInstance;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.KineticCopycatRenderData;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
-import com.jozufozu.flywheel.api.Material;
-import com.jozufozu.flywheel.api.MaterialManager;
-import com.jozufozu.flywheel.core.materials.FlatLit;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntityInstance;
-import com.simibubi.create.content.kinetics.base.flwdata.RotatingData;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntityRenderer;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
@@ -16,6 +11,7 @@ import net.minecraft.core.BlockPos;
 
 import java.util.Map;
 
+//TODO: Fix this as RotatingData is gone and not sure what its been replaced with
 public class CopycatCogWheelInstance extends KineticBlockEntityInstance<BracketedKineticBlockEntity> implements IMultiStateKineticCopycatBlockInstance {
     protected Map<String, KineticCopycatRenderData> renderData;
     protected Map<String, RotatingData> rotatingData;

@@ -76,14 +76,14 @@ public class CCBlockEntityTypes {
 
     public static final BlockEntityEntry<? extends CopycatShaftBlockEntity> COPYCAT_SHAFT =
             REGISTRATE.blockEntity("copycat_shaft", CopycatShaftBlockEntity::new)
-                    .instance(() -> CopycatShaftInstance::new, false)
+                    .visual(() -> CopycatShaftInstance::new, false)
                     .validBlocks(CCBlocks.COPYCAT_SHAFT)
                     .renderer(() -> CopycatShaftRenderer::new)
                     .register();
 
     public static final BlockEntityEntry<? extends CopycatCogWheelBlockEntity> COPYCAT_COGWHEEL =
             REGISTRATE.blockEntity("copycat_cogwheel", CopycatCogWheelBlockEntity::new)
-                    .instance(() -> CopycatCogWheelInstance::new, false)
+                    .visual(() -> CopycatCogWheelInstance::new, false)
                     .validBlocks(CCBlocks.COPYCAT_COGWHEEL, CCBlocks.COPYCAT_LARGE_COGWHEEL)
                     .renderer(() -> CopycatCogWheelRenderer::new)
                     .register();

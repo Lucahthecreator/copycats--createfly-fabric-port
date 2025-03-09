@@ -4,13 +4,9 @@ import com.copycatsplus.copycats.CCCopycatPartialModels;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.IKineticCopycatBlockInstance;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.KineticCopycatRenderData;
-import com.jozufozu.flywheel.api.Instancer;
-import com.jozufozu.flywheel.api.Material;
-import com.jozufozu.flywheel.api.MaterialManager;
-import com.simibubi.create.content.kinetics.base.flwdata.RotatingData;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntity;
-import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntityInstance;
 
+//TODO: Fix this as RotatingData is gone and not sure what its been replaced with
 public class CopycatShaftInstance extends BracketedKineticBlockEntityInstance implements IKineticCopycatBlockInstance {
     protected KineticCopycatRenderData renderData;
 

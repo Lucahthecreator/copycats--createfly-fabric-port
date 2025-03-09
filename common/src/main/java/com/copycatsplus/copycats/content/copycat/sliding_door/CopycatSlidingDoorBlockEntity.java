@@ -1,21 +1,17 @@
 package com.copycatsplus.copycats.content.copycat.sliding_door;
 
-import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.mixin.copycat.sliding_door.SlidingDoorBlockEntityAccessor;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorBlockEntity;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
-import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.utility.animation.LerpedFloat;
+import net.createmod.catnip.animation.LerpedFloat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-
-import static net.minecraft.world.level.block.DoorBlock.HALF;
 
 public class CopycatSlidingDoorBlockEntity extends SlidingDoorBlockEntity implements ICopycatBlockEntity {
 
@@ -74,8 +70,8 @@ public class CopycatSlidingDoorBlockEntity extends SlidingDoorBlockEntity implem
     }
 
     @Override
-    public void transform(StructureTransform transform) {
-        ICopycatBlockEntity.super.transform(transform);
+    public void transform(BlockEntity blockEntity, StructureTransform transform) {
+        ICopycatBlockEntity.super.transform(blockEntity, transform);
     }
 
     @Override

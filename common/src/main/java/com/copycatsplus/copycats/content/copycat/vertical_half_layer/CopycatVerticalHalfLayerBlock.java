@@ -8,8 +8,9 @@ import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopyca
 import com.copycatsplus.copycats.foundation.copycat.multistate.WaterloggedMultiStateCopycatBlock;
 import com.copycatsplus.copycats.utility.BlockFaceUtils;
 import com.google.common.collect.ImmutableMap;
+import com.simibubi.create.api.schematic.requirement.SpecialBlockItemRequirement;
 import com.simibubi.create.content.contraptions.StructureTransform;
-import com.simibubi.create.content.schematics.requirement.ISpecialBlockItemRequirement;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
@@ -47,7 +48,7 @@ import static net.minecraft.core.Direction.AxisDirection;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class CopycatVerticalHalfLayerBlock extends WaterloggedMultiStateCopycatBlock implements ISpecialBlockItemRequirement {
+public class CopycatVerticalHalfLayerBlock extends WaterloggedMultiStateCopycatBlock implements SpecialBlockItemRequirement {
 
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -225,7 +226,7 @@ public class CopycatVerticalHalfLayerBlock extends WaterloggedMultiStateCopycatB
             BlockPos up = pos.relative(Direction.UP);
             // need to call updateShape before setBlock to schedule a tick for water
             world.setBlockAndUpdate(pos, state.setValue(targetProp, state.getValue(targetProp) - 1).updateShape(Direction.UP, world.getBlockState(up), world, pos, up));
-            playRemoveSound(world, pos);
+            IWrenchable.playRemoveSound(world, pos);
         }
         return InteractionResult.SUCCESS;
     }

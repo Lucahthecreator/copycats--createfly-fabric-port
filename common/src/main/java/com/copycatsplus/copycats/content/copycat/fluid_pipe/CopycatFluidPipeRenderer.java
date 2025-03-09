@@ -23,5 +23,10 @@ public class CopycatFluidPipeRenderer extends SafeBlockEntityRenderer<CopycatFlu
                                   int light, int overlay) {
 
     }
+
+    @Override
+    public void render(CopycatFluidPipeBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+        renderSafe(this, blockEntity, partialTick, poseStack, buffer, packedLight, packedOverlay);
+    }
 }
 

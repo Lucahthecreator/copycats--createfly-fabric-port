@@ -81,6 +81,10 @@ allprojects {
             url = 'https://maven.parchmentmc.org'
         }
         maven {
+            name = 'createmod maven'
+            url = 'https://maven.createmod.net/'
+        }
+        maven {
             name = 'tterrag maven'
             url = 'https://maven.tterrag.com/'
         }

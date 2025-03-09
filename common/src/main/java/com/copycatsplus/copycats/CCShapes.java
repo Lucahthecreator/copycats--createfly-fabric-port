@@ -10,9 +10,9 @@ import com.copycatsplus.copycats.content.copycat.vertical_stairs.CopycatVertical
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.AssemblyTransform;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.MutableAABB;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.MutableVec3;
+import com.copycatsplus.copycats.utility.TriFunction;
 import com.copycatsplus.copycats.utility.shape.OutlinedVoxelShape;
-import com.simibubi.create.foundation.utility.Pair;
-import com.tterrag.registrate.fabric.TriFunction;
+import net.createmod.catnip.data.Pair;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.block.state.properties.Half;

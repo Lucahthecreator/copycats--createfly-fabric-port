@@ -8,6 +8,7 @@ import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -45,9 +46,9 @@ public class CopycatCogWheelBlockEntity extends BracketedKineticBlockEntity impl
     }
 
     @Override
-    public void transform(StructureTransform transform) {
-        super.transform(transform);
-        IMultiStateCopycatBlockEntity.super.transform(transform);
+    public void transform(BlockEntity blockEntity, StructureTransform transform) {
+        super.transform(blockEntity, transform);
+        IMultiStateCopycatBlockEntity.super.transform(blockEntity, transform);
     }
 
     @Override

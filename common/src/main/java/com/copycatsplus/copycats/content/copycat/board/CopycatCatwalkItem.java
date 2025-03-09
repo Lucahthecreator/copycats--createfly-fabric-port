@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.board;
 
 import com.copycatsplus.copycats.CCBlocks;
-import com.simibubi.create.foundation.utility.Iterate;
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;

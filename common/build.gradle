@@ -12,7 +12,13 @@ dependencies {
     // dependencies must also be pulled in to minimize problems, from remapping issues to compile errors.
     // All dependencies except Flywheel and Registrate are NOT safe to use!
     // Flywheel and Registrate must also be used carefully due to differences.
-    modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
+    //TODO: Change to fabric when its out
+    modCompileOnly("com.simibubi.create:create-${minecraft_version}:${create_forge_version}:slim") { transitive = false }
+    modCompileOnly("com.tterrag.registrate:Registrate:${registrate_forge_version}")
+    modCompileOnly("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_forge_version}")
+
+    modCompileOnly("net.createmod.ponder:Ponder-Common-${minecraft_version}:${ponder_version}") { transitive = false}
+    modCompileOnly("net.createmod.catnip:Catnip-Common-${minecraft_version}:${catnip_version}")
     // required for proper remapping and compiling
     modCompileOnly("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
     modCompileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_common_version}")

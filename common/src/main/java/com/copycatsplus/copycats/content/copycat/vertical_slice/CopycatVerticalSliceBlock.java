@@ -7,11 +7,12 @@ import com.copycatsplus.copycats.foundation.copycat.CCWaterloggedCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.IStateType;
 import com.copycatsplus.copycats.utility.BlockUtils;
+import com.simibubi.create.api.schematic.requirement.SpecialBlockItemRequirement;
 import com.simibubi.create.content.contraptions.StructureTransform;
-import com.simibubi.create.content.schematics.requirement.ISpecialBlockItemRequirement;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
-import com.simibubi.create.foundation.utility.Iterate;
-import com.simibubi.create.foundation.utility.Pair;
+import net.createmod.catnip.data.Iterate;
+import net.createmod.catnip.data.Pair;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -50,7 +51,7 @@ import static net.minecraft.core.Direction.Axis;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class CopycatVerticalSliceBlock extends CCWaterloggedCopycatBlock implements ISpecialBlockItemRequirement, IStateType {
+public class CopycatVerticalSliceBlock extends CCWaterloggedCopycatBlock implements SpecialBlockItemRequirement, IStateType {
 
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final IntegerProperty LAYERS = BlockStateProperties.LAYERS;
@@ -146,7 +147,7 @@ public class CopycatVerticalSliceBlock extends CCWaterloggedCopycatBlock impleme
             BlockPos up = pos.relative(Direction.UP);
             // need to call updateShape before setBlock to schedule a tick for water
             world.setBlockAndUpdate(pos, state.setValue(LAYERS, state.getValue(LAYERS) - 1).updateShape(Direction.UP, world.getBlockState(up), world, pos, up));
-            playRemoveSound(world, pos);
+            IWrenchable.playRemoveSound(world, pos);
         }
         return InteractionResult.SUCCESS;
     }

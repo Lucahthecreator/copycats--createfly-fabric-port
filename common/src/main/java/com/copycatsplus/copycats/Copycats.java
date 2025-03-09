@@ -7,9 +7,9 @@ import com.copycatsplus.copycats.network.CCPackets;
 import com.copycatsplus.copycats.utility.TooltipUtils;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
-import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ public class Copycats {
     static {
         REGISTRATE.setTooltipModifierFactory(item -> TooltipUtils.sequential(
                 CopycatDescription.create(item),
-                new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE),
+                new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE),
                 TooltipModifier.mapNull(KineticStats.create(item)))
         );
     }

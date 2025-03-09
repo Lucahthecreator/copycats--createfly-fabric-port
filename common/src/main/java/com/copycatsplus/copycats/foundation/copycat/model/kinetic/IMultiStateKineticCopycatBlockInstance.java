@@ -2,15 +2,8 @@ package com.copycatsplus.copycats.foundation.copycat.model.kinetic;
 
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.utility.ChatUtils;
-import com.jozufozu.flywheel.api.Instancer;
-import com.jozufozu.flywheel.api.Material;
-import com.jozufozu.flywheel.api.MaterialManager;
-import com.jozufozu.flywheel.backend.Backend;
-import com.jozufozu.flywheel.backend.RenderLayer;
-import com.jozufozu.flywheel.config.BackendType;
-import com.jozufozu.flywheel.core.materials.FlatLit;
-import com.simibubi.create.content.kinetics.base.flwdata.RotatingData;
-import com.simibubi.create.foundation.render.AllMaterialSpecs;
+import dev.engine_room.flywheel.api.backend.BackendManager;
+import dev.engine_room.flywheel.backend.Backends;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import org.jetbrains.annotations.ApiStatus;
@@ -28,6 +21,7 @@ import java.util.Map;
  * {@link IMultiStateKineticCopycatBlockInstance#remove},
  * {@link IMultiStateKineticCopycatBlockInstance#shouldReset} to this interface.
  */
+//TODO: Fix this as RotatingData is gone and not sure what its been replaced with
 public interface IMultiStateKineticCopycatBlockInstance {
 
     Map<String, KineticCopycatRenderData> getRenderData();
@@ -68,7 +62,7 @@ public interface IMultiStateKineticCopycatBlockInstance {
         if (layer == null) layer = RenderLayer.TRANSPARENT;
 
         // workaround for flywheel crash when transparent layer is used in batching backend
-        if (Backend.getBackendType() == BackendType.BATCHING && type == RenderType.translucent()) {
+        if (BackendManager.currentBackend() == Backends.INDIRECT && type == RenderType.translucent()) {
             type = RenderType.cutoutMipped();
             ChatUtils.sendWarningOnce(
                     "flywheel_batching_translucent",

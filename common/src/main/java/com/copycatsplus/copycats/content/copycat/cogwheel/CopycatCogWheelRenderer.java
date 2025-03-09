@@ -4,12 +4,12 @@ import com.copycatsplus.copycats.CCCopycatPartialModels;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.IKineticCopycatBlockRenderer;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.KineticCopycatRenderer;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
-import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntityRenderer;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
+import dev.engine_room.flywheel.backend.Backends;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -28,7 +28,7 @@ public class CopycatCogWheelRenderer extends BracketedKineticBlockEntityRenderer
 
     @Override
     protected void renderSafe(BracketedKineticBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
-        if (Backend.canUseInstancing(be.getLevel()))
+        if (Backends.INSTANCING.isSupported())
             return;
 
         RenderType type = getRenderType(be, ((IMultiStateCopycatBlockEntity) be).getMaterialItemStorage().getMaterialItem(CopycatCogWheelBlock.Part.COGWHEEL.getSerializedName()).material());
@@ -55,5 +55,10 @@ public class CopycatCogWheelRenderer extends BracketedKineticBlockEntityRenderer
                 KineticCopycatRenderer.getBuffer(CCCopycatPartialModels.SHAFT, (IMultiStateCopycatBlockEntity) be, "shaft");
         kineticRotationTransform(shaft, be, axis, angle, light);
         shaft.renderInto(ms, buffer.getBuffer(shaftType));
+    }
+
+    @Override
+    public void render(BracketedKineticBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+        this.renderSafe(blockEntity, partialTick, poseStack, buffer, packedLight, packedOverlay);
     }
 }
