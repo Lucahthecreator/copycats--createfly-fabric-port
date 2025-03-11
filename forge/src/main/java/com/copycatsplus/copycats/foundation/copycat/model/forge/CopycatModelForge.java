@@ -10,10 +10,9 @@ import com.copycatsplus.copycats.foundation.copycat.model.assembly.forge.Copycat
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.utility.forge.ModelDataUtils;
-import com.jozufozu.flywheel.core.model.ModelUtil;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.model.BakedModelWrapperWithData;
-import com.simibubi.create.foundation.utility.Iterate;
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -38,6 +37,7 @@ import static com.copycatsplus.copycats.foundation.copycat.CopycatBaseBlock.BASE
 import static com.copycatsplus.copycats.foundation.copycat.model.CopycatModelCore.MATERIAL_KEY;
 import static com.copycatsplus.copycats.foundation.copycat.model.CopycatModelCore.getModelOf;
 
+//TODO: Figure out the replacements for this
 public class CopycatModelForge extends BakedModelWrapperWithData {
 
     public static final ModelProperty<BlockState> MATERIAL_PROPERTY = new ModelProperty<>();

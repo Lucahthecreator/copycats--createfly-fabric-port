@@ -1,11 +1,8 @@
 package com.copycatsplus.copycats.foundation.copycat.model.kinetic.forge;
 
-import com.jozufozu.flywheel.core.model.BlockModel;
-import com.jozufozu.flywheel.core.model.Bufferable;
-import com.jozufozu.flywheel.core.model.ModelUtil;
-import com.jozufozu.flywheel.core.virtual.VirtualEmptyBlockGetter;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import dev.engine_room.flywheel.lib.model.baked.EmptyVirtualBlockGetter;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
@@ -16,9 +13,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelData;
 
+//TODO: Figure out the replacements for this
 public final class BakedModelWithDataBuilder implements Bufferable {
     private final BakedModel model;
-    private BlockAndTintGetter renderWorld = VirtualEmptyBlockGetter.INSTANCE;
+    private BlockAndTintGetter renderWorld = EmptyVirtualBlockGetter.FULL_BRIGHT;
     private BlockState referenceState = Blocks.AIR.defaultBlockState();
     private PoseStack poseStack = new PoseStack();
     private BlockPos renderPos = BlockPos.ZERO;

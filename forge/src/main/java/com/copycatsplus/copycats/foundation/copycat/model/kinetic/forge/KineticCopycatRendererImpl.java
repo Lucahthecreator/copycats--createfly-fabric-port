@@ -3,20 +3,21 @@ package com.copycatsplus.copycats.foundation.copycat.model.kinetic.forge;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.WrappedRenderWorld;
 import com.copycatsplus.copycats.utility.forge.ModelDataUtils;
-import com.jozufozu.flywheel.core.model.ModelUtil;
-import com.jozufozu.flywheel.core.model.ShadeSeparatedBufferedData;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.createmod.catnip.render.ShadeSeparatingSuperByteBuffer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.client.model.data.ModelData;
 
+
+//TODO: Figure out the replacements for this
 public class KineticCopycatRendererImpl {
 
-    public static ShadeSeparatedBufferedData getCopycatBuffer(BakedModel model, ICopycatBlockEntity be, PoseStack ms) {
+    public static ShadeSeparatingSuperByteBuffer getCopycatBuffer(BakedModel model, ICopycatBlockEntity be, PoseStack ms) {
         WrappedRenderWorld renderWorld = new WrappedRenderWorld(be);
         ModelData blockEntityData = ModelDataUtils.mergeData(
                 ((BlockEntity) be).getModelData(),
-                ModelUtil.VIRTUAL_DATA
+                ModelUtiL.VIRTUAL_DATA
         ).build();
         ModelData renderData = model.getModelData(renderWorld, be.getBlockPos(), be.getBlockState(), blockEntityData);
         ModelData.Builder builder = ModelData.builder();

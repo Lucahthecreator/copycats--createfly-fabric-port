@@ -1,11 +1,12 @@
 package com.copycatsplus.copycats.content.copycat.fluid_pipe.forge;
 
-import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.simibubi.create.foundation.fluid.FluidRenderer;
 import com.simibubi.create.foundation.render.RenderTypes;
-import com.simibubi.create.foundation.utility.AngleHelper;
+import dev.engine_room.flywheel.lib.transform.PoseTransformStack;
+import dev.engine_room.flywheel.lib.transform.TransformStack;
+import net.createmod.catnip.math.AngleHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -22,6 +23,7 @@ import java.util.function.Function;
 
 public class ExpandedFluidRenderer {
     public static VertexConsumer getFluidBuilder(MultiBufferSource buffer) {
+        //TODO: Not sure of the replacement for this
         return buffer.getBuffer(RenderTypes.getFluid());
     }
 
@@ -48,12 +50,12 @@ public class ExpandedFluidRenderer {
         if (inbound)
             direction = direction.getOpposite();
 
-        TransformStack msr = TransformStack.cast(ms);
+        PoseTransformStack msr = TransformStack.of(ms);
         ms.pushPose();
-        msr.centre()
+        msr.center()
                 .rotateY(AngleHelper.horizontalAngle(direction))
                 .rotateX(direction == Direction.UP ? 180 : direction == Direction.DOWN ? 0 : 270)
-                .unCentre();
+                .uncenter();
         ms.translate(.5, 0, .5);
 
         float h = radius;

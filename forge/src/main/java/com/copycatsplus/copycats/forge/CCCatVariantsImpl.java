@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.forge;
 
 import com.copycatsplus.copycats.CCCatVariants;
-import com.simibubi.create.foundation.utility.Pair;
+import net.createmod.catnip.data.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;

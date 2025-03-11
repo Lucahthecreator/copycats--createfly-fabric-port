@@ -5,7 +5,7 @@ import com.copycatsplus.copycats.config.CCConfigs;
 import com.copycatsplus.copycats.config.CClient;
 import com.copycatsplus.copycats.config.CCommon;
 import com.copycatsplus.copycats.config.SyncConfigBase;
-import com.simibubi.create.foundation.config.ConfigBase;
+import net.createmod.catnip.config.ConfigBase;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
