@@ -9,6 +9,8 @@ architectury {
 }
 
 loom {
+    var common = project(":common")
+    accessWidenerPath = common.loom.accessWidenerPath
 
     runs {
         client {

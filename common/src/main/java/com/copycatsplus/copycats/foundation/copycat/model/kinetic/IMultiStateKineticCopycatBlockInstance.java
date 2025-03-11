@@ -4,6 +4,7 @@ import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopyca
 import com.copycatsplus.copycats.utility.ChatUtils;
 import dev.engine_room.flywheel.api.backend.BackendManager;
 import dev.engine_room.flywheel.backend.Backends;
+import dev.engine_room.flywheel.lib.instance.FlatLit;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import org.jetbrains.annotations.ApiStatus;
@@ -46,7 +47,7 @@ public interface IMultiStateKineticCopycatBlockInstance {
     void updateRotationInternal(RotatingData instance);
 
     @ApiStatus.OverrideOnly
-    void relightInternal(BlockPos pos, FlatLit<?>... models);
+    void relightInternal(BlockPos pos, FlatLit... models);
 
     default void initModel(ICopycatPartialModel model, String property) {
         getRotatingData().put(property, setupInternal(getModel(model, property).createInstance()));
@@ -86,7 +87,7 @@ public interface IMultiStateKineticCopycatBlockInstance {
         }
     }
 
-    default void updateLight() {
+    default void updateLight(float value) {
         for (Map.Entry<String, RotatingData> entry : getRotatingData().entrySet()) {
             relightInternal(getBlockEntity().getBlockPos(), entry.getValue());
         }

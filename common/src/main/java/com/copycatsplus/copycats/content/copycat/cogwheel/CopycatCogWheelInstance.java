@@ -4,20 +4,28 @@ import com.copycatsplus.copycats.CCCopycatPartialModels;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.IMultiStateKineticCopycatBlockInstance;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.KineticCopycatRenderData;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntityRenderer;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
+import dev.engine_room.flywheel.api.instance.Instance;
+import dev.engine_room.flywheel.api.visualization.VisualizationContext;
+import dev.engine_room.flywheel.lib.instance.FlatLit;
 import net.minecraft.core.BlockPos;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.function.Consumer;
 
 //TODO: Fix this as RotatingData is gone and not sure what its been replaced with
-public class CopycatCogWheelInstance extends KineticBlockEntityInstance<BracketedKineticBlockEntity> implements IMultiStateKineticCopycatBlockInstance {
+public class CopycatCogWheelInstance extends KineticBlockEntityVisual<BracketedKineticBlockEntity> implements IMultiStateKineticCopycatBlockInstance {
     protected Map<String, KineticCopycatRenderData> renderData;
     protected Map<String, RotatingData> rotatingData;
+    private float partialTick;
 
-    public CopycatCogWheelInstance(MaterialManager materialManager, BracketedKineticBlockEntity blockEntity) {
-        super(materialManager, blockEntity);
+    public CopycatCogWheelInstance(VisualizationContext context, BracketedKineticBlockEntity blockEntity, float partialTick) {
+        super(context, blockEntity, partialTick);
+        this.partialTick = partialTick;
         initializeData();
     }
 
@@ -52,7 +60,7 @@ public class CopycatCogWheelInstance extends KineticBlockEntityInstance<Brackete
     }
 
     @Override
-    public void relightInternal(BlockPos pos, FlatLit<?>... models) {
+    public void relightInternal(BlockPos pos, FlatLit... models) {
         super.relight(pos, models);
     }
 
@@ -89,15 +97,9 @@ public class CopycatCogWheelInstance extends KineticBlockEntityInstance<Brackete
 
     @Override
     public void update() {
-        super.update();
+        super.update(partialTick);
         IMultiStateKineticCopycatBlockInstance.super.update();
         rotatingData.get(SHAFT_KEY).setRotationOffset(BracketedKineticBlockEntityRenderer.getShaftAngleOffset(axis, pos));
-    }
-
-    @Override
-    public void updateLight() {
-        super.updateLight();
-        IMultiStateKineticCopycatBlockInstance.super.updateLight();
     }
 
     @Override
@@ -108,5 +110,20 @@ public class CopycatCogWheelInstance extends KineticBlockEntityInstance<Brackete
     @Override
     public boolean shouldReset() {
         return IMultiStateKineticCopycatBlockInstance.super.shouldReset();
+    }
+
+    @Override
+    public void collectCrumblingInstances(Consumer<@Nullable Instance> consumer) {
+
+    }
+
+    @Override
+    public void updateLight(float v) {
+        IMultiStateKineticCopycatBlockInstance.super.updateLight(v);
+    }
+
+    @Override
+    protected void _delete() {
+
     }
 }

@@ -13,6 +13,7 @@ import com.copycatsplus.copycats.utility.forge.ModelDataUtils;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.model.BakedModelWrapperWithData;
 import net.createmod.catnip.data.Iterate;
+import net.createmod.catnip.render.VirtualRenderHelper;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -37,7 +38,6 @@ import static com.copycatsplus.copycats.foundation.copycat.CopycatBaseBlock.BASE
 import static com.copycatsplus.copycats.foundation.copycat.model.CopycatModelCore.MATERIAL_KEY;
 import static com.copycatsplus.copycats.foundation.copycat.model.CopycatModelCore.getModelOf;
 
-//TODO: Figure out the replacements for this
 public class CopycatModelForge extends BakedModelWrapperWithData {
 
     public static final ModelProperty<BlockState> MATERIAL_PROPERTY = new ModelProperty<>();
@@ -131,7 +131,7 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
                 ScaledBlockAndTintGetter scaledWorld = new ScaledBlockAndTintGetterForge(s.getKey(), world, pos, inner, multiStateBlock.vectorScale(state), p -> true);
 
                 OcclusionData occlusionData = new OcclusionData();
-                if (!ModelUtil.isVirtual(blockEntityData))
+                if (!VirtualRenderHelper.isVirtual(blockEntityData))
                     gatherOcclusionData(scaledWorld, pos, state, s.getValue(), occlusionData, copycatBlock);
                 occlusionMap.put(s.getKey(), occlusionData);
 
@@ -150,7 +150,7 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
             if (material == null) return builder;
 
             OcclusionData occlusionData = new OcclusionData();
-            if (!ModelUtil.isVirtual(blockEntityData))
+            if (!VirtualRenderHelper.isVirtual(blockEntityData))
                 gatherOcclusionData(world, pos, state, material, occlusionData, copycatBlock);
             Map<String, OcclusionData> occlusionMap = Map.of(
                     MATERIAL_KEY,
@@ -202,7 +202,7 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
         Map<String, BlockState> materials = getMaterials(data);
         Map<String, OcclusionData> occlusionDataMap = getOcclusion(data);
         Map<String, ModelData> wrappedDataMap = getWrappedData(data);
-        final boolean isVirtual = ModelUtil.isVirtual(data);
+        final boolean isVirtual = VirtualRenderHelper.isVirtual(data);
         for (CopycatModelCore.ModelEntry entry : entries) {
             BlockState material = entry.materialMapper().map(state, materials.get(entry.key()));
 
@@ -229,8 +229,8 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
                 if (!model.getRenderTypes(wrappedState, rand, wrappedData).contains(renderType))
                     continue;
             }
-            if (ModelUtil.isVirtual(wrappedData) != isVirtual) {
-                wrappedData = ModelDataUtils.mergeData(wrappedData, ModelUtil.VIRTUAL_DATA).build();
+            if (VirtualRenderHelper.isVirtual(wrappedData) != isVirtual) {
+                wrappedData = ModelDataUtils.mergeData(wrappedData, VirtualRenderHelper.VIRTUAL_DATA).build();
             }
 
             List<CopycatRenderContextForge.CopycatBakedQuad> quads = new ArrayList<>();
