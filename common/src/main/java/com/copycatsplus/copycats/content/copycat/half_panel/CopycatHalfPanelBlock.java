@@ -215,8 +215,7 @@ public class CopycatHalfPanelBlock extends CCWaterloggedCopycatBlock implements 
             for (Direction dir : directions) {
                 int range = AllConfigs.server().equipment.placementAssistRange.get();
                 if (player != null) {
-                    //TODO: Add way to get reach attribute from platform
-                    AttributeInstance reach = null;
+                    AttributeInstance reach = InteractionUtils.getPlayerReach(player);
                     if (reach != null && reach.hasModifier(ExtendoGripItem.singleRangeAttributeModifier))
                         range += 4;
                 }
