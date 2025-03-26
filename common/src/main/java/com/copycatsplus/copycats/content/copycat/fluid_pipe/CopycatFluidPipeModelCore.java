@@ -376,24 +376,49 @@ public class CopycatFluidPipeModelCore extends CopycatModelCore.WithData<Copycat
                 context.assemblePiece(
                         transform,
                         vec3(4, 4, 2),
-                        aabb(4, 4, 2).move(0, 0, 4),
+                        aabb(4, 4, 2).move(0, 0, 0),
                         cull(EAST | UP | SOUTH | NORTH)
                 );
                 context.assemblePiece(
                         transform,
                         vec3(8, 4, 2),
-                        aabb(4, 4, 2).move(12, 0, 4),
+                        aabb(4, 4, 2).move(12, 0, 0),
                         cull(WEST | UP | SOUTH | NORTH)
                 );
                 context.assemblePiece(
                         transform,
                         vec3(4, 8, 2),
-                        aabb(4, 4, 2).move(0, 12, 4),
+                        aabb(4, 4, 2).move(0, 12, 0),
                         cull(EAST | DOWN | SOUTH | NORTH)
                 );
                 context.assemblePiece(
                         transform,
                         vec3(8, 8, 2),
+                        aabb(4, 4, 2).move(12, 12, 0),
+                        cull(WEST | DOWN | SOUTH | NORTH)
+                );
+
+                context.assemblePiece(
+                        transform,
+                        vec3(4, 4, 0),
+                        aabb(4, 4, 2).move(0, 0, 4),
+                        cull(EAST | UP | SOUTH | NORTH)
+                );
+                context.assemblePiece(
+                        transform,
+                        vec3(8, 4, 0),
+                        aabb(4, 4, 2).move(12, 0, 4),
+                        cull(WEST | UP | SOUTH | NORTH)
+                );
+                context.assemblePiece(
+                        transform,
+                        vec3(4, 8, 0),
+                        aabb(4, 4, 2).move(0, 12, 4),
+                        cull(EAST | DOWN | SOUTH | NORTH)
+                );
+                context.assemblePiece(
+                        transform,
+                        vec3(8, 8, 0),
                         aabb(4, 4, 2).move(12, 12, 4),
                         cull(WEST | DOWN | SOUTH | NORTH)
                 );
@@ -453,33 +478,30 @@ public class CopycatFluidPipeModelCore extends CopycatModelCore.WithData<Copycat
     }
 
     public static class PipeModelData {
-        private final FluidTransportBehaviour.AttachmentTypes[] attachments;
+        private final FluidTransportBehaviour.AttachmentTypes[] attachments = new FluidTransportBehaviour.AttachmentTypes[6];
         private boolean encased;
         private BakedModel bracket;
 
         public PipeModelData() {
-            attachments = new FluidTransportBehaviour.AttachmentTypes[6];
-            Arrays.fill(attachments, FluidTransportBehaviour.AttachmentTypes.NONE);
+            Arrays.fill(this.attachments, FluidTransportBehaviour.AttachmentTypes.NONE);
         }
 
         public void putBracket(BlockState state) {
             if (state != null) {
-                this.bracket = Minecraft.getInstance()
-                        .getBlockRenderer()
-                        .getBlockModel(state);
+                this.bracket = Minecraft.getInstance().getBlockRenderer().getBlockModel(state);
             }
         }
 
         public BakedModel getBracket() {
-            return bracket;
+            return this.bracket;
         }
 
         public void putAttachment(Direction face, FluidTransportBehaviour.AttachmentTypes rim) {
-            attachments[face.get3DDataValue()] = rim;
+            this.attachments[face.get3DDataValue()] = rim;
         }
 
         public FluidTransportBehaviour.AttachmentTypes getAttachment(Direction face) {
-            return attachments[face.get3DDataValue()];
+            return this.attachments[face.get3DDataValue()];
         }
 
         public void setEncased(boolean encased) {
@@ -487,7 +509,7 @@ public class CopycatFluidPipeModelCore extends CopycatModelCore.WithData<Copycat
         }
 
         public boolean isEncased() {
-            return encased;
+            return this.encased;
         }
     }
 }
