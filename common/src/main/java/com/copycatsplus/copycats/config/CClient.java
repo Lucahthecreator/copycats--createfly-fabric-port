@@ -1,17 +1,12 @@
 package com.copycatsplus.copycats.config;
 
-import net.minecraftforge.fml.config.ModConfig;
+import net.createmod.catnip.config.ConfigBase;
+import org.jetbrains.annotations.NotNull;
 
-//Should never be synced just did it to allow registration
-public class CClient extends SyncConfigBase {
-
-    @Override
-    protected ModConfig.Type type() {
-        return ModConfig.Type.CLIENT;
-    }
+public class CClient extends ConfigBase {
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "client";
     }
 

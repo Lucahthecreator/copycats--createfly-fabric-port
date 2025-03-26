@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.lib.model.baked.EmptyVirtualBlockGetter;
 import net.createmod.catnip.render.ShadedBlockSbbBuilder;
 import net.createmod.catnip.render.SuperByteBuffer;
+import net.createmod.ponder.render.VirtualRenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -21,7 +22,7 @@ public final class BakedModelWithDataBuilder {
     private BlockState referenceState = Blocks.AIR.defaultBlockState();
     private PoseStack poseStack = new PoseStack();
     private BlockPos renderPos = BlockPos.ZERO;
-    private ModelData data = net.createmod.ponder.render.VirtualRenderHelper.VIRTUAL_DATA;
+    private ModelData data = VirtualRenderHelper.VIRTUAL_DATA;
 
     public BakedModelWithDataBuilder(BakedModel model) {
         this.model = model;

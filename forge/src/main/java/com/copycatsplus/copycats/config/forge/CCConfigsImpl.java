@@ -1,10 +1,7 @@
 package com.copycatsplus.copycats.config.forge;
 
 import com.copycatsplus.copycats.Copycats;
-import com.copycatsplus.copycats.config.CCConfigs;
-import com.copycatsplus.copycats.config.CClient;
-import com.copycatsplus.copycats.config.CCommon;
-import com.copycatsplus.copycats.config.SyncConfigBase;
+import com.copycatsplus.copycats.config.*;
 import net.createmod.catnip.config.ConfigBase;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -37,8 +34,9 @@ public class CCConfigsImpl extends CCConfigs {
         ModLoadingContext context = ModLoadingContext.get();
         client = register(CClient::new, ModConfig.Type.CLIENT);
         common = register(CCommon::new, ModConfig.Type.COMMON);
+        server = register(CServer::new, ModConfig.Type.SERVER);
 
-        for (Map.Entry<ModConfig.Type, SyncConfigBase> pair : CONFIGS.entrySet())
+        for (Map.Entry<ModConfig.Type, ConfigBase> pair : CONFIGS.entrySet())
             context.registerConfig(pair.getKey(), pair.getValue().specification);
     }
 }

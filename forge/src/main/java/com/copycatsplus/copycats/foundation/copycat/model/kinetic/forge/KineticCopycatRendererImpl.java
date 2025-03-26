@@ -5,6 +5,7 @@ import com.copycatsplus.copycats.foundation.copycat.model.kinetic.WrappedRenderW
 import com.copycatsplus.copycats.utility.forge.ModelDataUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.createmod.catnip.render.SuperByteBuffer;
+import net.createmod.ponder.render.VirtualRenderHelper;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.client.model.data.ModelData;
@@ -16,12 +17,12 @@ public class KineticCopycatRendererImpl {
         WrappedRenderWorld renderWorld = new WrappedRenderWorld(be);
         ModelData blockEntityData = ModelDataUtils.mergeData(
                 ((BlockEntity) be).getModelData(),
-                net.createmod.ponder.render.VirtualRenderHelper.VIRTUAL_DATA
+                VirtualRenderHelper.VIRTUAL_DATA
         ).build();
         ModelData renderData = model.getModelData(renderWorld, be.getBlockPos(), be.getBlockState(), blockEntityData);
         ModelData.Builder builder = ModelData.builder();
         ModelDataUtils.copyModelData(renderData, builder);
-        builder.with(net.createmod.ponder.render.VirtualRenderHelper.VIRTUAL_PROPERTY, true);
+        builder.with(VirtualRenderHelper.VIRTUAL_PROPERTY, true);
 
         return new BakedModelWithDataBuilder(model)
                 .withRenderWorld(renderWorld)

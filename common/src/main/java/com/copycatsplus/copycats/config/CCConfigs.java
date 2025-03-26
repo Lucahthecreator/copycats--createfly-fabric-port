@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.config;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.createmod.catnip.config.ConfigBase;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
 import org.apache.commons.lang3.tuple.Pair;
@@ -12,10 +13,11 @@ import java.util.function.Supplier;
 @SuppressWarnings("unused")
 public class CCConfigs {
 
-    public static final Map<ModConfig.Type, SyncConfigBase> CONFIGS = new EnumMap<>(ModConfig.Type.class);
+    public static final Map<ModConfig.Type, ConfigBase> CONFIGS = new EnumMap<>(ModConfig.Type.class);
 
     protected static CClient client;
     protected static CCommon common;
+    protected static CServer server;
 
     public static CClient client() {
         return client;
@@ -23,6 +25,10 @@ public class CCConfigs {
 
     public static CCommon common() {
         return common;
+    }
+
+    public static CServer server() {
+        return server;
     }
 
     public static <T> Supplier<T> safeGetter(Supplier<T> getter, T defaultValue) {
@@ -36,11 +42,11 @@ public class CCConfigs {
         };
     }
 
-    public static SyncConfigBase byType(ModConfig.Type type) {
+    public static ConfigBase byType(ModConfig.Type type) {
         return CONFIGS.get(type);
     }
 
-    public static <T extends SyncConfigBase> T register(Supplier<T> factory, ModConfig.Type side) {
+    public static <T extends ConfigBase> T register(Supplier<T> factory, ModConfig.Type side) {
         Pair<T, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(builder -> {
             T config = factory.get();
             config.registerAll(builder);
