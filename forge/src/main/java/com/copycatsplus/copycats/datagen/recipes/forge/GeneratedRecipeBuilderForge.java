@@ -5,7 +5,6 @@ import com.copycatsplus.copycats.datagen.recipes.gen.CopycatsRecipeProvider;
 import com.copycatsplus.copycats.datagen.recipes.gen.GeneratedRecipeBuilder;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.createmod.catnip.platform.CatnipServices;
-import net.createmod.catnip.platform.services.RegisteredObjectsHelper;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;

@@ -7,15 +7,12 @@ import com.copycatsplus.copycats.content.copycat.stacked_half_layer.CopycatStack
 import com.copycatsplus.copycats.content.copycat.vertical_half_layer.CopycatVerticalHalfLayerBlock;
 import com.copycatsplus.copycats.foundation.copycat.CopycatTransformableState;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
-import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
-import com.copycatsplus.copycats.foundation.copycat.model.ScaledBlockAndTintGetter;
 import com.copycatsplus.copycats.foundation.copycat.multistate.MaterialItemStorage;
 import com.copycatsplus.copycats.foundation.copycat.multistate.WaterloggedMultiStateCopycatBlock;
 import com.copycatsplus.copycats.utility.BlockFaceUtils;
 import com.copycatsplus.copycats.utility.BlockUtils;
 import com.google.common.collect.ImmutableMap;
-import com.mojang.math.OctahedralGroup;
 import com.simibubi.create.api.schematic.requirement.SpecialBlockItemRequirement;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
@@ -30,12 +27,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -53,10 +47,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
-import java.util.function.Function;
 
 import static net.minecraft.core.Direction.Axis;
-import static net.minecraft.core.Direction.AxisDirection;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault

@@ -4,8 +4,6 @@ import com.copycatsplus.copycats.CCBlockStateProperties.Side;
 import com.copycatsplus.copycats.CCBlockStateProperties.VerticalStairShape;
 import com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLayerBlock;
 import com.copycatsplus.copycats.content.copycat.half_panel.CopycatHalfPanelBlock;
-import com.copycatsplus.copycats.content.copycat.stacked_half_layer.CopycatStackedHalfLayerBlock;
-import com.copycatsplus.copycats.content.copycat.vertical_half_layer.CopycatVerticalHalfLayerBlock;
 import com.copycatsplus.copycats.content.copycat.vertical_stairs.CopycatVerticalStairBlock;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.AssemblyTransform;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.MutableAABB;

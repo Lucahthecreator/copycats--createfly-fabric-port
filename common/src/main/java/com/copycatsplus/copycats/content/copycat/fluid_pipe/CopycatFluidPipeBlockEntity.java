@@ -1,7 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.fluid_pipe;
 
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
-import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;

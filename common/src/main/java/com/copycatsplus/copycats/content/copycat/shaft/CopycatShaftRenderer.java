@@ -3,11 +3,9 @@ package com.copycatsplus.copycats.content.copycat.shaft;
 import com.copycatsplus.copycats.CCCopycatPartialModels;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.IKineticCopycatBlockRenderer;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntityRenderer;
 import net.createmod.catnip.render.SuperByteBuffer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -19,10 +17,5 @@ public class CopycatShaftRenderer extends BracketedKineticBlockEntityRenderer im
     @Override
     protected SuperByteBuffer getRotatedModel(BracketedKineticBlockEntity be, BlockState state) {
         return IKineticCopycatBlockRenderer.super.getRotatedModel(CCCopycatPartialModels.SHAFT, (ICopycatBlockEntity) be);
-    }
-
-    @Override
-    public void render(BracketedKineticBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-        //TODO: Not sure what to place in here!
     }
 }

@@ -2,7 +2,6 @@ package com.copycatsplus.copycats.content.copycat.stacked_half_layer;
 
 import com.copycatsplus.copycats.CCShapes;
 import com.copycatsplus.copycats.Copycats;
-import com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLayerBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.WaterloggedMultiStateCopycatBlock;
@@ -30,7 +29,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
@@ -42,7 +40,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLayerBlock.*;
 

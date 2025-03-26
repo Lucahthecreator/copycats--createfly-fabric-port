@@ -17,7 +17,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoorHingeSide;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.Vec3;
 
 public class CopycatSlidingDoorRenderer extends SafeBlockEntityRenderer<CopycatSlidingDoorBlockEntity> implements IKineticCopycatBlockRenderer {
@@ -79,10 +78,5 @@ public class CopycatSlidingDoorRenderer extends SafeBlockEntityRenderer<CopycatS
                     .light(light)
                     .renderInto(ms, vb);
         }
-    }
-
-    @Override
-    public void render(CopycatSlidingDoorBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-        this.renderSafe(blockEntity, partialTick, poseStack, buffer, packedLight, packedOverlay);
     }
 }

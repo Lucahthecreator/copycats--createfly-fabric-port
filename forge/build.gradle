@@ -53,10 +53,10 @@ dependencies {
 
     // Create and its dependencies
     modImplementation("com.simibubi.create:create-${minecraft_version}:${create_forge_version}:slim") { transitive = false }
-    modImplementation("com.tterrag.registrate:Registrate:${registrate_forge_version}") {transitive = false}
+    modImplementation("com.tterrag.registrate:Registrate:${registrate_forge_version}")
     modImplementation("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_forge_version}")
-    modImplementation("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}") { transitive = false}
-    modImplementation("net.createmod.catnip:Catnip-Forge-${minecraft_version}:${catnip_version}")
+    compileOnly("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_forge_version}")
+    modImplementation("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}")
 
     modLocalRuntime("curse.maven:jade-324717:${jade_forge_curse_id}")
     modLocalRuntime("mezz.jei:jei-${minecraft_version}-forge:${jei_forge_version}")

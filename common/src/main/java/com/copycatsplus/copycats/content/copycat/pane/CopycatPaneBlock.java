@@ -129,9 +129,4 @@ public class CopycatPaneBlock extends ConnectedGlassPaneBlock implements ICopyca
     public BlockEntityType<? extends CCCopycatBlockEntity> getBlockEntityType() {
         return CCBlockEntityTypes.COPYCAT.get();
     }
-
-    @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return getBlockEntityType().create(pos, state);
-    }
 }

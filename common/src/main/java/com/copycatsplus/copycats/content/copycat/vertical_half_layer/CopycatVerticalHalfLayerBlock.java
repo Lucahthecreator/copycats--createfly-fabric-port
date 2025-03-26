@@ -2,7 +2,6 @@ package com.copycatsplus.copycats.content.copycat.vertical_half_layer;
 
 import com.copycatsplus.copycats.CCShapes;
 import com.copycatsplus.copycats.Copycats;
-import com.copycatsplus.copycats.content.copycat.stacked_half_layer.CopycatStackedHalfLayerBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.WaterloggedMultiStateCopycatBlock;
