@@ -2,7 +2,6 @@ package com.copycatsplus.copycats;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -39,11 +38,6 @@ public enum CCKeys {
         return keybind.getTranslatedKeyMessage()
                 .getString()
                 .toUpperCase();
-    }
-
-    public int getBoundCode() {
-        return KeyBindingHelper.getBoundKeyOf(keybind)
-                .getValue();
     }
 
     public static boolean isKeyDown(int key) {

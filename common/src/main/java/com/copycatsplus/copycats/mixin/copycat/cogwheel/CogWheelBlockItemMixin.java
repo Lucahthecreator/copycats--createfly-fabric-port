@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 /**
  * Skip the placement helper in cogwheels if the player is trying to fill a copycat cogwheel
  */
-@Mixin(value = CogwheelBlockItem.class, priority = 1200)
+@Mixin(value = CogwheelBlockItem.class, priority = 1200, remap = false)
 // Use a higher priority because this may be overwritten by other mods
 public class CogWheelBlockItemMixin {
     @Inject(

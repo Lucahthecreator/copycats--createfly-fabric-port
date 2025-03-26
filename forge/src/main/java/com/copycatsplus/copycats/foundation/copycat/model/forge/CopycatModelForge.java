@@ -13,7 +13,7 @@ import com.copycatsplus.copycats.utility.forge.ModelDataUtils;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.model.BakedModelWrapperWithData;
 import net.createmod.catnip.data.Iterate;
-import net.createmod.catnip.render.VirtualRenderHelper;
+import net.createmod.ponder.render.VirtualRenderHelper;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

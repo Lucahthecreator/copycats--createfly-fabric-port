@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 /**
  * Migrate copycat block entities to multi-state copycat block entities when loading contraptions.
  */
-@Mixin(Contraption.class)
+@Mixin(value = Contraption.class, remap = false)
 public class ContraptionMixin {
     @Inject(
             method = "readStructureBlockInfo",

@@ -19,7 +19,7 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 /**
  * Force the schematicannon to place both the upper and lower halves of copycat doors
  */
-@Mixin(SchematicannonBlockEntity.class)
+@Mixin(value = SchematicannonBlockEntity.class, remap = false)
 public class SchematicannonBlockEntityMixin {
     @Inject(
             method = "shouldIgnoreBlockState",

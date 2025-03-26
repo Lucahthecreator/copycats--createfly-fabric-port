@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 /**
  * Add CT toggle to Create's {@link CopycatPanelBlock}.
  */
-@Mixin(CopycatPanelBlock.class)
+@Mixin(value = CopycatPanelBlock.class, remap = false)
 public abstract class CopycatPanelBlockMixin extends WaterloggedCopycatBlock implements ICopycatBlock {
     public CopycatPanelBlockMixin(Properties pProperties) {
         super(pProperties);

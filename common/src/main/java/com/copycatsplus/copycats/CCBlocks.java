@@ -87,7 +87,6 @@ import com.copycatsplus.copycats.foundation.tooltip.CopycatCharacteristics;
 import com.copycatsplus.copycats.foundation.tooltip.CopycatDescription;
 import com.copycatsplus.copycats.utility.Platform;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.api.contraption.BlockMovementChecks;
 import com.simibubi.create.content.contraptions.behaviour.DoorMovingInteraction;
 import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorMovementBehaviour;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;

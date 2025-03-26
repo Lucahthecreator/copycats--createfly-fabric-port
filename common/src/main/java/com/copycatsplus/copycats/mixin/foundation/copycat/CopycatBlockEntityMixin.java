@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * <p>
  * Also implement {@link ICopycatBlockEntity} to unify instanceof checks.
  */
-@Mixin(value = CopycatBlockEntity.class)
+@Mixin(value = CopycatBlockEntity.class, remap = false)
 public abstract class CopycatBlockEntityMixin extends SmartBlockEntity implements ICopycatBlockEntity {
     @Shadow
     private BlockState material;

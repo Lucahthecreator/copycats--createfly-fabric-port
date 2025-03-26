@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * Rubidium compatible version of {@link com.copycatsplus.copycats.mixin.foundation.copycat.multistate.ModelBlockRendererMixin}.
  */
 @ModMixin(requiredMods = {Mods.RUBIDIUM, Mods.SODIUM})
-@Mixin(BlockRenderer.class)
+@Mixin(value = BlockRenderer.class, remap = false)
 @Pseudo
 public class BlockRendererMixin {
     @Inject(

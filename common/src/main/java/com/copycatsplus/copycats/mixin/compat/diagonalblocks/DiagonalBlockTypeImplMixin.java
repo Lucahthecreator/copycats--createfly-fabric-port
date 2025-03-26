@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @ModMixin(requiredMods = {Mods.DIAGONAL_WALLS, Mods.DIAGONAL_FENCES, Mods.DIAGONAL_WINDOWS})
-@Mixin(DiagonalBlockTypeImpl.class)
+@Mixin(value = DiagonalBlockTypeImpl.class, remap = false)
 public class DiagonalBlockTypeImplMixin {
 
     @Inject(method = "isTarget", at = @At("HEAD"), cancellable = true)

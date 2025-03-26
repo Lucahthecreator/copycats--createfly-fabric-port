@@ -24,7 +24,7 @@ import java.util.Optional;
 /**
  * Implementation for {@link ICustomCTBlocking}.
  */
-@Mixin(value = ConnectedTextureBehaviour.class)
+@Mixin(value = ConnectedTextureBehaviour.class, remap = false)
 public class ConnectedTextureBehaviourMixin {
     @Inject(
             at = @At("HEAD"),
