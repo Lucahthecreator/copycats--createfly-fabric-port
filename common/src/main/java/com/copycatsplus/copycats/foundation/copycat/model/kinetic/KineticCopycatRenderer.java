@@ -11,7 +11,6 @@ import net.minecraft.client.resources.model.BakedModel;
 /**
  * Helper class to render kinetic copycat models.
  */
-//TODO: Figure out the changes in here
 public class KineticCopycatRenderer {
     public static final SuperByteBufferCache.Compartment<KineticCopycatRenderData> KINETIC_COPYCAT = new SuperByteBufferCache.Compartment<>();
 

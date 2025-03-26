@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.cogwheel;
 
 import com.copycatsplus.copycats.CCCopycatPartialModels;
+import com.copycatsplus.copycats.foundation.copycat.model.kinetic.KineticCopycatRenderData;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual;
 import com.simibubi.create.content.kinetics.base.RotatingInstance;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
@@ -20,16 +21,26 @@ public class CopycatCogWheelInstance extends KineticBlockEntityVisual<CopycatCog
     }
 
     /**
-     * @param from  The source model orientation to rotate away from.
+     * @param from The source model orientation to rotate away from.
      */
     public CopycatCogWheelInstance(VisualizationContext context, CopycatCogWheelBlockEntity blockEntity, float partialTick, Direction from) {
         super(context, blockEntity, partialTick);
-        rotatingShaft = instancerProvider().instancer(AllInstanceTypes.ROTATING, CCCopycatPartialModels.SHAFT.getSimpleModel())
+        rotatingShaft = instancerProvider()
+                .instancer(AllInstanceTypes.ROTATING, CCCopycatPartialModels.getSimpleModel(KineticCopycatRenderData.of(
+                        CCCopycatPartialModels.SHAFT,
+                        blockEntity,
+                        CopycatCogWheelBlock.Part.SHAFT.getSerializedName()
+                )))
                 .createInstance()
                 .rotateToFace(from, rotationAxis())
                 .setup(blockEntity)
                 .setPosition(getVisualPosition());
-        rotatingCogwheel = instancerProvider().instancer(AllInstanceTypes.ROTATING, ICogWheel.isLargeCog(blockEntity.getBlockState()) ? CCCopycatPartialModels.LARGE_COGWHEEL.getSimpleModel() : CCCopycatPartialModels.COGWHEEL.getSimpleModel())
+        rotatingCogwheel = instancerProvider()
+                .instancer(AllInstanceTypes.ROTATING, CCCopycatPartialModels.getSimpleModel(KineticCopycatRenderData.of(
+                        ICogWheel.isLargeCog(blockEntity.getBlockState()) ? CCCopycatPartialModels.LARGE_COGWHEEL : CCCopycatPartialModels.COGWHEEL,
+                        blockEntity,
+                        CopycatCogWheelBlock.Part.COGWHEEL.getSerializedName()
+                )))
                 .createInstance()
                 .rotateToFace(from, rotationAxis())
                 .setup(blockEntity)

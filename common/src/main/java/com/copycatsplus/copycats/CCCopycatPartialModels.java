@@ -58,9 +58,9 @@ public enum CCCopycatPartialModels implements ICopycatPartialModel {
         return properties;
     }
 
-    private static final RendererReloadCache<CCCopycatPartialModels, Model> FLYWHEEL = new RendererReloadCache<>((it) -> BakedModelBuilder.create(it.getModel()).build());
+    private static final RendererReloadCache<KineticCopycatRenderData, Model> FLYWHEEL = new RendererReloadCache<>((it) -> BakedModelBuilder.create(it.partialModel().getModel()).build());
 
-    public Model getSimpleModel() {
-        return FLYWHEEL.get(this);
+    public static Model getSimpleModel(KineticCopycatRenderData renderData) {
+        return FLYWHEEL.get(renderData);
     }
 }
