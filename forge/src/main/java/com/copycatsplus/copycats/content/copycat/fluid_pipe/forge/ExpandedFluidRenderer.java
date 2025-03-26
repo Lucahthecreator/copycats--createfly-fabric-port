@@ -7,6 +7,7 @@ import com.simibubi.create.foundation.fluid.FluidRenderer;
 import dev.engine_room.flywheel.lib.transform.PoseTransformStack;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
 import net.createmod.catnip.math.AngleHelper;
+import net.createmod.catnip.render.PonderRenderTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -23,7 +24,7 @@ import java.util.function.Function;
 
 public class ExpandedFluidRenderer {
     public static VertexConsumer getFluidBuilder(MultiBufferSource buffer) {
-        return buffer.getBuffer(CCRenderTypes.FLUID);
+        return buffer.getBuffer(PonderRenderTypes.fluid());
     }
 
     public static void renderFluidStream(FluidStack fluidStack, Direction direction, float radius, float progress, float centerOffset,
@@ -36,27 +37,21 @@ public class ExpandedFluidRenderer {
         Fluid fluid = fluidStack.getFluid();
         IClientFluidTypeExtensions clientFluid = IClientFluidTypeExtensions.of(fluid);
         FluidType fluidAttributes = fluid.getFluidType();
-        Function<ResourceLocation, TextureAtlasSprite> spriteAtlas = Minecraft.getInstance()
-                .getTextureAtlas(InventoryMenu.BLOCK_ATLAS);
+        Function<ResourceLocation, TextureAtlasSprite> spriteAtlas = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS);
         TextureAtlasSprite flowTexture = spriteAtlas.apply(clientFluid.getFlowingTexture(fluidStack));
         TextureAtlasSprite stillTexture = spriteAtlas.apply(clientFluid.getStillTexture(fluidStack));
-
         int color = clientFluid.getTintColor(fluidStack);
-        int blockLightIn = (light >> 4) & 0xF;
+        int blockLightIn = light >> 4 & 15;
         int luminosity = Math.max(blockLightIn, fluidAttributes.getLightLevel(fluidStack));
-        light = (light & 0xF00000) | luminosity << 4;
-
-        if (inbound)
+        light = light & 15728640 | luminosity << 4;
+        if (inbound) {
             direction = direction.getOpposite();
+        }
 
         PoseTransformStack msr = TransformStack.of(ms);
         ms.pushPose();
-        msr.center()
-                .rotateY(AngleHelper.horizontalAngle(direction))
-                .rotateX(direction == Direction.UP ? 180 : direction == Direction.DOWN ? 0 : 270)
-                .uncenter();
-        ms.translate(.5, 0, .5);
-
+        msr.center().rotateYDegrees(AngleHelper.horizontalAngle(direction)).rotateXDegrees(direction == Direction.UP ? 180.0F : (direction == Direction.DOWN ? 0.0F : 270.0F)).uncenter();
+        ms.translate(0.5F, 0.0F, (double) 0.5F);
         float h = radius;
         float hMin = -radius;
         float hMax = radius;
@@ -64,15 +59,16 @@ public class ExpandedFluidRenderer {
         float yMin = y - Mth.clamp(progress * (.5f + centerOffset), 0, 1);
         float yMax = y;
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; ++i) {
             ms.pushPose();
             FluidRenderer.renderFlowingTiledFace(Direction.SOUTH, hMin, yMin, hMax, yMax, h, builder, ms, light, color, flowTexture);
             ms.popPose();
-            msr.rotateY(90);
+            msr.rotateYDegrees(90.0F);
         }
 
-        if (progress != 1)
+        if (progress != 1.0F) {
             FluidRenderer.renderStillTiledFace(Direction.DOWN, hMin, hMin, hMax, hMax, yMin, builder, ms, light, color, stillTexture);
+        }
 
         ms.popPose();
     }

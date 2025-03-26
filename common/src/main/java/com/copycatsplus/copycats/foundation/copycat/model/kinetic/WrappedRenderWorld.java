@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.foundation.copycat.model.kinetic;
 
 
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
-import dev.engine_room.flywheel.lib.model.baked.EmptyVirtualBlockGetter;
+import dev.engine_room.flywheel.lib.model.baked.VirtualBlockGetter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.BlockPos;
@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
  * A virtual world to render the kinetic copycat models in.
  */
 @ApiStatus.Internal
-public class WrappedRenderWorld extends EmptyVirtualBlockGetter {
+public class WrappedRenderWorld extends VirtualBlockGetter {
     protected final BlockAndTintGetter level;
     protected final BlockPos targetPos;
     protected final LevelLightEngine lightEngine;
