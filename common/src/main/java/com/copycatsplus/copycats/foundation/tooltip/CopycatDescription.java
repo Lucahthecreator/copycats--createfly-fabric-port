@@ -8,7 +8,6 @@ import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.createmod.catnip.data.Iterate;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.lang.FontHelper;
-import net.createmod.catnip.utility.lang.Components;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
@@ -72,14 +71,14 @@ public class CopycatDescription {
                 .split("\\$");
         MutableComponent keyShift = CCLang.translateDirect("tooltip.keyShift");
         for (boolean shift : Iterate.falseAndTrue) {
-            MutableComponent tabBuilder = Components.empty();
-            tabBuilder.append(Components.literal(holdDesc[0]).withStyle(DARK_GRAY));
+            MutableComponent tabBuilder = Component.empty();
+            tabBuilder.append(Component.literal(holdDesc[0]).withStyle(DARK_GRAY));
             tabBuilder.append(keyShift.plainCopy()
                     .withStyle(shift ? WHITE : GRAY));
             if (holdDesc.length > 1)
-                tabBuilder.append(Components.literal(holdDesc[1]).withStyle(DARK_GRAY));
+                tabBuilder.append(Component.literal(holdDesc[1]).withStyle(DARK_GRAY));
             (shift ? longDescription : shortDescription).add(0, tabBuilder);
-            (shift ? longDescription : shortDescription).add(1, Components.immutableEmpty());
+            (shift ? longDescription : shortDescription).add(1, Component.empty());
         }
     }
 
@@ -123,7 +122,7 @@ public class CopycatDescription {
                 continue;
 
             descriptions.put(characteristics, Pair.of(
-                    List.of(Components.literal("- " + cachedLanguage.getOrDefault(titleKey)).withStyle(GRAY)),
+                    List.of(Component.literal("- " + cachedLanguage.getOrDefault(titleKey)).withStyle(GRAY)),
                     TooltipHelper.cutStringTextComponent(String.format(cachedLanguage.getOrDefault(descKey), cachedArgs.get(characteristics.getSerializedName()).toArray()), FontHelper.Palette.STANDARD_CREATE)
             ));
         }

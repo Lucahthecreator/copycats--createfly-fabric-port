@@ -9,6 +9,9 @@ import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatLargeCogWheelMo
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.ICopycatPartialModel;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftModelCore;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.KineticCopycatRenderData;
+import dev.engine_room.flywheel.api.model.Model;
+import dev.engine_room.flywheel.lib.model.baked.BakedModelBuilder;
+import dev.engine_room.flywheel.lib.util.RendererReloadCache;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
@@ -53,5 +56,11 @@ public enum CCCopycatPartialModels implements ICopycatPartialModel {
     @Override
     public Property<?>[] getProperties() {
         return properties;
+    }
+
+    private static final RendererReloadCache<CCCopycatPartialModels, Model> FLYWHEEL = new RendererReloadCache<>((it) -> BakedModelBuilder.create(it.getModel()).build());
+
+    public Model getSimpleModel() {
+        return FLYWHEEL.get(this);
     }
 }
