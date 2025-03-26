@@ -44,13 +44,6 @@ public record KineticCopycatRenderData(ICopycatPartialModel partialModel, Partia
     }
 
     private static KineticCopycatRenderData of(ICopycatPartialModel partialModel, ICopycatBlockEntity be, BlockState material) {
-        if (BackendManager.currentBackend() != Backends.INSTANCING &&
-                Minecraft.getInstance().getBlockColors().getColor(material, null, null, 0) != -1) {
-            ChatUtils.sendWarningOnce(
-                    "flywheel_block_color",
-                    "Block colors may be incorrect due to the current Flywheel rendering backend. Please switch to the instancing backend to fix this."
-            );
-        }
         return new KineticCopycatRenderData(partialModel, PartialModelState.fromBlockState(be.getBlockState(), partialModel.getProperties()), material);
     }
 }

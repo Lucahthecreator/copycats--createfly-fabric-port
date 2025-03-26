@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.foundation.copycat.model.kinetic.forge;
 
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
-import com.copycatsplus.copycats.foundation.copycat.model.kinetic.WrappedRenderWorld;
+import com.copycatsplus.copycats.foundation.copycat.model.kinetic.NonInstancedRenderWorld;
 import com.copycatsplus.copycats.utility.forge.ModelDataUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.createmod.catnip.render.SuperByteBuffer;
@@ -14,7 +14,7 @@ import net.minecraftforge.client.model.data.ModelData;
 public class KineticCopycatRendererImpl {
 
     public static SuperByteBuffer getCopycatBuffer(BakedModel model, ICopycatBlockEntity be, PoseStack ms) {
-        WrappedRenderWorld renderWorld = new WrappedRenderWorld(be);
+        NonInstancedRenderWorld renderWorld = new NonInstancedRenderWorld(be);
         ModelData blockEntityData = ModelDataUtils.mergeData(
                 ((BlockEntity) be).getModelData(),
                 VirtualRenderHelper.VIRTUAL_DATA

@@ -1,8 +1,8 @@
 package com.copycatsplus.copycats.foundation.tooltip;
 
-import com.copycatsplus.copycats.CCLang;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.TooltipModifier;
+import com.simibubi.create.foundation.utility.CreateLang;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.createmod.catnip.data.Iterate;
@@ -66,10 +66,10 @@ public class CopycatDescription {
             longDescription.addAll(pair.getSecond());
         }
 
-        String[] holdDesc = CCLang.translateDirect("tooltip.holdForDescription", "$")
+        String[] holdDesc = CreateLang.translateDirect("tooltip.holdForDescription", "$")
                 .getString()
                 .split("\\$");
-        MutableComponent keyShift = CCLang.translateDirect("tooltip.keyShift");
+        MutableComponent keyShift = CreateLang.translateDirect("tooltip.keyShift");
         for (boolean shift : Iterate.falseAndTrue) {
             MutableComponent tabBuilder = Component.empty();
             tabBuilder.append(Component.literal(holdDesc[0]).withStyle(DARK_GRAY));

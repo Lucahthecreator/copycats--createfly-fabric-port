@@ -1,8 +1,7 @@
 package com.copycatsplus.copycats.foundation.copycat.model.kinetic.fabric;
 
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
-import com.copycatsplus.copycats.foundation.copycat.model.kinetic.WrappedRenderWorld;
-import com.jozufozu.flywheel.core.model.ShadeSeparatedBufferedData;
+import com.copycatsplus.copycats.foundation.copycat.model.kinetic.NonInstancedRenderWorld;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.createmod.catnip.render.SuperByteBuffer;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachedBlockView;
@@ -14,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 public class KineticCopycatRendererImpl {
     public static SuperByteBuffer getCopycatBuffer(BakedModel model, ICopycatBlockEntity be, PoseStack ms) {
         return new BakedModelWithDataBuilder(model)
-                .withRenderWorld(new WrappedRenderWorldFabric(be))
+                .withRenderWorld(new NonInstancedRenderWorldFabric(be))
                 .withRenderPos(be.getBlockPos())
                 .withReferenceState(be.getBlockState())
                 .withPoseStack(ms)
@@ -22,8 +21,8 @@ public class KineticCopycatRendererImpl {
     }
 
     @SuppressWarnings("deprecation")
-    private static class WrappedRenderWorldFabric extends WrappedRenderWorld implements RenderAttachedBlockView {
-        public WrappedRenderWorldFabric(ICopycatBlockEntity be) {
+    private static class NonInstancedRenderWorldFabric extends NonInstancedRenderWorld implements RenderAttachedBlockView {
+        public NonInstancedRenderWorldFabric(ICopycatBlockEntity be) {
             super(be);
         }
 

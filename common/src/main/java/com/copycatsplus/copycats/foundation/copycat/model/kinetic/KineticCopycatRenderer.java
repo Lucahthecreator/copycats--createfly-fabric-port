@@ -5,6 +5,8 @@ import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import dev.engine_room.flywheel.api.model.Model;
+import dev.engine_room.flywheel.lib.model.baked.BakedModelBuilder;
 import net.createmod.catnip.render.*;
 import net.minecraft.client.resources.model.BakedModel;
 
@@ -26,6 +28,11 @@ public class KineticCopycatRenderer {
                 KineticCopycatRenderData.of(partialModel, be, property),
                 () -> copycatRender(partialModel, be)
         );
+    }
+
+    public static Model getInstancedModel(KineticCopycatRenderData renderData) {
+
+        return BakedModelBuilder.create(renderData.partialModel().getModel()).build();
     }
 
     public static SuperByteBuffer copycatRender(ICopycatPartialModel partialModel, ICopycatBlockEntity be) {
