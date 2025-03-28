@@ -2,6 +2,7 @@ package com.copycatsplus.copycats.content.copycat.cogwheel;
 
 import com.copycatsplus.copycats.CCCopycatPartialModels;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
+import com.copycatsplus.copycats.foundation.copycat.model.kinetic.CopycatRotatingInstance;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.ICopycatPartialModel;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.KineticCopycatRenderData;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.KineticCopycatRenderer;
@@ -68,14 +69,14 @@ public class CopycatCogWheelInstance extends KineticBlockEntityVisual<CopycatCog
 
     private void addModel(String key) {
         CopycatRotatingInstance newInstance = createModel(key);
-        newInstance.rotatingInstance.setChanged();
+        newInstance.rotatingInstance().setChanged();
         rotatingModels.put(key, newInstance);
     }
 
     @Override
     public void update(float pt) {
         for (Map.Entry<String, CopycatRotatingInstance> entry : rotatingModels.entrySet()) {
-            KineticCopycatRenderData renderData = entry.getValue().renderData;
+            KineticCopycatRenderData renderData = entry.getValue().renderData();
             if (!renderData.state().equalsState(blockEntity.getBlockState()) || !renderData.material().equals(blockEntity.getMaterialItemStorage().getMaterialItem(entry.getKey()).material())) {
                 entry.getValue().rotatingInstance().delete();
                 CopycatRotatingInstance newInstance = createModel(entry.getKey());
@@ -100,12 +101,5 @@ public class CopycatCogWheelInstance extends KineticBlockEntityVisual<CopycatCog
     @Override
     public void collectCrumblingInstances(Consumer<Instance> consumer) {
         rotatingModels.forEach((k, v) -> consumer.accept(v.rotatingInstance()));
-    }
-
-    public static record CopycatRotatingInstance(KineticCopycatRenderData renderData,
-                                                 RotatingInstance rotatingInstance) {
-        public static CopycatRotatingInstance of(KineticCopycatRenderData renderData, RotatingInstance rotatingInstance) {
-            return new CopycatRotatingInstance(renderData, rotatingInstance);
-        }
     }
 }
