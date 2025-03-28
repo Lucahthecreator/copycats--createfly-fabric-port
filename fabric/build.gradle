@@ -9,9 +9,6 @@ architectury {
 }
 
 loom {
-    var common = project(":common")
-    accessWidenerPath = common.loom.accessWidenerPath
-
     runs {
         client {
             vmArg "-XX:+AllowEnhancedClassRedefinition"
@@ -92,7 +89,6 @@ shadowJar {
 }
 
 remapJar {
-    injectAccessWidener = true
     inputFile.set(shadowJar.archiveFile)
     dependsOn shadowJar
     archiveClassifier = null

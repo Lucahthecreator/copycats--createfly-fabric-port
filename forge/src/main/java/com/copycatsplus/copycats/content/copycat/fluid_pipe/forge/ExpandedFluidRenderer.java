@@ -1,6 +1,5 @@
 package com.copycatsplus.copycats.content.copycat.fluid_pipe.forge;
 
-import com.copycatsplus.copycats.CCRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.simibubi.create.foundation.fluid.FluidRenderer;
