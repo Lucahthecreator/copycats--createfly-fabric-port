@@ -29,13 +29,13 @@ import org.jetbrains.annotations.Nullable;
  * A virtual world to render the kinetic copycat models in.
  */
 @ApiStatus.Internal
-public class NonInstancedRenderWorld extends VirtualBlockGetter {
+public class WrappedRenderWorld extends VirtualBlockGetter {
     protected final BlockAndTintGetter level;
     protected final BlockPos targetPos;
     protected final LevelLightEngine lightEngine;
     protected final BlockState material;
 
-    public NonInstancedRenderWorld(ICopycatBlockEntity be) {
+    public WrappedRenderWorld(ICopycatBlockEntity be) {
         super(p -> 15, p -> 15);
         this.level = be.getLevel();
         this.targetPos = be.getBlockPos();
@@ -49,7 +49,7 @@ public class NonInstancedRenderWorld extends VirtualBlockGetter {
 
             @Override
             public @NotNull BlockGetter getLevel() {
-                return NonInstancedRenderWorld.this;
+                return WrappedRenderWorld.this;
             }
         }, false, false) {
             private final LayerLightEventListener blockListener = createStaticListener(15);

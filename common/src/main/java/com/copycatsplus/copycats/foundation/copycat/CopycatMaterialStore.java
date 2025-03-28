@@ -3,7 +3,7 @@ package com.copycatsplus.copycats.foundation.copycat;
 import com.copycatsplus.copycats.compat.FlywheelCompat;
 import com.copycatsplus.copycats.compat.Mods;
 import com.copycatsplus.copycats.compat.SodiumCompat;
-import com.copycatsplus.copycats.foundation.copycat.model.kinetic.NonInstancedRenderWorld;
+import com.copycatsplus.copycats.foundation.copycat.model.kinetic.WrappedRenderWorld;
 import com.copycatsplus.copycats.utility.Platform;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
@@ -45,7 +45,7 @@ public class CopycatMaterialStore {
     }
 
     private static CopycatMaterialStore get(BlockGetter level) {
-        if (Platform.Environment.CLIENT.isCurrent() && level instanceof NonInstancedRenderWorld wrapped) {
+        if (Platform.Environment.CLIENT.isCurrent() && level instanceof WrappedRenderWorld wrapped) {
             level = wrapped.getLevel();
         }
         if (Platform.Environment.CLIENT.isCurrent() && Mods.SODIUM.getLoaded()) {

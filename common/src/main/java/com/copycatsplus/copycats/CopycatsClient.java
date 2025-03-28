@@ -15,6 +15,7 @@ public class CopycatsClient {
         CCPackets.PACKETS.registerS2CListener();
         CCKeys.register();
         BUFFER_CACHE.registerCompartment(KineticCopycatRenderer.KINETIC_COPYCAT, 60);
+
     }
 
     public static void invalidateCaches() {

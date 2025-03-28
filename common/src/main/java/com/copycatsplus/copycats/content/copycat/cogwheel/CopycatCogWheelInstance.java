@@ -1,7 +1,9 @@
 package com.copycatsplus.copycats.content.copycat.cogwheel;
 
 import com.copycatsplus.copycats.CCCopycatPartialModels;
+import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.KineticCopycatRenderData;
+import com.copycatsplus.copycats.foundation.copycat.model.kinetic.KineticCopycatRenderer;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual;
 import com.simibubi.create.content.kinetics.base.RotatingInstance;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
@@ -17,7 +19,13 @@ public class CopycatCogWheelInstance extends KineticBlockEntityVisual<CopycatCog
     protected final RotatingInstance rotatingCogwheel;
 
     public CopycatCogWheelInstance(VisualizationContext context, CopycatCogWheelBlockEntity blockEntity, float partialTick) {
-        this(context, blockEntity, partialTick, Direction.UP);
+        this(
+                context, blockEntity, partialTick,
+                Direction.fromAxisAndDirection(
+                        blockEntity.getBlockState().getValue(CopycatShaftBlock.AXIS),
+                        Direction.AxisDirection.POSITIVE
+                )
+        );
     }
 
     /**
@@ -26,21 +34,21 @@ public class CopycatCogWheelInstance extends KineticBlockEntityVisual<CopycatCog
     public CopycatCogWheelInstance(VisualizationContext context, CopycatCogWheelBlockEntity blockEntity, float partialTick, Direction from) {
         super(context, blockEntity, partialTick);
         rotatingShaft = instancerProvider()
-                .instancer(AllInstanceTypes.ROTATING, CCCopycatPartialModels.getSimpleModel(KineticCopycatRenderData.of(
+                .instancer(AllInstanceTypes.ROTATING, KineticCopycatRenderer.getInstancedModel(
                         CCCopycatPartialModels.SHAFT,
                         blockEntity,
                         CopycatCogWheelBlock.Part.SHAFT.getSerializedName()
-                )))
+                ))
                 .createInstance()
                 .rotateToFace(from, rotationAxis())
                 .setup(blockEntity)
                 .setPosition(getVisualPosition());
         rotatingCogwheel = instancerProvider()
-                .instancer(AllInstanceTypes.ROTATING, CCCopycatPartialModels.getSimpleModel(KineticCopycatRenderData.of(
+                .instancer(AllInstanceTypes.ROTATING, KineticCopycatRenderer.getInstancedModel(
                         ICogWheel.isLargeCog(blockEntity.getBlockState()) ? CCCopycatPartialModels.LARGE_COGWHEEL : CCCopycatPartialModels.COGWHEEL,
                         blockEntity,
                         CopycatCogWheelBlock.Part.COGWHEEL.getSerializedName()
-                )))
+                ))
                 .createInstance()
                 .rotateToFace(from, rotationAxis())
                 .setup(blockEntity)
