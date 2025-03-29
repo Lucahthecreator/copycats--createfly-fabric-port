@@ -29,6 +29,11 @@ public class CopycatSlidingDoorBlockEntity extends SlidingDoorBlockEntity implem
     }
 
     @Override
+    public boolean shouldRenderSpecial(BlockState state) {
+        return super.shouldRenderSpecial(state);
+    }
+
+    @Override
     public BlockState getMaterial() {
         return material;
     }
