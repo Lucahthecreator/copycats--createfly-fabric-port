@@ -30,6 +30,7 @@ import net.minecraftforge.client.ChunkRenderTypeSet;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -261,6 +262,11 @@ public class CopycatModelForge extends BakedModelWrapperWithData {
         }
 
         return allQuads;
+    }
+
+    @Override
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction direction, RandomSource random) {
+        return getQuads(state, direction, random, ModelData.EMPTY, null);
     }
 
     @Override

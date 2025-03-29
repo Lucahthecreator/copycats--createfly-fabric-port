@@ -35,6 +35,7 @@
     "foundation.copycat.CopycatBlockEntityMixin",
     "foundation.copycat.CopycatBlockMixin",
     "foundation.copycat.RotatedPillarCTBehaviourMixin",
+    "foundation.copycat.TransparentGhostBlockRendererMixin",
     "foundation.copycat.kinetic.CreateClientMixin",
     "foundation.copycat.migration.ContraptionMixin",
     "foundation.copycat.migration.LevelChunkMixin",
