@@ -5,14 +5,14 @@ import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoor
 import com.copycatsplus.copycats.foundation.copycat.CCCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.MultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelBlockEntity;
-import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelInstance;
+import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelVisual;
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelRenderer;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeBlockEntity;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatFluidPipeRenderer;
 import com.copycatsplus.copycats.content.copycat.fluid_pipe.CopycatStraightPipeBlockEntity;
 import com.copycatsplus.copycats.content.copycat.ladder.MultiStateCopycatLadderBlockEntity;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlockEntity;
-import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftInstance;
+import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftVisual;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftRenderer;
 import com.simibubi.create.content.fluids.pipes.TransparentStraightPipeRenderer;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
@@ -76,14 +76,14 @@ public class CCBlockEntityTypes {
 
     public static final BlockEntityEntry<? extends CopycatShaftBlockEntity> COPYCAT_SHAFT =
             REGISTRATE.blockEntity("copycat_shaft", CopycatShaftBlockEntity::new)
-                    .visual(() -> CopycatShaftInstance::new, false)
+                    .visual(() -> CopycatShaftVisual::new, false)
                     .validBlocks(CCBlocks.COPYCAT_SHAFT)
                     .renderer(() -> CopycatShaftRenderer::new)
                     .register();
 
     public static final BlockEntityEntry<? extends CopycatCogWheelBlockEntity> COPYCAT_COGWHEEL =
             REGISTRATE.blockEntity("copycat_cogwheel", CopycatCogWheelBlockEntity::new)
-                    .visual(() -> CopycatCogWheelInstance::new, false)
+                    .visual(() -> CopycatCogWheelVisual::new, false)
                     .validBlocks(CCBlocks.COPYCAT_COGWHEEL, CCBlocks.COPYCAT_LARGE_COGWHEEL)
                     .renderer(() -> CopycatCogWheelRenderer::new)
                     .register();
