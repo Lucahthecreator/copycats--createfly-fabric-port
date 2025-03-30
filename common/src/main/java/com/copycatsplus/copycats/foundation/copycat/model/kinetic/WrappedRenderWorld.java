@@ -36,7 +36,7 @@ public class WrappedRenderWorld extends VirtualBlockGetter {
     protected final BlockState material;
 
     public WrappedRenderWorld(ICopycatBlockEntity be) {
-        super(p -> 15, p -> 15);
+        super(p -> 0, p -> 0);
         this.level = be.getLevel();
         this.targetPos = be.getBlockPos();
         this.material = be.getMaterial();
@@ -52,8 +52,8 @@ public class WrappedRenderWorld extends VirtualBlockGetter {
                 return WrappedRenderWorld.this;
             }
         }, false, false) {
-            private final LayerLightEventListener blockListener = createStaticListener(15);
-            private final LayerLightEventListener skyListener = createStaticListener(15);
+            private final LayerLightEventListener blockListener = createStaticListener(0);
+            private final LayerLightEventListener skyListener = createStaticListener(0);
 
             @Override
             public @NotNull LayerLightEventListener getLayerListener(@NotNull LightLayer layer) {
@@ -152,12 +152,12 @@ public class WrappedRenderWorld extends VirtualBlockGetter {
 
     @Override
     public int getBrightness(LightLayer lightType, BlockPos blockPos) {
-        return 15;
+        return 0;
     }
 
     @Override
     public int getRawBrightness(BlockPos blockPos, int amount) {
-        return 15;
+        return 0;
     }
 
     @Override
