@@ -56,7 +56,8 @@ public class ConnectedTextureBehaviourMixin {
 
     @WrapOperation(
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;isFaceFull(Lnet/minecraft/world/phys/shapes/VoxelShape;Lnet/minecraft/core/Direction;)Z"),
-            method = "isBeingBlocked"
+            method = "isBeingBlocked",
+            remap = true
     )
     private boolean isFaceFull(VoxelShape shape, Direction face, Operation<Boolean> original, BlockState state, BlockAndTintGetter reader, BlockPos pos, BlockPos otherPos,
                                Direction face2) {

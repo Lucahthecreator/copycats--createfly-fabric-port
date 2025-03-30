@@ -40,7 +40,8 @@ public abstract class CopycatPanelBlockMixin extends WaterloggedCopycatBlock imp
     @Inject(
             at = @At("HEAD"),
             method = "use",
-            cancellable = true
+            cancellable = true,
+            remap = true
     )
     public void use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult ray, CallbackInfoReturnable<InteractionResult> cir) {
         InteractionResult toggleResult = toggleCT(state, world, pos, player, hand, ray);
