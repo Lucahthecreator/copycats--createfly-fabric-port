@@ -32,7 +32,6 @@ import org.jetbrains.annotations.Nullable;
 public class WrappedRenderWorld extends VirtualBlockGetter {
     protected final BlockAndTintGetter level;
     protected final BlockPos targetPos;
-    protected final LevelLightEngine lightEngine;
     protected final BlockState material;
 
     public WrappedRenderWorld(ICopycatBlockEntity be) {
@@ -40,71 +39,6 @@ public class WrappedRenderWorld extends VirtualBlockGetter {
         this.level = be.getLevel();
         this.targetPos = be.getBlockPos();
         this.material = be.getMaterial();
-        lightEngine = new LevelLightEngine(new LightChunkGetter() {
-            @Override
-            @Nullable
-            public LightChunk getChunkForLighting(int p_63023_, int p_63024_) {
-                return null;
-            }
-
-            @Override
-            public @NotNull BlockGetter getLevel() {
-                return WrappedRenderWorld.this;
-            }
-        }, false, false) {
-            private final LayerLightEventListener blockListener = createStaticListener(0);
-            private final LayerLightEventListener skyListener = createStaticListener(0);
-
-            @Override
-            public @NotNull LayerLightEventListener getLayerListener(@NotNull LightLayer layer) {
-                return layer == LightLayer.BLOCK ? blockListener : skyListener;
-            }
-
-            @Override
-            public int getRawBrightness(BlockPos blockPos, int amount) {
-                return 15;
-            }
-        };
-    }
-
-    private static LayerLightEventListener createStaticListener(int light) {
-        return new LayerLightEventListener() {
-            @Override
-            public void checkBlock(@NotNull BlockPos pos) {
-            }
-
-            @Override
-            public boolean hasLightWork() {
-                return false;
-            }
-
-            @Override
-            public int runLightUpdates() {
-                return 0;
-            }
-
-            @Override
-            public void updateSectionStatus(@NotNull SectionPos pos, boolean isSectionEmpty) {
-            }
-
-            @Override
-            public void setLightEnabled(@NotNull ChunkPos pos, boolean lightEnabled) {
-            }
-
-            @Override
-            public void propagateLightSources(@NotNull ChunkPos pos) {
-            }
-
-            @Override
-            public DataLayer getDataLayerData(@NotNull SectionPos pos) {
-                return null;
-            }
-
-            @Override
-            public int getLightValue(@NotNull BlockPos pos) {
-                return light;
-            }
-        };
     }
 
     public BlockAndTintGetter getLevel() {
@@ -141,8 +75,8 @@ public class WrappedRenderWorld extends VirtualBlockGetter {
     }
 
     @Override
-    public float getShade(@NotNull Direction direction, boolean shaded) {
-        return 1f;
+    public float getShade(@NotNull Direction direction, boolean shade) {
+        return 1;
     }
 
     @Override
@@ -151,23 +85,8 @@ public class WrappedRenderWorld extends VirtualBlockGetter {
     }
 
     @Override
-    public int getBrightness(LightLayer lightType, BlockPos blockPos) {
-        return 0;
-    }
-
-    @Override
-    public int getRawBrightness(BlockPos blockPos, int amount) {
-        return 0;
-    }
-
-    @Override
-    public int getBlockTint(@NotNull BlockPos pos, @NotNull ColorResolver resolver) {
-        ClientPacketListener connection = Minecraft.getInstance().getConnection();
-        if (connection == null)
-            return GrassColor.getDefaultColor();
-        Biome plainsBiome = connection.registryAccess().registry(Registries.BIOME).map(r -> r.get(Biomes.PLAINS)).orElse(null);
-        if (plainsBiome == null)
-            return GrassColor.getDefaultColor();
+    public int getBlockTint(BlockPos pos, ColorResolver resolver) {
+        Biome plainsBiome = Minecraft.getInstance().getConnection().registryAccess().registryOrThrow(Registries.BIOME).getOrThrow(Biomes.PLAINS);
         return resolver.getColor(plainsBiome, pos.getX(), pos.getZ());
     }
 }

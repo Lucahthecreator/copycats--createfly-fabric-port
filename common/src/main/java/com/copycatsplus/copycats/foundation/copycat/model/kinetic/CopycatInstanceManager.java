@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 
 /**
  * Manages multiple instances for a copycat block entity and automatically refreshes them when the block entity changes.
+ *
  * @param <B> The block entity type.
  * @param <R> The instance type.
  */
@@ -61,6 +62,7 @@ public abstract class CopycatInstanceManager<B extends BlockEntity, R extends Ab
                 CopycatInstance<R> newInstance = createInstance(entry.getKey());
                 entry.setValue(newInstance);
                 newInstance.instance().setChanged();
+                visual.updateLight(pt);
             } else {
                 updateInstance(entry.getValue());
             }
