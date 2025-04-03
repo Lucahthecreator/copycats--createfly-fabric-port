@@ -234,8 +234,8 @@ public class CopycatSlabBlock extends WaterloggedMultiStateCopycatBlock implemen
     }
 
     @Override
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
-        return super.isPathfindable(pState, pLevel, pPos, pType);
+    public boolean isPathfindable(@NotNull BlockState pState, @NotNull PathComputationType pType) {
+        return super.isPathfindable(pState, pType);
     }
 
     @SuppressWarnings("deprecation")

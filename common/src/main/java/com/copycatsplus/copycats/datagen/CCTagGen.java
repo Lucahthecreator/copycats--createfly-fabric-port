@@ -19,9 +19,9 @@ public class CCTagGen {
 
     private static void genBlockTags(RegistrateTagsProvider<Block> provIn) {
         TagGen.CreateTagsProvider<Block> prov = new TagGen.CreateTagsProvider<>(provIn, Block::builtInRegistryHolder);
-        prov.tag(TagKey.create(BuiltInRegistries.BLOCK.key(), new ResourceLocation(Mods.DIAGONAL_FENCES.id(), "non_diagonal_fences")))
+        prov.tag(TagKey.create(BuiltInRegistries.BLOCK.key(), ResourceLocation.fromNamespaceAndPath(Mods.DIAGONAL_FENCES.id(), "non_diagonal_fences")))
                 .add(CCBlocks.COPYCAT_FENCE.get());
-        prov.tag(TagKey.create(BuiltInRegistries.BLOCK.key(), new ResourceLocation(Mods.DIAGONAL_WALLS.id(), "non_diagonal_walls")))
+        prov.tag(TagKey.create(BuiltInRegistries.BLOCK.key(), ResourceLocation.fromNamespaceAndPath(Mods.DIAGONAL_WALLS.id(), "non_diagonal_walls")))
                 .add(CCBlocks.COPYCAT_WALL.get());
 //        prov.tag(AllTags.AllBlockTags.COPYCAT_DENY.tag)
 //                .addTag(AllTags.AllBlockTags.TRACKS.tag);

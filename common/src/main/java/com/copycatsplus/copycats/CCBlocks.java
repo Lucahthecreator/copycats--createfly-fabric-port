@@ -125,7 +125,7 @@ import static com.simibubi.create.foundation.data.CreateRegistrate.blockModel;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
-@SuppressWarnings({"unused", "deprecated"})
+@SuppressWarnings({"unused", "removal"})
 //noinspection unchecked
 public class CCBlocks {
 
@@ -403,7 +403,7 @@ public class CCBlocks {
                     .register();
 
     public static final BlockEntry<CopycatPressurePlateBlock> COPYCAT_WOODEN_PRESSURE_PLATE =
-            REGISTRATE.block("copycat_wooden_pressure_plate", p -> new CopycatPressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, p, BlockSetType.OAK))
+            REGISTRATE.block("copycat_wooden_pressure_plate", p -> new CopycatPressurePlateBlock(BlockSetType.OAK, p))
                     .transform(CCBuilderTransformers.copycat())
                     .properties(p -> p.isValidSpawn((state, level, pos, entity) -> false)
                             .noCollission())
@@ -420,7 +420,7 @@ public class CCBlocks {
                     .register();
 
     public static final BlockEntry<CopycatPressurePlateBlock> COPYCAT_STONE_PRESSURE_PLATE =
-            REGISTRATE.block("copycat_stone_pressure_plate", p -> new CopycatPressurePlateBlock(PressurePlateBlock.Sensitivity.MOBS, p, BlockSetType.STONE))
+            REGISTRATE.block("copycat_stone_pressure_plate", p -> new CopycatPressurePlateBlock(BlockSetType.STONE, p))
                     .transform(CCBuilderTransformers.copycat())
                     .properties(p -> p.isValidSpawn((state, level, pos, entity) -> false)
                             .noCollission())
@@ -437,7 +437,7 @@ public class CCBlocks {
                     .register();
 
     public static final BlockEntry<CopycatWeightedPressurePlate> COPYCAT_HEAVY_WEIGHTED_PRESSURE_PLATE =
-            REGISTRATE.block("copycat_heavy_weighted_pressure_plate", p -> new CopycatWeightedPressurePlate(150, p, BlockSetType.IRON))
+            REGISTRATE.block("copycat_heavy_weighted_pressure_plate", p -> new CopycatWeightedPressurePlate(150, BlockSetType.IRON, p))
                     .transform(CCBuilderTransformers.copycat())
                     .properties(p -> p.isValidSpawn((state, level, pos, entity) -> false)
                             .noCollission())
@@ -453,7 +453,7 @@ public class CCBlocks {
                     .register();
 
     public static final BlockEntry<CopycatWeightedPressurePlate> COPYCAT_LIGHT_WEIGHTED_PRESSURE_PLATE =
-            REGISTRATE.block("copycat_light_weighted_pressure_plate", p -> new CopycatWeightedPressurePlate(15, p, BlockSetType.GOLD))
+            REGISTRATE.block("copycat_light_weighted_pressure_plate", p -> new CopycatWeightedPressurePlate(15, BlockSetType.GOLD, p))
                     .transform(CCBuilderTransformers.copycat())
                     .properties(p -> p.isValidSpawn((state, level, pos, entity) -> false)
                             .noCollission())
@@ -848,15 +848,15 @@ public class CCBlocks {
     public static void register() {
     }
 
-    public static Set<RegistryEntry<Block>> getAllRegisteredBlocks() {
+    public static Set<RegistryEntry<Block, Block>> getAllRegisteredBlocks() {
         return new HashSet<>(REGISTRATE.getAll(BuiltInRegistries.BLOCK.key()));
     }
 
-    public static Set<RegistryEntry<Block>> getAllRegisteredBlocksWithoutWrapped() {
+    public static Set<RegistryEntry<Block, Block>> getAllRegisteredBlocksWithoutWrapped() {
         return new HashSet<>(REGISTRATE.getAll(BuiltInRegistries.BLOCK.key())).stream().filter(entry -> !(entry.getId().getPath().startsWith("wrapped"))).collect(Collectors.toSet());
     }
 
-    public static Set<RegistryEntry<Block>> getAllRegisteredMultiStateBlocks() {
+    public static Set<RegistryEntry<Block, Block>> getAllRegisteredMultiStateBlocks() {
         return new HashSet<>(REGISTRATE.getAll(BuiltInRegistries.BLOCK.key())).stream().filter(entry -> entry.get() instanceof IMultiStateCopycatBlock).collect(Collectors.toSet());
     }
 }

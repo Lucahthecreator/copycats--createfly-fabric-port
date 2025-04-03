@@ -6,7 +6,6 @@ import com.copycatsplus.copycats.utility.LogicalSidedProvider;
 import com.copycatsplus.copycats.utility.Platform;
 import com.copycatsplus.copycats.network.CCPackets;
 import com.copycatsplus.copycats.network.ConfigSyncPacket;
-import com.copycatsplus.copycats.network.PlayerSelection;
 import com.simibubi.create.foundation.config.ui.ConfigScreen;
 import com.simibubi.create.foundation.config.ui.SubMenuConfigScreen;
 import net.fabricmc.api.EnvType;

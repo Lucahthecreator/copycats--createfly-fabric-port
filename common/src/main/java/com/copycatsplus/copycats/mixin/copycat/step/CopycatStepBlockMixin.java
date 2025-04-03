@@ -13,7 +13,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -45,12 +47,12 @@ public abstract class CopycatStepBlockMixin extends WaterloggedCopycatBlock impl
 
     @Inject(
             at = @At("HEAD"),
-            method = "use",
+            method = "useItemOn",
             cancellable = true
     )
-    public void use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult ray, CallbackInfoReturnable<InteractionResult> cir) {
-        InteractionResult toggleResult = toggleCT(state, world, pos, player, hand, ray);
-        if (toggleResult.consumesAction()) cir.setReturnValue(toggleResult);
+    public void use(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult, CallbackInfoReturnable<ItemInteractionResult> cir) {
+        InteractionResult toggleResult = toggleCT(state, level, pos, player, hand, hitResult);
+        if (toggleResult.consumesAction()) cir.setReturnValue(ItemInteractionResult.valueOf(toggleResult.name()));
     }
 
     @Nullable

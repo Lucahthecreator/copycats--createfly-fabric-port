@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.config;
 
 import net.createmod.catnip.config.ConfigBase;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.fml.config.ModConfig;
+import net.neoforged.fml.config.ModConfig;
 
 /**
  * Base class for all configs that require custom synchronization from server to clients.

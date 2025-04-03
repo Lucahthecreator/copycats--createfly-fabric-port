@@ -6,7 +6,7 @@ import org.jetbrains.annotations.ApiStatus;
 import java.util.function.Supplier;
 
 public enum Platform {
-    FORGE, FABRIC;
+    NEOFORGE, FABRIC;
 
     public static final Platform CURRENT = getCurrent();
 

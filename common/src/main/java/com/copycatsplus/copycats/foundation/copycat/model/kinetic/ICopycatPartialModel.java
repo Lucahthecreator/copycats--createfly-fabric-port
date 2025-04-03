@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.properties.Property;
  * Cogwheel should use separate partial models for the shaftless cogwheel and the shaft, so that the shaft model can be reused by
  * Copycat Shafts.
  * <p>
- * Use {@link com.jozufozu.flywheel.core.PartialModel} instead if dynamic assembly is not required.
+ * Use {@link dev.engine_room.flywheel.lib.model.baked.PartialModel} instead if dynamic assembly is not required.
  */
 public interface ICopycatPartialModel {
 

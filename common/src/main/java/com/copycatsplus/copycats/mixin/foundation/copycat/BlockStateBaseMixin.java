@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class BlockStateBaseMixin {
 
     @Unique
-    private static final ResourceLocation COPYCAT_BASE = new ResourceLocation(Mods.CREATE.id(), "copycat_base");
+    private static final ResourceLocation COPYCAT_BASE = ResourceLocation.fromNamespaceAndPath(Mods.CREATE.id(), "copycat_base");
 
     @Inject(
             method = "canOcclude",

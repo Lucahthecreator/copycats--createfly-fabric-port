@@ -44,7 +44,7 @@ public class FeatureToggle {
      */
     public static <R, T extends R, P, S extends Builder<R, T, P, S>> NonNullUnaryOperator<S> register() {
         return b -> {
-            register(new ResourceLocation(b.getOwner().getModid(), b.getName()));
+            register(ResourceLocation.fromNamespaceAndPath(b.getOwner().getModid(), b.getName()));
             return b;
         };
     }
@@ -54,7 +54,7 @@ public class FeatureToggle {
      */
     public static <R, T extends R, P, S extends Builder<R, T, P, S>> NonNullUnaryOperator<S> register(FeatureCategory... categories) {
         return b -> {
-            register(new ResourceLocation(b.getOwner().getModid(), b.getName()), categories);
+            register(ResourceLocation.fromNamespaceAndPath(b.getOwner().getModid(), b.getName()), categories);
             return b;
         };
     }
@@ -65,7 +65,7 @@ public class FeatureToggle {
      */
     public static <R, T extends R, P, S extends Builder<R, T, P, S>> NonNullUnaryOperator<S> registerDependent(ResourceLocation dependency) {
         return b -> {
-            registerDependent(new ResourceLocation(b.getOwner().getModid(), b.getName()), dependency);
+            registerDependent(ResourceLocation.fromNamespaceAndPath(b.getOwner().getModid(), b.getName()), dependency);
             return b;
         };
     }
@@ -76,7 +76,7 @@ public class FeatureToggle {
      */
     public static <R, T extends R, P, S extends Builder<R, T, P, S>> NonNullUnaryOperator<S> registerDependent(ResourceLocation dependency, FeatureCategory... categories) {
         return b -> {
-            registerDependent(new ResourceLocation(b.getOwner().getModid(), b.getName()), dependency, categories);
+            registerDependent(ResourceLocation.fromNamespaceAndPath(b.getOwner().getModid(), b.getName()), dependency, categories);
             return b;
         };
     }
@@ -87,7 +87,7 @@ public class FeatureToggle {
      */
     public static <R, T extends R, P, S extends Builder<R, T, P, S>> NonNullUnaryOperator<S> registerDependent(BlockEntry<?> dependency) {
         return b -> {
-            registerDependent(new ResourceLocation(b.getOwner().getModid(), b.getName()), dependency.getId());
+            registerDependent(ResourceLocation.fromNamespaceAndPath(b.getOwner().getModid(), b.getName()), dependency.getId());
             return b;
         };
     }
@@ -98,7 +98,7 @@ public class FeatureToggle {
      */
     public static <R, T extends R, P, S extends Builder<R, T, P, S>> NonNullUnaryOperator<S> registerDependent(BlockEntry<?> dependency, FeatureCategory... categories) {
         return b -> {
-            registerDependent(new ResourceLocation(b.getOwner().getModid(), b.getName()), dependency.getId(), categories);
+            registerDependent(ResourceLocation.fromNamespaceAndPath(b.getOwner().getModid(), b.getName()), dependency.getId(), categories);
             return b;
         };
     }

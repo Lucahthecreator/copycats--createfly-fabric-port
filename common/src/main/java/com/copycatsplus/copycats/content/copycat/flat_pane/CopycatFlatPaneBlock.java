@@ -65,7 +65,7 @@ public class CopycatFlatPaneBlock extends CCWaterloggedCopycatBlock implements I
     }
 
     @Override
-    public boolean isPathfindable(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull PathComputationType pType) {
+    public boolean isPathfindable(@NotNull BlockState pState, @NotNull PathComputationType pType) {
         return switch (pType) {
             case LAND -> pState.getValue(AXIS).isHorizontal();
             default -> false;

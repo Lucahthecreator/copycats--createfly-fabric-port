@@ -8,6 +8,7 @@ import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -55,27 +56,28 @@ public class MultiStateCopycatBlockEntity extends SmartBlockEntity implements IM
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
     }
 
+    //TODO: Update write and reads
     @Override
     public ItemRequirement getRequiredItems(BlockState state) {
         return IMultiStateCopycatBlockEntity.super.getRequiredItems(state);
     }
 
     @Override
-    public void read(CompoundTag tag, boolean clientPacket) {
-        super.read(tag, clientPacket);
-        IMultiStateCopycatBlockEntity.read(this, tag, clientPacket);
+    public void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+        super.read(tag, registries, clientPacket);
+        IMultiStateCopycatBlockEntity.read(this, tag, registries, clientPacket);
     }
 
     @Override
-    public void writeSafe(CompoundTag tag) {
-        super.writeSafe(tag);
-        IMultiStateCopycatBlockEntity.writeSafe(this, tag);
+    public void writeSafe(CompoundTag tag, HolderLookup.Provider registries) {
+        super.writeSafe(tag, registries);
+        IMultiStateCopycatBlockEntity.writeSafe(this, tag, registries);
     }
 
     @Override
-    public void write(CompoundTag tag, boolean clientPacket) {
-        super.write(tag, clientPacket);
-        IMultiStateCopycatBlockEntity.write(this, tag, clientPacket);
+    public void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+        super.write(tag, registries, clientPacket);
+        IMultiStateCopycatBlockEntity.write(this, tag, registries, clientPacket);
     }
 
     public void migrateData(ICopycatBlockEntity copycatBlockEntity) {

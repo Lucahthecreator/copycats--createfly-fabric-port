@@ -310,11 +310,12 @@ public interface ICopycatBlock extends IWrenchable, IStateType, TransformableBlo
         void handle(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving);
     }
 
-    default void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+    default BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         if (player.isCreative()) {
             ICopycatBlockEntity copycatBE = getCopycatBlockEntity(level, pos);
             if (copycatBE != null) copycatBE.setConsumedItem(ItemStack.EMPTY);
         }
+        return state;
     }
 
     static BlockState getAppearance(ICopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,

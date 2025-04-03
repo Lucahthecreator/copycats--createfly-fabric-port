@@ -37,6 +37,7 @@ public abstract class CopycatPanelBlockMixin extends WaterloggedCopycatBlock imp
         return super.getAppearance(state, level, pos, side, queryState, queryPos);
     }
 
+    //TODO: Needs fixing
     @Inject(
             at = @At("HEAD"),
             method = "use",

@@ -8,12 +8,10 @@ import com.copycatsplus.copycats.foundation.copycat.IStateType;
 import com.copycatsplus.copycats.foundation.copycat.CopycatExternalContext;
 import com.copycatsplus.copycats.foundation.copycat.StateType;
 import com.copycatsplus.copycats.foundation.copycat.model.ScaledBlockAndTintGetter;
-import com.copycatsplus.copycats.foundation.copycat.model.assembly.CopycatRenderContext;
 import com.copycatsplus.copycats.network.CCPackets;
 import com.copycatsplus.copycats.network.FillCopycatPacket;
 import com.copycatsplus.copycats.utility.BlockEntityUtils;
 import com.copycatsplus.copycats.utility.BlockFaceUtils;
-import com.google.common.collect.ImmutableMap;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
@@ -50,7 +48,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.IntStream;
 
 /**
@@ -299,7 +296,7 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
         if (level.isClientSide()) {
             if (CCKeys.FILL_COPYCAT.isPressed()) {
                 fillEmptyParts(level, pos, state, material);
-                CCPackets.PACKETS.send(new FillCopycatPacket(pos, material, property));
+                CCPackets.network().sendToServer(new FillCopycatPacket(pos, material, property));
             }
             return InteractionResult.SUCCESS;
         }
@@ -376,12 +373,13 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
     }
 
     @Override
-    default void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+    default BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         if (player.isCreative()) {
             IMultiStateCopycatBlockEntity copycatBE = getCopycatBlockEntity(level, pos);
             if (copycatBE != null)
                 copycatBE.getMaterialItemStorage().getAllProperties().forEach(key -> copycatBE.getMaterialItemStorage().getMaterialItem(key).setConsumedItem(ItemStack.EMPTY));
         }
+        return state;
     }
 
     default void fillEmptyParts(Level level, BlockPos pos, BlockState state, BlockState material) {

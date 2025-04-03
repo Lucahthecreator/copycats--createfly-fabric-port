@@ -146,9 +146,10 @@ public class CopycatCogWheelBlock extends CogWheelBlock implements IMultiStateCo
     }
 
     @Override
-    public void playerWillDestroy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
+    public BlockState playerWillDestroy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
         super.playerWillDestroy(level, pos, state, player);
         IMultiStateCopycatBlock.super.playerWillDestroy(level, pos, state, player);
+        return state;
     }
 
     @Override

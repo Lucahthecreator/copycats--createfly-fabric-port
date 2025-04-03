@@ -2,18 +2,26 @@ package com.copycatsplus.copycats;
 
 import com.copycatsplus.copycats.config.CCConfigs;
 import com.copycatsplus.copycats.datagen.recipes.CCStandardRecipes;
+import com.copycatsplus.copycats.datagen.recipes.gen.CopycatsRecipeProvider;
 import com.copycatsplus.copycats.foundation.tooltip.CopycatDescription;
 import com.copycatsplus.copycats.network.CCPackets;
 import com.copycatsplus.copycats.utility.TooltipUtils;
+import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.createmod.catnip.lang.FontHelper;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.DataProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class Copycats {
     public static final String MODID = "copycats";
@@ -46,13 +54,9 @@ public class Copycats {
 
         CCConfigs.register();
 
-        CCPackets.PACKETS.registerC2SListener();
+        CCPackets.register();
 
         finalizeRegistrate();
-    }
-
-    public static void gatherData(DataGenerator.PackGenerator gen) {
-        gen.addProvider(CCStandardRecipes::new);
     }
 
     public static CopycatRegistrate getRegistrate() {
@@ -60,7 +64,7 @@ public class Copycats {
     }
 
     public static ResourceLocation asResource(String path) {
-        return new ResourceLocation(MODID, path);
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
 
     @ExpectPlatform

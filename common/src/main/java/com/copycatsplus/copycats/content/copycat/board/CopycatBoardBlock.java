@@ -174,7 +174,7 @@ public class CopycatBoardBlock extends WaterloggedMultiStateCopycatBlock impleme
     }
 
     @Override
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
+    public boolean isPathfindable(@NotNull BlockState pState, @NotNull PathComputationType pType) {
         return switch (pType) {
             case LAND -> (!pState.getValue(UP) && pState.getValue(DOWN) || pState.getValue(UP));
             default -> false;

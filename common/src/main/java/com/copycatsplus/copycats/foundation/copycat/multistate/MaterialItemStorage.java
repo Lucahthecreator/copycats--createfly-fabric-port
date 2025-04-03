@@ -2,11 +2,14 @@ package com.copycatsplus.copycats.foundation.copycat.multistate;
 
 import com.copycatsplus.copycats.utility.ItemUtils;
 import com.simibubi.create.AllBlocks;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -111,10 +114,10 @@ public class MaterialItemStorage {
         return root;
     }
 
-    public boolean deserialize(CompoundTag tag) {
+    public boolean deserialize(CompoundTag tag, HolderLookup.Provider registries) {
         AtomicBoolean anyUpdated = new AtomicBoolean(false);
         tag.getAllKeys().forEach(key -> {
-            MaterialItem newVersion = MaterialItem.deserialize(tag.getCompound(key));
+            MaterialItem newVersion = MaterialItem.deserialize(tag.getCompound(key), registries);
             MaterialItem oldVersion = storage.put(key, newVersion);
             if (oldVersion != null &&
                     (newVersion.material() != oldVersion.material() || newVersion.enableCT() != oldVersion.enableCT()) &&
@@ -155,17 +158,16 @@ public class MaterialItemStorage {
         public CompoundTag serializeSafe() {
             CompoundTag root = new CompoundTag();
             root.put("material", NbtUtils.writeBlockState(material));
-            ItemStack stackEmpty = consumedItem.copy();
-            stackEmpty.setTag(null);
-            root.put("consumedItem", ItemUtils.serializeNBT(stackEmpty));
+            ItemStack stackWithoutComponents = new ItemStack(consumedItem.getItemHolder(), consumedItem.getCount(), DataComponentPatch.EMPTY);
+            root.put("consumedItem", ItemUtils.serializeNBT(stackWithoutComponents));
             root.putBoolean("enableCT", enableCT);
             return root;
         }
 
-        public static MaterialItem deserialize(CompoundTag tag) {
+        public static MaterialItem deserialize(CompoundTag tag, HolderLookup.Provider registries) {
             return new MaterialItem(
                     NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), tag.getCompound("material")),
-                    ItemStack.of(tag.getCompound("consumedItem")),
+                    ItemStack.parseOptional(registries, tag.getCompound("consumedItem")),
                     !tag.contains("enableCT") || tag.getBoolean("enableCT")
             );
         }

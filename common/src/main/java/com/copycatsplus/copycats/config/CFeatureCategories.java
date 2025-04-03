@@ -1,8 +1,8 @@
 package com.copycatsplus.copycats.config;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.config.ModConfig;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.HashMap;
@@ -19,12 +19,12 @@ public class CFeatureCategories extends SyncConfigBase {
         return "feature_categories";
     }
 
-    final Map<FeatureCategory, ForgeConfigSpec.ConfigValue<Boolean>> toggles = new HashMap<>();
+    final Map<FeatureCategory, ModConfigSpec.ConfigValue<Boolean>> toggles = new HashMap<>();
 
     Map<FeatureCategory, Boolean> synchronizedToggles;
 
     @Override
-    public void registerAll(ForgeConfigSpec.Builder builder) {
+    public void registerAll(ModConfigSpec.Builder builder) {
         for (FeatureCategory r : FeatureCategory.values()) {
             builder.comment(".", r.getDescription());
             toggles.put(r, builder.define(r.getSerializedName(), true));
@@ -37,7 +37,7 @@ public class CFeatureCategories extends SyncConfigBase {
             Boolean synced = synchronizedToggles.get(category);
             if (synced != null) return synced;
         }
-        ForgeConfigSpec.ConfigValue<Boolean> value = toggles.get(category);
+        ModConfigSpec.ConfigValue<Boolean> value = toggles.get(category);
         if (value != null)
             return value.get();
         return true;

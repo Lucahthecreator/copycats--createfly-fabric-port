@@ -1,6 +1,5 @@
 package com.copycatsplus.copycats.network.fabric;
 
-import com.copycatsplus.copycats.network.PlayerSelection;
 import io.github.fabricators_of_create.porting_lib.util.ServerLifecycleHooks;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;

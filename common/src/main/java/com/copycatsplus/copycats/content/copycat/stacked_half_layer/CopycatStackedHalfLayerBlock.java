@@ -223,7 +223,7 @@ public class CopycatStackedHalfLayerBlock extends WaterloggedMultiStateCopycatBl
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean isPathfindable(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull PathComputationType pType) {
+    public boolean isPathfindable(@NotNull BlockState pState, @NotNull PathComputationType pType) {
         return false;
     }
 

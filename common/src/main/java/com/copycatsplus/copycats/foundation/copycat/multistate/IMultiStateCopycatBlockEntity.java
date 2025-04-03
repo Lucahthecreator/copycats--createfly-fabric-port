@@ -10,6 +10,7 @@ import net.createmod.catnip.data.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -238,21 +239,21 @@ public interface IMultiStateCopycatBlockEntity extends ICopycatBlockEntity {
         notifyUpdate();
     }
 
-    static void read(IMultiStateCopycatBlockEntity self, CompoundTag tag, boolean clientPacket) {
+    static void read(IMultiStateCopycatBlockEntity self, CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         if (self.getBlockState().getBlock() instanceof IMultiStateCopycatBlock) {
-            boolean anyUpdated = self.getMaterialItemStorage().deserialize(tag.getCompound("material_data"));
+            boolean anyUpdated = self.getMaterialItemStorage().deserialize(tag.getCompound("material_data"), registries);
 
             if (anyUpdated)
                 BlockEntityUtils.redraw((BlockEntity) self); // not calling self.redraw() because Extended Cogwheels overwrites it to be protected
         }
     }
 
-    static void writeSafe(IMultiStateCopycatBlockEntity self, CompoundTag tag) {
+    static void writeSafe(IMultiStateCopycatBlockEntity self, CompoundTag tag, HolderLookup.Provider registries) {
         BlockEntityUtils.saveMetadata((BlockEntity) self, tag);
         tag.put("material_data", self.getMaterialItemStorage().serializeSafe());
     }
 
-    static void write(IMultiStateCopycatBlockEntity self, CompoundTag tag, boolean clientPacket) {
+    static void write(IMultiStateCopycatBlockEntity self, CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         tag.put("material_data", self.getMaterialItemStorage().serialize());
     }
 }

@@ -3,6 +3,7 @@ package com.copycatsplus.copycats.mixin.entity;
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCCatVariants;
 import com.simibubi.create.AllTags;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -33,40 +34,39 @@ import java.util.Objects;
 /**
  * Add a copycat variant to cats.
  */
+//TODO: Needs fixing
 @Mixin(Cat.class)
 public abstract class CatMixin extends TamableAnimal {
     @Shadow
-    public abstract CatVariant getVariant();
-
-    @Shadow
-    public abstract void setVariant(CatVariant pVariant);
-
-    @Shadow
     protected abstract void usePlayerItem(Player pPlayer, InteractionHand pHand, ItemStack pStack);
+
+    @Shadow public abstract void setVariant(Holder<CatVariant> variant);
+
+    @Shadow public abstract Holder<CatVariant> getVariant();
 
     protected CatMixin(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
     @Unique
-    private static final EntityDataAccessor<CatVariant> DATA_NATURAL_VARIANT_ID = SynchedEntityData.defineId(Cat.class, EntityDataSerializers.CAT_VARIANT);
+    private static final EntityDataAccessor<Holder<CatVariant>> DATA_NATURAL_VARIANT_ID = SynchedEntityData.defineId(Cat.class, EntityDataSerializers.CAT_VARIANT);
 
     @Unique
-    public CatVariant getNaturalVariant() {
+    public Holder<CatVariant> getNaturalVariant() {
         return this.entityData.get(DATA_NATURAL_VARIANT_ID);
     }
 
     @Unique
-    public void setNaturalVariant(CatVariant pVariant) {
+    public void setNaturalVariant(Holder<CatVariant> pVariant) {
         this.entityData.set(DATA_NATURAL_VARIANT_ID, pVariant);
     }
 
     @Inject(
             at = @At("RETURN"),
-            method = "defineSynchedData()V"
+            method = "defineSynchedData"
     )
     private void defineNaturalVariant(CallbackInfo ci) {
-        this.entityData.define(DATA_NATURAL_VARIANT_ID, BuiltInRegistries.CAT_VARIANT.getOrThrow(CatVariant.ALL_BLACK));
+        this.entityData.set(DATA_NATURAL_VARIANT_ID, BuiltInRegistries.CAT_VARIANT.getOrThrow(CatVariant.ALL_BLACK));
     }
 
     @Inject(
@@ -106,19 +106,19 @@ public abstract class CatMixin extends TamableAnimal {
     private void copycatInteract(Player pPlayer, InteractionHand pHand, CallbackInfoReturnable<InteractionResult> cir) {
         ItemStack stack = pPlayer.getItemInHand(pHand);
         if (stack.is(CCBlocks.COPYCAT_BLOCK.asItem())) {
-            CatVariant currentVariant = getVariant();
-            if (currentVariant.equals(CCCatVariants.COPY_CAT.value())) return;
+            Holder<CatVariant> currentVariant = getVariant();
+            if (currentVariant.equals(CCCatVariants.COPY_CAT)) return;
 
             if (!level().isClientSide()) {
                 this.setNaturalVariant(currentVariant);
-                this.setVariant(CCCatVariants.COPY_CAT.value());
+                this.setVariant(CCCatVariants.COPY_CAT);
                 this.usePlayerItem(pPlayer, pHand, stack);
                 this.setPersistenceRequired();
             }
             cir.setReturnValue(InteractionResult.sidedSuccess(level().isClientSide()));
         } else if (stack.is(AllTags.AllItemTags.WRENCH.tag)) {
-            CatVariant currentVariant = getVariant();
-            if (!currentVariant.equals(CCCatVariants.COPY_CAT.value())) return;
+            Holder<CatVariant> currentVariant = getVariant();
+            if (!currentVariant.equals(CCCatVariants.COPY_CAT)) return;
 
             if (!level().isClientSide()) {
                 this.setVariant(this.getNaturalVariant());

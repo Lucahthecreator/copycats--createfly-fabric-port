@@ -24,7 +24,7 @@ public class OutlinedVoxelShape extends ExtensibleVoxelShape {
     }
 
     @Override
-    protected DoubleList getCoords(Direction.Axis axis) {
+    public DoubleList getCoords(Direction.Axis axis) {
         return ((VoxelShapeAccessor) this.collisionShape).copycats$callGetCoords(axis);
     }
 

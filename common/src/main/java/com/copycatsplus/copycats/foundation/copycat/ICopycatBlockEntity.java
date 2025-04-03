@@ -15,6 +15,8 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.item.ItemStack;
@@ -25,6 +27,7 @@ import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.ApiStatus;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -185,13 +188,13 @@ public interface ICopycatBlockEntity extends SpecialBlockEntityItemRequirement, 
         notifyUpdate();
     }
 
-    static void read(ICopycatBlockEntity self, CompoundTag tag, boolean clientPacket) {
+    static void read(ICopycatBlockEntity self, CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         if (tag.contains("EnableCT")) // need to check because copycats migrated from C:Connected don't have this tag
             self.setCTEnabled(tag.getBoolean("EnableCT"));
         else
             self.setCTEnabled(true);
 
-        self.setConsumedItem(ItemStack.of(tag.getCompound("Item")));
+        self.setConsumedItem(ItemStack.parse(ServerLifecycleHooks.getCurrentServer().registryAccess(), (tag.getCompound("Item"))).get());
 
         BlockState prevMaterial = self.getMaterial();
         if (!tag.contains("Material")) {
@@ -219,19 +222,19 @@ public interface ICopycatBlockEntity extends SpecialBlockEntityItemRequirement, 
             BlockEntityUtils.redraw((BlockEntity) self); // not calling self.redraw() because Extended Cogwheels overwrites it to be protected
     }
 
-    static void writeSafe(ICopycatBlockEntity self, CompoundTag tag) {
+    static void writeSafe(ICopycatBlockEntity self, CompoundTag tag, HolderLookup.Provider registries) {
         ItemStack stackWithoutNBT = self.getConsumedItem().copy();
-        stackWithoutNBT.setTag(null);
+        ItemStack stackWithoutComponents = new ItemStack(stackWithoutNBT.getItemHolder(), stackWithoutNBT.getCount(), DataComponentPatch.EMPTY);
         BlockEntityUtils.saveMetadata((BlockEntity) self, tag);
-        write(tag, stackWithoutNBT, self.getMaterial(), self.isCTEnabled());
+        write(tag, stackWithoutComponents, self.getMaterial(), registries, self.isCTEnabled());
     }
 
-    static void write(ICopycatBlockEntity self, CompoundTag tag, boolean clientPacket) {
-        write(tag, self.getConsumedItem(), self.getMaterial(), self.isCTEnabled());
+    static void write(ICopycatBlockEntity self, CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+        write(tag, self.getConsumedItem(), self.getMaterial(), registries, self.isCTEnabled());
     }
 
     @ApiStatus.Internal
-    static void write(CompoundTag tag, ItemStack stack, BlockState material, boolean enableCT) {
+    static void write(CompoundTag tag, ItemStack stack, BlockState material, HolderLookup.Provider registries, boolean enableCT) {
         tag.put("Item", ItemUtils.serializeNBT(stack));
         tag.put("Material", NbtUtils.writeBlockState(material));
         tag.putBoolean("EnableCT", enableCT);

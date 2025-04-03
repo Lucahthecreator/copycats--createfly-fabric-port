@@ -1,7 +1,6 @@
 package com.copycatsplus.copycats.content.copycat.stairs;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
-import com.copycatsplus.copycats.CCBlockStateProperties;
 import com.copycatsplus.copycats.CCBlockStateProperties.Side;
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.content.copycat.vertical_stairs.CopycatVerticalStairBlock;
@@ -17,8 +16,6 @@ import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -39,8 +36,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Optional;
 
 import static com.copycatsplus.copycats.CCBlockStateProperties.SIDE;
-import static com.copycatsplus.copycats.content.copycat.slab.CopycatSlabBlock.getApparentDirection;
-import static com.copycatsplus.copycats.content.copycat.slab.CopycatSlabBlock.setApparentDirection;
 import static net.minecraft.core.Direction.*;
 
 @ParametersAreNonnullByDefault
@@ -82,9 +77,10 @@ public class CopycatStairsBlock extends StairBlock implements ICopycatBlock, ICu
     }
 
     @Override
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+    public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         ICopycatBlock.super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        return pState;
     }
 
     @Override

@@ -32,8 +32,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public class CopycatWeightedPressurePlate extends WeightedPressurePlateBlock implements ICopycatBlock, IBE<CCCopycatBlockEntity>, IStateType {
 
-    public CopycatWeightedPressurePlate(int maxWeight, Properties pProperties, BlockSetType type) {
-        super(maxWeight, pProperties, type);
+    public CopycatWeightedPressurePlate(int maxWeight, BlockSetType type, Properties pProperties) {
+        super(maxWeight, type, pProperties);
     }
 
     @Nullable
@@ -72,9 +72,10 @@ public class CopycatWeightedPressurePlate extends WeightedPressurePlateBlock imp
     }
 
     @Override
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+    public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         ICopycatBlock.super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        return pState;
     }
 
     @Override

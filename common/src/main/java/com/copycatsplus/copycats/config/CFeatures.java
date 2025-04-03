@@ -2,8 +2,8 @@ package com.copycatsplus.copycats.config;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.config.ModConfig;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.HashMap;
@@ -20,12 +20,12 @@ public class CFeatures extends SyncConfigBase {
         return "features";
     }
 
-    final Map<ResourceLocation, ForgeConfigSpec.ConfigValue<Boolean>> toggles = new HashMap<>();
+    final Map<ResourceLocation, ModConfigSpec.ConfigValue<Boolean>> toggles = new HashMap<>();
 
     Map<ResourceLocation, Boolean> synchronizedToggles;
 
     @Override
-    public void registerAll(ForgeConfigSpec.Builder builder) {
+    public void registerAll(ModConfigSpec.Builder builder) {
         FeatureToggle.TOGGLEABLE_FEATURES.forEach((r) -> toggles.put(r, builder.define(r.getPath(), true)));
     }
 
@@ -40,7 +40,7 @@ public class CFeatures extends SyncConfigBase {
             Boolean synced = synchronizedToggles.get(key);
             if (synced != null) return synced;
         }
-        ForgeConfigSpec.ConfigValue<Boolean> value = toggles.get(key);
+        ModConfigSpec.ConfigValue<Boolean> value = toggles.get(key);
         if (value != null)
             return value.get();
         return true;
@@ -62,7 +62,7 @@ public class CFeatures extends SyncConfigBase {
     protected void readSyncConfig(CompoundTag nbt) {
         synchronizedToggles = new HashMap<>();
         for (String key : nbt.getAllKeys()) {
-            ResourceLocation location = new ResourceLocation(key);
+            ResourceLocation location = ResourceLocation.parse(key);
             synchronizedToggles.put(location, nbt.getBoolean(key));
         }
         FeatureToggle.refreshItemVisibility();

@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.config;
 
-import net.minecraftforge.fml.config.ModConfig;
+import net.neoforged.fml.config.ModConfig;
 
 public class CCommon extends SyncConfigBase {
     private static final String VERSION = "1.0.0";

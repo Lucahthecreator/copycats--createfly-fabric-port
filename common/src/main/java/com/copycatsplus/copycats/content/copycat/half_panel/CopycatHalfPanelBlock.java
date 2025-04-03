@@ -79,7 +79,7 @@ public class CopycatHalfPanelBlock extends CCWaterloggedCopycatBlock implements 
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean isPathfindable(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull PathComputationType pType) {
+    public boolean isPathfindable(@NotNull BlockState pState, @NotNull PathComputationType pType) {
         return false;
     }
 
@@ -216,7 +216,7 @@ public class CopycatHalfPanelBlock extends CCWaterloggedCopycatBlock implements 
                 int range = AllConfigs.server().equipment.placementAssistRange.get();
                 if (player != null) {
                     AttributeInstance reach = InteractionUtils.getPlayerReach(player);
-                    if (reach != null && reach.hasModifier(ExtendoGripItem.singleRangeAttributeModifier))
+                    if (reach != null && reach.hasModifier(ExtendoGripItem.singleRangeAttributeModifier.id()))
                         range += 4;
                 }
                 int poles = attachedPoles(world, pos, dir);

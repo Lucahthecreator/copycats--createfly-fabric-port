@@ -1,7 +1,5 @@
 package com.copycatsplus.copycats.network.fabric;
 
-import com.copycatsplus.copycats.network.PacketSystem;
-import com.copycatsplus.copycats.network.PlayerSelection;
 import com.simibubi.create.AllPackets;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;

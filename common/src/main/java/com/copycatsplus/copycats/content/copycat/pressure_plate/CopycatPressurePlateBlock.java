@@ -32,8 +32,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public class CopycatPressurePlateBlock extends PressurePlateBlock implements ICopycatBlock, IBE<CCCopycatBlockEntity>, IStateType {
 
-    public CopycatPressurePlateBlock(PressurePlateBlock.Sensitivity sensitivity, Properties properties, BlockSetType type) {
-        super(sensitivity, properties, type);
+    public CopycatPressurePlateBlock(BlockSetType type, Properties properties) {
+        super(properties, type);
     }
 
     @Nullable
@@ -72,9 +72,10 @@ public class CopycatPressurePlateBlock extends PressurePlateBlock implements ICo
     }
 
     @Override
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+    public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         ICopycatBlock.super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        return pState;
     }
 
     @Override
