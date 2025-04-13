@@ -11,7 +11,7 @@ import java.util.List;
 
 public class CCCreativeTabs {
 
-    public static final List<ItemProviderEntry<?,?>> DECORATIVE = List.of(
+    public static final List<ItemProviderEntry<?, ?>> DECORATIVE = List.of(
             /* Vanilla blocks */
             CCBlocks.COPYCAT_BLOCK,
             CCBlocks.COPYCAT_SLAB,
@@ -46,7 +46,7 @@ public class CCCreativeTabs {
             CCBlocks.COPYCAT_SLOPE_LAYER
     );
 
-    public static final List<ItemProviderEntry<?,?>> FUNCTIONAL = List.of(
+    public static final List<ItemProviderEntry<?, ?>> FUNCTIONAL = List.of(
             /* Vanilla */
             CCBlocks.COPYCAT_DOOR,
             CCBlocks.COPYCAT_IRON_DOOR,
@@ -72,7 +72,7 @@ public class CCCreativeTabs {
 
     @ExpectPlatform
     public static void setCreativeTab() {
-
+        throw new AssertionError();
     }
 
     @ExpectPlatform

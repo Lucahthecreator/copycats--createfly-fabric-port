@@ -20,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class CCDatagenImpl extends CCDatagen {
 
-    protected static final List<CopycatsRecipeProvider> GENERATORS = new ArrayList();
+    protected static final List<CopycatsRecipeProvider> GENERATORS = new ArrayList<>();
 
     public static void gatherData(GatherDataEvent event) {
         addExtraRegistrateData();
@@ -28,7 +28,6 @@ public class CCDatagenImpl extends CCDatagen {
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
         if (event.includeServer()) {
             GENERATORS.add(new CCStandardRecipes(output, lookupProvider));
