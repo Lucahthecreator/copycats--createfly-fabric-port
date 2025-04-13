@@ -3,11 +3,13 @@ package com.copycatsplus.copycats.config.neoforge;
 import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.config.*;
 import net.createmod.catnip.config.ConfigBase;
+import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 import java.util.Map;
 

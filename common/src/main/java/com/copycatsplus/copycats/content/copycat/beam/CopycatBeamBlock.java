@@ -15,6 +15,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -54,15 +55,13 @@ public class CopycatBeamBlock extends CCWaterloggedCopycatBlock implements IStat
     }
 
     @Override
-    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand,
-                                          @NotNull BlockHitResult ray) {
-        return InteractionUtils.sequential(
-                () -> InteractionUtils.usePlacementHelper(placementHelperId, state, world, pos, player, hand, ray),
-                () -> super.use(state, world, pos, player, hand, ray)
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        return InteractionUtils.sequentialItem(
+                () -> InteractionUtils.usePlacementHelper(placementHelperId, state, level, pos, player, hand, hitResult),
+                () -> super.useItemOn(stack, state, level, pos, player, hand, hitResult)
         );
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean isPathfindable(@NotNull BlockState pState, @NotNull PathComputationType pType) {
         return switch (pType) {

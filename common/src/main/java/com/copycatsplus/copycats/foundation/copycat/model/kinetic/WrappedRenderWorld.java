@@ -21,6 +21,7 @@ import net.minecraft.world.level.lighting.LayerLightEventListener;
 import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,12 +34,18 @@ public class WrappedRenderWorld extends VirtualBlockGetter {
     protected final BlockAndTintGetter level;
     protected final BlockPos targetPos;
     protected final BlockState material;
+    protected ModelData modelData;
 
     public WrappedRenderWorld(ICopycatBlockEntity be) {
         super(p -> 0, p -> 0);
         this.level = be.getLevel();
         this.targetPos = be.getBlockPos();
         this.material = be.getMaterial();
+    }
+
+    public WrappedRenderWorld withModelData(ModelData modelData) {
+        this.modelData = modelData;
+        return this;
     }
 
     public BlockAndTintGetter getLevel() {
@@ -88,5 +95,13 @@ public class WrappedRenderWorld extends VirtualBlockGetter {
     public int getBlockTint(BlockPos pos, ColorResolver resolver) {
         Biome plainsBiome = Minecraft.getInstance().getConnection().registryAccess().registryOrThrow(Registries.BIOME).getOrThrow(Biomes.PLAINS);
         return resolver.getColor(plainsBiome, pos.getX(), pos.getZ());
+    }
+
+    @Override
+    public @NotNull ModelData getModelData(@NotNull BlockPos pos) {
+        if (this.modelData != null && pos.equals(targetPos)) {
+            return this.modelData;
+        }
+        return super.getModelData(pos);
     }
 }

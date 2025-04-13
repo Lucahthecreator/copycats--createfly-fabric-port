@@ -22,6 +22,9 @@ import com.simibubi.create.AllBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -32,6 +35,7 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -145,12 +149,14 @@ public abstract class CopycatBlockMixin extends Block implements ICopycatBlock {
     }
 
     @Override
-    public BlockState rotate(BlockState state, Rotation rotation) {
-        return super.rotate(state, rotation);
-    }
+    public abstract BlockState rotate(BlockState state, Rotation rotation);
 
     @Override
-    public BlockState mirror(@NotNull BlockState pState, @NotNull Mirror pMirror) {
-        return super.mirror(pState, pMirror);
-    }
+    public abstract BlockState mirror(@NotNull BlockState pState, @NotNull Mirror pMirror);
+
+    @Override
+    public abstract ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult);
+
+    @Override
+    public abstract InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult);
 }

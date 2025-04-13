@@ -1,12 +1,15 @@
 package com.copycatsplus.copycats.foundation.copycat.multistate;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
+import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -30,7 +33,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * {@link IMultiStateCopycatBlock} without extending this class. Check for multi-state copycats with instanceof checks
  * against {@link IMultiStateCopycatBlock} instead.
  */
-@SuppressWarnings("deprecation")
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public abstract class MultiStateCopycatBlock extends Block implements IMultiStateCopycatBlock, IBE<MultiStateCopycatBlockEntity> {
@@ -46,8 +48,19 @@ public abstract class MultiStateCopycatBlock extends Block implements IMultiStat
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        return IMultiStateCopycatBlock.super.use(state, level, pos, player, hand, hit);
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        return InteractionUtils.sequential(
+                () -> IMultiStateCopycatBlock.super.useWithoutItem(state, level, pos, player, hitResult),
+                () -> super.useWithoutItem(state, level, pos, player, hitResult)
+        );
+    }
+
+    @Override
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        return InteractionUtils.sequentialItem(
+                () -> IMultiStateCopycatBlock.super.useItemOn(stack, state, level, pos, player, hand, hitResult),
+                () -> super.useItemOn(stack, state, level, pos, player, hand, hitResult)
+        );
     }
 
     @Override

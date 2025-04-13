@@ -19,10 +19,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(BlockHelper.class)
 public class BlockHelperMixin {
-    //TODO: Needs fixing
     @Inject(
             method = "placeSchematicBlock",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/BlockEntity;loadStatic(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/world/level/block/entity/BlockEntity;")
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/BlockEntity;loadStatic(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/nbt/CompoundTag;Lnet/minecraft/core/HolderLookup$Provider;)Lnet/minecraft/world/level/block/entity/BlockEntity;")
     )
     private static void placeSchematicBlock(Level world, BlockState state, BlockPos target, ItemStack stack, CompoundTag data, CallbackInfo ci) {
         BlockEntity existingBlockEntity = world.getBlockEntity(target);

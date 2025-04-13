@@ -56,9 +56,8 @@ public class CopycatCornerSliceBlock extends CCWaterloggedCopycatBlock implement
                 .setValue(HALF, Half.BOTTOM));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public boolean isPathfindable(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull PathComputationType pType) {
+    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
         return false;
     }
 

@@ -25,7 +25,6 @@ public class CopycatBlockBlock extends CCCopycatBlock implements IStateType {
         super(properties);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
         return Shapes.block();

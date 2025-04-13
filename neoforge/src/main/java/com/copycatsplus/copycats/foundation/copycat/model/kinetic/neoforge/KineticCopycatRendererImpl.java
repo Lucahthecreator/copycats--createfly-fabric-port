@@ -45,11 +45,9 @@ public class KineticCopycatRendererImpl {
         WrappedRenderWorld renderWorld = new WrappedRenderWorld(be);
         ModelData data = prepareModelData(renderWorld, model, be);
 
-        //TODO: Figure out the replacement for modeldata in builder
         return new BakedModelBuilder(model)
-                .level(renderWorld)
+                .level(renderWorld.withModelData(data))
                 .pos(be.getBlockPos())
-                .modelData(data)
                 .build();
     }
 }

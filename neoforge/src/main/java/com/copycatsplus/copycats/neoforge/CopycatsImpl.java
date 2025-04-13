@@ -20,20 +20,20 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 @Mod(Copycats.MODID)
 public class CopycatsImpl {
 
-    static IEventBus bus;
+    static IEventBus modBus;
 
     public CopycatsImpl() {
-        bus = ModLoadingContext.get().getActiveContainer().getEventBus();
+        modBus = ModLoadingContext.get().getActiveContainer().getEventBus();
         Copycats.init();
-        CCCreativeTabsImpl.register(CopycatsImpl.bus);
+        CCCreativeTabsImpl.register(CopycatsImpl.modBus);
 
-        CCCraftingConditions.register();
+        CCCraftingConditions.register(CopycatsImpl.modBus);
         NeoForge.EVENT_BUS.addListener(this::serverStarting);
         NeoForge.EVENT_BUS.addListener(CopycatsImpl::onChunkUnload);
         NeoForge.EVENT_BUS.addListener(CopycatsImpl::onLevelUnload);
 
         Platform.Environment.CLIENT.runIfCurrent(() -> CopycatsClientImpl::init);
-        bus.addListener(EventPriority.LOWEST, CCDatagenImpl::gatherData);
+        modBus.addListener(EventPriority.LOWEST, CCDatagenImpl::gatherData);
         Mods.ADDITIONAL_PLACEMENTS.executeIfInstalled(() -> AdditionalPlacementsCompatNeoForge::register);
     }
 
@@ -42,7 +42,7 @@ public class CopycatsImpl {
     }
 
     public static void finalizeRegistrate() {
-        Copycats.getRegistrate().registerEventListeners(bus);
+        Copycats.getRegistrate().registerEventListeners(modBus);
     }
 
     static void onChunkUnload(ChunkEvent.Unload event) {

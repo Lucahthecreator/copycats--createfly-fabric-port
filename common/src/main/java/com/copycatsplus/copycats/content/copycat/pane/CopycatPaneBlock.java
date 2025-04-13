@@ -13,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -21,10 +22,13 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -40,15 +44,18 @@ public class CopycatPaneBlock extends ConnectedGlassPaneBlock implements ICopyca
     }
 
     @Override
-    public InteractionResult use(BlockState state,
-                                 Level level,
-                                 BlockPos pos,
-                                 Player player,
-                                 InteractionHand hand,
-                                 BlockHitResult hit) {
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         return InteractionUtils.sequential(
-                () -> ICopycatBlock.super.use(state, level, pos, player, hand, hit),
-                () -> super.use(state, level, pos, player, hand, hit)
+                () -> ICopycatBlock.super.useWithoutItem(state, level, pos, player, hitResult),
+                () -> super.useWithoutItem(state, level, pos, player, hitResult)
+        );
+    }
+
+    @Override
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        return InteractionUtils.sequentialItem(
+                () -> ICopycatBlock.super.useItemOn(stack, state, level, pos, player, hand, hitResult),
+                () -> super.useItemOn(stack, state, level, pos, player, hand, hitResult)
         );
     }
 
@@ -95,6 +102,16 @@ public class CopycatPaneBlock extends ConnectedGlassPaneBlock implements ICopyca
     @Override
     public Optional<Boolean> isCTBlocked(BlockAndTintGetter reader, BlockState state, BlockPos pos, BlockPos connectingPos, BlockPos blockingPos, Direction face) {
         return Optional.of(false);
+    }
+
+    @Override
+    public @NotNull BlockState mirror(@NotNull BlockState pState, @NotNull Mirror pMirror) {
+        return super.mirror(pState, pMirror);
+    }
+
+    @Override
+    public @NotNull BlockState rotate(@NotNull BlockState pState, Rotation pRot) {
+        return super.rotate(pState, pRot);
     }
 
     public boolean supportsExternalFaceHiding(BlockState state) {

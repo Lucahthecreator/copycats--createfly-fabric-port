@@ -192,7 +192,7 @@ public class CCBlocks {
                     .register();
 
     public static final BlockEntry<CopycatButtonBlock> COPYCAT_WOODEN_BUTTON =
-            REGISTRATE.block("copycat_wooden_button", p -> new CopycatButtonBlock(p, BlockSetType.OAK, 30, true))
+            REGISTRATE.block("copycat_wooden_button", p -> new CopycatButtonBlock(BlockSetType.OAK, 30, p))
                     .transform(CCBuilderTransformers.copycat())
                     .properties(p -> p.isValidSpawn((state, level, pos, entity) -> false)
                             .noCollission())
@@ -209,7 +209,7 @@ public class CCBlocks {
                     .register();
 
     public static final BlockEntry<CopycatButtonBlock> COPYCAT_STONE_BUTTON =
-            REGISTRATE.block("copycat_stone_button", p -> new CopycatButtonBlock(p, BlockSetType.STONE, 20, false))
+            REGISTRATE.block("copycat_stone_button", p -> new CopycatButtonBlock(BlockSetType.STONE, 20, p))
                     .transform(CCBuilderTransformers.copycat())
                     .properties(p -> p.isValidSpawn((state, level, pos, entity) -> false)
                             .noCollission())
@@ -546,7 +546,7 @@ public class CCBlocks {
                     .register();
 
     public static final BlockEntry<CopycatTrapdoorBlock> COPYCAT_TRAPDOOR =
-            REGISTRATE.block("copycat_trapdoor", p -> new CopycatTrapdoorBlock(p, BlockSetType.OAK))
+            REGISTRATE.block("copycat_trapdoor", p -> new CopycatTrapdoorBlock(BlockSetType.OAK, p))
                     .transform(CCBuilderTransformers.copycat())
                     .properties(p -> p.isValidSpawn((state, level, pos, entity) -> false))
                     .tag(BlockTags.TRAPDOORS)
@@ -562,7 +562,7 @@ public class CCBlocks {
                     .register();
 
     public static final BlockEntry<CopycatTrapdoorBlock> COPYCAT_IRON_TRAPDOOR =
-            REGISTRATE.block("copycat_iron_trapdoor", p -> new CopycatTrapdoorBlock(p, BlockSetType.IRON))
+            REGISTRATE.block("copycat_iron_trapdoor", p -> new CopycatTrapdoorBlock(BlockSetType.IRON, p))
                     .transform(CCBuilderTransformers.copycat())
                     .properties(p -> p.isValidSpawn((state, level, pos, entity) -> false))
                     .tag(BlockTags.TRAPDOORS)
@@ -728,7 +728,7 @@ public class CCBlocks {
                     .register();
 
     public static final BlockEntry<CopycatDoorBlock> COPYCAT_DOOR =
-            REGISTRATE.block("copycat_door", p -> new CopycatDoorBlock(p, BlockSetType.OAK))
+            REGISTRATE.block("copycat_door", p -> new CopycatDoorBlock(BlockSetType.OAK, p))
                     .transform(CCBuilderTransformers.copycat())
                     .transform(FeatureToggle.register(FeatureCategory.FUNCTIONAL))
                     .onRegister(interactionBehaviour(new DoorMovingInteraction()))
@@ -747,7 +747,7 @@ public class CCBlocks {
                     .register();
 
     public static final BlockEntry<CopycatDoorBlock> COPYCAT_IRON_DOOR =
-            REGISTRATE.block("copycat_iron_door", p -> new CopycatDoorBlock(p, BlockSetType.IRON))
+            REGISTRATE.block("copycat_iron_door", p -> new CopycatDoorBlock(BlockSetType.IRON, p))
                     .transform(CCBuilderTransformers.copycat())
                     .transform(FeatureToggle.register(FeatureCategory.FUNCTIONAL))
                     .onRegister(onClient(() -> createBlockModel(CopycatDoorModelCore::new)))

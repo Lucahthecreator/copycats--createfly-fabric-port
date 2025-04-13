@@ -147,7 +147,7 @@ allprojects {
         }
     }
 
-    configurations{
+    configurations {
         findAndDelete
     }
 
@@ -179,21 +179,28 @@ allprojects {
 
         // set up properties for filling into metadata
         var replaceProperties = [
-                version              : version.replace("neoforge.", "").replace("fabric.", ""),
-                minecraft_version    : minecraft_version,
-                fabric_api_version   : fabric_api_version,
-                fabric_loader_version: fabric_loader_version,
-                create_neoeforge_range   : create_neoforge_range,
-                create_fabric_range  : create_fabric_range,
-                mod_license          : mod_license,
-                mod_authors          : mod_authors,
-                mod_name             : mod_name,
-                mod_description      : mod_description
+                version                      : version.replace("neoforge.", "").replace("fabric.", ""),
+                minecraft_version            : minecraft_version,
+                minecraft_version_range      : minecraft_version_range,
+                fabric_api_version           : fabric_api_version,
+                fabric_loader_version        : fabric_loader_version,
+                neoforge_version_range       : neoforge_version_range,
+                neoforge_loader_version_range: neoforge_loader_version_range,
+                create_neoforge_range        : create_neoforge_range,
+                create_fabric_range          : create_fabric_range,
+                archives_base_name           : archives_base_name,
+                mod_license                  : mod_license,
+                mod_authors                  : mod_authors,
+                mod_name                     : mod_name,
+                mod_description              : mod_description,
+                mod_credits                  : mod_credits,
+                mod_url                      : mod_url,
+                mod_issues                   : mod_issues
         ]
 
         inputs.properties replaceProperties
 
-        filesMatching(["fabric.mod.json", "META-INF/mods.toml"]) {
+        filesMatching(["fabric.mod.json", "META-INF/neoforge.mods.toml"]) {
             expand replaceProperties + [project: project]
         }
     }

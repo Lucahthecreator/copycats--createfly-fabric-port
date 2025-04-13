@@ -147,7 +147,6 @@ public class CopycatSlopeLayerBlock extends CCWaterloggedCopycatBlock implements
         return BlockUtils.transformStepLikeHorizontal(state, transform, defaultBlockState());
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean isPathfindable(@NotNull BlockState pState, @NotNull PathComputationType pType) {
         return switch (pType) {
@@ -156,7 +155,6 @@ public class CopycatSlopeLayerBlock extends CCWaterloggedCopycatBlock implements
         };
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
         return CCShapes.SLOPE_LAYER.get(pState.getValue(FACING)).get(pState.getValue(HALF)).get(pState.getValue(LAYERS)).toShape();

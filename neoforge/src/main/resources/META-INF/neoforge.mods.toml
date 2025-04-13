@@ -1,31 +1,31 @@
 modLoader="javafml"
-loaderVersion="[47,)"
-license="All Rights Reserved"
-issueTrackerURL="https://github.com/copycats-plus/copycats/issues"
+loaderVersion="${neoforge_loader_version_range}"
+license="${mod_license}"
+issueTrackerURL="${mod_issues}"
 [[mods]]
-   modId="copycats"
+   modId="${archives_base_name}"
    version="${version}"
    displayName="${mod_name}"
    updateJSONURL="https://raw.githubusercontent.com/copycats-plus/copycats/multiloader/update.json"
-   displayURL="https://github.com/copycats-plus/copycats"
+   displayURL="${mod_url}"
    logoFile="copycats_icon.png"
-   credits="The Create: Addon Hub Discord"
+   credits="${mod_credits}"
    authors="${mod_authors}"
    description='''${mod_description}'''
 
-[[dependencies.copycats]]
+[[dependencies.${archives_base_name}]]
    modId="neoforge"
    mandatory=true
-   versionRange="[47,)"
+   versionRange="${neoforge_version_range}"
    ordering="NONE"
    side="BOTH"
-[[dependencies.copycats]]
+[[dependencies.${archives_base_name}]]
    modId="minecraft"
    mandatory=true
-   versionRange="[1.21.1,1.22)"
+   versionRange="${minecraft_version_range}"
    ordering="NONE"
    side="BOTH"
-[[dependencies.copycats]]
+[[dependencies.${archives_base_name}]]
    modId="create"
    mandatory=true
    versionRange="${create_neoforge_range}"

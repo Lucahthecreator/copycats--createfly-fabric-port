@@ -10,7 +10,7 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 
 public class CCCatVariantsImpl extends CCCatVariants {
     public static void register() {
-        CopycatsImpl.bus.addListener(CCCatVariantsImpl::onRegister);
+        CopycatsImpl.modBus.addListener(CCCatVariantsImpl::onRegister);
     }
 
     private static void onRegister(RegisterEvent event) {

@@ -45,14 +45,14 @@ public abstract class CopycatStepBlockMixin extends WaterloggedCopycatBlock impl
         return super.getAppearance(state, level, pos, side, queryState, queryPos);
     }
 
-    @Inject(
-            at = @At("HEAD"),
-            method = "useItemOn",
-            cancellable = true
-    )
-    public void use(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult, CallbackInfoReturnable<ItemInteractionResult> cir) {
-        InteractionResult toggleResult = toggleCT(state, level, pos, player, hand, hitResult);
-        if (toggleResult.consumesAction()) cir.setReturnValue(ItemInteractionResult.valueOf(toggleResult.name()));
+    @Override
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        return toggleCT(state, level, pos, player, hitResult);
+    }
+
+    @Override
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
 
     @Nullable
