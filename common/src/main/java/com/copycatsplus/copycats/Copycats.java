@@ -15,7 +15,9 @@ import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +38,7 @@ public class Copycats {
     private static final CopycatRegistrate REGISTRATE = CopycatRegistrate.create(MODID);
 
     static {
+        REGISTRATE.defaultCreativeTab((ResourceKey<CreativeModeTab>) null);
         REGISTRATE.setTooltipModifierFactory(item -> TooltipUtils.sequential(
                 CopycatDescription.create(item),
                 new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE),
@@ -44,8 +47,6 @@ public class Copycats {
     }
 
     public static void init() {
-
-        CCCreativeTabs.setCreativeTab();
 
         CCBlocks.register();
         CCBlockEntityTypes.register();

@@ -15,11 +15,6 @@ public class CopycatRegistrate extends CreateRegistrate {
         return new CopycatRegistrate(modid);
     }
 
-    @ExpectPlatform
-    public static <Tab> CreateRegistrate setTab(Tab tab) {
-        throw new AssertionError();
-    }
-
     public static CopycatRegistrate getInstance() {
         return instance;
     }

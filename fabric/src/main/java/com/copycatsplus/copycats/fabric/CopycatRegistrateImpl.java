@@ -12,9 +12,4 @@ public class CopycatRegistrateImpl extends CopycatRegistrate {
         super(modid);
     }
 
-
-    public static <Tab> CreateRegistrate setTab(Tab tab) {
-        ((CreateRegistrateAccessor) getInstance()).copycats$setCreativeTab((ResourceKey<CreativeModeTab>) tab);
-        return getInstance();
-    }
 }

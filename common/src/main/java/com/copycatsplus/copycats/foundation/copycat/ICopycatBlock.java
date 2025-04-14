@@ -355,14 +355,14 @@ public interface ICopycatBlock extends IWrenchable, IStateType, TransformableBlo
     /**
      * DO NOT override the {@link Block#rotate} implementation with this if the default {@link ICopycatBlock#transform} implementation is used.
      */
-    default @NotNull BlockState rotate(@NotNull BlockState pState, Rotation pRot) {
+     default @NotNull BlockState rotate(@NotNull BlockState pState, Rotation pRot) {
         return transform(pState, new StructureTransform(BlockPos.ZERO, Direction.Axis.Y, pRot, Mirror.NONE));
     }
 
     /**
      * DO NOT override the {@link Block#mirror} implementation with this if the default {@link ICopycatBlock#transform} implementation is used.
      */
-    default @NotNull BlockState mirror(@NotNull BlockState pState, @NotNull Mirror pMirror) {
+    default BlockState mirror(BlockState pState, Mirror pMirror) {
         return transform(pState, new StructureTransform(BlockPos.ZERO, null, Rotation.NONE, pMirror));
     }
 

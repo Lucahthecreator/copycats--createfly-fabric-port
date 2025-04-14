@@ -102,15 +102,15 @@ public class MaterialItemStorage {
         storage = newStorage;
     }
 
-    public CompoundTag serialize() {
+    public CompoundTag serialize(HolderLookup.Provider registries) {
         CompoundTag root = new CompoundTag();
-        storage.forEach((key, materialItem) -> root.put(key, materialItem.serialize()));
+        storage.forEach((key, materialItem) -> root.put(key, materialItem.serialize(registries)));
         return root;
     }
 
-    public CompoundTag serializeSafe() {
+    public CompoundTag serializeSafe(HolderLookup.Provider registries) {
         CompoundTag root = new CompoundTag();
-        storage.forEach((key, materialItem) -> root.put(key, materialItem.serializeSafe()));
+        storage.forEach((key, materialItem) -> root.put(key, materialItem.serializeSafe(registries)));
         return root;
     }
 
@@ -147,19 +147,19 @@ public class MaterialItemStorage {
             this.enableCT = enableCT;
         }
 
-        public CompoundTag serialize() {
+        public CompoundTag serialize(HolderLookup.Provider registries) {
             CompoundTag root = new CompoundTag();
             root.put("material", NbtUtils.writeBlockState(material));
-            root.put("consumedItem", ItemUtils.serializeNBT(consumedItem));
+            root.put("consumedItem", ItemUtils.serializeNBT(consumedItem, registries));
             root.putBoolean("enableCT", enableCT);
             return root;
         }
 
-        public CompoundTag serializeSafe() {
+        public CompoundTag serializeSafe(HolderLookup.Provider registries) {
             CompoundTag root = new CompoundTag();
             root.put("material", NbtUtils.writeBlockState(material));
             ItemStack stackWithoutComponents = new ItemStack(consumedItem.getItemHolder(), consumedItem.getCount(), DataComponentPatch.EMPTY);
-            root.put("consumedItem", ItemUtils.serializeNBT(stackWithoutComponents));
+            root.put("consumedItem", ItemUtils.serializeNBT(stackWithoutComponents, registries));
             root.putBoolean("enableCT", enableCT);
             return root;
         }

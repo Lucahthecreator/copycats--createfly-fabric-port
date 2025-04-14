@@ -113,7 +113,6 @@ public class CCCopycatBlockEntity extends SmartBlockEntity implements ICopycatBl
         return ICopycatBlockEntity.super.getRequiredItems(state);
     }
 
-    //TODO: Update writes and reads
     @Override
     public void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         super.read(tag, registries, clientPacket);

@@ -56,7 +56,6 @@ public class MultiStateCopycatBlockEntity extends SmartBlockEntity implements IM
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
     }
 
-    //TODO: Update write and reads
     @Override
     public ItemRequirement getRequiredItems(BlockState state) {
         return IMultiStateCopycatBlockEntity.super.getRequiredItems(state);

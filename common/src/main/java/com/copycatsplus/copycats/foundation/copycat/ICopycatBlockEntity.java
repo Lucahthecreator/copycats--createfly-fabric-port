@@ -194,7 +194,7 @@ public interface ICopycatBlockEntity extends SpecialBlockEntityItemRequirement, 
         else
             self.setCTEnabled(true);
 
-        self.setConsumedItem(ItemStack.parse(ServerLifecycleHooks.getCurrentServer().registryAccess(), (tag.getCompound("Item"))).get());
+        self.setConsumedItem(ItemStack.parseOptional(registries, (tag.getCompound("Item"))));
 
         BlockState prevMaterial = self.getMaterial();
         if (!tag.contains("Material")) {
@@ -235,7 +235,7 @@ public interface ICopycatBlockEntity extends SpecialBlockEntityItemRequirement, 
 
     @ApiStatus.Internal
     static void write(CompoundTag tag, ItemStack stack, BlockState material, HolderLookup.Provider registries, boolean enableCT) {
-        tag.put("Item", ItemUtils.serializeNBT(stack));
+        tag.put("Item", ItemUtils.serializeNBT(stack, registries));
         tag.put("Material", NbtUtils.writeBlockState(material));
         tag.putBoolean("EnableCT", enableCT);
     }

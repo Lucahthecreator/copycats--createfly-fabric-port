@@ -250,10 +250,10 @@ public interface IMultiStateCopycatBlockEntity extends ICopycatBlockEntity {
 
     static void writeSafe(IMultiStateCopycatBlockEntity self, CompoundTag tag, HolderLookup.Provider registries) {
         BlockEntityUtils.saveMetadata((BlockEntity) self, tag);
-        tag.put("material_data", self.getMaterialItemStorage().serializeSafe());
+        tag.put("material_data", self.getMaterialItemStorage().serializeSafe(registries));
     }
 
     static void write(IMultiStateCopycatBlockEntity self, CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
-        tag.put("material_data", self.getMaterialItemStorage().serialize());
+        tag.put("material_data", self.getMaterialItemStorage().serialize(registries));
     }
 }

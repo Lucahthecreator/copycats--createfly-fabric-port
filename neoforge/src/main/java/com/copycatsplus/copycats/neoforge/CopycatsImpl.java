@@ -24,8 +24,8 @@ public class CopycatsImpl {
 
     public CopycatsImpl() {
         modBus = ModLoadingContext.get().getActiveContainer().getEventBus();
-        Copycats.init();
         CCCreativeTabsImpl.register(CopycatsImpl.modBus);
+        Copycats.init();
 
         CCCraftingConditions.register(CopycatsImpl.modBus);
         NeoForge.EVENT_BUS.addListener(this::serverStarting);
