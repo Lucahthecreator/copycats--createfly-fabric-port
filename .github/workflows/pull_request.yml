@@ -30,11 +30,12 @@ jobs:
                   path: gradle.properties
                   properties: minecraft_version enabled_platforms archives_base_name
 
-            - name: Set up JDK 17
+            - name: Set up JDK 21
               uses: actions/setup-java@v4
               with:
-                  java-version: 17
+                  java-version: 21
                   distribution: temurin
+                  cache: 'gradle'
 
             - name: Validate Gradle wrapper
               uses: gradle/actions/wrapper-validation@v3
