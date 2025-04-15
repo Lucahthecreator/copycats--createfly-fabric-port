@@ -40,6 +40,8 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+
 import static com.copycatsplus.copycats.foundation.copycat.ICopycatBlock.getMaterial;
 
 /**
@@ -148,15 +150,23 @@ public abstract class CopycatBlockMixin extends Block implements ICopycatBlock {
         return ICopycatBlock.getAppearance(this, state, level, pos, side, queryState, queryPos);
     }
 
+    /*
+     * The following overrides are just to make the compiler happy about this mixin class.
+     * They do not actually overwrite the corresponding methods.
+     */
     @Override
+    @Unique
     public abstract BlockState rotate(BlockState state, Rotation rotation);
 
     @Override
+    @Unique
     public abstract BlockState mirror(@NotNull BlockState pState, @NotNull Mirror pMirror);
 
     @Override
+    @Unique
     public abstract ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult);
 
     @Override
+    @Unique
     public abstract InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult);
 }

@@ -29,6 +29,7 @@ import net.neoforged.neoforge.common.extensions.IBlockExtension;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
+import org.spongepowered.asm.mixin.Unique;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -221,15 +222,23 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IBloc
         return IMultiStateCopycatBlock.getAppearance(this, state, renderView, pos, side, sourceState, sourcePos);
     }
 
+    /*
+     * The following overrides are just to make the compiler happy about this mixin class.
+     * They do not actually overwrite the corresponding methods.
+     */
     @Override
+    @Unique
     public abstract BlockState rotate(BlockState state, Rotation rotation);
 
     @Override
+    @Unique
     public abstract BlockState mirror(@NotNull BlockState pState, @NotNull Mirror pMirror);
 
     @Override
+    @Unique
     public abstract ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult);
 
     @Override
+    @Unique
     public abstract InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult);
 }
