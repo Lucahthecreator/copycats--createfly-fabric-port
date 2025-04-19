@@ -58,7 +58,7 @@ jobs:
             - name: Build jar
               env:
                   RELEASE: true
-              run: ./gradlew :forge:build
+              run: ./gradlew :neoforge:build
 
             - name: Publish to GitHub Packages
               env:
@@ -66,7 +66,7 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               if: env.GITHUB_TOKEN != ''
               continue-on-error: true
-              run: ./gradlew :forge:publishMavenJavaPublicationToGitHubPackagesRepository
+              run: ./gradlew :neoforge:publishMavenJavaPublicationToGitHubPackagesRepository
 
             - name: Publish to realRobotix Maven
               env:
@@ -74,7 +74,7 @@ jobs:
                   MAVEN_USER: ${{ secrets.MAVEN_USER }}
                   MAVEN_ACCESS_TOKEN: ${{ secrets.MAVEN_ACCESS_TOKEN }}
               if: env.MAVEN_USER != '' && env.MAVEN_ACCESS_TOKEN != ''
-              run: ./gradlew :forge:publishMavenJavaPublicationToRealRobotixMavenRepository -PrealRobotixMavenUsername=${{ secrets.MAVEN_USER }} -PrealRobotixMavenPassword=${{ secrets.MAVEN_ACCESS_TOKEN }}
+              run: ./gradlew :neoforge:publishMavenJavaPublicationToRealRobotixMavenRepository -PrealRobotixMavenUsername=${{ secrets.MAVEN_USER }} -PrealRobotixMavenPassword=${{ secrets.MAVEN_ACCESS_TOKEN }}
 
             - name: Publish to Modrinth and CurseForge
               env:
@@ -82,7 +82,7 @@ jobs:
                 MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
                 CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
               if: env.MODRINTH_TOKEN != '' && env.CURSEFORGE_TOKEN != ''
-              run: ./gradlew :forge:publishMods -PMODRINTH_TOKEN=${{ secrets.MODRINTH_TOKEN }} -PCURSEFORGE_TOKEN=${{ secrets.CURSEFORGE_TOKEN }}
+              run: ./gradlew :neoforge:publishMods -PMODRINTH_TOKEN=${{ secrets.MODRINTH_TOKEN }} -PCURSEFORGE_TOKEN=${{ secrets.CURSEFORGE_TOKEN }}
 
             - name: Find jars
               id: find_jars

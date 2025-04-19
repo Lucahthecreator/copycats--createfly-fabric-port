@@ -49,7 +49,7 @@ jobs:
                   cache-read-only: true
 
             - name: Build jar
-              run: ./gradlew :forge:build
+              run: ./gradlew :neoforge:build
 
             - name: Find jars
               id: find_jars
