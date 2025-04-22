@@ -6,6 +6,7 @@ import com.copycatsplus.copycats.datagen.recipes.gen.CopycatsRecipeProvider;
 import com.copycatsplus.copycats.foundation.tooltip.CopycatDescription;
 import com.copycatsplus.copycats.network.CCPackets;
 import com.copycatsplus.copycats.utility.TooltipUtils;
+import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
@@ -35,19 +36,15 @@ public class Copycats {
     public static final int DATA_FIXER_VERSION = 1;
     public static final Logger LOGGER = LoggerFactory.getLogger("Copycats+");
 
-    private static final CopycatRegistrate REGISTRATE = CopycatRegistrate.create(MODID);
-
-    static {
-        REGISTRATE.defaultCreativeTab((ResourceKey<CreativeModeTab>) null);
-        REGISTRATE.setTooltipModifierFactory(item -> TooltipUtils.sequential(
-                CopycatDescription.create(item),
-                new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE),
-                TooltipModifier.mapNull(KineticStats.create(item)))
-        );
-    }
+    private static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID)
+            .defaultCreativeTab((ResourceKey<CreativeModeTab>) null)
+            .setTooltipModifierFactory(item -> TooltipUtils.sequential(
+                    CopycatDescription.create(item),
+                    new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE),
+                    TooltipModifier.mapNull(KineticStats.create(item)))
+            );
 
     public static void init() {
-
         CCBlocks.register();
         CCBlockEntityTypes.register();
         CCCatVariants.register();
@@ -56,21 +53,13 @@ public class Copycats {
         CCConfigs.register();
 
         CCPackets.register();
-
-        finalizeRegistrate();
     }
 
-    public static CopycatRegistrate getRegistrate() {
+    public static CreateRegistrate getRegistrate() {
         return REGISTRATE;
     }
 
     public static ResourceLocation asResource(String path) {
         return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
-
-    @ExpectPlatform
-    public static void finalizeRegistrate() {
-        throw new AssertionError();
-    }
-
 }

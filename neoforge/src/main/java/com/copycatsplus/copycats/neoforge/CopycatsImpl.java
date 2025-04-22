@@ -10,6 +10,7 @@ import com.copycatsplus.copycats.utility.LogicalSidedProvider;
 import com.copycatsplus.copycats.utility.Platform;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
@@ -22,8 +23,9 @@ public class CopycatsImpl {
 
     static IEventBus modBus;
 
-    public CopycatsImpl() {
-        modBus = ModLoadingContext.get().getActiveContainer().getEventBus();
+    public CopycatsImpl(IEventBus modBus, ModContainer container) {
+        CopycatsImpl.modBus = modBus;
+        Copycats.getRegistrate().registerEventListeners(modBus);
         CCCreativeTabsImpl.register(CopycatsImpl.modBus);
         Copycats.init();
 
@@ -32,17 +34,12 @@ public class CopycatsImpl {
         NeoForge.EVENT_BUS.addListener(CopycatsImpl::onChunkUnload);
         NeoForge.EVENT_BUS.addListener(CopycatsImpl::onLevelUnload);
 
-        Platform.Environment.CLIENT.runIfCurrent(() -> CopycatsClientImpl::init);
         modBus.addListener(EventPriority.LOWEST, CCDatagenImpl::gatherData);
         Mods.ADDITIONAL_PLACEMENTS.executeIfInstalled(() -> AdditionalPlacementsCompatNeoForge::register);
     }
 
     private void serverStarting(ServerStartingEvent event) {
         LogicalSidedProvider.setServer(event::getServer);
-    }
-
-    public static void finalizeRegistrate() {
-        Copycats.getRegistrate().registerEventListeners(modBus);
     }
 
     static void onChunkUnload(ChunkEvent.Unload event) {

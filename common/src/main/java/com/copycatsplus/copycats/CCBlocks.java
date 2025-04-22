@@ -129,7 +129,7 @@ import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 //noinspection unchecked
 public class CCBlocks {
 
-    private static final CopycatRegistrate REGISTRATE = Copycats.getRegistrate();
+    private static final CreateRegistrate REGISTRATE = Copycats.getRegistrate();
 
     public static final BlockEntry<WrappedCopycatBlock> WRAPPED_COPYCAT =
             REGISTRATE.block("wrapped_copycat", WrappedCopycatBlock::new)

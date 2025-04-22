@@ -18,7 +18,7 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 
 public final class BakedModelWithDataBuilder {
     private final BakedModel model;
-    private BlockAndTintGetter renderWorld = EmptyVirtualBlockGetter.FULL_BRIGHT;
+    private BlockAndTintGetter renderWorld = EmptyVirtualBlockGetter.FULL_DARK;
     private BlockState referenceState = Blocks.AIR.defaultBlockState();
     private PoseStack poseStack = new PoseStack();
     private BlockPos renderPos = BlockPos.ZERO;

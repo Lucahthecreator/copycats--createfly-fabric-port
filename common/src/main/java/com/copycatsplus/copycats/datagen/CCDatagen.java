@@ -1,10 +1,10 @@
 package com.copycatsplus.copycats.datagen;
 
-import com.copycatsplus.copycats.CopycatRegistrate;
 import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.foundation.tooltip.CopycatCharacteristics;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
 
@@ -13,7 +13,7 @@ import java.util.function.BiConsumer;
 
 public class CCDatagen {
 
-    private static final CopycatRegistrate REGISTRATE = Copycats.getRegistrate();
+    private static final CreateRegistrate REGISTRATE = Copycats.getRegistrate();
 
     protected static void addExtraRegistrateData() {
         CCTagGen.addGenerators();

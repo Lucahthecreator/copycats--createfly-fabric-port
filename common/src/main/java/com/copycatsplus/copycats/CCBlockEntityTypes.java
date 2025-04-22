@@ -15,10 +15,11 @@ import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlockEntity;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftVisual;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftRenderer;
 import com.simibubi.create.content.fluids.pipes.TransparentStraightPipeRenderer;
+import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
 public class CCBlockEntityTypes {
-    private static final CopycatRegistrate REGISTRATE = Copycats.getRegistrate();
+    private static final CreateRegistrate REGISTRATE = Copycats.getRegistrate();
 
     public static final BlockEntityEntry<? extends CCCopycatBlockEntity> COPYCAT =
             REGISTRATE.blockEntity("copycat", CCCopycatBlockEntity::new)
