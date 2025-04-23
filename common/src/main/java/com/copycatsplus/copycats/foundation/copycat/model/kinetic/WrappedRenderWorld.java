@@ -37,7 +37,7 @@ public class WrappedRenderWorld extends VirtualBlockGetter {
     protected ModelData modelData;
 
     public WrappedRenderWorld(ICopycatBlockEntity be) {
-        super(p -> 15, p -> 15);
+        super(p -> 0, p -> 0);
         this.level = be.getLevel();
         this.targetPos = be.getBlockPos();
         this.material = be.getMaterial();
@@ -83,7 +83,7 @@ public class WrappedRenderWorld extends VirtualBlockGetter {
 
     @Override
     public float getShade(@NotNull Direction direction, boolean shade) {
-        return 15;
+        return 1;
     }
 
     @Override
