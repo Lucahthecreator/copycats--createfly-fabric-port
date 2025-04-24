@@ -58,7 +58,7 @@ public final class BakedModelWithDataBuilder {
 
         RandomSource random = RandomSource.createNewThreadLocalInstance();
 
-        ShadedBlockSbbBuilder sbbBuilder = ShadedBlockSbbBuilder.create();
+        ShadedBlockSbbBuilder sbbBuilder = ShadedBlockSbbBuilder.createForPonder();
         sbbBuilder.begin();
 
         poseStack.pushPose();
