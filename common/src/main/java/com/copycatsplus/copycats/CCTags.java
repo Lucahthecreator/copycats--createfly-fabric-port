@@ -18,7 +18,7 @@ public class CCTags {
     }
 
     public static <T> TagKey<T> commonTag(Registry<T> registry, String path) {
-        return optionalTag(registry, ResourceLocation.fromNamespaceAndPath((Platform.getCurrent().equals(Platform.NEOFORGE) ? "forge" : "c"), path));
+        return optionalTag(registry, ResourceLocation.fromNamespaceAndPath("c", path));
     }
 
     public static TagKey<Block> commonBlockTag(String path) {

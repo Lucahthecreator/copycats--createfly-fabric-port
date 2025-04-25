@@ -1,0 +1,17 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "copycats:feature_enabled",
+      "feature": "copycats:copycat_half_panel",
+      "invert": false
+    }
+  ],
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "tag": "c:ingots/zinc"
+  },
+  "result": {
+    "count": 8,
+    "id": "copycats:copycat_half_panel"
+  }
+}

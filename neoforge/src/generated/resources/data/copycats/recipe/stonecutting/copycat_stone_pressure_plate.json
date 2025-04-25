@@ -1,0 +1,17 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "copycats:feature_enabled",
+      "feature": "copycats:copycat_stone_pressure_plate",
+      "invert": false
+    }
+  ],
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "tag": "c:ingots/zinc"
+  },
+  "result": {
+    "count": 4,
+    "id": "copycats:copycat_stone_pressure_plate"
+  }
+}

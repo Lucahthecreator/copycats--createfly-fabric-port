@@ -340,16 +340,16 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
         ZINC(CCTags.commonItemTag("ingots/zinc"), CCTags.commonItemTag("zinc_ingots"));
 
 
-        private final TagKey<Item> forge;
+        private final TagKey<Item> neoforge;
         private final TagKey<Item> fabric;
 
-        TaggedIngredients(TagKey<Item> forge, TagKey<Item> fabric) {
-            this.forge = forge;
+        TaggedIngredients(TagKey<Item> neoforge, TagKey<Item> fabric) {
+            this.neoforge = neoforge;
             this.fabric = fabric;
         }
 
         public TagKey<Item> getTag() {
-            return Platform.getCurrent().equals(Platform.NEOFORGE) ? this.forge : this.fabric;
+            return Platform.getCurrent().equals(Platform.NEOFORGE) ? this.neoforge : this.fabric;
         }
     }
 }
