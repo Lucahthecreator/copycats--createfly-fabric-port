@@ -154,7 +154,7 @@ public class GeneratedRecipeBuilderNeoForge implements GeneratedRecipeBuilder {
     public GeneratedRecipe handleConditions(Consumer<RecipeOutput> recipe) {
         return CopycatsRecipeProvider.register(output -> {
             if (!recipeConditions.isEmpty()) {
-                output.withConditions(recipeConditions.toArray(recipeConditions.toArray(new ICondition[0])));
+                output.withConditions(recipeConditions.toArray(new ICondition[0]));
             } else {
                 recipe.accept(output);
             }

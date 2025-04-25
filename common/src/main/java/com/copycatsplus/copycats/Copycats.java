@@ -2,28 +2,22 @@ package com.copycatsplus.copycats;
 
 import com.copycatsplus.copycats.config.CCConfigs;
 import com.copycatsplus.copycats.datagen.recipes.CCStandardRecipes;
-import com.copycatsplus.copycats.datagen.recipes.gen.CopycatsRecipeProvider;
 import com.copycatsplus.copycats.foundation.tooltip.CopycatDescription;
 import com.copycatsplus.copycats.network.CCPackets;
 import com.copycatsplus.copycats.utility.TooltipUtils;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.createmod.catnip.lang.FontHelper;
-import net.minecraft.data.CachedOutput;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class Copycats {
@@ -53,6 +47,10 @@ public class Copycats {
         CCConfigs.register();
 
         CCPackets.register();
+    }
+
+    public static void gatherData(DataGenerator.PackGenerator gen, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        gen.addProvider(output -> new CCStandardRecipes(output, lookupProvider));
     }
 
     public static CreateRegistrate getRegistrate() {

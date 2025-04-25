@@ -13,6 +13,7 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,24 +30,7 @@ public class CCDatagenImpl extends CCDatagen {
         PackOutput output = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        if (event.includeServer()) {
-            GENERATORS.add(new CCStandardRecipes(output, lookupProvider));
-
-            generator.addProvider(true, new DataProvider() {
-
-                @Override
-                public String getName() {
-                    return "Copycat+'s Processing Recipes";
-                }
-
-                @Override
-                public CompletableFuture<?> run(CachedOutput dc) {
-                    return CompletableFuture.allOf(GENERATORS.stream()
-                            .map(gen -> gen.run(dc))
-                            .toArray(CompletableFuture[]::new));
-                }
-            });
-        }
+        generator.addProvider(event.includeServer(), new CCStandardRecipes(output, lookupProvider));
 
         event.getGenerator().addProvider(true, Copycats.getRegistrate().setDataProvider(new RegistrateDataProvider(Copycats.getRegistrate(), Copycats.MODID, event)));
     }

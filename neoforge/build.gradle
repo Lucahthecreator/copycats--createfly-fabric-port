@@ -52,7 +52,7 @@ dependencies {
     modLocalRuntime("curse.maven:jade-324717:${jade_neoforge_curse_id}")
     modLocalRuntime("mezz.jei:jei-${minecraft_version}-neoforge:${jei_neoforge_version}")
 
-    modLocalRuntime("curse.maven:embeddium-908741:${embeddium_neoforge_curse_id}")
+    modLocalRuntime("curse.maven:sodium-394468:${sodium_neoforge_curse_id}")
     modImplementation("curse.maven:additional-placements-674852:${additionalplacements_neoforge_curse_id}")
     modImplementation("curse.maven:athena-841890:${athena_neoforge_curse_id}")
     // modLocalRuntime("curse.maven:create-industry-693815:${tfmg_forge_curse_id}")

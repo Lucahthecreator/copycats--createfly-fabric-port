@@ -24,12 +24,12 @@ dependencies {
     modImplementation("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
 
     // required for proper remapping and compiling
-//    modCompileOnly("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
+    modCompileOnly("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
     modCompileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_common_version}")
     modCompileOnly("dev.emi:emi-xplat-mojmap:${emi_common_version}+${minecraft_version}")
 
     modImplementation("curse.maven:additional-placements-674852:${additionalplacements_neoforge_curse_id}")
-    modImplementation("curse.maven:embeddium-908741:${embeddium_neoforge_curse_id}")
+    modImplementation("curse.maven:sodium-394468:${sodium_neoforge_curse_id}")
     modCompileOnly("curse.maven:selene-499980:${moonlight_curse_neoforge_id}")
     modCompileOnly("curse.maven:vertical-slabs-compat-724387:${vertical_slabs_curse_neoforge_id}")
 
