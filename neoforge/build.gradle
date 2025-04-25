@@ -10,6 +10,7 @@ loom {
         client {
             vmArg "-XX:+AllowEnhancedClassRedefinition"
             programArgs "--username=Dev"
+            programArg("-Dneoforge.rendernurse.renderdoc.library=lib/RenderDoc_1.37_64/renderdoc.dll")
         }
         server {
             vmArg "-XX:+AllowEnhancedClassRedefinition"
@@ -64,6 +65,9 @@ dependencies {
     modLocalRuntime("curse.maven:spark-361579:${spark_neoforge_curse_id}")
     modCompileOnly("curse.maven:selene-499980:${moonlight_curse_neoforge_id}")
     modCompileOnly("curse.maven:vertical-slabs-compat-724387:${vertical_slabs_curse_neoforge_id}")
+
+    //TODO: Disable when dont need to debug rendering
+    modLocalRuntime("net.neoforged.rendernurse:RenderNurse:0.0.9")
 
 //    compileOnly("io.github.llamalad7:mixinextras-common:${mixin_extras_version}")
 //    annotationProcessor(implementation(include("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}")))

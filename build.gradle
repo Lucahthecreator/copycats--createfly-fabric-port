@@ -136,6 +136,7 @@ allprojects {
             url = "https://jitpack.io/"
             content { includeGroupAndSubgroups("com.github") }
         }
+        maven { url "https://maven.neoforged.net/releases/" }
         exclusiveContent {
             forRepository {
                 maven {
