@@ -10,7 +10,10 @@ loom {
         client {
             vmArg "-XX:+AllowEnhancedClassRedefinition"
             programArgs "--username=Dev"
-            programArg("-Dneoforge.rendernurse.renderdoc.library=lib/RenderDoc_1.37_64/renderdoc.dll")
+            vmArg("-Dneoforge.rendernurse.renderdoc.library=\"/lib/RenderDoc_1.37_64/renderdoc.dll\"");
+            vmArg "-javaagent:\"/lib/RenderNurse-0.0.9.jar\""
+            vmArg "--enable-preview"
+            vmArg "--enable-native-access=ALL-UNNAMED"
         }
         server {
             vmArg "-XX:+AllowEnhancedClassRedefinition"
@@ -67,7 +70,7 @@ dependencies {
     modCompileOnly("curse.maven:vertical-slabs-compat-724387:${vertical_slabs_curse_neoforge_id}")
 
     //TODO: Disable when dont need to debug rendering
-    modLocalRuntime("net.neoforged.rendernurse:RenderNurse:0.0.9")
+    localRuntime("net.neoforged.rendernurse:RenderNurse:0.0.9")
 
 //    compileOnly("io.github.llamalad7:mixinextras-common:${mixin_extras_version}")
 //    annotationProcessor(implementation(include("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}")))
