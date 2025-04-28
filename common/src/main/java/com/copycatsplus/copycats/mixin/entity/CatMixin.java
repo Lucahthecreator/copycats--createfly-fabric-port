@@ -70,8 +70,8 @@ public abstract class CatMixin extends TamableAnimal {
             at = @At("RETURN"),
             method = "defineSynchedData"
     )
-    private void defineNaturalVariant(CallbackInfo ci) {
-        this.entityData.set(DATA_NATURAL_VARIANT_ID, BuiltInRegistries.CAT_VARIANT.getHolderOrThrow(CatVariant.ALL_BLACK));
+    private void defineNaturalVariant(SynchedEntityData.Builder builder, CallbackInfo ci) {
+        builder.define(DATA_NATURAL_VARIANT_ID, BuiltInRegistries.CAT_VARIANT.getHolderOrThrow(CatVariant.ALL_BLACK));
     }
 
     @Inject(
