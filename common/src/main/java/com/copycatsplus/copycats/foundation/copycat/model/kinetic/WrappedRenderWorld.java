@@ -2,23 +2,17 @@ package com.copycatsplus.copycats.foundation.copycat.model.kinetic;
 
 
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
-import dev.engine_room.flywheel.lib.model.baked.VirtualBlockGetter;
+import com.simibubi.create.foundation.virtualWorld.VirtualRenderWorld;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.DataLayer;
-import net.minecraft.world.level.chunk.LightChunk;
-import net.minecraft.world.level.chunk.LightChunkGetter;
-import net.minecraft.world.level.lighting.LayerLightEventListener;
-import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.client.model.data.ModelData;
@@ -30,26 +24,26 @@ import org.jetbrains.annotations.Nullable;
  * A virtual world to render the kinetic copycat models in.
  */
 @ApiStatus.Internal
-public class WrappedRenderWorld extends VirtualBlockGetter {
+public class WrappedRenderWorld extends VirtualRenderWorld {
     protected final BlockAndTintGetter level;
     protected final BlockPos targetPos;
     protected final BlockState material;
     protected ModelData modelData;
 
     public WrappedRenderWorld(ICopycatBlockEntity be) {
-        super(p -> 0, p -> 0);
+        super(be.getLevel());
         this.level = be.getLevel();
         this.targetPos = be.getBlockPos();
         this.material = be.getMaterial();
     }
 
+    public BlockAndTintGetter getWrappedLevel() {
+        return this.level;
+    }
+
     public WrappedRenderWorld withModelData(ModelData modelData) {
         this.modelData = modelData;
         return this;
-    }
-
-    public BlockAndTintGetter getLevel() {
-        return level;
     }
 
     @Override
@@ -84,11 +78,6 @@ public class WrappedRenderWorld extends VirtualBlockGetter {
     @Override
     public float getShade(@NotNull Direction direction, boolean shade) {
         return 1;
-    }
-
-    @Override
-    public @NotNull LevelLightEngine getLightEngine() {
-        return lightEngine;
     }
 
     @Override

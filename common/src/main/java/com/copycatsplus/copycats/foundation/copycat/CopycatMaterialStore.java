@@ -46,7 +46,7 @@ public class CopycatMaterialStore {
 
     private static CopycatMaterialStore get(BlockGetter level) {
         if (Platform.Environment.CLIENT.isCurrent() && level instanceof WrappedRenderWorld wrapped) {
-            level = wrapped.getLevel();
+            level = wrapped.getWrappedLevel();
         }
         if (Platform.Environment.CLIENT.isCurrent() && Mods.SODIUM.getLoaded()) {
             try {
