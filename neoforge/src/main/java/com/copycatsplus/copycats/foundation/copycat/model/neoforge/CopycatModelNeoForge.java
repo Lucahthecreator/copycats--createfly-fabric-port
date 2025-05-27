@@ -29,6 +29,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.ChunkRenderTypeSet;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
+import net.neoforged.neoforge.common.util.TriState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -67,7 +68,14 @@ public class CopycatModelNeoForge extends BakedModelWrapperWithData {
 
     @Override
     public boolean useAmbientOcclusion() {
-        return !disableAO && super.useAmbientOcclusion();
+        if (disableAO) return false;
+        return super.useAmbientOcclusion();
+    }
+
+    @Override
+    public @NotNull TriState useAmbientOcclusion(@NotNull BlockState state, @NotNull ModelData data, @NotNull RenderType renderType) {
+        if (disableAO) return TriState.FALSE;
+        return super.useAmbientOcclusion(state, data, renderType);
     }
 
     @Override
@@ -255,7 +263,7 @@ public class CopycatModelNeoForge extends BakedModelWrapperWithData {
     }
 
     @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction direction, RandomSource random) {
+    public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction direction, @NotNull RandomSource random) {
         return getQuads(state, direction, random, ModelData.EMPTY, null);
     }
 
