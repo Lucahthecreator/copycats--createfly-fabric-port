@@ -3,6 +3,12 @@ plugins {
     id 'me.modmuss50.mod-publish-plugin' version "0.5.1"
 }
 
+def renderdocPath = (project.findProperty('renderdocDir') ?: "C:/Program Files/RenderDoc").toString()
+def renderdocCmdExe = new File(renderdocPath, "renderdoccmd.exe")
+if (useRenderDoc && !renderdocCmdExe.exists()) {
+    throw new GradleException("RenderDoc not found at ${renderdocCmdExe} — please set -PrenderdocDir correctly")
+}
+
 loom {
     var common = project(":common")
     accessWidenerPath = common.loom.accessWidenerPath
@@ -10,12 +16,10 @@ loom {
         client {
             vmArg "-XX:+AllowEnhancedClassRedefinition"
             programArgs "--username=Dev"
-            var renderDocDLL = file("lib/RenderDoc_1.37_64/renderdoc.dll").toPath().toAbsolutePath();
-            var renderNurseJar = file("lib/RenderNurse-0.0.9.jar").toPath().toAbsolutePath();
-/*            vmArg("-javaagent:${renderNurseJar.toString()}")
-            vmArg("--enable-preview")
-            vmArg("--enable-native-access=ALL-UNNAMED")*/
-            vmArg("-Dneoforge.rendernurse.renderdoc.library=${renderDocDLL.toString()}");
+            if (useRenderDoc) {
+                var renderDocDLL = new File(renderdocPath, "renderdoc.dll").toPath().toAbsolutePath()
+                vmArg("-Dneoforge.rendernurse.renderdoc.library=${renderDocDLL.toString()}")
+            }
         }
         server {
             vmArg "-XX:+AllowEnhancedClassRedefinition"
@@ -71,8 +75,9 @@ dependencies {
     modCompileOnly("curse.maven:selene-499980:${moonlight_curse_neoforge_id}")
     modCompileOnly("curse.maven:vertical-slabs-compat-724387:${vertical_slabs_curse_neoforge_id}")
 
-    //TODO: Disable when dont need to debug rendering
-    localRuntime("net.neoforged.rendernurse:RenderNurse:0.0.9")
+    if (useRenderDoc) {
+        localRuntime("net.neoforged.rendernurse:RenderNurse:0.0.9")
+    }
 
 //    compileOnly("io.github.llamalad7:mixinextras-common:${mixin_extras_version}")
 //    annotationProcessor(implementation(include("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}")))
@@ -160,12 +165,6 @@ publishMods {
 tasks.register('runClientWithRenderDoc', Exec) {
     group = 'application'
     description = 'Runs the Minecraft client through RenderDoc'
-
-    def renderdocDir = project.findProperty('renderdocDir') ?: "C:/Program Files/RenderDoc"
-    def renderdocCmdExe = new File(renderdocDir, "renderdoccmd.exe")
-    if (!renderdocCmdExe.exists()) {
-        throw new GradleException("RenderDoc not found at ${renderdocCmdExe} — please set -PrenderdocDir correctly")
-    }
 
     // Explicitly depend on runClient
     dependsOn tasks.named('runClient')
