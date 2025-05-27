@@ -99,9 +99,9 @@ public class CCCopycatBlockEntity extends SmartBlockEntity implements ICopycatBl
     }
 
     @Override
-    public void invalidate() {
-        super.invalidate();
-        ICopycatBlockEntity.super.invalidate();
+    public void onLoad() {
+        super.onLoad();
+        ICopycatBlockEntity.super.onLoad();
     }
 
     @Override

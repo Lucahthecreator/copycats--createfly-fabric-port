@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.fluid_pipe;
 
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
+import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
@@ -55,9 +56,9 @@ public class CopycatFluidPipeBlockEntity extends FluidPipeBlockEntity implements
     }
 
     @Override
-    public void invalidate() {
-        super.invalidate();
-        ICopycatBlockEntity.super.invalidate();
+    public void onLoad() {
+        super.onLoad();
+        ICopycatBlockEntity.super.onLoad();
     }
 
     @Override

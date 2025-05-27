@@ -16,7 +16,6 @@ import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsBlock;
 import com.copycatsplus.copycats.content.copycat.trapdoor.CopycatTrapdoorBlock;
 import com.copycatsplus.copycats.content.copycat.wall.CopycatWallBlock;
 import com.copycatsplus.copycats.foundation.copycat.CCCopycatBlock;
-import com.copycatsplus.copycats.foundation.copycat.CopycatMaterialStore;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.simibubi.create.AllBlocks;
 import net.minecraft.core.BlockPos;
@@ -37,6 +36,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -86,9 +86,11 @@ public abstract class CopycatBlockMixin extends Block implements ICopycatBlock {
 
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-        return CopycatMaterialStore.getMaterial(level, pos).left()
-                .map(material -> material.getLightEmission(level, pos))
-                .orElse(super.getLightEmission(state, level, pos));
+        AuxiliaryLightManager lightManager = level.getAuxLightManager(pos);
+        if (lightManager != null)
+            return lightManager.getLightAt(pos);
+
+        return super.getLightEmission(state, level, pos);
     }
 
     @Override

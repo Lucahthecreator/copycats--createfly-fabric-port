@@ -54,9 +54,9 @@ public class CopycatShaftBlockEntity extends BracketedKineticBlockEntity impleme
     }
 
     @Override
-    public void invalidate() {
-        super.invalidate();
-        ICopycatBlockEntity.super.invalidate();
+    public void onLoad() {
+        super.onLoad();
+        ICopycatBlockEntity.super.onLoad();
     }
 
     @Override

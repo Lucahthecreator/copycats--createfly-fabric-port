@@ -36,9 +36,9 @@ public class CopycatCogWheelBlockEntity extends BracketedKineticBlockEntity impl
     }
 
     @Override
-    public void invalidate() {
-        super.invalidate();
-        IMultiStateCopycatBlockEntity.super.invalidate();
+    public void onLoad() {
+        super.onLoad();
+        IMultiStateCopycatBlockEntity.super.onLoad();
     }
 
     @Override

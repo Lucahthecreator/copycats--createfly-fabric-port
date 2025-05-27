@@ -22,16 +22,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * Also implement {@link ICopycatBlockEntity} to unify instanceof checks.
  */
 @Mixin(value = CopycatBlockEntity.class, remap = false)
-public abstract class CopycatBlockEntityMixin extends SmartBlockEntity implements ICopycatBlockEntity {
+public abstract class CopycatBlockEntityMixin implements ICopycatBlockEntity {
     @Shadow
     private BlockState material;
 
     @Shadow
     private ItemStack consumedItem;
-
-    public CopycatBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-        super(type, pos, state);
-    }
 
     @Unique
     private boolean copycats$enableCT = true;
@@ -54,6 +50,12 @@ public abstract class CopycatBlockEntityMixin extends SmartBlockEntity implement
     @Override
     public void setCTEnabledInternal(boolean value) {
         this.copycats$enableCT = value;
+    }
+
+    @Override
+    @Unique
+    public void onLoad() {
+        ICopycatBlockEntity.super.onLoad();
     }
 
     @Inject(

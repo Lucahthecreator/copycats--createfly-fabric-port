@@ -34,7 +34,6 @@ public class KineticCopycatRendererImpl {
 
     public static SuperByteBuffer renderBuffer(BakedModel model, ICopycatBlockEntity be, PoseStack ms) {
         WrappedRenderWorld renderWorld = new WrappedRenderWorld(be);
-        renderWorld.runLightEngine();
         ModelData data = prepareModelData(renderWorld, model, be);
 
         return new BakedModelWithDataBuilder(model)
@@ -48,13 +47,11 @@ public class KineticCopycatRendererImpl {
 
     public static Model instancedModel(BakedModel model, ICopycatBlockEntity be) {
         WrappedRenderWorld renderWorld = new WrappedRenderWorld(be);
-        renderWorld.runLightEngine();
         ModelData data = prepareModelData(renderWorld, model, be);
 
         return new BakedModelBuilder(model)
                 .level(renderWorld.withModelData(data))
                 .pos(be.getBlockPos())
-                .materialFunc((renderType, aBoolean) -> SimpleMaterial.builderOf(ModelUtil.getMaterial(renderType, aBoolean)))
                 .build();
     }
 }

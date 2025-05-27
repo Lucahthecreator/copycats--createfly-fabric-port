@@ -36,7 +36,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * An interface with implementation for all simple copycat block entities.
  * <p>
  * Implementors should create a field to store the material, consumed item and CT toggle, and redirect calls of
- * {@link ICopycatBlockEntity#invalidate},
+ * {@link ICopycatBlockEntity#onLoad},
  * {@link ICopycatBlockEntity#read},
  * {@link ICopycatBlockEntity#writeSafe} and
  * {@link ICopycatBlockEntity#write} to this interface.
@@ -87,6 +87,10 @@ public interface ICopycatBlockEntity extends SpecialBlockEntityItemRequirement, 
         setMaterialInternal(AllBlocks.COPYCAT_BASE.getDefaultState());
         setConsumedItemInternal(ItemStack.EMPTY);
         setCTEnabledInternal(true);
+    }
+
+    default void onLoad() {
+        BlockEntityUtils.updateLight((BlockEntity) this);
     }
 
     default ICopycatBlock getBlock() {
@@ -159,10 +163,6 @@ public interface ICopycatBlockEntity extends SpecialBlockEntityItemRequirement, 
     default void setCTEnabled(boolean value) {
         setCTEnabledInternal(value);
         notifyUpdate();
-    }
-
-    default void invalidate() {
-        CopycatMaterialStore.setMaterial(getLevel(), getBlockPos(), Blocks.AIR.defaultBlockState());
     }
 
     @Override

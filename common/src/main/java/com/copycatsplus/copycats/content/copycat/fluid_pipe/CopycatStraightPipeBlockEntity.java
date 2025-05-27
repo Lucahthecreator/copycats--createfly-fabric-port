@@ -53,9 +53,9 @@ public class CopycatStraightPipeBlockEntity extends StraightPipeBlockEntity impl
     }
 
     @Override
-    public void invalidate() {
-        super.invalidate();
-        ICopycatBlockEntity.super.invalidate();
+    public void onLoad() {
+        super.onLoad();
+        ICopycatBlockEntity.super.onLoad();
     }
 
     @Override

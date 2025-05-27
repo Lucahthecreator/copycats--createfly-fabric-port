@@ -32,7 +32,7 @@ public class CCBuilderTransformersImpl {
                 .blockstate((c, p) -> p.simpleBlock(c.get(), p.models()
                         .getExistingFile(p.mcLoc("air"))))
                 .initialProperties(SharedProperties::softMetal)
-                .properties(p -> p.noOcclusion().mapColor(MapColor.NONE).forceSolidOn())
+                .properties(p -> p.noOcclusion().mapColor(MapColor.METAL).forceSolidOn())
                 .addLayer(() -> RenderType::solid)
                 .addLayer(() -> RenderType::cutout)
                 .addLayer(() -> RenderType::cutoutMipped)

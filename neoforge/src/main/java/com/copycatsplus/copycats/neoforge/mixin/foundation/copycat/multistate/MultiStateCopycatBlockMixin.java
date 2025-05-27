@@ -1,6 +1,5 @@
 package com.copycatsplus.copycats.neoforge.mixin.foundation.copycat.multistate;
 
-import com.copycatsplus.copycats.foundation.copycat.CopycatMaterialStore;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
@@ -15,9 +14,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.*;
@@ -26,13 +23,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.common.extensions.IBlockExtension;
+import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Unique;
 
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -91,19 +87,11 @@ public abstract class MultiStateCopycatBlockMixin extends Block implements IBloc
 
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-        if (state.getBlock() instanceof IMultiStateCopycatBlock copycatBlock) {
-            AtomicInteger light = new AtomicInteger(0);
+        AuxiliaryLightManager lightManager = level.getAuxLightManager(pos);
+        if (lightManager != null)
+            return lightManager.getLightAt(pos);
 
-            Map<String, BlockState> materials = CopycatMaterialStore.getMaterial(level, pos).right().orElse(null);
-            if (materials == null)
-                return super.getLightEmission(state, level, pos);
-            materials.forEach((key, bs) -> {
-                light.accumulateAndGet(bs.getLightEmission(), Math::max);
-            });
-            return light.get();
-        } else {
-            return super.getLightEmission(state, level, pos);
-        }
+        return super.getLightEmission(state, level, pos);
     }
 
     @Override

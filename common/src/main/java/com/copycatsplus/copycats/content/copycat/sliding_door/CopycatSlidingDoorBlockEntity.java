@@ -65,9 +65,9 @@ public class CopycatSlidingDoorBlockEntity extends SlidingDoorBlockEntity implem
     }
 
     @Override
-    public void invalidate() {
-        super.invalidate();
-        ICopycatBlockEntity.super.invalidate();
+    public void onLoad() {
+        super.onLoad();
+        ICopycatBlockEntity.super.onLoad();
     }
 
     @Override
