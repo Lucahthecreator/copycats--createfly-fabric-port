@@ -244,6 +244,7 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
 
         copycatBE.setMaterial(property, AllBlocks.COPYCAT_BASE.getDefaultState());
         copycatBE.setConsumedItem(property, ItemStack.EMPTY);
+        context.getPlayer().swing(context.getHand());
         return InteractionResult.SUCCESS;
     }
 

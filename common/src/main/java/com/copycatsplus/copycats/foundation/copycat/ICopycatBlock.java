@@ -143,6 +143,7 @@ public interface ICopycatBlock extends IWrenchable, IStateType, TransformableBlo
                 .levelEvent(2001, context.getClickedPos(), Block.getId(getMaterial(context.getLevel(), context.getClickedPos())));
         copycatBE.setMaterial(AllBlocks.COPYCAT_BASE.getDefaultState());
         copycatBE.setConsumedItem(ItemStack.EMPTY);
+        context.getPlayer().swing(context.getHand());
         return InteractionResult.SUCCESS;
     }
 
@@ -220,7 +221,7 @@ public interface ICopycatBlock extends IWrenchable, IStateType, TransformableBlo
         if (stack.is(AllTags.AllItemTags.WRENCH.tag)) {
             InteractionResult result = AllItems.WRENCH.get().useOn(new UseOnContext(player, hand, hitResult));
             if (result.consumesAction())
-                return ItemInteractionResult.CONSUME;
+                return ItemInteractionResult.SUCCESS;
         }
 
         if (player == null || !player.mayBuild())
