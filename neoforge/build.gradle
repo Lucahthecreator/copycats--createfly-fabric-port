@@ -3,6 +3,7 @@ plugins {
     id 'me.modmuss50.mod-publish-plugin' version "0.5.1"
 }
 
+useRenderDoc = useRenderDoc.toBoolean() & !ext.ci
 def renderdocPath = (project.findProperty('renderdocDir') ?: "C:/Program Files/RenderDoc").toString()
 def renderdocCmdExe = new File(renderdocPath, "renderdoccmd.exe")
 if (useRenderDoc && !renderdocCmdExe.exists()) {

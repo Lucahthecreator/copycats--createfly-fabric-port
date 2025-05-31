@@ -75,6 +75,7 @@ allprojects {
     String buildNumber = System.getenv("GITHUB_RUN_NUMBER")
     version = "${getGitTag()}+mc.${minecraft_version}-${project.name}${nightly ? "-build.${buildNumber}" : ""}"
     group = rootProject.maven_group
+    ext.ci = ci
 
     repositories {
         maven { url "https://maven.neoforged.net/releases/" }
