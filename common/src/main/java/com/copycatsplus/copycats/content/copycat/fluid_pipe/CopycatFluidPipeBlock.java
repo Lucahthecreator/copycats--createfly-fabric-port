@@ -6,6 +6,7 @@ import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.simibubi.create.content.decoration.bracket.BracketBlock;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlock;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
+import com.simibubi.create.content.fluids.pipes.FluidPipeBlockRotation;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,6 +20,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -93,6 +96,16 @@ public class CopycatFluidPipeBlock extends FluidPipeBlock implements ICopycatBlo
         super.playerWillDestroy(level, pos, state, player);
         ICopycatBlock.super.playerWillDestroy(level, pos, state, player);
         return state;
+    }
+
+    @Override
+    public BlockState rotate(BlockState pState, Rotation pRotation) {
+        return super.rotate(pState, pRotation);
+    }
+
+    @Override
+    public BlockState mirror(BlockState pState, Mirror pMirror) {
+        return super.mirror(pState, pMirror);
     }
 
     @Override
