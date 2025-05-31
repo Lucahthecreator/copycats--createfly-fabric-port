@@ -53,9 +53,8 @@ public class InteractionUtils {
     /**
      * Handles the use action with a registered placement helper.
      */
-    public static ItemInteractionResult usePlacementHelper(int placementHelperId, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult ray) {
+    public static ItemInteractionResult usePlacementHelper(int placementHelperId, ItemStack heldItem, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult ray) {
         if (!player.isShiftKeyDown() && player.mayBuild()) {
-            ItemStack heldItem = player.getItemInHand(hand);
             IPlacementHelper placementHelper = PlacementHelpers.get(placementHelperId);
             if (placementHelper.matchesItem(heldItem)) {
                 placementHelper.getOffset(player, world, state, pos, ray)

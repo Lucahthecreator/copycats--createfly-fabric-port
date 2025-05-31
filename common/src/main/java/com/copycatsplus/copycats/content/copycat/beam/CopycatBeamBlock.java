@@ -57,7 +57,7 @@ public class CopycatBeamBlock extends CCWaterloggedCopycatBlock implements IStat
     @Override
     public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         return InteractionUtils.sequentialItem(
-                () -> InteractionUtils.usePlacementHelper(placementHelperId, state, level, pos, player, hand, hitResult),
+                () -> InteractionUtils.usePlacementHelper(placementHelperId, stack, state, level, pos, player, hand, hitResult),
                 () -> super.useItemOn(stack, state, level, pos, player, hand, hitResult)
         );
     }

@@ -106,7 +106,7 @@ public class CopycatLadderBlock extends LadderBlock implements ICopycatBlock, IB
     public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         return InteractionUtils.sequentialItem(
                 () -> ICopycatBlock.super.useItemOn(stack, state, level, pos, player, hand, hitResult),
-                () -> InteractionUtils.usePlacementHelper(placementHelperId, state, level, pos, player, hand, hitResult),
+                () -> InteractionUtils.usePlacementHelper(placementHelperId, stack, state, level, pos, player, hand, hitResult),
                 () -> super.useItemOn(stack, state, level, pos, player, hand, hitResult)
         );
     }
