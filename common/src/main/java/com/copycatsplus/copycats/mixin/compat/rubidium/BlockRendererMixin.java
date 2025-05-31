@@ -6,6 +6,7 @@ import com.copycatsplus.copycats.foundation.copycat.CopycatExternalContext;
 import com.copycatsplus.copycats.foundation.copycat.multistate.MultiStateTextureAtlasSprite;
 import net.caffeinemc.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer;
 import net.caffeinemc.mods.sodium.client.render.frapi.mesh.MutableQuadViewImpl;
+import net.caffeinemc.mods.sodium.client.render.texture.SpriteFinderCache;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,7 +31,7 @@ public class BlockRendererMixin {
             require = 0
     )
     private void beforeColor(MutableQuadViewImpl quad, int colorIndex, CallbackInfo ci) {
-        if (quad.cachedSprite() instanceof MultiStateTextureAtlasSprite sprite)
+        if (quad.sprite(SpriteFinderCache.forBlockAtlas()) instanceof MultiStateTextureAtlasSprite sprite)
             CopycatExternalContext.setPropertyForBlockColor(sprite.getProperty());
     }
 

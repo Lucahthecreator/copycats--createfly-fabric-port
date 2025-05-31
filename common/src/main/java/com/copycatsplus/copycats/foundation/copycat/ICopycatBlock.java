@@ -292,6 +292,8 @@ public interface ICopycatBlock extends IWrenchable, IStateType, TransformableBlo
         offhandItem.shrink(1);
         if (offhandItem.isEmpty())
             placer.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+        //TODO: Figure out why sometimes the blocks when placed with the placement helper dont render so we can remove this
+        BlockEntityUtils.redraw((BlockEntity) copycatBE);
     }
 
     /**
