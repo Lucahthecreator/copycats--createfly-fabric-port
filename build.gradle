@@ -1,5 +1,5 @@
 plugins {
-    id "architectury-plugin" version "3.4-SNAPSHOT"
+    id "architectury-plugin" version "3.4.+"
     id "dev.architectury.loom" version "1.7.+" apply false
 }
 
@@ -37,6 +37,7 @@ subprojects {
             officialMojangMappings()
             parchment("org.parchmentmc.data:parchment-${rootProject.minecraft_version}:${rootProject.parchment_version}@zip")
         }
+        compileOnly 'com.google.code.findbugs:jsr305:3.0.2' // for nullability annotations
     }
 
     publishing {
@@ -74,11 +75,17 @@ allprojects {
     String buildNumber = System.getenv("GITHUB_RUN_NUMBER")
     version = "${getGitTag()}+mc.${minecraft_version}-${project.name}${nightly ? "-build.${buildNumber}" : ""}"
     group = rootProject.maven_group
+    ext.ci = ci
 
     repositories {
+        maven { url "https://maven.neoforged.net/releases/" }
         maven {
             name = 'ParchmentMC'
             url = 'https://maven.parchmentmc.org'
+        }
+        maven {
+            name = 'createmod maven'
+            url = 'https://maven.createmod.net/'
         }
         maven {
             name = 'tterrag maven'
@@ -98,6 +105,11 @@ allprojects {
             // location of a maven mirror for JEI files, as a fallback
             name = "ModMaven"
             url = "https://modmaven.dev"
+        }
+        maven {
+            //Location of EMI
+            name = "TerraformersMC"
+            url = "https://maven.terraformersmc.com/"
         }
         maven {
             url = "https://cursemaven.com"
@@ -125,6 +137,7 @@ allprojects {
             url = "https://jitpack.io/"
             content { includeGroupAndSubgroups("com.github") }
         }
+        maven { url "https://maven.neoforged.net/releases/" }
         exclusiveContent {
             forRepository {
                 maven {
@@ -141,7 +154,7 @@ allprojects {
         }
     }
 
-    configurations{
+    configurations {
         findAndDelete
     }
 
@@ -157,7 +170,7 @@ allprojects {
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = "UTF-8"
-        options.release.set(17)
+        options.release.set(21)
     }
 
     jar {
@@ -173,21 +186,28 @@ allprojects {
 
         // set up properties for filling into metadata
         var replaceProperties = [
-                version              : version.replace("forge.", "").replace("fabric.", ""),
-                minecraft_version    : minecraft_version,
-                fabric_api_version   : fabric_api_version,
-                fabric_loader_version: fabric_loader_version,
-                create_forge_range   : create_forge_range,
-                create_fabric_range  : create_fabric_range,
-                mod_license          : mod_license,
-                mod_authors          : mod_authors,
-                mod_name             : mod_name,
-                mod_description      : mod_description
+                version                      : version.replace("neoforge.", "").replace("fabric.", ""),
+                minecraft_version            : minecraft_version,
+                minecraft_version_range      : minecraft_version_range,
+                fabric_api_version           : fabric_api_version,
+                fabric_loader_version        : fabric_loader_version,
+                neoforge_version_range       : neoforge_version_range,
+                neoforge_loader_version_range: neoforge_loader_version_range,
+                create_neoforge_range        : create_neoforge_range,
+                create_fabric_range          : create_fabric_range,
+                archives_base_name           : archives_base_name,
+                mod_license                  : mod_license,
+                mod_authors                  : mod_authors,
+                mod_name                     : mod_name,
+                mod_description              : mod_description,
+                mod_credits                  : mod_credits,
+                mod_url                      : mod_url,
+                mod_issues                   : mod_issues
         ]
 
         inputs.properties replaceProperties
 
-        filesMatching(["fabric.mod.json", "META-INF/mods.toml"]) {
+        filesMatching(["fabric.mod.json", "META-INF/neoforge.mods.toml"]) {
             expand replaceProperties + [project: project]
         }
     }

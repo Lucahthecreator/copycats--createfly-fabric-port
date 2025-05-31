@@ -2,25 +2,20 @@ package com.copycatsplus.copycats.foundation.copycat.model.kinetic;
 
 
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
-import com.jozufozu.flywheel.core.virtual.VirtualEmptyBlockGetter;
+import com.simibubi.create.foundation.virtualWorld.VirtualRenderWorld;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.DataLayer;
-import net.minecraft.world.level.chunk.LightChunk;
-import net.minecraft.world.level.chunk.LightChunkGetter;
-import net.minecraft.world.level.lighting.LayerLightEventListener;
-import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,85 +24,26 @@ import org.jetbrains.annotations.Nullable;
  * A virtual world to render the kinetic copycat models in.
  */
 @ApiStatus.Internal
-public class WrappedRenderWorld implements VirtualEmptyBlockGetter {
+public class WrappedRenderWorld extends VirtualRenderWorld {
     protected final BlockAndTintGetter level;
     protected final BlockPos targetPos;
-    protected final LevelLightEngine lightEngine;
     protected final BlockState material;
+    protected ModelData modelData;
 
     public WrappedRenderWorld(ICopycatBlockEntity be) {
+        super(be.getLevel());
         this.level = be.getLevel();
         this.targetPos = be.getBlockPos();
         this.material = be.getMaterial();
-        lightEngine = new LevelLightEngine(new LightChunkGetter() {
-            @Override
-            @Nullable
-            public LightChunk getChunkForLighting(int p_63023_, int p_63024_) {
-                return null;
-            }
-
-            @Override
-            public @NotNull BlockGetter getLevel() {
-                return WrappedRenderWorld.this;
-            }
-        }, false, false) {
-            private final LayerLightEventListener blockListener = createStaticListener(15);
-            private final LayerLightEventListener skyListener = createStaticListener(15);
-
-            @Override
-            public @NotNull LayerLightEventListener getLayerListener(@NotNull LightLayer layer) {
-                return layer == LightLayer.BLOCK ? blockListener : skyListener;
-            }
-
-            @Override
-            public int getRawBrightness(BlockPos blockPos, int amount) {
-                return 15;
-            }
-        };
     }
 
-    private static LayerLightEventListener createStaticListener(int light) {
-        return new LayerLightEventListener() {
-            @Override
-            public void checkBlock(@NotNull BlockPos pos) {
-            }
-
-            @Override
-            public boolean hasLightWork() {
-                return false;
-            }
-
-            @Override
-            public int runLightUpdates() {
-                return 0;
-            }
-
-            @Override
-            public void updateSectionStatus(@NotNull SectionPos pos, boolean isSectionEmpty) {
-            }
-
-            @Override
-            public void setLightEnabled(@NotNull ChunkPos pos, boolean lightEnabled) {
-            }
-
-            @Override
-            public void propagateLightSources(@NotNull ChunkPos pos) {
-            }
-
-            @Override
-            public DataLayer getDataLayerData(@NotNull SectionPos pos) {
-                return null;
-            }
-
-            @Override
-            public int getLightValue(@NotNull BlockPos pos) {
-                return light;
-            }
-        };
+    public BlockAndTintGetter getWrappedLevel() {
+        return this.level;
     }
 
-    public BlockAndTintGetter getLevel() {
-        return level;
+    public WrappedRenderWorld withModelData(ModelData modelData) {
+        this.modelData = modelData;
+        return this;
     }
 
     @Override
@@ -140,33 +76,21 @@ public class WrappedRenderWorld implements VirtualEmptyBlockGetter {
     }
 
     @Override
-    public float getShade(@NotNull Direction direction, boolean shaded) {
-        return 1f;
+    public float getShade(@NotNull Direction direction, boolean shade) {
+        return 1;
     }
 
     @Override
-    public @NotNull LevelLightEngine getLightEngine() {
-        return lightEngine;
-    }
-
-    @Override
-    public int getBrightness(LightLayer lightType, BlockPos blockPos) {
-        return 15;
-    }
-
-    @Override
-    public int getRawBrightness(BlockPos blockPos, int amount) {
-        return 15;
-    }
-
-    @Override
-    public int getBlockTint(@NotNull BlockPos pos, @NotNull ColorResolver resolver) {
-        ClientPacketListener connection = Minecraft.getInstance().getConnection();
-        if (connection == null)
-            return GrassColor.getDefaultColor();
-        Biome plainsBiome = connection.registryAccess().registry(Registries.BIOME).map(r -> r.get(Biomes.PLAINS)).orElse(null);
-        if (plainsBiome == null)
-            return GrassColor.getDefaultColor();
+    public int getBlockTint(BlockPos pos, ColorResolver resolver) {
+        Biome plainsBiome = Minecraft.getInstance().getConnection().registryAccess().registryOrThrow(Registries.BIOME).getOrThrow(Biomes.PLAINS);
         return resolver.getColor(plainsBiome, pos.getX(), pos.getZ());
+    }
+
+    @Override
+    public @NotNull ModelData getModelData(@NotNull BlockPos pos) {
+        if (this.modelData != null && pos.equals(targetPos)) {
+            return this.modelData;
+        }
+        return super.getModelData(pos);
     }
 }

@@ -8,8 +8,9 @@ import com.copycatsplus.copycats.foundation.copycat.multistate.WaterloggedMultiS
 import com.copycatsplus.copycats.utility.BlockFaceUtils;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.math.OctahedralGroup;
+import com.simibubi.create.api.schematic.requirement.SpecialBlockItemRequirement;
 import com.simibubi.create.content.contraptions.StructureTransform;
-import com.simibubi.create.content.schematics.requirement.ISpecialBlockItemRequirement;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
@@ -51,7 +52,7 @@ import static com.copycatsplus.copycats.utility.MathUtils.replaceAxis;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class CopycatBytePanelBlock extends WaterloggedMultiStateCopycatBlock implements ISpecialBlockItemRequirement {
+public class CopycatBytePanelBlock extends WaterloggedMultiStateCopycatBlock implements SpecialBlockItemRequirement {
     public static BooleanProperty BOTTOM_LEFT = BooleanProperty.create("bottom_left");
     public static BooleanProperty BOTTOM_RIGHT = BooleanProperty.create("bottom_right");
     public static BooleanProperty TOP_LEFT = BooleanProperty.create("top_left");
@@ -191,7 +192,7 @@ public class CopycatBytePanelBlock extends WaterloggedMultiStateCopycatBlock imp
     }
 
     @Override
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
+    public boolean isPathfindable(@NotNull BlockState pState, @NotNull PathComputationType pType) {
         return switch (pType) {
             case LAND -> true;
 
@@ -250,7 +251,7 @@ public class CopycatBytePanelBlock extends WaterloggedMultiStateCopycatBlock imp
             }
             BlockPos up = pos.relative(Direction.UP);
             world.setBlockAndUpdate(pos, state.setValue(fromProperty(property), false).updateShape(Direction.UP, world.getBlockState(up), world, pos, up));
-            playRemoveSound(world, pos);
+            IWrenchable.playRemoveSound(world, pos);
         }
         return InteractionResult.SUCCESS;
     }

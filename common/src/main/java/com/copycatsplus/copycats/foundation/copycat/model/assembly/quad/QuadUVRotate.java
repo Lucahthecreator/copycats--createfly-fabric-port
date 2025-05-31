@@ -4,8 +4,8 @@ import com.copycatsplus.copycats.foundation.copycat.model.assembly.MutableQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 
-import static com.simibubi.create.foundation.block.render.SpriteShiftEntry.getUnInterpolatedU;
-import static com.simibubi.create.foundation.block.render.SpriteShiftEntry.getUnInterpolatedV;
+import static net.createmod.catnip.render.SpriteShiftEntry.*;
+
 
 /**
  * Rotate the UV coordinates of a quad around a pivot point.
@@ -29,8 +29,8 @@ public record QuadUVRotate(Direction face, float pivotU, float pivotV, float rot
                 double cos = Math.cos(Math.toRadians(rotation));
                 double sin = Math.sin(Math.toRadians(rotation));
 
-                quad.vertices.get(vertex).uv.u = sprite.getU(u * cos - v * sin + pivotU);
-                quad.vertices.get(vertex).uv.v = sprite.getV(u * sin + v * cos + pivotV);
+                quad.vertices.get(vertex).uv.u = sprite.getU((float) (u * cos - v * sin + pivotU));
+                quad.vertices.get(vertex).uv.v = sprite.getV((float) (u * sin + v * cos + pivotV));
             }
         }
         return true;

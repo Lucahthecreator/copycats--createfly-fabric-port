@@ -36,10 +36,10 @@ public class MigrationManager {
         if (state.getBlock() instanceof MultiStateCopycatBlock && nbt != null && nbt.contains("Material")) {
             BlockPos pos = info.pos();
             CopycatBlockEntity be = AllBlockEntityTypes.COPYCAT.create(pos, state);
-            be.load(nbt);
+            be.loadWithComponents(nbt, be.getLevel().registryAccess());
             MultiStateCopycatBlockEntity multiBe = CCBlockEntityTypes.MULTI_STATE_COPYCAT.create(pos, state);
             multiBe.migrateData((ICopycatBlockEntity) be);
-            nbt = multiBe.saveWithId();
+            nbt = multiBe.saveWithId(be.getLevel().registryAccess());
             return new StructureTemplate.StructureBlockInfo(pos, state, nbt);
         } else if (state.getBlock() instanceof CCCopycatBlock &&
                 nbt != null &&
@@ -47,8 +47,8 @@ public class MigrationManager {
                 nbt.getString("id").equals(AllBlockEntityTypes.COPYCAT.getId().toString())) {
             BlockPos pos = info.pos();
             CCCopycatBlockEntity be = CCBlockEntityTypes.COPYCAT.create(pos, state);
-            be.load(nbt);
-            nbt = be.saveWithId();
+            be.loadWithComponents(nbt, be.getLevel().registryAccess());
+            nbt = be.saveWithId(be.getLevel().registryAccess());
             return new StructureTemplate.StructureBlockInfo(pos, state, nbt);
         }
         return info;
@@ -61,21 +61,21 @@ public class MigrationManager {
         BlockState state = chunk.getBlockState(pos);
         if (isCopycatAndNeedingConversion(state, blockEntity)) {
             if (CCBlocks.getAllRegisteredMultiStateBlocks().stream().map(RegistryEntry::get).collect(Collectors.toSet()).contains(state.getBlock())) {
-                CompoundTag oldTag = blockEntity.saveWithFullMetadata();
+                CompoundTag oldTag = blockEntity.saveWithFullMetadata(blockEntity.getLevel().registryAccess());
 
                 // Create and initialize the new BlockEntity
                 MultiStateCopycatBlockEntity newBlockEntity = CCBlockEntityTypes.MULTI_STATE_COPYCAT.create(pos, state);
-                newBlockEntity.load(oldTag);
+                newBlockEntity.loadWithComponents(oldTag, blockEntity.getLevel().registryAccess());
 
                 // Migrate data from the old BlockEntity
                 newBlockEntity.migrateData((ICopycatBlockEntity) blockEntity);
 
                 return newBlockEntity;
             } else {
-                CompoundTag oldTag = blockEntity.saveWithFullMetadata();
+                CompoundTag oldTag = blockEntity.saveWithFullMetadata(blockEntity.getLevel().registryAccess());
 
                 CCCopycatBlockEntity newBlockEntity = CCBlockEntityTypes.COPYCAT.create(pos, state);
-                newBlockEntity.load(oldTag);
+                newBlockEntity.loadWithComponents(oldTag, blockEntity.getLevel().registryAccess());
 
                 return newBlockEntity;
             }

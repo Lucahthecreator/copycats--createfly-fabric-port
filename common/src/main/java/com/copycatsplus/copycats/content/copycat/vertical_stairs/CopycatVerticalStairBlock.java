@@ -5,21 +5,19 @@ import com.copycatsplus.copycats.CCBlockStateProperties.Side;
 import com.copycatsplus.copycats.CCBlockStateProperties.VerticalStairShape;
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCShapes;
-import com.copycatsplus.copycats.content.copycat.slice.CopycatSliceBlock;
+import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsBlock;
+import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsBlock.FaceShape;
 import com.copycatsplus.copycats.foundation.copycat.CCWaterloggedCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICustomCTBlocking;
 import com.copycatsplus.copycats.foundation.copycat.IStateType;
-import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsBlock;
-import com.copycatsplus.copycats.content.copycat.stairs.CopycatStairsBlock.FaceShape;
 import com.copycatsplus.copycats.utility.BlockUtils;
 import com.simibubi.create.content.contraptions.StructureTransform;
-import com.simibubi.create.foundation.utility.Iterate;
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
-import net.minecraft.util.Mth;
+import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
@@ -30,15 +28,19 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.*;
+
+
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
-
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Optional;
 
-import static net.minecraft.core.Direction.*;
+
 import static net.minecraft.world.level.block.StairBlock.HALF;
 
 @SuppressWarnings("deprecation")
@@ -70,7 +72,7 @@ public class CopycatVerticalStairBlock extends CCWaterloggedCopycatBlock impleme
         Direction facing = context.getHorizontalDirection();
         Side side = context.getClickLocation().get(facing.getClockWise().getAxis()) - context.getClickedPos().get(facing.getClockWise().getAxis()) > 0.5
                 ? Side.RIGHT : Side.LEFT;
-        if (facing.getCounterClockWise().getAxisDirection() == Direction.AxisDirection.POSITIVE) {
+        if (facing.getCounterClockWise().getAxisDirection() == AxisDirection.POSITIVE) {
             side = side.getOpposite();
         }
         BlockState blockState = defaultBlockState().setValue(FACING, facing).setValue(SIDE, side);

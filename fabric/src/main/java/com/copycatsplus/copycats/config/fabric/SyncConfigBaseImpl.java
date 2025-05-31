@@ -4,7 +4,6 @@ import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.config.SyncConfigBase;
 import com.copycatsplus.copycats.network.CCPackets;
 import com.copycatsplus.copycats.network.ConfigSyncPacket;
-import com.copycatsplus.copycats.network.PlayerSelection;
 import io.github.fabricators_of_create.porting_lib.util.ServerLifecycleHooks;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.server.level.ServerPlayer;

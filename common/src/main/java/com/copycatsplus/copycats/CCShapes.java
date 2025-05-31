@@ -4,15 +4,13 @@ import com.copycatsplus.copycats.CCBlockStateProperties.Side;
 import com.copycatsplus.copycats.CCBlockStateProperties.VerticalStairShape;
 import com.copycatsplus.copycats.content.copycat.half_layer.CopycatHalfLayerBlock;
 import com.copycatsplus.copycats.content.copycat.half_panel.CopycatHalfPanelBlock;
-import com.copycatsplus.copycats.content.copycat.stacked_half_layer.CopycatStackedHalfLayerBlock;
-import com.copycatsplus.copycats.content.copycat.vertical_half_layer.CopycatVerticalHalfLayerBlock;
 import com.copycatsplus.copycats.content.copycat.vertical_stairs.CopycatVerticalStairBlock;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.AssemblyTransform;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.MutableAABB;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.MutableVec3;
+import com.copycatsplus.copycats.utility.TriFunction;
 import com.copycatsplus.copycats.utility.shape.OutlinedVoxelShape;
-import com.simibubi.create.foundation.utility.Pair;
-import com.tterrag.registrate.fabric.TriFunction;
+import net.createmod.catnip.data.Pair;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.block.state.properties.Half;
@@ -149,7 +147,7 @@ public class CCShapes {
     public static final Map<Direction, Map<Half, MutableShape>> SLOPE =
             forHorizontalDirections(forHalves(shape(
                     IntStream.range(0, SLOPE_SUBDIVISIONS)
-                            .mapToObj(i -> aabb(16, i + 1, 16.0 / SLOPE_SUBDIVISIONS).move(0, 0, i * 16.0 / SLOPE_SUBDIVISIONS))
+                            .mapToObj(i -> aabb(16, (i + 1.0) / SLOPE_SUBDIVISIONS * 16.0, 16.0 / SLOPE_SUBDIVISIONS).move(0, 0, i * 16.0 / SLOPE_SUBDIVISIONS))
                             .toArray(MutableAABB[]::new)
             ).outline(
                     line(vec3(0, 0, 0), vec3(16, 0, 0)),
@@ -165,7 +163,7 @@ public class CCShapes {
     public static final Map<Direction, MutableShape> VERTICAL_SLOPE =
             forHorizontalDirections(shape(
                     IntStream.range(0, SLOPE_SUBDIVISIONS)
-                            .mapToObj(i -> aabb(i + 1, 16, 16.0 / SLOPE_SUBDIVISIONS).move(15 - i, 0, i * 16.0 / SLOPE_SUBDIVISIONS))
+                            .mapToObj(i -> aabb((i + 1.0) / SLOPE_SUBDIVISIONS * 16.0, 16, 16.0 / SLOPE_SUBDIVISIONS).move(15 - i * 16.0 / SLOPE_SUBDIVISIONS, 0, i * 16.0 / SLOPE_SUBDIVISIONS))
                             .toArray(MutableAABB[]::new)
             ).outline(
                     line(vec3(0, 0, 16), vec3(16, 0, 16)),
@@ -183,7 +181,7 @@ public class CCShapes {
                     layer -> layer <= 4 ?
                             shape(
                                     IntStream.range(0, SLOPE_SUBDIVISIONS)
-                                            .mapToObj(i -> aabb(16, (i + 1) * layer / 4.0, 16.0 / SLOPE_SUBDIVISIONS).move(0, 0, i * 16.0 / SLOPE_SUBDIVISIONS))
+                                            .mapToObj(i -> aabb(16, (i + 1.0) / SLOPE_SUBDIVISIONS * 16 * layer / 4.0, 16.0 / SLOPE_SUBDIVISIONS).move(0, 0, i * 16.0 / SLOPE_SUBDIVISIONS))
                                             .toArray(MutableAABB[]::new)
                             ).outline(
                                     line(vec3(0, 0, 0), vec3(16, 0, 0)),
@@ -198,7 +196,7 @@ public class CCShapes {
                             ) :
                             shape(
                                     IntStream.range(0, SLOPE_SUBDIVISIONS)
-                                            .mapToObj(i -> aabb(16, 16 * (layer - 4) / 4.0 + (i + 1) * (1 - (layer - 4) / 4.0), 16.0 / SLOPE_SUBDIVISIONS).move(0, 0, i * 16.0 / SLOPE_SUBDIVISIONS))
+                                            .mapToObj(i -> aabb(16, 16 * (layer - 4) / 4.0 + (i + 1.0) / SLOPE_SUBDIVISIONS * 16 * (1 - (layer - 4) / 4.0), 16.0 / SLOPE_SUBDIVISIONS).move(0, 0, i * 16.0 / SLOPE_SUBDIVISIONS))
                                             .toArray(MutableAABB[]::new)
                             ).outline(
                                     line(vec3(0, 0, 0), vec3(16, 0, 0)),

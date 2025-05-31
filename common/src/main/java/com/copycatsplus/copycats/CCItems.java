@@ -6,11 +6,12 @@ import com.copycatsplus.copycats.content.copycat.board.CopycatCatwalkItem;
 import com.copycatsplus.copycats.foundation.tooltip.CopycatCharacteristics;
 import com.copycatsplus.copycats.foundation.tooltip.CopycatDescription;
 import com.simibubi.create.foundation.data.AssetLookup;
+import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
 public class CCItems {
 
-    private static final CopycatRegistrate REGISTRATE = Copycats.getRegistrate();
+    private static final CreateRegistrate REGISTRATE = Copycats.getRegistrate();
 
 
     public static final ItemEntry<CopycatBoxItem> COPYCAT_BOX =

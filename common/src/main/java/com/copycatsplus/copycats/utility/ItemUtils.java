@@ -2,6 +2,7 @@ package com.copycatsplus.copycats.utility;
 
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +24,7 @@ public class ItemUtils {
      */
     @ExpectPlatform
     @NotNull
-    public static Tag serializeNBT(ItemStack stack) {
+    public static Tag serializeNBT(ItemStack stack, HolderLookup.Provider registries) {
         //noinspection DataFlowIssue
         return null;
     }

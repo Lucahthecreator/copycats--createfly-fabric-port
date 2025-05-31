@@ -28,3 +28,5 @@ run-data
 forge*changelog.txt
 
 secrets.properties
+/neoforge/lib/RenderDoc_1.37_64/
+/neoforge/lib/RenderDoc_1.37_64/**

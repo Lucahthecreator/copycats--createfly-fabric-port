@@ -1,8 +1,8 @@
 package com.copycatsplus.copycats.utility.shape;
 
 import com.copycatsplus.copycats.mixin.copycat.VoxelShapeAccessor;
-import com.simibubi.create.foundation.utility.Pair;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
+import net.createmod.catnip.data.Pair;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -24,7 +24,7 @@ public class OutlinedVoxelShape extends ExtensibleVoxelShape {
     }
 
     @Override
-    protected DoubleList getCoords(Direction.Axis axis) {
+    public DoubleList getCoords(Direction.Axis axis) {
         return ((VoxelShapeAccessor) this.collisionShape).copycats$callGetCoords(axis);
     }
 

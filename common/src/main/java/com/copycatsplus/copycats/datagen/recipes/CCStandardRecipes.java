@@ -12,6 +12,7 @@ import com.simibubi.create.AllItems;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -24,6 +25,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -234,7 +236,7 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
 
     GeneratedRecipe COPYCAT_PANE_CYCLE = conversionCycle(CCBlocks.COPYCAT_PANE, CCBlocks.COPYCAT_FLAT_PANE);
 
-    Set<RegistryEntry<? extends Block>> blocksWithoutRecipe = Set.of(
+    Set<RegistryEntry<? extends Block, ?>> blocksWithoutRecipe = Set.of(
             CCBlocks.COPYCAT_BASE,
             CCBlocks.COPYCAT_GLASS_FLUID_PIPE
     );
@@ -259,7 +261,7 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
         throw new AssertionError();
     }
 
-    static GeneratedRecipeBuilder create(ItemProviderEntry<? extends ItemLike> result) {
+    static GeneratedRecipeBuilder create(ItemProviderEntry<? extends ItemLike, ?> result) {
         return create(result::get);
     }
 
@@ -267,7 +269,7 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
         return create(() -> result);
     }
 
-    GeneratedRecipeBuilder.GeneratedRecipe copycat(ItemProviderEntry<? extends ItemLike> result, int resultCount) {
+    GeneratedRecipeBuilder.GeneratedRecipe copycat(ItemProviderEntry<? extends ItemLike, ?> result, int resultCount) {
         if (result.get() instanceof ICopycatBlock) {
             copycatsWithRecipes.add((Block) result.get());
         }
@@ -280,7 +282,7 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
                 .create();
     }
 
-    GeneratedRecipeBuilder.GeneratedRecipe copycatWithBaseItem(ItemProviderEntry<? extends ItemLike> base, ItemProviderEntry<? extends ItemLike> result, int resultCount) {
+    GeneratedRecipeBuilder.GeneratedRecipe copycatWithBaseItem(ItemProviderEntry<? extends ItemLike, ?> base, ItemProviderEntry<? extends ItemLike, ?> result, int resultCount) {
         if (result.get() instanceof ICopycatBlock) {
             copycatsWithRecipes.add((Block) result.get());
         }
@@ -292,7 +294,7 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
                 .viaShapeless(b -> b.requires(base, resultCount).requires(AllItems.ZINC_INGOT));
     }
 
-    GeneratedRecipeBuilder.GeneratedRecipe copycatWithBaseItem(ItemLike base, ItemProviderEntry<? extends ItemLike> result, int resultCount) {
+    GeneratedRecipeBuilder.GeneratedRecipe copycatWithBaseItem(ItemLike base, ItemProviderEntry<? extends ItemLike, ?> result, int resultCount) {
         if (result.get() instanceof ICopycatBlock) {
             copycatsWithRecipes.add((Block) result.get());
         }
@@ -305,11 +307,11 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
     }
 
     @SafeVarargs
-    final GeneratedRecipe conversionCycle(ItemProviderEntry<? extends ItemLike>... cycle) {
+    final GeneratedRecipe conversionCycle(ItemProviderEntry<? extends ItemLike, ?>... cycle) {
         GeneratedRecipe result = null;
         for (int i = 0; i < cycle.length; i++) {
-            ItemProviderEntry<? extends ItemLike> currentEntry = cycle[i];
-            ItemProviderEntry<? extends ItemLike> nextEntry = cycle[(i + 1) % cycle.length];
+            ItemProviderEntry<? extends ItemLike,?> currentEntry = cycle[i];
+            ItemProviderEntry<? extends ItemLike,?> nextEntry = cycle[(i + 1) % cycle.length];
             result = create(nextEntry).withSuffix("_from_conversion")
                     .unlockedBy(currentEntry::get)
                     .requiresFeature(currentEntry.getId())
@@ -319,11 +321,11 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
         return result;
     }
 
-    public CCStandardRecipes(PackOutput output) {
-        super(output);
+    public CCStandardRecipes(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries);
 
         List<ResourceLocation> missingRecipes = new LinkedList<>();
-        for (RegistryEntry<? extends Block> entry : CCBlocks.getAllRegisteredBlocksWithoutWrapped()) {
+        for (RegistryEntry<? extends Block,?> entry : CCBlocks.getAllRegisteredBlocksWithoutWrapped()) {
             if (!blocksWithoutRecipe.contains(entry)) {
                 if (!copycatsWithRecipes.contains(entry.get()))
                     missingRecipes.add(entry.getId());
@@ -338,16 +340,16 @@ public class CCStandardRecipes extends CopycatsRecipeProvider {
         ZINC(CCTags.commonItemTag("ingots/zinc"), CCTags.commonItemTag("zinc_ingots"));
 
 
-        private final TagKey<Item> forge;
+        private final TagKey<Item> neoforge;
         private final TagKey<Item> fabric;
 
-        TaggedIngredients(TagKey<Item> forge, TagKey<Item> fabric) {
-            this.forge = forge;
+        TaggedIngredients(TagKey<Item> neoforge, TagKey<Item> fabric) {
+            this.neoforge = neoforge;
             this.fabric = fabric;
         }
 
         public TagKey<Item> getTag() {
-            return Platform.getCurrent().equals(Platform.FORGE) ? this.forge : this.fabric;
+            return Platform.getCurrent().equals(Platform.NEOFORGE) ? this.neoforge : this.fabric;
         }
     }
 }

@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 /**
  * Allow sail-like blocks in copycats to function in windmills
  */
-@Mixin(BearingContraption.class)
+@Mixin(value = BearingContraption.class, remap = false)
 public class BearingContraptionMixin {
     @Inject(
             method = "getSailBlock",

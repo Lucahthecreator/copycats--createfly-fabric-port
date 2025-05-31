@@ -17,6 +17,7 @@ public class CopycatsImpl implements ModInitializer {
     public void onInitialize() {
         CCCreativeTabsImpl.register();
         Copycats.init();
+        Copycats.getRegistrate().register();
 
         CCCraftingConditions.register();
         ServerLifecycleEvents.SERVER_STARTING.register(this::serverStarting);
@@ -26,10 +27,6 @@ public class CopycatsImpl implements ModInitializer {
 
     private void serverStarting(MinecraftServer server) {
         LogicalSidedProvider.setServer(() -> server);
-    }
-
-    public static void finalizeRegistrate() {
-        Copycats.getRegistrate().register();
     }
 
     static void onChunkUnload(LevelAccessor level, LevelChunk chunk) {

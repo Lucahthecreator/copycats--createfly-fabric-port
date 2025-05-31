@@ -1,8 +1,7 @@
 package com.copycatsplus.copycats;
 
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.LangBuilder;
-import com.simibubi.create.foundation.utility.LangNumberFormat;
+import net.createmod.catnip.lang.LangBuilder;
+import net.createmod.catnip.lang.LangNumberFormat;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +16,7 @@ public class CCLang {
      * legacy-ish. Use Lang.translate and other builder methods where possible
      */
     public static MutableComponent translateDirect(String key, Object... args) {
-        return Components.translatable(Copycats.MODID + "." + key, resolveBuilders(args));
+        return Component.translatable(Copycats.MODID + "." + key, resolveBuilders(args));
     }
 
     public static String asId(String name) {

@@ -6,8 +6,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
 import java.util.List;
 
-import static com.simibubi.create.foundation.block.render.SpriteShiftEntry.getUnInterpolatedU;
-import static com.simibubi.create.foundation.block.render.SpriteShiftEntry.getUnInterpolatedV;
+import static net.createmod.catnip.render.SpriteShiftEntry.*;
 
 /**
  * Wraps other {@link QuadTransform}s such that the UV coordinates are updated after the wrapped transforms are applied.

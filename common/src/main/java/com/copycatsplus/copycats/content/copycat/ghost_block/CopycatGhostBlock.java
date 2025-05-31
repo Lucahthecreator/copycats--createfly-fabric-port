@@ -54,7 +54,7 @@ public class CopycatGhostBlock extends CCCopycatBlock implements IStateType {
     }
 
     @Override
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
-        return super.isPathfindable(pState, pLevel, pPos, pType);
+    public boolean isPathfindable(@NotNull BlockState pState, @NotNull PathComputationType pType) {
+        return super.isPathfindable(pState, pType);
     }
 }

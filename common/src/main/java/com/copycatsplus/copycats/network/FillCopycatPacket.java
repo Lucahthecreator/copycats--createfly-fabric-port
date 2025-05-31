@@ -1,8 +1,14 @@
 package com.copycatsplus.copycats.network;
 
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
+import io.netty.buffer.ByteBuf;
+import net.createmod.catnip.codecs.stream.CatnipStreamCodecBuilders;
+import net.createmod.catnip.codecs.stream.CatnipStreamCodecs;
+import net.createmod.catnip.net.base.ServerboundPacketPayload;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -15,17 +21,14 @@ import net.minecraft.world.level.block.state.BlockState;
  * Every part except the specified one will be filled. The specified part will be filled by the server-bound
  * item use packet.
  */
-public record FillCopycatPacket(BlockPos pos, BlockState material, String property) implements PacketSystem.C2SPacket {
-    public FillCopycatPacket(FriendlyByteBuf buf) {
-        this(buf.readBlockPos(), buf.readById(Block.BLOCK_STATE_REGISTRY), buf.readUtf());
-    }
+public record FillCopycatPacket(BlockPos pos, BlockState material, String property) implements ServerboundPacketPayload {
 
-    @Override
-    public void write(FriendlyByteBuf buffer) {
-        buffer.writeBlockPos(pos);
-        buffer.writeId(Block.BLOCK_STATE_REGISTRY, material);
-        buffer.writeUtf(property);
-    }
+    public static final StreamCodec<ByteBuf, FillCopycatPacket> STREAM_CODEC = StreamCodec.composite(
+            CatnipStreamCodecs.NULLABLE_BLOCK_POS, FillCopycatPacket::pos,
+            CatnipStreamCodecs.BLOCK_STATE, FillCopycatPacket::material,
+            CatnipStreamCodecBuilders.nullable(ByteBufCodecs.stringUtf8(256)), FillCopycatPacket::property,
+            FillCopycatPacket::new
+    );
 
     @Override
     public void handle(ServerPlayer sender) {
@@ -36,5 +39,10 @@ public record FillCopycatPacket(BlockPos pos, BlockState material, String proper
         BlockState prevMaterial = IMultiStateCopycatBlock.getMaterial(level, pos, property);
         copycatBlock.fillEmptyParts(level, pos, state, material);
         copycatBlock.getCopycatBlockEntity(level, pos).setMaterial(property, prevMaterial);
+    }
+
+    @Override
+    public PacketTypeProvider getTypeProvider() {
+        return CCPackets.FILL_COPYCAT;
     }
 }

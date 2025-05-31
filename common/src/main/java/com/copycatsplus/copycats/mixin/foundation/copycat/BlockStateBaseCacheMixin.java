@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public class BlockStateBaseCacheMixin {
 
     @Unique
-    private static final ResourceLocation COPYCAT_BASE = new ResourceLocation(Mods.CREATE.id(), "copycat_base");
+    private static final ResourceLocation COPYCAT_BASE = ResourceLocation.fromNamespaceAndPath(Mods.CREATE.id(), "copycat_base");
 
     @WrapOperation(
             method = "<init>",

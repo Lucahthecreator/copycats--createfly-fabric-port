@@ -24,6 +24,6 @@ public class CCDatagenImpl extends CCDatagen implements DataGeneratorEntrypoint 
         );
         FabricDataGenerator.Pack pack = generator.createPack();
         Copycats.getRegistrate().setupDatagen(pack, helper);
-        Copycats.gatherData(pack);
+        Copycats.gatherData(pack, lookupProvider);
     }
 }

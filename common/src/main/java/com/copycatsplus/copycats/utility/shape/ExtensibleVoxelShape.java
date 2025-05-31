@@ -17,5 +17,5 @@ public abstract class ExtensibleVoxelShape extends SliceShape {
     }
 
     @Override
-    protected abstract DoubleList getCoords(Direction.Axis axis);
+    public abstract DoubleList getCoords(Direction.Axis axis);
 }

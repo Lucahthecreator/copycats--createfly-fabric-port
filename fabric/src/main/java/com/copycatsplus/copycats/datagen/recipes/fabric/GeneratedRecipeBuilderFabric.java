@@ -105,7 +105,7 @@ public class GeneratedRecipeBuilderFabric implements GeneratedRecipeBuilder {
         String path = loc.getPath();
         while (path.contains("//"))
             path = path.replaceAll("//", "/");
-        return new ResourceLocation(loc.getNamespace(), path);
+        return ResourceLocation.fromNamespaceAndPath(loc.getNamespace(), path);
     }
 
     private ResourceLocation createSimpleLocation(String recipeType) {
@@ -151,7 +151,7 @@ public class GeneratedRecipeBuilderFabric implements GeneratedRecipeBuilder {
     }
 
     @Override
-    public GeneratedRecipe handleConditions(Consumer<Consumer<FinishedRecipe>> recipe) {
+    public GeneratedRecipe handleConditions(Consumer<RecipeOutput> recipe) {
         return CopycatsRecipeProvider.register(consumer -> {
             if (!recipeConditions.isEmpty()) {
                 ConditionalRecipe.Builder b = ConditionalRecipe.builder();

@@ -20,6 +20,11 @@ public class CCKeysImpl {
         ClientTickEvents.END_CLIENT_TICK.register(client -> fixBinds());
     }
 
+    private static int getBoundCode(CCKeys key) {
+        return KeyBindingHelper.getBoundKeyOf(key.keybind)
+                .getValue();
+    }
+
     // fabric: from create: sometimes after opening the toolbox menu, alt gets stuck as pressed until a screen is opened.
     // why is this needed? why did this only just now break? Good questions! I wish I knew.
     public static void fixBinds() {
@@ -27,7 +32,7 @@ public class CCKeysImpl {
         for (CCKeys key : CCKeys.values()) {
             if (key.keybind == null || key.keybind.isUnbound())
                 continue;
-            key.keybind.setDown(InputConstants.isKeyDown(window, key.getBoundCode()));
+            key.keybind.setDown(InputConstants.isKeyDown(window, getBoundCode(key)));
         }
     }
 }

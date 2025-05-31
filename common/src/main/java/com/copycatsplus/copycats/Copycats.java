@@ -5,15 +5,20 @@ import com.copycatsplus.copycats.datagen.recipes.CCStandardRecipes;
 import com.copycatsplus.copycats.foundation.tooltip.CopycatDescription;
 import com.copycatsplus.copycats.network.CCPackets;
 import com.copycatsplus.copycats.utility.TooltipUtils;
+import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
-import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.TooltipModifier;
-import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.createmod.catnip.lang.FontHelper;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.CompletableFuture;
 
 public class Copycats {
     public static final String MODID = "copycats";
@@ -25,20 +30,15 @@ public class Copycats {
     public static final int DATA_FIXER_VERSION = 1;
     public static final Logger LOGGER = LoggerFactory.getLogger("Copycats+");
 
-    private static final CopycatRegistrate REGISTRATE = CopycatRegistrate.create(MODID);
-
-    static {
-        REGISTRATE.setTooltipModifierFactory(item -> TooltipUtils.sequential(
-                CopycatDescription.create(item),
-                new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE),
-                TooltipModifier.mapNull(KineticStats.create(item)))
-        );
-    }
+    private static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID)
+            .defaultCreativeTab((ResourceKey<CreativeModeTab>) null)
+            .setTooltipModifierFactory(item -> TooltipUtils.sequential(
+                    CopycatDescription.create(item),
+                    new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE),
+                    TooltipModifier.mapNull(KineticStats.create(item)))
+            );
 
     public static void init() {
-
-        CCCreativeTabs.setCreativeTab();
-
         CCBlocks.register();
         CCBlockEntityTypes.register();
         CCCatVariants.register();
@@ -46,26 +46,18 @@ public class Copycats {
 
         CCConfigs.register();
 
-        CCPackets.PACKETS.registerC2SListener();
-
-        finalizeRegistrate();
+        CCPackets.register();
     }
 
-    public static void gatherData(DataGenerator.PackGenerator gen) {
-        gen.addProvider(CCStandardRecipes::new);
+    public static void gatherData(DataGenerator.PackGenerator gen, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        gen.addProvider(output -> new CCStandardRecipes(output, lookupProvider));
     }
 
-    public static CopycatRegistrate getRegistrate() {
+    public static CreateRegistrate getRegistrate() {
         return REGISTRATE;
     }
 
     public static ResourceLocation asResource(String path) {
-        return new ResourceLocation(MODID, path);
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
-
-    @ExpectPlatform
-    public static void finalizeRegistrate() {
-        throw new AssertionError();
-    }
-
 }

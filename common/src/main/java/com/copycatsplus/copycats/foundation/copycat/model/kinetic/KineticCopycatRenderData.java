@@ -3,8 +3,8 @@ package com.copycatsplus.copycats.foundation.copycat.model.kinetic;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.utility.ChatUtils;
-import com.jozufozu.flywheel.backend.Backend;
-import com.jozufozu.flywheel.config.BackendType;
+import dev.engine_room.flywheel.api.backend.BackendManager;
+import dev.engine_room.flywheel.backend.Backends;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -44,13 +44,6 @@ public record KineticCopycatRenderData(ICopycatPartialModel partialModel, Partia
     }
 
     private static KineticCopycatRenderData of(ICopycatPartialModel partialModel, ICopycatBlockEntity be, BlockState material) {
-        if (Backend.getBackendType() != BackendType.INSTANCING &&
-                Minecraft.getInstance().getBlockColors().getColor(material, null, null, 0) != -1) {
-            ChatUtils.sendWarningOnce(
-                    "flywheel_block_color",
-                    "Block colors may be incorrect due to the current Flywheel rendering backend. Please switch to the instancing backend to fix this."
-            );
-        }
         return new KineticCopycatRenderData(partialModel, PartialModelState.fromBlockState(be.getBlockState(), partialModel.getProperties()), material);
     }
 }

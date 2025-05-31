@@ -25,7 +25,6 @@ public class CopycatBlockBlock extends CCCopycatBlock implements IStateType {
         super(properties);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
         return Shapes.block();
@@ -49,7 +48,7 @@ public class CopycatBlockBlock extends CCCopycatBlock implements IStateType {
     }
 
     @Override
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
-        return super.isPathfindable(pState, pLevel, pPos, pType);
+    public boolean isPathfindable(@NotNull BlockState pState, @NotNull PathComputationType pType) {
+        return super.isPathfindable(pState, pType);
     }
 }

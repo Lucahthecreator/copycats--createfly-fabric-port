@@ -4,16 +4,14 @@ import com.copycatsplus.copycats.compat.Mods;
 import com.copycatsplus.copycats.foundation.annotation.ModMixin;
 import com.copycatsplus.copycats.foundation.copycat.CopycatExternalContext;
 import com.copycatsplus.copycats.foundation.copycat.multistate.MultiStateTextureAtlasSprite;
-import me.jellysquid.mods.sodium.client.model.color.ColorProvider;
-import me.jellysquid.mods.sodium.client.model.quad.BakedQuadView;
-import me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderContext;
-import me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer;
-import net.minecraft.world.level.block.state.BlockState;
+import net.caffeinemc.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer;
+import net.caffeinemc.mods.sodium.client.render.frapi.mesh.MutableQuadViewImpl;
+import net.caffeinemc.mods.sodium.client.render.texture.SpriteFinderCache;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * Record the currently rendering property for multi-state blocks so that block colors can be displayed properly.
@@ -21,32 +19,32 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * Rubidium compatible version of {@link com.copycatsplus.copycats.mixin.foundation.copycat.multistate.ModelBlockRendererMixin}.
  */
 @ModMixin(requiredMods = {Mods.RUBIDIUM, Mods.SODIUM})
-@Mixin(BlockRenderer.class)
+@Mixin(value = BlockRenderer.class, remap = false)
 @Pseudo
 public class BlockRendererMixin {
     @Inject(
-            method = "getVertexColors",
+            method = "colorizeQuad",
             at = @At(
                     value = "INVOKE",
-                    target = "Lme/jellysquid/mods/sodium/client/model/color/ColorProvider;getColors(Lme/jellysquid/mods/sodium/client/world/WorldSlice;Lnet/minecraft/core/BlockPos;Ljava/lang/Object;Lme/jellysquid/mods/sodium/client/model/quad/ModelQuadView;[I)V"
+                    target = "Lnet/caffeinemc/mods/sodium/client/model/color/ColorProvider;getColors(Lnet/caffeinemc/mods/sodium/client/world/LevelSlice;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos$MutableBlockPos;Ljava/lang/Object;Lnet/caffeinemc/mods/sodium/client/model/quad/ModelQuadView;[I)V"
             ),
             require = 0
     )
-    private void beforeColor(BlockRenderContext ctx, ColorProvider<BlockState> colorProvider, BakedQuadView quad, CallbackInfoReturnable<int[]> cir) {
-        if (quad.getSprite() instanceof MultiStateTextureAtlasSprite sprite)
+    private void beforeColor(MutableQuadViewImpl quad, int colorIndex, CallbackInfo ci) {
+        if (quad.sprite(SpriteFinderCache.forBlockAtlas()) instanceof MultiStateTextureAtlasSprite sprite)
             CopycatExternalContext.setPropertyForBlockColor(sprite.getProperty());
     }
 
     @Inject(
-            method = "getVertexColors",
+            method = "colorizeQuad",
             at = @At(
                     value = "INVOKE",
-                    target = "Lme/jellysquid/mods/sodium/client/model/color/ColorProvider;getColors(Lme/jellysquid/mods/sodium/client/world/WorldSlice;Lnet/minecraft/core/BlockPos;Ljava/lang/Object;Lme/jellysquid/mods/sodium/client/model/quad/ModelQuadView;[I)V",
+                    target = "Lnet/caffeinemc/mods/sodium/client/model/color/ColorProvider;getColors(Lnet/caffeinemc/mods/sodium/client/world/LevelSlice;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos$MutableBlockPos;Ljava/lang/Object;Lnet/caffeinemc/mods/sodium/client/model/quad/ModelQuadView;[I)V",
                     shift = At.Shift.AFTER
             ),
             require = 0
     )
-    private void afterColor(BlockRenderContext ctx, ColorProvider<BlockState> colorProvider, BakedQuadView quad, CallbackInfoReturnable<int[]> cir) {
+    private void afterColor(MutableQuadViewImpl quad, int colorIndex, CallbackInfo ci) {
         CopycatExternalContext.setPropertyForBlockColor(null);
     }
 }

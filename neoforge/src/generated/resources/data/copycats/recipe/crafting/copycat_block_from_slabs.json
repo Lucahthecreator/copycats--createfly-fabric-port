@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "copycats:feature_enabled",
+      "feature": "copycats:copycat_block",
+      "invert": false
+    },
+    {
+      "type": "copycats:feature_enabled",
+      "feature": "copycats:copycat_slab",
+      "invert": false
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "s": {
+      "tag": "copycats:copycat_slab"
+    }
+  },
+  "pattern": [
+    "s",
+    "s"
+  ],
+  "result": {
+    "count": 1,
+    "id": "copycats:copycat_block"
+  }
+}

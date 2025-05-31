@@ -1,6 +1,5 @@
 package com.copycatsplus.copycats.utility;
 
-import com.copycatsplus.copycats.foundation.copycat.CopycatMaterialStore;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.mixin.foundation.copycat.BlockEntityAccessor;
@@ -8,10 +7,10 @@ import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -24,11 +23,6 @@ public class BlockEntityUtils {
     public static void redraw(BlockEntity blockEntity) {
         Level level = blockEntity.getLevel();
         if (level != null) {
-            if (blockEntity instanceof IMultiStateCopycatBlockEntity multiStateBE) {
-                CopycatMaterialStore.setMaterial(level, blockEntity.getBlockPos(), multiStateBE.getMaterialItemStorage().getMaterialMap());
-            } else if (blockEntity instanceof ICopycatBlockEntity copycatBE) {
-                CopycatMaterialStore.setMaterial(level, blockEntity.getBlockPos(), copycatBE.getMaterial());
-            }
             if (level.isClientSide()) {
                 requestModelDataUpdate(blockEntity);
             } else {
@@ -49,17 +43,26 @@ public class BlockEntityUtils {
 
     }
 
-    private static void updateLight(BlockEntity blockEntity) {
+    public static void updateLight(BlockEntity blockEntity) {
         Level level = blockEntity.getLevel();
         if (level != null) {
             BlockPos pos = blockEntity.getBlockPos();
-            ProfilerFiller profilerFiller = level.getProfiler();
-            profilerFiller.push("updateSkyLightSources");
-            level.getChunk(pos).getSkyLightSources().update(level, pos.getX() & 0xF, pos.getY(), pos.getZ() & 0xF);
-            profilerFiller.popPush("queueCheckLight");
-            level.getChunkSource().getLightEngine().checkBlock(pos);
-            profilerFiller.pop();
-            level.getChunk(pos).setUnsaved(true);
+            AuxiliaryLightManager lightManager = level.getAuxLightManager(pos);
+            if (lightManager != null)
+                lightManager.setLightAt(pos, getLightEmission(blockEntity));
         }
+    }
+
+    private static int getLightEmission(BlockEntity blockEntity) {
+        if (blockEntity instanceof IMultiStateCopycatBlockEntity multiStateBE) {
+            int light = 0;
+            for (BlockState material : multiStateBE.getMaterialItemStorage().getAllMaterials()) {
+                light = Math.max(light, material.getLightEmission(multiStateBE.getLevel(), multiStateBE.getBlockPos()));
+            }
+            return light;
+        } else if (blockEntity instanceof ICopycatBlockEntity copycatBE) {
+            return copycatBE.getMaterial().getLightEmission(copycatBE.getLevel(), copycatBE.getBlockPos());
+        }
+        return 0;
     }
 }

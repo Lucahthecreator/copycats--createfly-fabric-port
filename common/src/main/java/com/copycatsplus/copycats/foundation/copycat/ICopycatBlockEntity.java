@@ -3,18 +3,20 @@ package com.copycatsplus.copycats.foundation.copycat;
 import com.copycatsplus.copycats.utility.BlockEntityUtils;
 import com.copycatsplus.copycats.utility.ItemUtils;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.contraptions.ITransformableBlockEntity;
+import com.simibubi.create.api.contraption.transformable.TransformableBlockEntity;
+import com.simibubi.create.api.schematic.nbt.PartialSafeNBT;
+import com.simibubi.create.api.schematic.requirement.SpecialBlockEntityItemRequirement;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.redstone.RoseQuartzLampBlock;
-import com.simibubi.create.content.schematics.requirement.ISpecialBlockEntityItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.foundation.blockEntity.IMergeableBE;
-import com.simibubi.create.foundation.utility.IPartialSafeNBT;
-import com.simibubi.create.foundation.utility.Iterate;
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.item.ItemStack;
@@ -25,6 +27,7 @@ import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.ApiStatus;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -33,7 +36,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * An interface with implementation for all simple copycat block entities.
  * <p>
  * Implementors should create a field to store the material, consumed item and CT toggle, and redirect calls of
- * {@link ICopycatBlockEntity#invalidate},
+ * {@link ICopycatBlockEntity#onLoad},
  * {@link ICopycatBlockEntity#read},
  * {@link ICopycatBlockEntity#writeSafe} and
  * {@link ICopycatBlockEntity#write} to this interface.
@@ -46,7 +49,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement, ITransformableBlockEntity, IPartialSafeNBT, IMergeableBE {
+public interface ICopycatBlockEntity extends SpecialBlockEntityItemRequirement, TransformableBlockEntity, PartialSafeNBT, IMergeableBE {
 
     void notifyUpdate();
 
@@ -84,6 +87,10 @@ public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement,
         setMaterialInternal(AllBlocks.COPYCAT_BASE.getDefaultState());
         setConsumedItemInternal(ItemStack.EMPTY);
         setCTEnabledInternal(true);
+    }
+
+    default void onLoad() {
+        BlockEntityUtils.updateLight((BlockEntity) this);
     }
 
     default ICopycatBlock getBlock() {
@@ -158,10 +165,6 @@ public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement,
         notifyUpdate();
     }
 
-    default void invalidate() {
-        CopycatMaterialStore.setMaterial(getLevel(), getBlockPos(), Blocks.AIR.defaultBlockState());
-    }
-
     @Override
     default ItemRequirement getRequiredItems(BlockState state) {
         if (getConsumedItem().isEmpty())
@@ -180,18 +183,18 @@ public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement,
     }
 
     @Override
-    default void transform(StructureTransform transform) {
+    default void transform(BlockEntity blockEntity, StructureTransform transform) {
         setMaterialInternal(transform.apply(getMaterial()));
         notifyUpdate();
     }
 
-    static void read(ICopycatBlockEntity self, CompoundTag tag, boolean clientPacket) {
+    static void read(ICopycatBlockEntity self, CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         if (tag.contains("EnableCT")) // need to check because copycats migrated from C:Connected don't have this tag
             self.setCTEnabled(tag.getBoolean("EnableCT"));
         else
             self.setCTEnabled(true);
 
-        self.setConsumedItem(ItemStack.of(tag.getCompound("Item")));
+        self.setConsumedItem(ItemStack.parseOptional(registries, (tag.getCompound("Item"))));
 
         BlockState prevMaterial = self.getMaterial();
         if (!tag.contains("Material")) {
@@ -219,20 +222,20 @@ public interface ICopycatBlockEntity extends ISpecialBlockEntityItemRequirement,
             BlockEntityUtils.redraw((BlockEntity) self); // not calling self.redraw() because Extended Cogwheels overwrites it to be protected
     }
 
-    static void writeSafe(ICopycatBlockEntity self, CompoundTag tag) {
+    static void writeSafe(ICopycatBlockEntity self, CompoundTag tag, HolderLookup.Provider registries) {
         ItemStack stackWithoutNBT = self.getConsumedItem().copy();
-        stackWithoutNBT.setTag(null);
+        ItemStack stackWithoutComponents = new ItemStack(stackWithoutNBT.getItemHolder(), stackWithoutNBT.getCount(), DataComponentPatch.EMPTY);
         BlockEntityUtils.saveMetadata((BlockEntity) self, tag);
-        write(tag, stackWithoutNBT, self.getMaterial(), self.isCTEnabled());
+        write(tag, stackWithoutComponents, self.getMaterial(), registries, self.isCTEnabled());
     }
 
-    static void write(ICopycatBlockEntity self, CompoundTag tag, boolean clientPacket) {
-        write(tag, self.getConsumedItem(), self.getMaterial(), self.isCTEnabled());
+    static void write(ICopycatBlockEntity self, CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+        write(tag, self.getConsumedItem(), self.getMaterial(), registries, self.isCTEnabled());
     }
 
     @ApiStatus.Internal
-    static void write(CompoundTag tag, ItemStack stack, BlockState material, boolean enableCT) {
-        tag.put("Item", ItemUtils.serializeNBT(stack));
+    static void write(CompoundTag tag, ItemStack stack, BlockState material, HolderLookup.Provider registries, boolean enableCT) {
+        tag.put("Item", ItemUtils.serializeNBT(stack, registries));
         tag.put("Material", NbtUtils.writeBlockState(material));
         tag.putBoolean("EnableCT", enableCT);
     }

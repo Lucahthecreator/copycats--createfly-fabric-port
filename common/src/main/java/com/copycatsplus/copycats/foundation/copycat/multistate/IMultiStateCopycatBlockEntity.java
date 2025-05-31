@@ -6,10 +6,11 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.redstone.RoseQuartzLampBlock;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
-import com.simibubi.create.foundation.utility.Iterate;
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -31,7 +32,7 @@ import java.util.Set;
  * An interface with implementation for all multi-state copycat block entities.
  * <p>
  * Implementors should create a field to store the materials and redirect calls of
- * {@link IMultiStateCopycatBlockEntity#invalidate},
+ * {@link IMultiStateCopycatBlockEntity#onLoad},
  * {@link IMultiStateCopycatBlockEntity#read},
  * {@link IMultiStateCopycatBlockEntity#writeSafe} and
  * {@link IMultiStateCopycatBlockEntity#write} to this interface.
@@ -230,7 +231,7 @@ public interface IMultiStateCopycatBlockEntity extends ICopycatBlockEntity {
     }
 
     @Override
-    default void transform(StructureTransform transform) {
+    default void transform(BlockEntity blockEntity, StructureTransform transform) {
         getBlock().transformStorage(this.getBlockState(), this, transform);
         for (String key : getMaterialItemStorage().getAllProperties()) {
             getMaterialItemStorage().getMaterialItem(key).setMaterial(transform.apply(getMaterialItemStorage().getMaterialItem(key).material()));
@@ -238,21 +239,21 @@ public interface IMultiStateCopycatBlockEntity extends ICopycatBlockEntity {
         notifyUpdate();
     }
 
-    static void read(IMultiStateCopycatBlockEntity self, CompoundTag tag, boolean clientPacket) {
+    static void read(IMultiStateCopycatBlockEntity self, CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         if (self.getBlockState().getBlock() instanceof IMultiStateCopycatBlock) {
-            boolean anyUpdated = self.getMaterialItemStorage().deserialize(tag.getCompound("material_data"));
+            boolean anyUpdated = self.getMaterialItemStorage().deserialize(tag.getCompound("material_data"), registries);
 
             if (anyUpdated)
                 BlockEntityUtils.redraw((BlockEntity) self); // not calling self.redraw() because Extended Cogwheels overwrites it to be protected
         }
     }
 
-    static void writeSafe(IMultiStateCopycatBlockEntity self, CompoundTag tag) {
+    static void writeSafe(IMultiStateCopycatBlockEntity self, CompoundTag tag, HolderLookup.Provider registries) {
         BlockEntityUtils.saveMetadata((BlockEntity) self, tag);
-        tag.put("material_data", self.getMaterialItemStorage().serializeSafe());
+        tag.put("material_data", self.getMaterialItemStorage().serializeSafe(registries));
     }
 
-    static void write(IMultiStateCopycatBlockEntity self, CompoundTag tag, boolean clientPacket) {
-        tag.put("material_data", self.getMaterialItemStorage().serialize());
+    static void write(IMultiStateCopycatBlockEntity self, CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+        tag.put("material_data", self.getMaterialItemStorage().serialize(registries));
     }
 }

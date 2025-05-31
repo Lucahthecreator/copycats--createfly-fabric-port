@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -31,8 +33,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public class CopycatTrapdoorBlock extends TrapDoorBlock implements ICopycatBlock, IBE<CCCopycatBlockEntity>, IStateType {
 
-    public CopycatTrapdoorBlock(Properties properties, BlockSetType type) {
-        super(properties, type);
+    public CopycatTrapdoorBlock(BlockSetType type, Properties properties) {
+        super(type, properties);
     }
 
     @Nullable
@@ -42,15 +44,18 @@ public class CopycatTrapdoorBlock extends TrapDoorBlock implements ICopycatBlock
     }
 
     @Override
-    public InteractionResult use(BlockState state,
-                                 Level level,
-                                 BlockPos pos,
-                                 Player player,
-                                 InteractionHand hand,
-                                 BlockHitResult hit) {
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         return InteractionUtils.sequential(
-                () -> ICopycatBlock.super.use(state, level, pos, player, hand, hit),
-                () -> super.use(state, level, pos, player, hand, hit)
+                () -> ICopycatBlock.super.useWithoutItem(state, level, pos, player, hitResult),
+                () -> super.useWithoutItem(state, level, pos, player, hitResult)
+        );
+    }
+
+    @Override
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        return InteractionUtils.sequentialItem(
+                () -> ICopycatBlock.super.useItemOn(stack, state, level, pos, player, hand, hitResult),
+                () -> super.useItemOn(stack, state, level, pos, player, hand, hitResult)
         );
     }
 
@@ -66,9 +71,10 @@ public class CopycatTrapdoorBlock extends TrapDoorBlock implements ICopycatBlock
     }
 
     @Override
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+    public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         ICopycatBlock.super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        return pState;
     }
 
     @Override
@@ -97,6 +103,15 @@ public class CopycatTrapdoorBlock extends TrapDoorBlock implements ICopycatBlock
         return false;
     }
 
+    @Override
+    public @NotNull BlockState mirror(@NotNull BlockState pState, @NotNull Mirror pMirror) {
+        return super.mirror(pState, pMirror);
+    }
+
+    @Override
+    public @NotNull BlockState rotate(@NotNull BlockState pState, Rotation pRot) {
+        return super.rotate(pState, pRot);
+    }
 
     public boolean supportsExternalFaceHiding(BlockState state) {
         return true;

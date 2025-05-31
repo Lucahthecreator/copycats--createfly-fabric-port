@@ -7,15 +7,16 @@ import com.copycatsplus.copycats.foundation.copycat.IStateType;
 import com.copycatsplus.copycats.utility.InteractionUtils;
 import com.simibubi.create.content.kinetics.simpleRelays.AbstractSimpleShaftBlock;
 import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.placement.PlacementHelpers;
-import com.simibubi.create.foundation.placement.PlacementOffset;
 import com.simibubi.create.foundation.placement.PoleHelper;
+import net.createmod.catnip.placement.PlacementHelpers;
+import net.createmod.catnip.placement.PlacementOffset;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -27,6 +28,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LadderBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -92,16 +95,19 @@ public class CopycatLadderBlock extends LadderBlock implements ICopycatBlock, IB
     }
 
     @Override
-    public InteractionResult use(BlockState state,
-                                 Level level,
-                                 BlockPos pos,
-                                 Player player,
-                                 InteractionHand hand,
-                                 BlockHitResult hit) {
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         return InteractionUtils.sequential(
-                () -> ICopycatBlock.super.use(state, level, pos, player, hand, hit),
-                () -> InteractionUtils.usePlacementHelper(placementHelperId, state, level, pos, player, hand, hit),
-                () -> super.use(state, level, pos, player, hand, hit)
+                () -> ICopycatBlock.super.useWithoutItem(state, level, pos, player, hitResult),
+                () -> super.useWithoutItem(state, level, pos, player, hitResult)
+        );
+    }
+
+    @Override
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        return InteractionUtils.sequentialItem(
+                () -> ICopycatBlock.super.useItemOn(stack, state, level, pos, player, hand, hitResult),
+                () -> InteractionUtils.usePlacementHelper(placementHelperId, stack, state, level, pos, player, hand, hitResult),
+                () -> super.useItemOn(stack, state, level, pos, player, hand, hitResult)
         );
     }
 
@@ -123,9 +129,10 @@ public class CopycatLadderBlock extends LadderBlock implements ICopycatBlock, IB
     }
 
     @Override
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+    public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         ICopycatBlock.super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        return pState;
     }
 
     @Override
@@ -149,23 +156,28 @@ public class CopycatLadderBlock extends LadderBlock implements ICopycatBlock, IB
         return true;
     }
 
+    @Override
+    public @NotNull BlockState mirror(@NotNull BlockState pState, @NotNull Mirror pMirror) {
+        return super.mirror(pState, pMirror);
+    }
+
+    @Override
+    public @NotNull BlockState rotate(@NotNull BlockState pState, Rotation pRot) {
+        return super.rotate(pState, pRot);
+    }
+
     @MethodsReturnNonnullByDefault
     private static class PlacementHelper extends PoleHelper<Direction> {
 
         private PlacementHelper() {
-            super(state -> state.getBlock() instanceof AbstractSimpleShaftBlock
-                    || state.getBlock() instanceof LadderBlock, $ -> Axis.Y, FACING);
+            super(state -> state.getBlock() instanceof LadderBlock && state.getBlock() instanceof ICopycatBlock, $ -> Axis.Y, FACING);
         }
 
         @Override
         public Predicate<ItemStack> getItemPredicate() {
-            return i -> i.getItem() instanceof BlockItem
-                    && ((BlockItem) i.getItem()).getBlock() instanceof LadderBlock;
-        }
-
-        @Override
-        public Predicate<BlockState> getStatePredicate() {
-            return state -> state.getBlock() instanceof LadderBlock;
+            return i -> i.getItem() instanceof BlockItem blockItem
+                    && blockItem.getBlock() instanceof LadderBlock
+                    && blockItem.getBlock() instanceof ICopycatBlock;
         }
 
         @Override

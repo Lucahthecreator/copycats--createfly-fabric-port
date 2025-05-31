@@ -2,12 +2,12 @@ package com.copycatsplus.copycats.foundation.tooltip;
 
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.TooltipModifier;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Iterate;
-import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.Pair;
+import com.simibubi.create.foundation.utility.CreateLang;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.createmod.catnip.data.Iterate;
+import net.createmod.catnip.data.Pair;
+import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
@@ -66,19 +66,19 @@ public class CopycatDescription {
             longDescription.addAll(pair.getSecond());
         }
 
-        String[] holdDesc = Lang.translateDirect("tooltip.holdForDescription", "$")
+        String[] holdDesc = CreateLang.translateDirect("tooltip.holdForDescription", "$")
                 .getString()
                 .split("\\$");
-        MutableComponent keyShift = Lang.translateDirect("tooltip.keyShift");
+        MutableComponent keyShift = CreateLang.translateDirect("tooltip.keyShift");
         for (boolean shift : Iterate.falseAndTrue) {
-            MutableComponent tabBuilder = Components.empty();
-            tabBuilder.append(Components.literal(holdDesc[0]).withStyle(DARK_GRAY));
+            MutableComponent tabBuilder = Component.empty();
+            tabBuilder.append(Component.literal(holdDesc[0]).withStyle(DARK_GRAY));
             tabBuilder.append(keyShift.plainCopy()
                     .withStyle(shift ? WHITE : GRAY));
             if (holdDesc.length > 1)
-                tabBuilder.append(Components.literal(holdDesc[1]).withStyle(DARK_GRAY));
+                tabBuilder.append(Component.literal(holdDesc[1]).withStyle(DARK_GRAY));
             (shift ? longDescription : shortDescription).add(0, tabBuilder);
-            (shift ? longDescription : shortDescription).add(1, Components.immutableEmpty());
+            (shift ? longDescription : shortDescription).add(1, Component.empty());
         }
     }
 
@@ -122,8 +122,8 @@ public class CopycatDescription {
                 continue;
 
             descriptions.put(characteristics, Pair.of(
-                    List.of(Components.literal("- " + cachedLanguage.getOrDefault(titleKey)).withStyle(GRAY)),
-                    TooltipHelper.cutStringTextComponent(String.format(cachedLanguage.getOrDefault(descKey), cachedArgs.get(characteristics.getSerializedName()).toArray()), TooltipHelper.Palette.STANDARD_CREATE)
+                    List.of(Component.literal("- " + cachedLanguage.getOrDefault(titleKey)).withStyle(GRAY)),
+                    TooltipHelper.cutStringTextComponent(String.format(cachedLanguage.getOrDefault(descKey), cachedArgs.get(characteristics.getSerializedName()).toArray()), FontHelper.Palette.STANDARD_CREATE)
             ));
         }
     }

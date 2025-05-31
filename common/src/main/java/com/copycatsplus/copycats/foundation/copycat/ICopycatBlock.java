@@ -7,12 +7,12 @@ import com.copycatsplus.copycats.utility.BlockFaceUtils;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.content.contraptions.ITransformableBlock;
+import com.simibubi.create.api.contraption.transformable.TransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.utility.Iterate;
+import net.createmod.catnip.data.Iterate;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -25,6 +25,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -36,6 +37,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
@@ -56,7 +58,8 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
  * {@link net.minecraft.world.level.block.EntityBlock#getTicker},
  * {@link IBE#getBlockEntityClass} and
  * {@link IBE#getBlockEntityType} in the concrete class, and redirect calls of
- * {@link ICopycatBlock#use},
+ * {@link ICopycatBlock#useItemOn},
+ * {@link ICopycatBlock#useWithoutItem},
  * {@link ICopycatBlock#hidesNeighborFace},
  * {@link ICopycatBlock#rotate},
  * {@link ICopycatBlock#mirror},
@@ -72,7 +75,7 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBlock {
+public interface ICopycatBlock extends IWrenchable, IStateType, TransformableBlock {
 
     @Nullable
     default ICopycatBlockEntity getCopycatBlockEntity(BlockGetter worldIn, BlockPos pos) {
@@ -102,14 +105,14 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
         return fbe.isCTEnabled();
     }
 
-    default InteractionResult toggleCT(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (pPlayer.isShiftKeyDown() && pPlayer.getItemInHand(pHand).equals(ItemStack.EMPTY)) {
-            if (!canToggleCT(pState, pLevel, pPos))
+    default InteractionResult toggleCT(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (player.isShiftKeyDown()) {
+            if (!canToggleCT(state, level, pos))
                 return InteractionResult.PASS;
-            BlockEntity be = pLevel.getBlockEntity(pPos);
+            BlockEntity be = level.getBlockEntity(pos);
             if (!(be instanceof ICopycatBlockEntity fbe))
                 return InteractionResult.PASS;
-            if (!canToggleCT(pState, pLevel, pPos))
+            if (!canToggleCT(state, level, pos))
                 return InteractionResult.PASS;
             fbe.setCTEnabled(!fbe.isCTEnabled());
             BlockEntityUtils.redraw((BlockEntity) fbe);
@@ -208,61 +211,62 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
         return material;
     }
 
-    default InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult ray) {
+    default InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        return toggleCT(state, level, pos, player, hitResult);
+    }
+
+    default ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         // prioritize wrench interactions over others
-        if (player.getItemInHand(hand).is(AllTags.AllItemTags.WRENCH.tag)) {
-            InteractionResult result = AllItems.WRENCH.get().useOn(new UseOnContext(player, hand, ray));
+        if (stack.is(AllTags.AllItemTags.WRENCH.tag)) {
+            InteractionResult result = AllItems.WRENCH.get().useOn(new UseOnContext(player, hand, hitResult));
+            if (result.indicateItemUse())
+                player.swing(hand);
             if (result.consumesAction())
-                return result;
+                return ItemInteractionResult.SUCCESS;
         }
 
-        InteractionResult result = toggleCT(state, world, pos, player, hand, ray);
-        if (result.consumesAction())
-            return result;
-
         if (player == null || !player.mayBuild())
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
-        Direction face = ray.getDirection();
-        ItemStack itemInHand = player.getItemInHand(hand);
-        BlockState materialIn = getAcceptedBlockState(world, pos, itemInHand, face);
+        Direction face = hitResult.getDirection();
+        BlockState materialIn = getAcceptedBlockState(level, pos, stack, face);
 
         if (materialIn != null)
-            materialIn = prepareMaterial(world, pos, state, player, hand, ray, materialIn);
+            materialIn = prepareMaterial(level, pos, state, player, hand, hitResult, materialIn);
         if (materialIn == null)
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
         BlockState material = materialIn;
-        ICopycatBlockEntity copycatBE = getCopycatBlockEntity(world, pos);
+        ICopycatBlockEntity copycatBE = getCopycatBlockEntity(level, pos);
         if (copycatBE == null)
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         if (copycatBE.getMaterial()
                 .is(material.getBlock())) {
             if (!copycatBE.cycleMaterial())
-                return InteractionResult.PASS;
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             copycatBE.getLevel()
                     .playSound(null, copycatBE.getBlockPos(), SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, .75f,
                             .95f);
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
         if (copycatBE.hasCustomMaterial())
-            return InteractionResult.PASS;
-        if (world.isClientSide())
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (level.isClientSide())
+            return ItemInteractionResult.SUCCESS;
 
         copycatBE.setMaterial(material);
-        copycatBE.setConsumedItem(itemInHand);
+        copycatBE.setConsumedItem(stack);
         copycatBE.getLevel()
                 .playSound(null, copycatBE.getBlockPos(), material.getSoundType()
                         .getPlaceSound(), SoundSource.BLOCKS, 1, .75f);
 
         if (player.isCreative())
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
 
-        itemInHand.shrink(1);
-        if (itemInHand.isEmpty())
+        stack.shrink(1);
+        if (stack.isEmpty())
             player.setItemInHand(hand, ItemStack.EMPTY);
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
     }
 
     default void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
@@ -288,6 +292,8 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
         offhandItem.shrink(1);
         if (offhandItem.isEmpty())
             placer.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+        //TODO: Figure out why sometimes the blocks when placed with the placement helper dont render so we can remove this
+        BlockEntityUtils.redraw((BlockEntity) copycatBE);
     }
 
     /**
@@ -310,11 +316,12 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
         void handle(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving);
     }
 
-    default void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+    default BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         if (player.isCreative()) {
             ICopycatBlockEntity copycatBE = getCopycatBlockEntity(level, pos);
             if (copycatBE != null) copycatBE.setConsumedItem(ItemStack.EMPTY);
         }
+        return state;
     }
 
     static BlockState getAppearance(ICopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
@@ -352,14 +359,14 @@ public interface ICopycatBlock extends IWrenchable, IStateType, ITransformableBl
     /**
      * DO NOT override the {@link Block#rotate} implementation with this if the default {@link ICopycatBlock#transform} implementation is used.
      */
-    default @NotNull BlockState rotate(@NotNull BlockState pState, Rotation pRot) {
+     default @NotNull BlockState rotate(@NotNull BlockState pState, Rotation pRot) {
         return transform(pState, new StructureTransform(BlockPos.ZERO, Direction.Axis.Y, pRot, Mirror.NONE));
     }
 
     /**
      * DO NOT override the {@link Block#mirror} implementation with this if the default {@link ICopycatBlock#transform} implementation is used.
      */
-    default @NotNull BlockState mirror(@NotNull BlockState pState, @NotNull Mirror pMirror) {
+    default BlockState mirror(BlockState pState, Mirror pMirror) {
         return transform(pState, new StructureTransform(BlockPos.ZERO, null, Rotation.NONE, pMirror));
     }
 

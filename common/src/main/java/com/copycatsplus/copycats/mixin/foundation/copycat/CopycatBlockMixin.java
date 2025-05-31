@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * <p>
  * Also patch its implementation to consider our copycats.
  */
-@Mixin(CopycatBlock.class)
+@Mixin(value = CopycatBlock.class, remap = false)
 public class CopycatBlockMixin implements ICopycatBlock {
     @Inject(
             method = "getAcceptedBlockState",
