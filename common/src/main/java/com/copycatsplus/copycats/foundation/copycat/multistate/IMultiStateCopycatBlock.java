@@ -244,7 +244,6 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
 
         copycatBE.setMaterial(property, AllBlocks.COPYCAT_BASE.getDefaultState());
         copycatBE.setConsumedItem(property, ItemStack.EMPTY);
-        context.getPlayer().swing(context.getHand());
         return InteractionResult.SUCCESS;
     }
 
@@ -258,6 +257,8 @@ public interface IMultiStateCopycatBlock extends ICopycatBlock, IStateType {
         // prioritize wrench interactions over others
         if (stack.is(AllTags.AllItemTags.WRENCH.tag)) {
             InteractionResult result = AllItems.WRENCH.get().useOn(new UseOnContext(player, hand, hitResult));
+            if (result.indicateItemUse())
+                player.swing(hand);
             if (result.consumesAction())
                 return ItemInteractionResult.CONSUME;
         }
