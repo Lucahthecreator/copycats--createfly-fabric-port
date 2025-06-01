@@ -5,12 +5,10 @@ import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopyca
 import com.copycatsplus.copycats.mixin.foundation.copycat.BlockEntityAccessor;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -40,20 +38,13 @@ public class BlockEntityUtils {
 
     @ExpectPlatform
     public static void requestModelDataUpdate(BlockEntity blockEntity) {
-
     }
 
+    @ExpectPlatform
     public static void updateLight(BlockEntity blockEntity) {
-        Level level = blockEntity.getLevel();
-        if (level != null) {
-            BlockPos pos = blockEntity.getBlockPos();
-            AuxiliaryLightManager lightManager = level.getAuxLightManager(pos);
-            if (lightManager != null)
-                lightManager.setLightAt(pos, getLightEmission(blockEntity));
-        }
     }
 
-    private static int getLightEmission(BlockEntity blockEntity) {
+    public static int getLightEmission(BlockEntity blockEntity) {
         if (blockEntity instanceof IMultiStateCopycatBlockEntity multiStateBE) {
             int light = 0;
             for (BlockState material : multiStateBE.getMaterialItemStorage().getAllMaterials()) {
