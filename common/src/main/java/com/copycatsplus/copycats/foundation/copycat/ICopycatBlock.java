@@ -96,7 +96,9 @@ public interface ICopycatBlock extends IWrenchable, IStateType, TransformableBlo
         return true;
     }
 
-    default boolean isCTEnabled(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+    default boolean isCTEnabled(BlockState state, BlockAndTintGetter level, @Nullable BlockPos pos) {
+        if (pos == null)
+            return false;
         BlockEntity be = level.getBlockEntity(pos);
         if (!(be instanceof ICopycatBlockEntity fbe))
             return true;

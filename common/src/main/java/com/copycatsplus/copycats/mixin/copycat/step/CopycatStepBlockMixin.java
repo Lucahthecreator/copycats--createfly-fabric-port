@@ -40,7 +40,7 @@ public abstract class CopycatStepBlockMixin extends WaterloggedCopycatBlock impl
     }
 
     @Override
-    public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
+    public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, @Nullable BlockState queryState, @Nullable BlockPos queryPos) {
         if (!this.isCTEnabled(state, level, queryPos))
             return state;
         return super.getAppearance(state, level, pos, side, queryState, queryPos);
