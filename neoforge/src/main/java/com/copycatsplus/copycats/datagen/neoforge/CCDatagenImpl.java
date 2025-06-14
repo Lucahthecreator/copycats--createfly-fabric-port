@@ -23,15 +23,21 @@ public class CCDatagenImpl extends CCDatagen {
 
     protected static final List<CopycatsRecipeProvider> GENERATORS = new ArrayList<>();
 
-    public static void gatherData(GatherDataEvent event) {
+    public static void gatherDataHighPriority(GatherDataEvent event) {
+        if (!event.getMods().contains(Copycats.MODID))
+            return;
+
         addExtraRegistrateData();
+    }
+
+    public static void gatherData(GatherDataEvent event) {
+        if (!event.getMods().contains(Copycats.MODID))
+            return;
 
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
         generator.addProvider(event.includeServer(), new CCStandardRecipes(output, lookupProvider));
-
-        event.getGenerator().addProvider(true, Copycats.getRegistrate().setDataProvider(new RegistrateDataProvider(Copycats.getRegistrate(), Copycats.MODID, event)));
     }
 }

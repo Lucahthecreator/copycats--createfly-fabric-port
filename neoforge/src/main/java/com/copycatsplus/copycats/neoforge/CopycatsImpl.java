@@ -27,6 +27,7 @@ public class CopycatsImpl {
         CCCraftingConditions.register(CopycatsImpl.modBus);
         NeoForge.EVENT_BUS.addListener(this::serverStarting);
 
+        modBus.addListener(EventPriority.HIGHEST, CCDatagenImpl::gatherDataHighPriority);
         modBus.addListener(EventPriority.LOWEST, CCDatagenImpl::gatherData);
         Mods.ADDITIONAL_PLACEMENTS.executeIfInstalled(() -> AdditionalPlacementsCompatNeoForge::register);
     }

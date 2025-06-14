@@ -37,7 +37,7 @@ public abstract class CopycatPanelBlockMixin extends WaterloggedCopycatBlock imp
     }
 
     @Override
-    public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
+    public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, @Nullable BlockState queryState, @Nullable BlockPos queryPos) {
         if (!this.isCTEnabled(state, level, queryPos))
             return state;
         return super.getAppearance(state, level, pos, side, queryState, queryPos);
@@ -72,6 +72,10 @@ public abstract class CopycatPanelBlockMixin extends WaterloggedCopycatBlock imp
         }
         if (CopycatExternalContext.isForBlockingLogic()) {
             cir.setReturnValue(false);
+            return;
+        }
+        if (toPos == null) {
+            cir.setReturnValue(true);
             return;
         }
         cir.setReturnValue(!checkConnection(reader, toPos, fromPos, reader.getBlockState(toPos)));
