@@ -79,7 +79,7 @@ allprojects {
 
     repositories {
         maven {
-            name = 'Neoforge mavem'
+            name = 'Neoforge maven'
             url = 'https://maven.neoforged.net/releases/'
         }
         maven {
