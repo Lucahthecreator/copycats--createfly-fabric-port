@@ -80,9 +80,12 @@ public abstract class CopycatStepBlockMixin extends WaterloggedCopycatBlock impl
     }
 
     @Override
-    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, BlockPos toPos) {
+    public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, @Nullable BlockPos toPos) {
         if (CopycatExternalContext.isForBlockingLogic()) {
             return false;
+        }
+        if (toPos == null) {
+            return true;
         }
 
         return !checkConnection(reader, toPos, fromPos, reader.getBlockState(toPos));

@@ -325,7 +325,7 @@ public interface ICopycatBlock extends IWrenchable, IStateType, TransformableBlo
     }
 
     static BlockState getAppearance(ICopycatBlock block, BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side,
-                                    BlockState queryState, BlockPos queryPos) {
+                                    @Nullable BlockState queryState, @Nullable BlockPos queryPos) {
         if (block.isIgnoredConnectivitySide(level, state, side, pos, queryPos, queryState))
             return state;
 
@@ -359,7 +359,7 @@ public interface ICopycatBlock extends IWrenchable, IStateType, TransformableBlo
     /**
      * DO NOT override the {@link Block#rotate} implementation with this if the default {@link ICopycatBlock#transform} implementation is used.
      */
-     default @NotNull BlockState rotate(@NotNull BlockState pState, Rotation pRot) {
+    default @NotNull BlockState rotate(@NotNull BlockState pState, Rotation pRot) {
         return transform(pState, new StructureTransform(BlockPos.ZERO, Direction.Axis.Y, pRot, Mirror.NONE));
     }
 
@@ -486,12 +486,14 @@ public interface ICopycatBlock extends IWrenchable, IStateType, TransformableBlo
      * @return Whether the adjacent block is not allowed to connect.
      */
     default boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState fromState, Direction face,
-                                              BlockPos fromPos, BlockPos toPos, BlockState toState) {
+                                              BlockPos fromPos, @Nullable BlockPos toPos, @Nullable BlockState toState) {
         // !Specific to Create's CT!
         // A hack to fix blocking logic
         if (CopycatExternalContext.isForBlockingLogic()) {
             return false;
         }
+        if (toPos == null)
+            return true;
 
         // queryState is inconsistent between different CT mods
         // our assumption is that queryState refers to the true block state (copycat), not the material
