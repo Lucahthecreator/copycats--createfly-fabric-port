@@ -32,7 +32,8 @@ public class WrappedRenderWorld extends VirtualRenderWorld {
     protected ModelData modelData;
 
     public WrappedRenderWorld(ICopycatBlockEntity be) {
-        super(be.getLevel(), be.getLevel().getMinBuildHeight(), be.getLevel().getHeight(), Vec3i.ZERO, () -> {});
+        super(be.getLevel(), be.getLevel().getMinBuildHeight(), be.getLevel().getHeight(), Vec3i.ZERO, () -> {
+        });
         this.level = be.getLevel();
         this.targetPos = be.getBlockPos();
         this.material = be.getMaterial();
@@ -83,5 +84,11 @@ public class WrappedRenderWorld extends VirtualRenderWorld {
             return this.modelData;
         }
         return super.getModelData(pos);
+    }
+
+    @Override
+    public void blockEntityChanged(BlockPos pos) {
+        // no-op
+        // cannot set changed state because getChunk is not implemented
     }
 }
