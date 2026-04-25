@@ -1,0 +1,8 @@
+{
+  "selector": "copycats:copycat_box",
+
+  "properties": {
+    "sable:mass": 1,
+    "sable:volume": 1
+  }
+}
