@@ -1,5 +1,5 @@
 {
-  "selector": "copycats:copycat_byte",
+  "selector": "copycats:copycat_byte_panel",
 
   "properties": {
     "sable:mass": 0.25,
