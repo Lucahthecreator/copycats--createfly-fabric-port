@@ -2,7 +2,7 @@
   "selector": "copycats:copycat_byte",
 
   "properties": {
-    "sable:mass": 0.5,
-    "sable:volume": 0.5
+    "sable:mass": 0.25,
+    "sable:volume": 0.25
   }
 }
