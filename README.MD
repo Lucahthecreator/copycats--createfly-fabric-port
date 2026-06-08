@@ -1,141 +1,51 @@
-<h1 align="center">Create: Copycats+</h1>
+# Create: Copycats+ Fabric Port
 
 <p align="center">
-<a title="Supported versions" target="_blank" href="https://modrinth.com/project/copycats"><img src="https://cf.way2muchnoise.eu/versions/968398_all.svg"></a>
-<a title="Modrinth" target="_blank" href="https://modrinth.com/project/copycats"><img src="https://img.shields.io/modrinth/dt/UT2M39wf?style=flat&label=Modrinth"></a>
-<a title="CurseForge" target="_blank" href="https://legacy.curseforge.com/minecraft/mc-mods/copycats"><img src="https://img.shields.io/curseforge/dt/968398?style=flat&label=CurseForge"></a>
-<a title="Crowdin" target="_blank" href="https://crowdin.com/project/copycats"><img src="https://badges.crowdin.net/copycats/localized.svg"></a>
-<a title="Discord" target="_blank" href="https://discord.gg/YxPPFHn4SS"><img src="https://discordapp.com/api/guilds/1202240504809652365/widget.png?style=shield"></a>
+  <a href="https://github.com/Lucahthecreator/copycats--createfly-fabric-port">
+    <img alt="GitHub repo" src="https://img.shields.io/badge/GitHub-copycats--createfly--fabric--port-24292e?style=flat-square">
+  </a>
+  <a href="https://discord.gg/YxPPFHn4SS">
+    <img alt="Discord" src="https://img.shields.io/badge/Discord-Create%20Addon%20Hub-5865F2?style=flat-square">
+  </a>
 </p>
 
-All the copycats you've ever wanted, combined into a single mod.
+This is a standalone Fabric-only port of Create: Copycats+ for CreateFly.
+The NeoForge branch and loader-specific build files were removed so this repo only ships the Fabric version.
 
-This branch is a Fabric-only CreateFly port. The NeoForge build path has been removed so the repo matches the port you're actually shipping.
+## Proof
 
-### Join our discord for test builds and discussions!
-
-[![Discord Banner](https://discordapp.com/api/guilds/1202240504809652365/widget.png?style=banner2)](https://discord.gg/YxPPFHn4SS)
-
-[![BisectHosting](https://copycats-site-sigma.vercel.app/api/banner)](https://copycats-site-sigma.vercel.app/api/link)
-
-## Port Permission
-
-This port was approved before publishing. The proof image is kept in the repo for easy reference.
+The permission screenshot is included here for reference.
 
 ![Permission proof](docs/permission.png)
 
-## What's new in v2.2
+## What this port includes
 
-![What's new in v2.2](https://cdn.modrinth.com/data/UT2M39wf/images/db6415ade4151ca3f5581fc6f565e570c2bee758.png)
+- Fabric-only build and release setup
+- Copycat blocks, slabs, stairs, panes, doors, layers, boards, and more
+- CreateFly integration for the Fabric loader
+- The same copycat feature set, rebuilt for this target
 
-- **Universal CT System**
-  - All copycats now connect textures with each other as long as they have a matching block face
-- Copycat byte panels
-  - A quarter of a panel. 4 of which forms a full panel
-- Copycat corner slices
-  - Resizable slices to go with slices and vertical slices
-- Copycat sliding/folding doors
-  - Animated doors with separate upper and lower textures. CT can be toggled for each half
-- Copycat panes
-  - Connects to iron bars, glass panes and Copycat flat panes
-- Copycat flat panes
-  - Connects to panes and can be placed horizontally
-- Vertical/Stacked half layers
-  - Rotated versions of Copycat half layers
-- and [a lot of bug fixes and improvements...](https://github.com/copycats-plus/copycats/blob/multiloader/CHANGELOG.md)
+## Installation
 
-## Features
+1. Download the Fabric jar from the repo release or build output.
+2. Install Fabric Loader for the matching Minecraft version.
+3. Install the required Fabric dependencies for the same version.
+4. Put the jar into your `mods` folder.
 
-![All decorative copycats](https://cdn.modrinth.com/data/UT2M39wf/images/e86daed566bd26230e283ca4fe6225c11a48a84e.png)
+## Building from source
 
-![All functional copycats](https://cdn.modrinth.com/data/UT2M39wf/images/246b6b6067699d29d70842364d09dfde86bfde11.png)
+- Install Java 25.
+- Run `./gradlew build`
+- The jar will be placed in `build/libs`
 
-**All copycats can be toggled on/off using the feature toggle**
+## Notes
 
-- Copycat Block
-- Copycat Slab
-  - Supports all orientations and double slab variants.
-- Copycat Stairs/Vertical Stairs
-- Copycat Fence
-- Copycat Wall
-- Copycat Vertical Step
-- Copycat Beam
-  - A centered Copycat Step
-- Copycat Slice/Vertical Slice/Corner Slice
-  - Can be resized to 8 different sizes
-- Copycat Ghost Block
-  - Has no collision box
-- Copycat Layer
-  - Can be placed in any orientation and stacks to full block size
-- Copycat Half Panel
-  - Supports 4 orientations on each block face
-- Copycat Pane
-  - Connects to iron bars, glass panes and Copycat Flat Panes
-- Copycat Flat Pane
-  - A flat version of Copycat Pane, can be placed horizontally
-- Copycat Byte
-  - A mini-block. Bytes can be placed/dismantled individually, 8 of which forms a full block
-- Copycat Byte Panel
-  - A quarter of a panel. 4 of which forms a full panel
-- Copycat Board
-  - A 1-pixel thick panel. Multiple boards can be placed in the same block space like glow lichen
-- Copycat Box/Catwalk
-  - A pre-assembled copycat board
-- Copycat Half Layer/Vertical Half Layer/Stacked Half Layer
-  - Can be stacked to full block size with 2 columns of half layers in one block space
-- Copycat Door/Iron Door/Sliding Door/Folding Door
-  - Can toggle CT by shift-R-clicking with an empty hand
-- Copycat Trapdoor/Iron Trapdoor
-- Copycat Fence Gate
-- Copycat Wooden/Stone Button
-- Copycat Wooden/Stone Pressure Plate
-- Copycat Light/Heavy Weighted Pressure Plate
-- Copycat Ladder
-- Copycat Fluid Pipe
-- Copycat Shaft
-- Copycat Cogwheel/Large Cogwheel
-
-## Download
-
-Find this mod on [**Modrinth**](https://modrinth.com/mod/copycats) or
-[**CurseForge**](https://legacy.curseforge.com/minecraft/mc-mods/copycats).
-
-## Usage
-
-**In modpacks:**
-
-- You can include this mod in any modpacks.
-- You can make any modifications to the mod with the goal of distributing it in a modpack.
-
-**In other cases:**
-
-- You can use this mod however you like as long as you obtain the mod via its Modrinth or CurseForge page.
-- You can make any modifications to the mod, but you cannot redistribute it unless you have modified a substantial
-  portion of the mod's code. Changes to resource packs/data packs/mod metadata do not count as code modification.
-
-This mod is open to suggestions, so if you have made any modification to the mod, please leave an issue/PR so I can
-consider adding your use case to the mod.
-
-## Contributing
-
-For translations, please visit [our Crowdin page](https://crowdin.com/project/copycats) to contribute.
-
-For code contributions, please read [the wiki](https://github.com/copycats-plus/copycats/wiki) for more info.
-
-## Support
-
-The best way to support our work is to simply download this mod on
-[**Modrinth**](https://modrinth.com/mod/copycats).
-Enjoy a smoother download experience and support open source software with a single click.
+- This repository is intentionally Fabric-only.
+- If you want the upstream multi-loader project, use the original Copycats repository instead.
+- Support and updates for this port are handled separately from the NeoForge branch.
 
 ## Credits
 
-**Translation**
-
-- Some translations are taken from Create: Connected.
-  Thanks [Crowdin contributors](https://crowdin.com/project/create-connected-mod) for providing those
-  translations
-
-**Inspiration**
-
-- The [Create: Addon Hub](https://discord.gg/3AvrppcgG3) discord server
+- Original mod: Copycats+
+- Create community and addon hub contributors
+- Permission proof is shown above
