@@ -8,13 +8,21 @@
 <a title="Discord" target="_blank" href="https://discord.gg/YxPPFHn4SS"><img src="https://discordapp.com/api/guilds/1202240504809652365/widget.png?style=shield"></a>
 </p>
 
-All the copycats you've ever wanted, combined into a single mod!
+All the copycats you've ever wanted, combined into a single mod.
+
+This branch is a Fabric-only CreateFly port. The NeoForge build path has been removed so the repo matches the port you're actually shipping.
 
 ### Join our discord for test builds and discussions!
 
 [![Discord Banner](https://discordapp.com/api/guilds/1202240504809652365/widget.png?style=banner2)](https://discord.gg/YxPPFHn4SS)
 
 [![BisectHosting](https://copycats-site-sigma.vercel.app/api/banner)](https://copycats-site-sigma.vercel.app/api/link)
+
+## Port Permission
+
+This port was approved before publishing. The proof image is kept in the repo for easy reference.
+
+![Permission proof](docs/permission.png)
 
 ## What's new in v2.2
 

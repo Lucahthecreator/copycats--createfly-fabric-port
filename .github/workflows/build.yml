@@ -3,9 +3,6 @@ name: Nightly Build
 on:
     workflow_dispatch:
     push:
-        branches:
-            - "multiloader"
-            - "*/multiloader"
 
 permissions:
     contents: read
@@ -24,21 +21,10 @@ jobs:
               id: get_branch
               run: echo "branch=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
 
-            - name: Get mod version
-              id: get_mod_version
-              run: echo "version=$(git describe --tags --abbrev=0 | grep -oP '(?<=v)\d+\.\d+\.\d+(?:-\w+)?(?=\+)')" >> $GITHUB_OUTPUT
-
-            - name: Get MC version
-              uses: christian-draeger/read-properties@908f99d3334be3802ec7cb528395a69d19914e7b
-              id: read_properties
-              with:
-                  path: gradle.properties
-                  properties: minecraft_version enabled_platforms archives_base_name
-
-            - name: Set up JDK 21
+            - name: Set up JDK 25
               uses: actions/setup-java@v4
               with:
-                  java-version: 21
+                  java-version: 25
                   distribution: temurin
                   cache: 'gradle'
 
@@ -56,29 +42,16 @@ jobs:
                       loom-cache
 
             - name: Build jar
-              run: ./gradlew :neoforge:build
-
-            - name: Publish to GitHub Packages
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              if: env.GITHUB_TOKEN != ''
-              continue-on-error: true
-              run: ./gradlew :neoforge:publishMavenJavaPublicationToGitHubPackagesRepository
-
-            - name: Publish to realRobotix Maven
-              env:
-                  MAVEN_USER: ${{ secrets.MAVEN_USER }}
-                  MAVEN_ACCESS_TOKEN: ${{ secrets.MAVEN_ACCESS_TOKEN }}
-              if: env.MAVEN_USER != '' && env.MAVEN_ACCESS_TOKEN != ''
-              run: ./gradlew :neoforge:publishMavenJavaPublicationToRealRobotixMavenRepository -PrealRobotixMavenUsername=${{ secrets.MAVEN_USER }} -PrealRobotixMavenPassword=${{ secrets.MAVEN_ACCESS_TOKEN }}
+              run: ./gradlew build
 
             - name: Find jars
               id: find_jars
               run: |
-                  EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-                  echo "jars<<$EOF" >> $GITHUB_OUTPUT
-                  find . -regextype posix-extended -regex "\.\/($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))\/build\/libs\/${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.get_mod_version.outputs.version }}\+mc\.${{ steps.read_properties.outputs.minecraft_version }}-($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))-build\.${{ github.run_number }}\.jar" >> $GITHUB_OUTPUT
-                  echo "$EOF" >> $GITHUB_OUTPUT
+                  {
+                    echo 'jars<<EOF'
+                    find build/libs -maxdepth 1 -name '*.jar' -not -name '*-sources.jar'
+                    echo 'EOF'
+                  } >> $GITHUB_OUTPUT
 
             - name: Send building message to discord
               continue-on-error: true
@@ -88,7 +61,7 @@ jobs:
               uses: realRobotix/action-discord-notifier@master
               with:
                   webhook: ${{ secrets.DISCORD_WEBHOOK }}
-                  message-title: Building mod from branch ${{ steps.get_branch.outputs.branch }}
+                  message-title: Building Fabric port from branch ${{ steps.get_branch.outputs.branch }}
 
             - name: Send built file to discord
               env:
@@ -102,5 +75,5 @@ jobs:
             - name: Archive Artifacts
               uses: actions/upload-artifact@v4
               with:
-                  name: ${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.get_mod_version.outputs.version }}+mc.${{ steps.read_properties.outputs.minecraft_version }}-build.${{ github.run_number }}
+                  name: createfly-fabric-build-${{ github.run_number }}
                   path: ${{ steps.find_jars.outputs.jars }}
