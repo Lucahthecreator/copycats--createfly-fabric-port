@@ -23,7 +23,7 @@ loom {
 sourceSets {
     main {
         java {
-            srcDirs = []
+            srcDirs = ["patches/src/main/java"]
         }
         resources {
             srcDirs = []
@@ -64,7 +64,10 @@ java {
 }
 
 jar {
-    from(zipTree("reconstructed/working.jar"))
+    from(zipTree("reconstructed/working.jar")) {
+        exclude "com/copycatsplus/copycats/content/copycat/sliding_door/CopycatSlidingDoorRenderBridge.class"
+        exclude 'com/copycatsplus/copycats/content/copycat/sliding_door/CopycatSlidingDoorRenderBridge$*.class'
+    }
     exclude("assets/copycats/models/block/copycat_base/README.md")
     exclude("META-INF/MANIFEST.MF")
 }
