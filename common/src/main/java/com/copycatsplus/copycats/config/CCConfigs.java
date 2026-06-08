@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.config;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.createmod.catnip.config.ConfigBase;
+import com.zurrtum.create.catnip.config.ConfigBase;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;

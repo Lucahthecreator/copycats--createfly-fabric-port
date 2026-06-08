@@ -4,7 +4,7 @@ import com.copycatsplus.copycats.foundation.copycat.model.assembly.MutableQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 
-import static net.createmod.catnip.render.SpriteShiftEntry.*;
+import static com.zurrtum.create.client.catnip.render.SpriteShiftEntry.*;
 
 /**
  * Scale the UV coordinates of a quad around a pivot point.

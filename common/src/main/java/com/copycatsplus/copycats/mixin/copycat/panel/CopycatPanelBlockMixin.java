@@ -2,9 +2,9 @@ package com.copycatsplus.copycats.mixin.copycat.panel;
 
 import com.copycatsplus.copycats.foundation.copycat.CopycatExternalContext;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
-import com.simibubi.create.content.decoration.copycat.CopycatBlockEntity;
-import com.simibubi.create.content.decoration.copycat.CopycatPanelBlock;
-import com.simibubi.create.content.decoration.copycat.WaterloggedCopycatBlock;
+import com.zurrtum.create.content.decoration.copycat.CopycatBlockEntity;
+import com.zurrtum.create.content.decoration.copycat.CopycatPanelBlock;
+import com.zurrtum.create.content.decoration.copycat.WaterloggedCopycatBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;

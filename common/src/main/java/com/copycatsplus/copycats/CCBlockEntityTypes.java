@@ -14,8 +14,8 @@ import com.copycatsplus.copycats.content.copycat.ladder.MultiStateCopycatLadderB
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlockEntity;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftVisual;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftRenderer;
-import com.simibubi.create.content.fluids.pipes.TransparentStraightPipeRenderer;
-import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.zurrtum.create.content.fluids.pipes.TransparentStraightPipeRenderer;
+import com.zurrtum.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
 public class CCBlockEntityTypes {

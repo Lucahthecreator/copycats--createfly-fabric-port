@@ -2,9 +2,9 @@ package com.copycatsplus.copycats.content.copycat.cogwheel;
 
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.MaterialItemStorage;
-import com.simibubi.create.content.contraptions.StructureTransform;
-import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntity;
-import com.simibubi.create.content.schematics.requirement.ItemRequirement;
+import com.zurrtum.create.content.contraptions.StructureTransform;
+import com.zurrtum.create.content.kinetics.simpleRelays.BracketedKineticBlockEntity;
+import com.zurrtum.create.content.schematics.requirement.ItemRequirement;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;

@@ -5,7 +5,7 @@ import com.copycatsplus.copycats.content.copycat.byte_panel.CopycatBytePanelBloc
 import com.copycatsplus.copycats.content.copycat.bytes.CopycatByteBlock;
 import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
-import net.createmod.catnip.data.Iterate;
+import com.zurrtum.create.catnip.data.Iterate;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;

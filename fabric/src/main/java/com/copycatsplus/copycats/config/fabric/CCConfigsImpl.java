@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.config.fabric;
 
 import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.config.*;
-import com.simibubi.create.foundation.config.ConfigBase;
+import com.zurrtum.create.foundation.config.ConfigBase;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
 import net.minecraftforge.fml.config.ModConfig;

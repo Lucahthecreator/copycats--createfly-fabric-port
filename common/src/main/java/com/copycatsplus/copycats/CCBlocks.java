@@ -87,14 +87,14 @@ import com.copycatsplus.copycats.datagen.CCLootGen;
 import com.copycatsplus.copycats.foundation.tooltip.CopycatCharacteristics;
 import com.copycatsplus.copycats.foundation.tooltip.CopycatDescription;
 import com.copycatsplus.copycats.utility.Platform;
-import com.simibubi.create.AllTags;
-import com.simibubi.create.content.contraptions.behaviour.DoorMovingInteraction;
-import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorMovementBehaviour;
-import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
-import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
-import com.simibubi.create.foundation.data.BuilderTransformers;
-import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.foundation.data.SharedProperties;
+import com.zurrtum.create.AllTags;
+import com.zurrtum.create.content.contraptions.behaviour.DoorMovingInteraction;
+import com.zurrtum.create.content.decoration.slidingDoor.SlidingDoorMovementBehaviour;
+import com.zurrtum.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
+import com.zurrtum.create.content.kinetics.simpleRelays.CogwheelBlockItem;
+import com.zurrtum.create.foundation.data.BuilderTransformers;
+import com.zurrtum.create.foundation.data.CreateRegistrate;
+import com.zurrtum.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -117,13 +117,13 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.copycatsplus.copycats.CCCustomModels.*;
-import static com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour.interactionBehaviour;
-import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
-import static com.simibubi.create.api.contraption.BlockMovementChecks.CheckResult;
-import static com.simibubi.create.api.contraption.BlockMovementChecks.registerBrittleCheck;
-import static com.simibubi.create.foundation.data.CreateRegistrate.blockModel;
-import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
-import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
+import static com.zurrtum.create.api.behaviour.interaction.MovingInteractionBehaviour.interactionBehaviour;
+import static com.zurrtum.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
+import static com.zurrtum.create.api.contraption.BlockMovementChecks.CheckResult;
+import static com.zurrtum.create.api.contraption.BlockMovementChecks.registerBrittleCheck;
+import static com.zurrtum.create.foundation.data.CreateRegistrate.blockModel;
+import static com.zurrtum.create.foundation.data.ModelGen.customItemModel;
+import static com.zurrtum.create.foundation.data.TagGen.pickaxeOnly;
 
 @SuppressWarnings({"unused", "removal"})
 //noinspection unchecked

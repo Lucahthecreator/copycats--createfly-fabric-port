@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.mixin.foundation.copycat.migration;
 
 import com.copycatsplus.copycats.foundation.copycat.MigrationManager;
-import com.simibubi.create.content.contraptions.Contraption;
+import com.zurrtum.create.content.contraptions.Contraption;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.Block;

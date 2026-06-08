@@ -1,13 +1,13 @@
 package com.copycatsplus.copycats.foundation.tooltip;
 
-import com.simibubi.create.foundation.item.TooltipHelper;
-import com.simibubi.create.foundation.item.TooltipModifier;
-import com.simibubi.create.foundation.utility.CreateLang;
+import com.zurrtum.create.foundation.item.TooltipHelper;
+import com.zurrtum.create.foundation.item.TooltipModifier;
+import com.zurrtum.create.foundation.utility.CreateLang;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.createmod.catnip.data.Iterate;
-import net.createmod.catnip.data.Pair;
-import net.createmod.catnip.lang.FontHelper;
+import com.zurrtum.create.catnip.data.Iterate;
+import com.zurrtum.create.catnip.data.Pair;
+import com.zurrtum.create.client.catnip.lang.FontHelper;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;

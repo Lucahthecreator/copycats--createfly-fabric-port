@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.config;
 
-import net.createmod.catnip.config.ConfigBase;
+import com.zurrtum.create.catnip.config.ConfigBase;
 import org.jetbrains.annotations.NotNull;
 
 public class CServer extends ConfigBase {

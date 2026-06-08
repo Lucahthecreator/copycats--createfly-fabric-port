@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.foundation.copycat;
 
-import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
+import com.zurrtum.create.foundation.block.ProperWaterloggedBlock;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;

@@ -5,8 +5,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
 import com.copycatsplus.copycats.utility.InteractionUtils;
-import com.simibubi.create.content.contraptions.StructureTransform;
-import com.simibubi.create.foundation.block.IBE;
+import com.zurrtum.create.content.contraptions.StructureTransform;
+import com.zurrtum.create.foundation.block.IBE;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;

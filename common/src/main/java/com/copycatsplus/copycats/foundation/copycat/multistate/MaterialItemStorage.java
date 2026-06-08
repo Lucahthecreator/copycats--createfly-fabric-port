@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.foundation.copycat.multistate;
 
 import com.copycatsplus.copycats.utility.ItemUtils;
-import com.simibubi.create.AllBlocks;
+import com.zurrtum.create.AllBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;

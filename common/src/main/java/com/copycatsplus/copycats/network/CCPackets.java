@@ -1,10 +1,10 @@
 package com.copycatsplus.copycats.network;
 
 import com.copycatsplus.copycats.Copycats;
-import net.createmod.catnip.net.base.BasePacketPayload;
-import net.createmod.catnip.net.base.CatnipPacketRegistry;
-import net.createmod.catnip.platform.CatnipServices;
-import net.createmod.catnip.platform.services.NetworkHelper;
+import com.zurrtum.create.catnip.net.base.BasePacketPayload;
+import com.zurrtum.create.catnip.net.base.CatnipPacketRegistry;
+import com.zurrtum.create.catnip.platform.CatnipServices;
+import com.zurrtum.create.catnip.platform.services.NetworkHelper;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;

@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.content.copycat.fluid_pipe;
 
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
+import com.zurrtum.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;

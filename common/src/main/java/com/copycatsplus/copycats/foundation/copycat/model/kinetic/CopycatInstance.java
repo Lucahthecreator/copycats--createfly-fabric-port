@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.foundation.copycat.model.kinetic;
 
-import dev.engine_room.flywheel.lib.instance.AbstractInstance;
+import com.zurrtum.create.client.flywheel.lib.instance.AbstractInstance;
 
 public record CopycatInstance<T extends AbstractInstance>(KineticCopycatRenderData renderData,
                                                           T instance) {

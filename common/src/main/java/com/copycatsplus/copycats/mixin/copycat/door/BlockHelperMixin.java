@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.mixin.copycat.door;
 
-import com.simibubi.create.foundation.utility.BlockHelper;
+import com.zurrtum.create.foundation.utility.BlockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

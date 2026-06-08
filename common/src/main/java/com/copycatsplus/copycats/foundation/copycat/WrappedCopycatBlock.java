@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.foundation.copycat;
 
-import com.simibubi.create.content.decoration.copycat.CopycatBlock;
+import com.zurrtum.create.content.decoration.copycat.CopycatBlock;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

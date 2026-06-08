@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.createmod.catnip.data.Pair;
+import com.zurrtum.create.catnip.data.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;

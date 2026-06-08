@@ -3,7 +3,7 @@ package com.copycatsplus.copycats.content.copycat.ghost_block;
 import com.copycatsplus.copycats.foundation.copycat.CCCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.IStateType;
-import com.simibubi.create.content.contraptions.StructureTransform;
+import com.zurrtum.create.content.contraptions.StructureTransform;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

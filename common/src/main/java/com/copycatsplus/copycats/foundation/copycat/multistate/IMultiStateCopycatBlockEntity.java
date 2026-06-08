@@ -2,11 +2,11 @@ package com.copycatsplus.copycats.foundation.copycat.multistate;
 
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.utility.BlockEntityUtils;
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.contraptions.StructureTransform;
-import com.simibubi.create.content.redstone.RoseQuartzLampBlock;
-import com.simibubi.create.content.schematics.requirement.ItemRequirement;
-import net.createmod.catnip.data.Iterate;
+import com.zurrtum.create.AllBlocks;
+import com.zurrtum.create.content.contraptions.StructureTransform;
+import com.zurrtum.create.content.redstone.RoseQuartzLampBlock;
+import com.zurrtum.create.content.schematics.requirement.ItemRequirement;
+import com.zurrtum.create.catnip.data.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

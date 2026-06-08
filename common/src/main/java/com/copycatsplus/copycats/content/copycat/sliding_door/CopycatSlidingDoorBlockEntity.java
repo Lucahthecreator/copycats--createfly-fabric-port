@@ -2,10 +2,10 @@ package com.copycatsplus.copycats.content.copycat.sliding_door;
 
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.mixin.copycat.sliding_door.SlidingDoorBlockEntityAccessor;
-import com.simibubi.create.content.contraptions.StructureTransform;
-import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorBlockEntity;
-import com.simibubi.create.content.schematics.requirement.ItemRequirement;
-import net.createmod.catnip.animation.LerpedFloat;
+import com.zurrtum.create.content.contraptions.StructureTransform;
+import com.zurrtum.create.content.decoration.slidingDoor.SlidingDoorBlockEntity;
+import com.zurrtum.create.content.schematics.requirement.ItemRequirement;
+import com.zurrtum.create.catnip.animation.LerpedFloat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;

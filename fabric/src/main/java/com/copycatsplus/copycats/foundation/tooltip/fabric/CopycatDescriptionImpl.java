@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.foundation.tooltip.fabric;
 
 import com.copycatsplus.copycats.foundation.tooltip.CopycatDescription;
-import com.simibubi.create.foundation.item.TooltipModifier;
+import com.zurrtum.create.foundation.item.TooltipModifier;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;

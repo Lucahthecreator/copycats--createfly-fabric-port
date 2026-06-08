@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.foundation.copycat;
 
-import com.simibubi.create.content.contraptions.StructureTransform;
-import net.createmod.catnip.math.VecHelper;
+import com.zurrtum.create.content.contraptions.StructureTransform;
+import com.zurrtum.create.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;

@@ -3,7 +3,7 @@ package com.copycatsplus.copycats.datagen.recipes.fabric;
 import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.datagen.recipes.gen.CopycatsRecipeProvider;
 import com.copycatsplus.copycats.datagen.recipes.gen.GeneratedRecipeBuilder;
-import com.simibubi.create.foundation.utility.RegisteredObjects;
+import com.zurrtum.create.foundation.utility.RegisteredObjects;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import io.github.fabricators_of_create.porting_lib.data.ConditionalRecipe;
 import net.fabricmc.fabric.api.resource.conditions.v1.ConditionJsonProvider;

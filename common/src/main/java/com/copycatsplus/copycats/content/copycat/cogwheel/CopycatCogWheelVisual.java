@@ -3,12 +3,12 @@ package com.copycatsplus.copycats.content.copycat.cogwheel;
 import com.copycatsplus.copycats.CCCopycatPartialModels;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.*;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual;
-import com.simibubi.create.content.kinetics.base.RotatingInstance;
-import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
-import com.simibubi.create.foundation.render.AllInstanceTypes;
-import dev.engine_room.flywheel.api.instance.Instance;
-import dev.engine_room.flywheel.api.visualization.VisualizationContext;
+import com.zurrtum.create.content.kinetics.base.KineticBlockEntityVisual;
+import com.zurrtum.create.content.kinetics.base.RotatingInstance;
+import com.zurrtum.create.content.kinetics.simpleRelays.ICogWheel;
+import com.zurrtum.create.foundation.render.AllInstanceTypes;
+import com.zurrtum.create.client.flywheel.api.instance.Instance;
+import com.zurrtum.create.client.flywheel.api.visualization.VisualizationContext;
 import net.minecraft.core.Direction;
 
 import java.util.HashMap;

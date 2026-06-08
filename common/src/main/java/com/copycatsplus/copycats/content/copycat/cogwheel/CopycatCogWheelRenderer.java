@@ -5,11 +5,11 @@ import com.copycatsplus.copycats.foundation.copycat.model.kinetic.IKineticCopyca
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.KineticCopycatRenderer;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntity;
-import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntityRenderer;
-import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
-import dev.engine_room.flywheel.api.visualization.VisualizationManager;
-import net.createmod.catnip.render.SuperByteBuffer;
+import com.zurrtum.create.content.kinetics.simpleRelays.BracketedKineticBlockEntity;
+import com.zurrtum.create.content.kinetics.simpleRelays.BracketedKineticBlockEntityRenderer;
+import com.zurrtum.create.content.kinetics.simpleRelays.ICogWheel;
+import com.zurrtum.create.client.flywheel.api.visualization.VisualizationManager;
+import com.zurrtum.create.client.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;

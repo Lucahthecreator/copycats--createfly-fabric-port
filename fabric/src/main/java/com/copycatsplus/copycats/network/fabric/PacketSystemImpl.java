@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.network.fabric;
 
-import com.simibubi.create.AllPackets;
-import com.simibubi.create.foundation.networking.SimplePacketBase;
+import com.zurrtum.create.AllPackets;
+import com.zurrtum.create.foundation.networking.SimplePacketBase;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

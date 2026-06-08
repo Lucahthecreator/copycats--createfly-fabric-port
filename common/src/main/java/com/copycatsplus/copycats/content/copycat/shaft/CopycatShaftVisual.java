@@ -6,11 +6,11 @@ import com.copycatsplus.copycats.foundation.copycat.model.kinetic.CopycatInstanc
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.CopycatInstanceManager;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.KineticCopycatRenderData;
 import com.copycatsplus.copycats.foundation.copycat.model.kinetic.KineticCopycatRenderer;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual;
-import com.simibubi.create.content.kinetics.base.RotatingInstance;
-import com.simibubi.create.foundation.render.AllInstanceTypes;
-import dev.engine_room.flywheel.api.instance.Instance;
-import dev.engine_room.flywheel.api.visualization.VisualizationContext;
+import com.zurrtum.create.content.kinetics.base.KineticBlockEntityVisual;
+import com.zurrtum.create.content.kinetics.base.RotatingInstance;
+import com.zurrtum.create.foundation.render.AllInstanceTypes;
+import com.zurrtum.create.client.flywheel.api.instance.Instance;
+import com.zurrtum.create.client.flywheel.api.visualization.VisualizationContext;
 import net.minecraft.core.Direction;
 
 import java.util.function.Consumer;

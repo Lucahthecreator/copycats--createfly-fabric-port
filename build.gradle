@@ -1,226 +1,67 @@
 plugins {
-    id "architectury-plugin" version "3.4.+"
-    id "dev.architectury.loom" version "1.10.+" apply false
+    id "net.fabricmc.fabric-loom" version "${loom_version}"
 }
 
-boolean ci = System.getenv("CI") != null ? System.getenv("CI").toBoolean() : false
-boolean nightly = ci && (System.getenv("RELEASE") != null ? !System.getenv("RELEASE").toBoolean() : true)
-
-def getGitTag = { ->
-    def stdout = new ByteArrayOutputStream()
-    exec {
-        commandLine "git", "describe", "--tags", "--abbrev=0"
-        standardOutput = stdout
-    }
-    def str = stdout.toString().trim().takeBetween("v", "+")
-    if (str == "") {
-        return "0.0.0"
-    }
-    return str
+repositories {
+    maven { url "https://maven.fabricmc.net/" }
+    mavenCentral()
+    maven { url "https://api.modrinth.com/maven" }
 }
 
-architectury {
-    minecraft = rootProject.minecraft_version
+version = "3.0.7-createfly+mc.${minecraft_version}"
+group = project.maven_group
+
+base {
+    archivesName = "${archives_base_name}-createfly"
 }
 
-subprojects {
-    apply plugin: "dev.architectury.loom"
-    apply plugin: "maven-publish"
+loom {
+    accessWidenerPath = file("common/src/main/resources/copycats.accesswidener")
+}
 
-    loom {
-        silentMojangMappingsLicense()
-    }
-
-    dependencies {
-        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-        mappings loom.layered() {
-            officialMojangMappings()
-            parchment("org.parchmentmc.data:parchment-${rootProject.minecraft_version}:${rootProject.parchment_version}@zip")
+sourceSets {
+    main {
+        java {
+            srcDirs = ["common/src/main/java", "fabric/src/main/java"]
+            exclude "**/compat/**"
+            exclude "**/datagen/**"
         }
-        compileOnly 'com.google.code.findbugs:jsr305:3.0.2' // for nullability annotations
-    }
-
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                artifactId = rootProject.archives_base_name
-                from components.java
-            }
-        }
-        repositories {
-            maven {
-                name = "GitHubPackages"
-                url = "https://maven.pkg.github.com/copycats-plus/copycats"
-                credentials {
-                    username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
-                    password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
-                }
-            }
-            maven {
-                name = "realRobotixMaven"
-                url = "https://maven.realrobotix.me/copycats"
-                credentials(PasswordCredentials)
-            }
+        resources {
+            srcDirs = ["common/src/main/resources", "fabric/src/main/resources"]
         }
     }
 }
 
-allprojects {
-    apply plugin: "java"
-    apply plugin: "architectury-plugin"
-    apply plugin: "maven-publish"
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+    implementation files(create_fly_jar)
 
+    annotationProcessor implementation("io.github.llamalad7:mixinextras-fabric:${mixin_extras_version}")
+}
 
-    archivesBaseName = rootProject.archives_base_name
-    String buildNumber = System.getenv("GITHUB_RUN_NUMBER")
-    version = "${getGitTag()}+mc.${minecraft_version}-${project.name}${nightly ? "-build.${buildNumber}" : ""}"
-    group = rootProject.maven_group
-    ext.ci = ci
+processResources {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    inputs.property "version", project.version
 
-    repositories {
-        maven {
-            name = 'Neoforge maven'
-            url = 'https://maven.neoforged.net/releases/'
-        }
-        maven {
-            name = 'ParchmentMC'
-            url = 'https://maven.parchmentmc.org'
-        }
-        maven {
-            name = 'createmod maven'
-            url = 'https://maven.createmod.net/'
-        }
-        maven {
-            name = 'ithundxr maven'
-            url = "https://maven.ithundxr.dev/snapshots"
-        }
-        maven {
-            // location of the maven that hosts JEI files before January 2023
-            name = "Progwml6's maven"
-            url = "https://dvs1.progwml6.com/files/maven/"
-        }
-        maven {
-            // location of the maven that hosts JEI files since January 2023
-            name = "Jared's maven"
-            url = "https://maven.blamejared.com/"
-        }
-        maven {
-            // location of a maven mirror for JEI files, as a fallback
-            name = "ModMaven"
-            url = "https://modmaven.dev"
-        }
-        maven {
-            //Location of EMI
-            name = "TerraformersMC"
-            url = "https://maven.terraformersmc.com/"
-        }
-        maven {
-            name = 'CurseForge maven'
-            url = 'https://cursemaven.com'
-        }
-        mavenCentral()
-        maven {
-            url = "https://mvn.devos.one/snapshots/"
-        }
-        maven {
-            url = "https://mvn.devos.one/releases/"
-        }
-        maven {
-            url = "https://jitpack.io"
-        }
-        maven {
-            name = "Reach Entity Attributes"
-            url = "https://maven.jamieswhiteshirt.com/libs-release"
-            content { includeGroup("com.jamieswhiteshirt") }
-        }
-        maven {
-            name = "Forge Config Api Port, DiagonalBlocks"
-            url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
-        }
-        maven {
-            name = "Porting Lib: Mixin Extras, Fabric ASM"
-            url = "https://jitpack.io/"
-            content { includeGroupAndSubgroups("com.github") }
-        }
-        exclusiveContent {
-            forRepository {
-                maven {
-                    name = "Modrinth"
-                    url = "https://api.modrinth.com/maven"
-                }
-            }
-            filter {
-                includeGroup "maven.modrinth"
-            }
-        }
-        flatDir {
-            dirs "lib"
-        }
-    }
-
-    configurations {
-        findAndDelete
-    }
-
-    // special task used to invalidate gradle cache for specific dependencies
-    tasks.register('seekAndDestroy') {
-        doLast {
-            configurations.findAndDelete.each {
-                println 'Deleting: ' + it
-                delete it.parent
-            }
-        }
-    }
-
-    tasks.withType(JavaCompile).configureEach {
-        options.encoding = "UTF-8"
-        options.release.set(21)
-    }
-
-    jar {
-        processResources.exclude("assets/copycats/models/block/copycat_base/README.md")
-    }
-
-    tasks.named('processResources', ProcessResources).configure {
-        duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
-        // include packs
-        from(project(":common").file("src/main/resources")) {
-            include("resourcepacks/")
-        }
-
-        // set up properties for filling into metadata
-        var replaceProperties = [
-                version                      : version.replace("neoforge.", "").replace("fabric.", ""),
-                minecraft_version            : minecraft_version,
-                minecraft_version_range      : minecraft_version_range,
-                fabric_api_version           : fabric_api_version,
-                fabric_loader_version        : fabric_loader_version,
-                neoforge_version_range       : neoforge_version_range,
-                neoforge_loader_version_range: neoforge_loader_version_range,
-                create_neoforge_range        : create_neoforge_range,
-                create_fabric_range          : create_fabric_range,
-                archives_base_name           : archives_base_name,
-                mod_license                  : mod_license,
-                mod_authors                  : mod_authors,
-                mod_name                     : mod_name,
-                mod_description              : mod_description,
-                mod_credits                  : mod_credits,
-                mod_url                      : mod_url,
-                mod_issues                   : mod_issues
-        ]
-
-        inputs.properties replaceProperties
-
-        filesMatching(["fabric.mod.json", "META-INF/neoforge.mods.toml"]) {
-            expand replaceProperties + [project: project]
-        }
-    }
-
-    java {
-        withSourcesJar()
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
     }
 }
 
-wrapper {
-    gradleVersion = "8.14"
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+    options.release = 25
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+jar {
+    from("LICENSE")
+    exclude("assets/copycats/models/block/copycat_base/README.md")
 }

@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.mixin.foundation.copycat;
 
 import com.copycatsplus.copycats.compat.Mods;
-import com.simibubi.create.content.decoration.bracket.BracketBlock;
+import com.zurrtum.create.content.decoration.bracket.BracketBlock;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import org.spongepowered.asm.mixin.Mixin;

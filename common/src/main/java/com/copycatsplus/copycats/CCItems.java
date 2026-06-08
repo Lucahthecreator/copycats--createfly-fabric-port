@@ -5,8 +5,8 @@ import com.copycatsplus.copycats.content.copycat.board.CopycatBoxItem;
 import com.copycatsplus.copycats.content.copycat.board.CopycatCatwalkItem;
 import com.copycatsplus.copycats.foundation.tooltip.CopycatCharacteristics;
 import com.copycatsplus.copycats.foundation.tooltip.CopycatDescription;
-import com.simibubi.create.foundation.data.AssetLookup;
-import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.zurrtum.create.foundation.data.AssetLookup;
+import com.zurrtum.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
 public class CCItems {

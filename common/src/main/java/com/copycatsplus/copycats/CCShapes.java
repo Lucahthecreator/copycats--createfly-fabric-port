@@ -10,7 +10,7 @@ import com.copycatsplus.copycats.foundation.copycat.model.assembly.MutableAABB;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.MutableVec3;
 import com.copycatsplus.copycats.utility.TriFunction;
 import com.copycatsplus.copycats.utility.shape.OutlinedVoxelShape;
-import net.createmod.catnip.data.Pair;
+import com.zurrtum.create.catnip.data.Pair;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.block.state.properties.Half;

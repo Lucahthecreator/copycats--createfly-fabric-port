@@ -1,14 +1,14 @@
 package com.copycatsplus.copycats.config;
 
 import com.copycatsplus.copycats.Copycats;
-import com.simibubi.create.Create;
+import com.zurrtum.create.Create;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
-import net.createmod.catnip.config.ConfigBase;
-import net.createmod.catnip.platform.CatnipServices;
-import net.createmod.catnip.registry.RegisteredObjectsHelper;
+import com.zurrtum.create.catnip.config.ConfigBase;
+import com.zurrtum.create.catnip.platform.CatnipServices;
+import com.zurrtum.create.catnip.registry.RegisteredObjectsHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.ModConfigSpec;

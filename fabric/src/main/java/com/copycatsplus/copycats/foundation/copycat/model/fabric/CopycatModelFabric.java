@@ -9,9 +9,9 @@ import com.copycatsplus.copycats.foundation.copycat.model.assembly.fabric.Copyca
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.jozufozu.flywheel.core.virtual.VirtualEmptyBlockGetter;
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.foundation.utility.Iterate;
-import com.simibubi.create.foundation.utility.Pair;
+import com.zurrtum.create.AllBlocks;
+import com.zurrtum.create.foundation.utility.Iterate;
+import com.zurrtum.create.foundation.utility.Pair;
 import io.github.fabricators_of_create.porting_lib.models.CustomParticleIconModel;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;

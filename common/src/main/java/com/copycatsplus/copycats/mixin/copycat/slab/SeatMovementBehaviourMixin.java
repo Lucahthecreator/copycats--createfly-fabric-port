@@ -3,7 +3,7 @@ package com.copycatsplus.copycats.mixin.copycat.slab;
 import com.copycatsplus.copycats.content.copycat.slab.CopycatSlabBlock;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.simibubi.create.content.contraptions.actors.seat.SeatMovementBehaviour;
+import com.zurrtum.create.content.contraptions.actors.seat.SeatMovementBehaviour;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;

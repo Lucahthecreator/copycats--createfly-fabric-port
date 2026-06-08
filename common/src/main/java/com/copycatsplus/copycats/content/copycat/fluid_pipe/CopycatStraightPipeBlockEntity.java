@@ -1,8 +1,8 @@
 package com.copycatsplus.copycats.content.copycat.fluid_pipe;
 
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
-import com.simibubi.create.content.fluids.pipes.StraightPipeBlockEntity;
-import com.simibubi.create.content.schematics.requirement.ItemRequirement;
+import com.zurrtum.create.content.fluids.pipes.StraightPipeBlockEntity;
+import com.zurrtum.create.content.schematics.requirement.ItemRequirement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;

@@ -2,8 +2,8 @@ package com.copycatsplus.copycats.foundation.copycat.model.kinetic;
 
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
-import dev.engine_room.flywheel.lib.instance.AbstractInstance;
-import dev.engine_room.flywheel.lib.visual.AbstractBlockEntityVisual;
+import com.zurrtum.create.client.flywheel.lib.instance.AbstractInstance;
+import com.zurrtum.create.client.flywheel.lib.visual.AbstractBlockEntityVisual;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 

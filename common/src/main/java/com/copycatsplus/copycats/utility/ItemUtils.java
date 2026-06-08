@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.utility;
 
-import com.simibubi.create.content.schematics.requirement.ItemRequirement;
+import com.zurrtum.create.content.schematics.requirement.ItemRequirement;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.Tag;

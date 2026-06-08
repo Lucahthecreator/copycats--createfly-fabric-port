@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.mixin.copycat;
 
-import com.simibubi.create.foundation.blockEntity.SyncedBlockEntity;
-import com.simibubi.create.foundation.virtualWorld.VirtualRenderWorld;
+import com.zurrtum.create.foundation.blockEntity.SyncedBlockEntity;
+import com.zurrtum.create.foundation.virtualWorld.VirtualRenderWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

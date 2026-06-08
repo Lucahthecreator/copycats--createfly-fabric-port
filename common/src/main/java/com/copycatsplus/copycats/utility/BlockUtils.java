@@ -1,8 +1,8 @@
 package com.copycatsplus.copycats.utility;
 
 import com.mojang.math.OctahedralGroup;
-import com.simibubi.create.content.contraptions.StructureTransform;
-import net.createmod.catnip.data.Iterate;
+import com.zurrtum.create.content.contraptions.StructureTransform;
+import com.zurrtum.create.catnip.data.Iterate;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;

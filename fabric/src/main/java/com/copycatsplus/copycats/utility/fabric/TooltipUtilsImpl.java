@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.utility.fabric;
 
-import com.simibubi.create.foundation.item.TooltipModifier;
+import com.zurrtum.create.foundation.item.TooltipModifier;
 import org.jetbrains.annotations.NotNull;
 
 public class TooltipUtilsImpl {

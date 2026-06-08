@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats.mixin.foundation.copycat.kinetic;
 
 import com.copycatsplus.copycats.CopycatsClient;
-import com.simibubi.create.CreateClient;
+import com.zurrtum.create.CreateClient;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

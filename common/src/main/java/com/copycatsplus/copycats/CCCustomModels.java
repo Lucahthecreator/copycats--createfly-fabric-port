@@ -1,7 +1,7 @@
 package com.copycatsplus.copycats;
 
 import com.copycatsplus.copycats.foundation.copycat.model.CopycatModelCore;
-import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.zurrtum.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.resources.model.BakedModel;

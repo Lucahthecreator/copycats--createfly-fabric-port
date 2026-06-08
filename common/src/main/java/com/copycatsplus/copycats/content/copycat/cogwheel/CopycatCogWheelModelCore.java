@@ -5,7 +5,7 @@ import com.copycatsplus.copycats.foundation.copycat.model.assembly.AssemblyTrans
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.CopycatRenderContext;
 import com.copycatsplus.copycats.content.copycat.shaft.CopycatShaftBlock;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.MutableVertex;
-import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
+import com.zurrtum.create.content.kinetics.simpleRelays.CogWheelBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.block.state.BlockState;

@@ -3,7 +3,7 @@ package com.copycatsplus.copycats.config;
 import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.network.CCPackets;
 import com.copycatsplus.copycats.network.ConfigSyncPacket;
-import net.createmod.catnip.config.ConfigBase;
+import com.zurrtum.create.catnip.config.ConfigBase;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.fml.config.ModConfig;

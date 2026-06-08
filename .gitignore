@@ -30,3 +30,10 @@ forge*changelog.txt
 secrets.properties
 /neoforge/lib/RenderDoc_1.37_64/
 /neoforge/lib/RenderDoc_1.37_64/**
+
+# Logs / generated port files
+*.log
+compile-common.log
+compile-core.log
+
+create-imports.txt

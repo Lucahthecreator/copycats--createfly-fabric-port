@@ -5,8 +5,8 @@ import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import dev.engine_room.flywheel.api.model.Model;
-import net.createmod.catnip.render.*;
+import com.zurrtum.create.client.flywheel.api.model.Model;
+import com.zurrtum.create.client.catnip.render.*;
 import net.minecraft.client.resources.model.BakedModel;
 
 /**

@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.mixin.entity;
 
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCCatVariants;
-import com.simibubi.create.AllTags;
+import com.zurrtum.create.AllTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;

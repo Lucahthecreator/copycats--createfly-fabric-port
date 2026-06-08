@@ -1,6 +1,6 @@
 package com.copycatsplus.copycats.foundation.copycat.model.kinetic;
 
-import dev.engine_room.flywheel.api.event.ReloadLevelRendererEvent;
+import com.zurrtum.create.client.flywheel.api.event.ReloadLevelRendererEvent;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Collections;

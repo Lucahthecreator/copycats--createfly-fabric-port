@@ -4,7 +4,7 @@ import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.CCCreativeTabs;
 import com.copycatsplus.copycats.Copycats;
 import com.copycatsplus.copycats.config.FeatureToggle;
-import com.simibubi.create.AllCreativeModeTabs;
+import com.zurrtum.create.AllCreativeModeTabs;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;

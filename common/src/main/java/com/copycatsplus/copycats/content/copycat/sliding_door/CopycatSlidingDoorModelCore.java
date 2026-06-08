@@ -3,7 +3,7 @@ package com.copycatsplus.copycats.content.copycat.sliding_door;
 import com.copycatsplus.copycats.foundation.copycat.model.CopycatModelCore;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.AssemblyTransform;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.CopycatRenderContext;
-import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorBlock;
+import com.zurrtum.create.content.decoration.slidingDoor.SlidingDoorBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;

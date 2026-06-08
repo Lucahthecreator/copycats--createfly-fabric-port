@@ -3,8 +3,8 @@ package com.copycatsplus.copycats.foundation.copycat.model.kinetic;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.utility.ChatUtils;
-import dev.engine_room.flywheel.api.backend.BackendManager;
-import dev.engine_room.flywheel.backend.Backends;
+import com.zurrtum.create.client.flywheel.api.backend.BackendManager;
+import com.zurrtum.create.client.flywheel.backend.Backends;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.block.state.BlockState;
 

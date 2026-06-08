@@ -3,7 +3,7 @@ package com.copycatsplus.copycats.content.copycat.shaft;
 import com.copycatsplus.copycats.foundation.copycat.model.CopycatModelCore;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.CopycatRenderContext;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.AssemblyTransform;
-import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
+import com.zurrtum.create.content.kinetics.simpleRelays.ShaftBlock;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.block.state.BlockState;
 

@@ -2,7 +2,7 @@ package com.copycatsplus.copycats.foundation.copycat.model.kinetic;
 
 
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
-import com.simibubi.create.foundation.virtualWorld.VirtualRenderWorld;
+import com.zurrtum.create.foundation.virtualWorld.VirtualRenderWorld;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
