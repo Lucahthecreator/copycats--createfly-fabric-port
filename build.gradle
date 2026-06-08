@@ -17,18 +17,16 @@ base {
 }
 
 loom {
-    accessWidenerPath = file("common/src/main/resources/copycats.accesswidener")
+    accessWidenerPath = file("reconstructed/src/main/resources/copycats.accesswidener")
 }
 
 sourceSets {
     main {
         java {
-            srcDirs = ["common/src/main/java", "fabric/src/main/java"]
-            exclude "**/compat/**"
-            exclude "**/datagen/**"
+            srcDirs = []
         }
         resources {
-            srcDirs = ["common/src/main/resources", "fabric/src/main/resources"]
+            srcDirs = []
         }
     }
 }
@@ -38,6 +36,8 @@ dependencies {
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
     implementation "curse.maven:create-fly-1346281:${create_fly_curse_id}"
+    implementation files("reconstructed/working.jar")
+    compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 
     annotationProcessor implementation("io.github.llamalad7:mixinextras-fabric:${mixin_extras_version}")
 }
@@ -54,6 +54,7 @@ processResources {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
     options.release = 25
+    options.compilerArgs += ["-Xmaxerrs", "1000"]
 }
 
 java {
@@ -63,6 +64,7 @@ java {
 }
 
 jar {
-    from("LICENSE")
+    from(zipTree("reconstructed/working.jar"))
     exclude("assets/copycats/models/block/copycat_base/README.md")
+    exclude("META-INF/MANIFEST.MF")
 }

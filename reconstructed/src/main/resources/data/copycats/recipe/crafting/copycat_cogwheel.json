@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "create:cogwheel",
+    "create:cogwheel",
+    "create:cogwheel",
+    "create:cogwheel",
+    "create:zinc_ingot"
+  ],
+  "result": {
+    "count": 4,
+    "id": "copycats:copycat_cogwheel"
+  }
+}

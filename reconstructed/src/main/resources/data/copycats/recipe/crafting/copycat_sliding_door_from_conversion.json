@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "copycats:copycat_folding_door"
+  ],
+  "result": {
+    "id": "copycats:copycat_sliding_door"
+  }
+}

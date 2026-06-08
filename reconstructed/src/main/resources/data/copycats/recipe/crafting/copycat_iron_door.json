@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:iron_door",
+    "create:zinc_ingot"
+  ],
+  "result": {
+    "id": "copycats:copycat_iron_door"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "s": "copycats:copycat_half_layer"
+  },
+  "pattern": [
+    "ss"
+  ],
+  "result": {
+    "id": "copycats:copycat_layer"
+  },
+  "show_notification": true
+}

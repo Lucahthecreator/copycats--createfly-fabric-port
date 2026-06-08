@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "s": "copycats:copycat_half_panel"
+  },
+  "pattern": [
+    "ss"
+  ],
+  "result": {
+    "id": "create:copycat_panel"
+  },
+  "show_notification": true
+}

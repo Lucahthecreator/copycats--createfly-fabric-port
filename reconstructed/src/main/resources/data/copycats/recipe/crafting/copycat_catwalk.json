@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "s": "#copycats:copycat_board"
+  },
+  "pattern": [
+    "s s",
+    " s "
+  ],
+  "result": {
+    "id": "copycats:copycat_catwalk"
+  },
+  "show_notification": true
+}

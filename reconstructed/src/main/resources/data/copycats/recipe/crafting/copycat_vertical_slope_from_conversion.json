@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "copycats:copycat_slope"
+  ],
+  "result": {
+    "id": "copycats:copycat_vertical_slope"
+  }
+}
