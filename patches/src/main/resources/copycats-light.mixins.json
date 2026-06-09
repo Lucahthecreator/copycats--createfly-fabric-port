@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.copycatsplus.copycats.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "foundation.copycat.CopycatLightEngineAccessor",
+    "foundation.copycat.CopycatBlockLightEngineMixin",
+    "foundation.copycat.CopycatLightChunkMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

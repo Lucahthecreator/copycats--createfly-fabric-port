@@ -50,6 +50,7 @@ import com.zurrtum.create.content.decoration.slidingDoor.SlidingDoorBlock;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
@@ -75,6 +76,7 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Quaternionfc;
+import org.joml.Matrix4f;
 
 public class CopycatSlidingDoorRenderBridge
 implements BlockEntityRenderer<CopycatSlidingDoorBlockEntity, CopycatSlidingDoorRenderBridge.RenderState> {
@@ -92,10 +94,9 @@ implements BlockEntityRenderer<CopycatSlidingDoorBlockEntity, CopycatSlidingDoor
         Direction facing = (Direction)lowerState.getValue((Property)DoorBlock.FACING);
         BlockPos lowerPos = blockEntity.getBlockPos();
         BlockPos upperPos = lowerPos.above();
-        int lowerLight = SmartBlockEntityRenderer.getLightCoords(level, lowerPos);
-        int upperLight = SmartBlockEntityRenderer.getLightCoords(level, upperPos);
         float value = blockEntity.animation().getValue(partialTick);
         float forwardOffset = Mth.clamp((float)(value * 10.0f), (float)0.0f, (float)1.0f) / 32.0f;
+        int materialLight = blockEntity.getMaterial().getLightEmission();
         renderState.folding = ((SlidingDoorBlock)lowerState.getBlock()).isFoldingDoor();
         renderState.facing = facing;
         renderState.flip = lowerState.getValue((Property)DoorBlock.HINGE) == DoorHingeSide.RIGHT;
@@ -104,25 +105,31 @@ implements BlockEntityRenderer<CopycatSlidingDoorBlockEntity, CopycatSlidingDoor
         if (renderState.folding) {
             renderState.lower = null;
             renderState.upper = null;
-            renderState.lowerLeft = CopycatSlidingDoorRenderBridge.createModel(level, lowerPos, lowerState, blockEntity, lowerLight, new CopycatFoldingDoorModelCore(true, true));
-            renderState.upperLeft = CopycatSlidingDoorRenderBridge.createModel(level, upperPos, upperState, blockEntity, upperLight, new CopycatFoldingDoorModelCore(true, true));
-            renderState.lowerRight = CopycatSlidingDoorRenderBridge.createModel(level, lowerPos, lowerState, blockEntity, lowerLight, new CopycatFoldingDoorModelCore(false, true));
-            renderState.upperRight = CopycatSlidingDoorRenderBridge.createModel(level, upperPos, upperState, blockEntity, upperLight, new CopycatFoldingDoorModelCore(false, true));
+            Matrix4f lowerLeftLightTransform = CopycatSlidingDoorRenderBridge.getFoldingLightTransform(lowerPos, facing, renderState.flip, true, renderState.progress, forwardOffset);
+            Matrix4f upperLeftLightTransform = CopycatSlidingDoorRenderBridge.getFoldingLightTransform(upperPos, facing, renderState.flip, true, renderState.progress, forwardOffset);
+            Matrix4f lowerRightLightTransform = CopycatSlidingDoorRenderBridge.getFoldingLightTransform(lowerPos, facing, renderState.flip, false, renderState.progress, forwardOffset);
+            Matrix4f upperRightLightTransform = CopycatSlidingDoorRenderBridge.getFoldingLightTransform(upperPos, facing, renderState.flip, false, renderState.progress, forwardOffset);
+            renderState.lowerLeft = CopycatSlidingDoorRenderBridge.createModel(level, lowerPos, lowerState, blockEntity, lowerLeftLightTransform, materialLight, new CopycatFoldingDoorModelCore(true, true));
+            renderState.upperLeft = CopycatSlidingDoorRenderBridge.createModel(level, upperPos, upperState, blockEntity, upperLeftLightTransform, materialLight, new CopycatFoldingDoorModelCore(true, true));
+            renderState.lowerRight = CopycatSlidingDoorRenderBridge.createModel(level, lowerPos, lowerState, blockEntity, lowerRightLightTransform, materialLight, new CopycatFoldingDoorModelCore(false, true));
+            renderState.upperRight = CopycatSlidingDoorRenderBridge.createModel(level, upperPos, upperState, blockEntity, upperRightLightTransform, materialLight, new CopycatFoldingDoorModelCore(false, true));
             return;
         }
         renderState.lowerLeft = null;
         renderState.upperLeft = null;
         renderState.lowerRight = null;
         renderState.upperRight = null;
-        renderState.lower = CopycatSlidingDoorRenderBridge.createModel(level, lowerPos, lowerState, blockEntity, lowerLight);
-        renderState.upper = CopycatSlidingDoorRenderBridge.createModel(level, upperPos, upperState, blockEntity, upperLight);
         Direction movement = renderState.flip ? facing.getClockWise() : facing.getCounterClockWise();
         float sideOffset = renderState.progress * 13.0f / 16.0f;
         renderState.offsetX = (float)movement.getStepX() * sideOffset + (float)facing.getStepX() * forwardOffset;
         renderState.offsetZ = (float)movement.getStepZ() * sideOffset + (float)facing.getStepZ() * forwardOffset;
+        Matrix4f lowerLightTransform = CopycatSlidingDoorRenderBridge.getSlidingLightTransform(lowerPos, renderState.offsetX, renderState.offsetZ);
+        Matrix4f upperLightTransform = CopycatSlidingDoorRenderBridge.getSlidingLightTransform(upperPos, renderState.offsetX, renderState.offsetZ);
+        renderState.lower = CopycatSlidingDoorRenderBridge.createModel(level, lowerPos, lowerState, blockEntity, lowerLightTransform, materialLight);
+        renderState.upper = CopycatSlidingDoorRenderBridge.createModel(level, upperPos, upperState, blockEntity, upperLightTransform, materialLight);
     }
 
-    private static SuperByteBufferRenderState createModel(Level level, BlockPos pos, BlockState state, CopycatSlidingDoorBlockEntity blockEntity, int light) {
+    private static SuperByteBufferRenderState createModel(Level level, BlockPos pos, BlockState state, CopycatSlidingDoorBlockEntity blockEntity, Matrix4f lightTransform, int materialLight) {
         BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(state);
         if (!(model instanceof CreateFlyCopycatModel)) {
             return null;
@@ -133,10 +140,14 @@ implements BlockEntityRenderer<CopycatSlidingDoorBlockEntity, CopycatSlidingDoor
         if (parts.isEmpty()) {
             return null;
         }
-        return CopycatsClient.withAnimatedTint(blockEntity.getMaterial(), (BlockAndTintGetter)level, pos, () -> SuperBufferFactory.getInstance().createForBlock((BlockStateModel)new FixedPartsModel(parts), state)).cardinalLighting(level).light(light).extractRenderState();
+        return CopycatsClient.withAnimatedTint(blockEntity.getMaterial(), (BlockAndTintGetter)level, pos, () -> SuperBufferFactory.getInstance().createForBlock((BlockStateModel)new FixedPartsModel(parts), state))
+                .cardinalLighting(level)
+                .useLevelLight(level, lightTransform)
+                .light(CopycatSlidingDoorRenderBridge.emissionLight(materialLight))
+                .extractRenderState();
     }
 
-    private static SuperByteBufferRenderState createModel(Level level, BlockPos pos, BlockState state, CopycatSlidingDoorBlockEntity blockEntity, int light, CopycatFoldingDoorModelCore animationCore) {
+    private static SuperByteBufferRenderState createModel(Level level, BlockPos pos, BlockState state, CopycatSlidingDoorBlockEntity blockEntity, Matrix4f lightTransform, int materialLight, CopycatFoldingDoorModelCore animationCore) {
         BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(state);
         if (!(model instanceof CreateFlyCopycatModel)) {
             return null;
@@ -147,7 +158,40 @@ implements BlockEntityRenderer<CopycatSlidingDoorBlockEntity, CopycatSlidingDoor
         if (parts.isEmpty()) {
             return null;
         }
-        return CopycatsClient.withAnimatedTint(blockEntity.getMaterial(), (BlockAndTintGetter)level, pos, () -> SuperBufferFactory.getInstance().createForBlock((BlockStateModel)new FixedPartsModel(parts), state)).cardinalLighting(level).light(light).extractRenderState();
+        return CopycatsClient.withAnimatedTint(blockEntity.getMaterial(), (BlockAndTintGetter)level, pos, () -> SuperBufferFactory.getInstance().createForBlock((BlockStateModel)new FixedPartsModel(parts), state))
+                .cardinalLighting(level)
+                .useLevelLight(level, lightTransform)
+                .light(CopycatSlidingDoorRenderBridge.emissionLight(materialLight))
+                .extractRenderState();
+    }
+
+    private static int emissionLight(int materialLight) {
+        return LightCoordsUtil.lightCoordsWithEmission(0, materialLight);
+    }
+
+    private static Matrix4f getSlidingLightTransform(BlockPos origin, float offsetX, float offsetZ) {
+        return new Matrix4f().translation((float)origin.getX() + offsetX, origin.getY(), (float)origin.getZ() + offsetZ);
+    }
+
+    private static Matrix4f getFoldingLightTransform(BlockPos origin, Direction facing, boolean flip, boolean left, float progress, float forwardOffset) {
+        float direction = flip ? -1.0f : 1.0f;
+        PoseStack poseStack = new PoseStack();
+        poseStack.translate(origin.getX(), origin.getY(), origin.getZ());
+        poseStack.translate(0.0f, -0.001953125f, 0.0f);
+        poseStack.translate((float)facing.getStepX() * forwardOffset, 0.0f, (float)facing.getStepZ() * forwardOffset);
+        CopycatSlidingDoorRenderBridge.rotateCenteredY(poseStack, AngleHelper.horizontalAngle((Direction)facing.getClockWise()));
+        if (flip) {
+            poseStack.translate(0.0f, 0.0f, 1.0f);
+        }
+        CopycatSlidingDoorRenderBridge.rotateY(poseStack, 91.0f * direction * progress);
+        if (!left) {
+            poseStack.translate(0.0f, 0.0f, direction / 2.0f);
+            CopycatSlidingDoorRenderBridge.rotateY(poseStack, -181.0f * direction * progress);
+        }
+        if (flip) {
+            poseStack.translate(0.0f, 0.0f, -0.5f);
+        }
+        return new Matrix4f(poseStack.last().pose());
     }
 
     public void submit(RenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
@@ -229,6 +273,10 @@ implements BlockEntityRenderer<CopycatSlidingDoorBlockEntity, CopycatSlidingDoor
     {
         public void collectParts(RandomSource random, List<BlockStateModelPart> output) {
             output.addAll(this.parts);
+        }
+
+        public boolean useAmbientOcclusion() {
+            return !this.parts.isEmpty() && this.parts.getFirst().useAmbientOcclusion();
         }
 
         public Material.Baked particleMaterial() {

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "copycats",
+  "version": "${version}",
+  "name": "Create: Copycats+ (CreateFly Port)",
+  "description": "Create: Copycats+ ported to CreateFly for Minecraft 26.1.2.",
+  "authors": [
+    "Lysine",
+    "Bennyboy1695",
+    "Redcat_XVIII"
+  ],
+  "contact": {},
+  "license": "All Rights Reserved",
+  "icon": "copycats_icon.png",
+  "environment": "*",
+  "accessWidener": "copycats.accesswidener",
+  "entrypoints": {
+    "main": [
+      "com.copycatsplus.copycats.fabric.CopycatsImpl"
+    ],
+    "client": [
+      "com.copycatsplus.copycats.fabric.CopycatsClientImpl"
+    ]
+  },
+  "mixins": [
+    "copycats-light.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.2",
+    "minecraft": "=26.1.2",
+    "java": ">=25",
+    "create": ">=6.0.9-1"
+  }
+}

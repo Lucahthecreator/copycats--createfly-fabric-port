@@ -9,6 +9,7 @@ import com.zurrtum.create.foundation.blockEntity.renderer.SafeBlockEntityRendere
 import com.zurrtum.create.catnip.data.Iterate;
 import com.zurrtum.create.catnip.math.AngleHelper;
 import com.zurrtum.create.client.catnip.render.SuperByteBuffer;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -40,7 +41,7 @@ public class CopycatSlidingDoorRenderer extends SafeBlockEntityRenderer<CopycatS
         float value = be.animation().getValue(partialTicks);
         float value2 = Mth.clamp(value * 10, 0, 1);
 
-        VertexConsumer vb = buffer.getBuffer(RenderType.translucentMovingBlock());
+        VertexConsumer vb = buffer.getBuffer(ItemBlockRenderTypes.getChunkRenderType(be.getMaterial()));
         Vec3 offset = Vec3.atLowerCornerOf(movementDirection.getNormal())
                 .scale(value * value * 13 / 16f)
                 .add(Vec3.atLowerCornerOf(facing.getNormal())

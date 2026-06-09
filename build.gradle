@@ -26,7 +26,7 @@ sourceSets {
             srcDirs = ["patches/src/main/java"]
         }
         resources {
-            srcDirs = []
+            srcDirs = ["patches/src/main/resources", "reconstructed/src/main/resources"]
         }
     }
 }
@@ -63,10 +63,25 @@ java {
     targetCompatibility = JavaVersion.VERSION_25
 }
 
+tasks.named("sourcesJar") {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from(zipTree("reconstructed/working.jar")) {
         exclude "com/copycatsplus/copycats/content/copycat/sliding_door/CopycatSlidingDoorRenderBridge.class"
         exclude 'com/copycatsplus/copycats/content/copycat/sliding_door/CopycatSlidingDoorRenderBridge$*.class'
+        exclude "assets/**"
+        exclude "data/**"
+        exclude "copycats-common.mixins.json"
+        exclude "copycats-fabric.mixins.json"
+        exclude "copycats.accesswidener"
+        exclude "copycats_icon.png"
+        exclude "copycats_icon.webp"
+        exclude "copycats_icon_bordered.png"
+        exclude "copycats_icon_borderless.png"
+        exclude "fabric.mod.json"
     }
     exclude("assets/copycats/models/block/copycat_base/README.md")
     exclude("META-INF/MANIFEST.MF")
