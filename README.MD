@@ -52,7 +52,7 @@ All original Copycats+ code, assets, ideas, and features belong to the original 
 
 ### Option 1: CurseForge App
 
-1. Open the Copycats+ CreateFly Port CurseForge page.
+1. Open the Copycats+ CreateFly Port CurseForge page https://www.curseforge.com/minecraft/mc-mods/copycats-createfly-port.
 2. Pick the Fabric file for your Minecraft / CreateFly version.
 3. Open your CurseForge Minecraft profile.
 4. Click `Add More Content`.
