@@ -137,6 +137,7 @@ If you want to contribute to the official project, use the upstream Copycats+ re
 * CreateFly project and its developers
 * Create community and addon contributors
 * Unofficial port: lucahTheCreator
+* OpenAI Codex for help
 
 Permission proof is shown above.
 
@@ -145,5 +146,3 @@ Permission proof is shown above.
 ## License
 
 This port follows the original Copycats+ license and redistribution requirements.
-
-Do not remove original copyright, license, or attribution notices.
