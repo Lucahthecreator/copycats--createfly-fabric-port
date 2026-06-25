@@ -2,6 +2,33 @@ plugins {
     id "net.fabricmc.fabric-loom" version "${loom_version}"
 }
 
+def targetProfiles = [
+        "26.1.2": [
+                minecraftVersion     : "26.1.2",
+                minecraftVersionRange: ">=26.1- <26.2-",
+                fabricApiVersion     : "0.152.1+26.1.2",
+                createFlyCurseId     : "8250336"
+        ],
+        "26.2": [
+                minecraftVersion     : "26.2",
+                minecraftVersionRange: ">=26.2- <26.3-",
+                fabricApiVersion     : "0.152.2+26.2",
+                createFlyCurseId     : "8245554"
+        ]
+]
+
+def targetVersion = providers.gradleProperty("target_version").getOrElse("26.1.2")
+def targetProfile = targetProfiles[targetVersion]
+if (targetProfile == null) {
+    throw new GradleException("Unknown target_version '${targetVersion}'. Supported values: ${targetProfiles.keySet().join(', ')}")
+}
+
+def minecraftVersion = providers.gradleProperty("minecraft_version").getOrElse(targetProfile.minecraftVersion)
+def minecraftVersionRange = providers.gradleProperty("minecraft_version_range").getOrElse(targetProfile.minecraftVersionRange)
+def fabricApiVersion = providers.gradleProperty("fabric_api_version").getOrElse(targetProfile.fabricApiVersion)
+def createFlyCurseId = providers.gradleProperty("create_fly_curse_id").getOrElse(targetProfile.createFlyCurseId)
+def createVersionRange = providers.gradleProperty("create_version_range").getOrElse(">=6.0.9-1 <6.0.10")
+
 repositories {
     maven { url "https://maven.fabricmc.net/" }
     mavenCentral()
@@ -9,7 +36,7 @@ repositories {
     maven { url "https://cursemaven.com" }
 }
 
-version = "3.0.7-createfly+mc.${minecraft_version}"
+version = "3.0.7-createfly+mc.${minecraftVersion}"
 group = project.maven_group
 
 base {
@@ -31,12 +58,119 @@ sourceSets {
     }
 }
 
+def preparedWorkingJar = layout.buildDirectory.file("generated/copycats-working-${targetVersion}.jar")
+def prepareWorkingJar = tasks.register("prepareWorkingJar") {
+    inputs.file("reconstructed/working.jar")
+    inputs.property("target_version", targetVersion)
+    outputs.file(preparedWorkingJar)
+
+    doLast {
+        def source = file("reconstructed/working.jar")
+        def output = preparedWorkingJar.get().asFile
+        def overriddenClasses = [
+                "com/copycatsplus/copycats/foundation/copycat/model/CreateFlyCopycatModel.class",
+                "com/copycatsplus/copycats/foundation/tooltip/CopycatDescription.class",
+                "com/copycatsplus/copycats/fabric/CopycatsImpl.class",
+                "com/copycatsplus/copycats/content/copycat/slab/CopycatMultiSlabModelCore.class",
+                "com/copycatsplus/copycats/content/copycat/bytes/CopycatMultiByteModelCore.class",
+                "com/copycatsplus/copycats/content/copycat/byte_panel/CopycatMultiBytePanelModelCore.class",
+                "com/copycatsplus/copycats/content/copycat/fluid_pipe/CopycatFluidPipeBlock.class",
+                "com/copycatsplus/copycats/content/copycat/fluid_pipe/CopycatGlassFluidPipeBlock.class",
+                "com/copycatsplus/copycats/content/copycat/fence/CopycatFenceBlock.class",
+                "com/copycatsplus/copycats/content/copycat/fence_gate/CopycatFenceGateBlock.class"
+        ] as Set
+        output.parentFile.mkdirs()
+
+        if (targetVersion != "26.2") {
+            def inputJar = new java.util.zip.ZipFile(source)
+            def outputJar = new java.util.zip.ZipOutputStream(new FileOutputStream(output))
+            try {
+                inputJar.entries().each { entry ->
+                    if (overriddenClasses.contains(entry.name)) return
+                    def outputEntry = new java.util.zip.ZipEntry(entry.name)
+                    outputEntry.time = entry.time
+                    outputJar.putNextEntry(outputEntry)
+                    if (!entry.directory) {
+                        outputJar.write(inputJar.getInputStream(entry).readAllBytes())
+                    }
+                    outputJar.closeEntry()
+                }
+            } finally {
+                outputJar.close()
+                inputJar.close()
+            }
+        } else {
+            def inputJar = new java.util.zip.ZipFile(source)
+            def outputJar = new java.util.zip.ZipOutputStream(new FileOutputStream(output))
+            try {
+                inputJar.entries().each { entry ->
+                    if (overriddenClasses.contains(entry.name)) return
+                    def outputEntry = new java.util.zip.ZipEntry(entry.name)
+                    outputEntry.time = entry.time
+                    outputJar.putNextEntry(outputEntry)
+
+                    if (!entry.directory) {
+                        byte[] bytes = inputJar.getInputStream(entry).readAllBytes()
+                        if (entry.name == "com/copycatsplus/copycats/CCBlocks.class") {
+                            def node = new org.objectweb.asm.tree.ClassNode()
+                            new org.objectweb.asm.ClassReader(bytes).accept(node, 0)
+                            node.methods.each { method ->
+                                method.instructions.each { instruction ->
+                                    if (instruction instanceof org.objectweb.asm.tree.MethodInsnNode
+                                            && instruction.owner == "com/zurrtum/create/content/kinetics/simpleRelays/CogwheelBlockItem"
+                                            && instruction.name == "<init>"
+                                            && instruction.desc == "(Lcom/zurrtum/create/content/kinetics/simpleRelays/CogWheelBlock;Lnet/minecraft/world/item/Item\$Properties;)V") {
+                                        instruction.desc = "(Lnet/minecraft/world/level/block/Block;Lnet/minecraft/world/item/Item\$Properties;)V"
+                                    }
+                                    if (instruction instanceof org.objectweb.asm.tree.InvokeDynamicInsnNode) {
+                                        instruction.bsmArgs = instruction.bsmArgs.collect { argument ->
+                                            if (argument instanceof org.objectweb.asm.Handle
+                                                && argument.owner == "com/zurrtum/create/content/kinetics/simpleRelays/CogwheelBlockItem"
+                                                && argument.name == "<init>"
+                                                && argument.desc == "(Lcom/zurrtum/create/content/kinetics/simpleRelays/CogWheelBlock;Lnet/minecraft/world/item/Item\$Properties;)V") {
+                                                return new org.objectweb.asm.Handle(
+                                                        argument.tag,
+                                                        argument.owner,
+                                                        argument.name,
+                                                        "(Lnet/minecraft/world/level/block/Block;Lnet/minecraft/world/item/Item\$Properties;)V",
+                                                        argument.isInterface
+                                                )
+                                            }
+                                            return argument
+                                        } as Object[]
+                                    }
+                                    if (instruction instanceof org.objectweb.asm.tree.FieldInsnNode
+                                        && instruction.owner == "net/minecraft/tags/ItemTags"
+                                        && instruction.name == "DOORS") {
+                                        instruction.name = "WOODEN_DOORS"
+                                    }
+                                }
+                            }
+                            def writer = new org.objectweb.asm.ClassWriter(0)
+                            node.accept(writer)
+                            bytes = writer.toByteArray()
+                        }
+                        outputJar.write(bytes)
+                    }
+                    outputJar.closeEntry()
+                }
+            } finally {
+                outputJar.close()
+                inputJar.close()
+            }
+        }
+    }
+}
+
+def preparedWorkingFiles = files(preparedWorkingJar)
+preparedWorkingFiles.builtBy(prepareWorkingJar)
+
 dependencies {
-    minecraft "com.mojang:minecraft:${minecraft_version}"
+    minecraft "com.mojang:minecraft:${minecraftVersion}"
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
-    implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
-    implementation "curse.maven:create-fly-1346281:${create_fly_curse_id}"
-    implementation files("reconstructed/working.jar")
+    implementation "net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}"
+    implementation "curse.maven:create-fly-1346281:${createFlyCurseId}"
+    implementation preparedWorkingFiles
     compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 
     annotationProcessor implementation("io.github.llamalad7:mixinextras-fabric:${mixin_extras_version}")
@@ -44,18 +178,40 @@ dependencies {
 
 processResources {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    inputs.property "version", project.version
+    inputs.properties(
+            "version": project.version,
+            "minecraft_version": minecraftVersion,
+            "minecraft_version_range": minecraftVersionRange,
+            "create_version_range": createVersionRange
+    )
 
     filesMatching("fabric.mod.json") {
-        expand "version": project.version
+        expand(
+                "version": project.version,
+                "minecraft_version": minecraftVersion,
+                "minecraft_version_range": minecraftVersionRange,
+                "create_version_range": createVersionRange
+        )
     }
 }
 
 tasks.withType(JavaCompile).configureEach {
+    dependsOn(prepareWorkingJar)
     options.encoding = "UTF-8"
     options.release = 25
     options.compilerArgs += ["-Xmaxerrs", "1000"]
 }
+
+compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/foundation/copycat/model/CreateFlyCopycatModel.java"))
+compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/foundation/tooltip/CopycatDescription.java"))
+compileJava.source(file("patches/src/main/java/com/copycatsplus/copycats/fabric/CopycatsImpl.java"))
+compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/content/copycat/slab/CopycatMultiSlabModelCore.java"))
+compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/content/copycat/bytes/CopycatMultiByteModelCore.java"))
+compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/content/copycat/byte_panel/CopycatMultiBytePanelModelCore.java"))
+compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/content/copycat/fluid_pipe/CopycatFluidPipeBlock.java"))
+compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/content/copycat/fluid_pipe/CopycatGlassFluidPipeBlock.java"))
+compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/content/copycat/fence/CopycatFenceBlock.java"))
+compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/content/copycat/fence_gate/CopycatFenceGateBlock.java"))
 
 java {
     withSourcesJar()
@@ -68,8 +224,9 @@ tasks.named("sourcesJar") {
 }
 
 jar {
+    dependsOn(prepareWorkingJar)
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from(zipTree("reconstructed/working.jar")) {
+    from({ zipTree(preparedWorkingJar.get().asFile) }) {
         exclude "com/copycatsplus/copycats/content/copycat/sliding_door/CopycatSlidingDoorRenderBridge.class"
         exclude 'com/copycatsplus/copycats/content/copycat/sliding_door/CopycatSlidingDoorRenderBridge$*.class'
         exclude "assets/**"

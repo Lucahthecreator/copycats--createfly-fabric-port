@@ -1,5 +1,6 @@
 package com.copycatsplus.copycats.mixin.foundation.copycat;
 
+import com.copycatsplus.copycats.compat.debug.CopycatsDebug;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -36,6 +37,10 @@ public abstract class CopycatBlockLightEngineMixin {
             }
         }
 
+        int finalEmission = emission;
+        CopycatsDebug.log("light", () -> "emission pos=" + BlockPos.of(packedPos)
+                + " state=" + state + " blockEntity=" + (blockEntity == null ? "null" : blockEntity.getClass().getName())
+                + " result=" + finalEmission);
         return emission;
     }
 }

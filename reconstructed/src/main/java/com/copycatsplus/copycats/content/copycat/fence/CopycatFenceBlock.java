@@ -111,18 +111,12 @@ IStateType {
 
     @Override
     public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, @Nullable BlockPos toPos, @Nullable BlockState toState) {
-        if (CopycatFenceBlock.isPole(state)) {
-            return ICopycatBlock.super.isIgnoredConnectivitySide(reader, state, face, fromPos, toPos, toState);
-        }
-        return true;
+        return ICopycatBlock.super.isIgnoredConnectivitySide(reader, state, face, fromPos, toPos, toState);
     }
 
     @Override
     public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
-        if (CopycatFenceBlock.isPole(state)) {
-            return ICopycatBlock.super.canConnectTexturesToward(reader, fromPos, toPos, state);
-        }
-        return false;
+        return ICopycatBlock.super.canConnectTexturesToward(reader, fromPos, toPos, state);
     }
 
     private static boolean isPole(BlockState state) {
@@ -137,7 +131,6 @@ IStateType {
         return true;
     }
 
-    @Override
     public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState, Direction dir) {
         return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
     }

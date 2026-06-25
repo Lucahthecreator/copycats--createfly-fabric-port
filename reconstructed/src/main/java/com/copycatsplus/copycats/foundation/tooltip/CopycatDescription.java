@@ -135,7 +135,9 @@ public class CopycatDescription {
             String titleKey = characteristics.getTitleKey();
             String descKey = characteristics.getDescriptionKey();
             if (!this.cachedLanguage.has(titleKey) || !this.cachedLanguage.has(descKey)) continue;
-            this.descriptions.put(characteristics, (Pair<List<Component>, List<Component>>)Pair.of(List.of(Component.literal((String)("- " + this.cachedLanguage.getOrDefault(titleKey))).withStyle(ChatFormatting.GRAY)), (Object)TooltipHelper.cutStringTextComponent((String)String.format(this.cachedLanguage.getOrDefault(descKey), this.cachedArgs.get(characteristics.getSerializedName()).toArray()), (FontHelper.Palette)FontHelper.Palette.STANDARD_CREATE)));
+            List<Component> title = List.of(Component.literal("- " + this.cachedLanguage.getOrDefault(titleKey)).withStyle(ChatFormatting.GRAY));
+            List<Component> description = TooltipHelper.cutStringTextComponent(String.format(this.cachedLanguage.getOrDefault(descKey), this.cachedArgs.get(characteristics.getSerializedName()).toArray()), FontHelper.Palette.STANDARD_CREATE);
+            this.descriptions.put(characteristics, Pair.of(title, description));
         }
     }
 

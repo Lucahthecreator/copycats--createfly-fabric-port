@@ -1,5 +1,6 @@
 package com.copycatsplus.copycats.mixin.foundation.copycat;
 
+import com.copycatsplus.copycats.compat.debug.CopycatsDebug;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -31,11 +32,15 @@ public abstract class CopycatLightChunkMixin {
 
     @Inject(method = "removeBlockEntity", at = @At("TAIL"))
     private void copycats$clearRemovedCopiedMaterialLight(net.minecraft.core.BlockPos pos, CallbackInfo ci) {
+        CopycatsDebug.log("light", () -> "check removed copycat light pos=" + pos);
         level.getLightEngine().checkBlock(pos);
     }
 
     private void copycats$checkCopiedMaterialLight(BlockEntity blockEntity) {
         if (blockEntity instanceof ICopycatBlockEntity) {
+            CopycatsDebug.log("light", () -> "check copied material light pos=" + blockEntity.getBlockPos()
+                    + " blockEntity=" + blockEntity.getClass().getName()
+                    + " state=" + blockEntity.getBlockState());
             level.getLightEngine().checkBlock(blockEntity.getBlockPos());
         }
     }

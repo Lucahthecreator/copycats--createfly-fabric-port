@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "id": "copycats",
-  "version": "${version}",
+  "version": "3.0.7-createfly+mc.26.1.2",
   "name": "Create: Copycats+ (CreateFly Port)",
-  "description": "Create: Copycats+ ported to CreateFly for Minecraft ${minecraft_version}.",
+  "description": "Create: Copycats+ ported to CreateFly for Minecraft 26.1.2.",
   "authors": [
     "Lysine",
     "Bennyboy1695",
@@ -22,13 +22,10 @@
       "com.copycatsplus.copycats.fabric.CopycatsClientImpl"
     ]
   },
-  "mixins": [
-    "copycats-light.mixins.json"
-  ],
   "depends": {
     "fabricloader": ">=0.19.2",
-    "minecraft": "${minecraft_version_range}",
+    "minecraft": "=26.1.2",
     "java": ">=25",
-    "create": "${create_version_range}"
+    "create": ">=6.0.9-1"
   }
 }

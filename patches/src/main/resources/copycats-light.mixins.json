@@ -6,7 +6,19 @@
   "mixins": [
     "foundation.copycat.CopycatLightEngineAccessor",
     "foundation.copycat.CopycatBlockLightEngineMixin",
-    "foundation.copycat.CopycatLightChunkMixin"
+    "foundation.copycat.CopycatLightChunkMixin",
+    "foundation.copycat.BlockStateBaseMixin",
+    "foundation.copycat.CopycatBlockMixin",
+    "foundation.copycat.CopycatBlockEntityMixin"
+  ],
+  "client": [
+    "foundation.copycat.ConnectedTextureBehaviourMixin",
+    "foundation.copycat.ScaledBlockAndTintGetterMixin",
+    "foundation.copycat.CTModelMixin",
+    "foundation.copycat.RotatedPillarCTBehaviourMixin",
+    "foundation.copycat.ModelBlockRendererMixin",
+    "foundation.copycat.IndigoBlockRendererMixin",
+    "foundation.copycat.SodiumBlockRenderContextMixin"
   ],
   "injectors": {
     "defaultRequire": 1

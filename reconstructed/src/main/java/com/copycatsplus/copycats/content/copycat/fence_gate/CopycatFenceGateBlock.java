@@ -114,12 +114,12 @@ IStateType {
 
     @Override
     public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face, BlockPos fromPos, @Nullable BlockPos toPos, @Nullable BlockState toState) {
-        return true;
+        return ICopycatBlock.super.isIgnoredConnectivitySide(reader, state, face, fromPos, toPos, toState);
     }
 
     @Override
     public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
-        return false;
+        return ICopycatBlock.super.canConnectTexturesToward(reader, fromPos, toPos, state);
     }
 
     public boolean supportsExternalFaceHiding(BlockState state) {

@@ -50,6 +50,15 @@ All original Copycats+ code, assets, ideas, and features belong to the original 
 
 ## Installation
 
+### Supported versions
+
+| Port jar | Minecraft compatibility | CreateFly compatibility | Build dependency |
+| --- | --- | --- | --- |
+| `mc.26.1.2` | `>=26.1- <26.2-` | `>=6.0.9-1 <6.0.10` | CreateFly 6.0.9 build 4 |
+| `mc.26.2` | `>=26.2- <26.3-` | `>=6.0.9-1 <6.0.10` | CreateFly 6.0.9 build 1 for 26.2 |
+
+Use the jar for your Minecraft line. Do not use the `26.1.2` jar on `26.2`, or the `26.2` jar on `26.1.2`.
+
 ### Option 1: CurseForge App
 
 1. Open the Copycats+ CreateFly Port CurseForge page https://www.curseforge.com/minecraft/mc-mods/copycats-createfly-port.
@@ -71,27 +80,31 @@ All original Copycats+ code, assets, ideas, and features belong to the original 
 
 ## Building From Source
 
-Install Java 21.
+Install Java 25.
 
-Then run:
+Build the default Minecraft 26.1.2 target:
 
 ```bash
-./gradlew build
+./gradlew clean build
 ```
 
-On Windows:
+Build the Minecraft 26.2 target:
+
+```bash
+./gradlew clean build -Ptarget_version=26.2
+```
+
+Build both release jars on Windows:
 
 ```powershell
-.\gradlew build
+powershell -ExecutionPolicy Bypass -File scripts/build-supported.ps1
 ```
 
-The built `.jar` should be placed in:
+The built `.jar` files are placed in:
 
 ```text
 build/libs
 ```
-
-or a loader-specific build folder depending on the Gradle setup.
 
 ---
 
@@ -112,6 +125,18 @@ When reporting a bug, include:
 * Whether the issue happens in singleplayer, multiplayer, or both
 
 ---
+
+## Diagnostics
+
+Diagnostics are off by default. After starting the game once, edit
+`config/copycats-debug.properties`; changes reload while the game is running.
+
+- Set `enabled=true` to enable every category.
+- Enable individual categories with `ct`, `door`, `material`, `shape`, `filter`, or `face_hiding`.
+- Set `limit` to cap the number of messages printed by each category.
+- Search `latest.log` for `[Copycats Debug/` to find all diagnostic messages.
+- For development, categories can also be enabled with JVM options such as
+  `-Dcopycats.debug.ct=true` or `-Dcopycats.debug=true`.
 
 ## Notes
 
