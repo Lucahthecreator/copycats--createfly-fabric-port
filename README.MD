@@ -52,29 +52,54 @@ All original Copycats+ code, assets, ideas, and features belong to the original 
 
 ### Supported versions
 
-| Port jar | Minecraft compatibility | CreateFly compatibility | Build dependency |
-| --- | --- | --- | --- |
-| `mc.26.1.2` | `>=26.1- <26.2-` | `>=6.0.9-1 <6.0.10` | CreateFly 6.0.9 build 4 |
-| `mc.26.2` | `>=26.2- <26.3-` | `>=6.0.9-1 <6.0.10` | CreateFly 6.0.9 build 1 for 26.2 |
+| Port jar    | Minecraft compatibility | CreateFly compatibility | Build dependency                 |
+| ----------- | ----------------------- | ----------------------- | -------------------------------- |
+| `mc.26.1.2` | `>=26.1- <26.2-`        | `>=6.0.9-1 <6.0.10`     | CreateFly 6.0.9 build 4          |
+| `mc.26.2`   | `>=26.2- <26.3-`        | `>=6.0.9-1 <6.0.10`     | CreateFly 6.0.9 build 1 for 26.2 |
 
 Use the jar for your Minecraft line. Do not use the `26.1.2` jar on `26.2`, or the `26.2` jar on `26.1.2`.
 
-### Option 1: CurseForge App
+### Option 1: Modrinth App
 
-1. Open the Copycats+ CreateFly Port CurseForge page https://www.curseforge.com/minecraft/mc-mods/copycats-createfly-port.
+1. Open the Copycats+ CreateFly Port Modrinth page:
+   https://modrinth.com/mod/copycats+-createfly-port
+2. Click `Install with Modrinth App`.
+3. Select an existing Fabric profile or create a new Fabric profile.
+4. Make sure the profile uses the correct Minecraft version for the port jar you are installing.
+5. Install the required dependencies for the same Minecraft version, including Create Fly.
+6. Launch the game once so the mod can generate its config files.
+
+### Option 2: Modrinth Manual Install
+
+1. Open the Copycats+ CreateFly Port Modrinth page:
+   https://modrinth.com/mod/copycats+-createfly-port
+2. Go to the `Versions` tab.
+3. Download the Fabric `.jar` that matches your Minecraft / CreateFly version.
+4. Install [Fabric Loader](https://fabricmc.net/use/installer/) for the matching Minecraft version.
+5. Install the required dependencies for the same Minecraft version, including [Create Fly](https://modrinth.com/mod/create-fly).
+6. Put the downloaded `.jar` into your `mods` folder.
+7. Start the game and confirm the mod appears in the mod list.
+
+### Option 3: CurseForge App
+
+1. Open the Copycats+ CreateFly Port CurseForge page:
+   https://www.curseforge.com/minecraft/mc-mods/copycats-createfly-port
 2. Pick the Fabric file for your Minecraft / CreateFly version.
 3. Open your CurseForge Minecraft profile.
 4. Click `Add More Content`.
 5. Install the matching file and required dependencies.
 6. Launch the game once so the mod can generate its config files.
 
-### Option 2: Manual Install
+### Option 4: CurseForge Manual Install
 
-1. Download the Fabric `.jar` from the Releases page or CurseForge.
-2. Install [Fabric Loader](https://fabricmc.net/use/installer/) for the matching Minecraft version.
-3. Install the required dependencies for the same Minecraft version, including [Create Fly](https://www.curseforge.com/minecraft/mc-mods/create-fly).
-4. Put the `.jar` into your `mods` folder.
-5. Start the game and confirm the mod appears in the mod list.
+1. Open the Copycats+ CreateFly Port CurseForge page:
+   https://www.curseforge.com/minecraft/mc-mods/copycats-createfly-port
+2. Go to the `Files` tab.
+3. Download the Fabric `.jar` that matches your Minecraft / CreateFly version.
+4. Install [Fabric Loader](https://fabricmc.net/use/installer/) for the matching Minecraft version.
+5. Install the required dependencies for the same Minecraft version, including [Create Fly](https://www.curseforge.com/minecraft/mc-mods/create-fly).
+6. Put the downloaded `.jar` into your `mods` folder.
+7. Start the game and confirm the mod appears in the mod list.
 
 ---
 
@@ -128,15 +153,15 @@ When reporting a bug, include:
 
 ## Diagnostics
 
-Diagnostics are off by default. After starting the game once, edit
-`config/copycats-debug.properties`; changes reload while the game is running.
+Diagnostics are off by default. After starting the game once, edit `config/copycats-debug.properties`; changes reload while the game is running.
 
-- Set `enabled=true` to enable every category.
-- Enable individual categories with `ct`, `door`, `material`, `shape`, `filter`, or `face_hiding`.
-- Set `limit` to cap the number of messages printed by each category.
-- Search `latest.log` for `[Copycats Debug/` to find all diagnostic messages.
-- For development, categories can also be enabled with JVM options such as
-  `-Dcopycats.debug.ct=true` or `-Dcopycats.debug=true`.
+* Set `enabled=true` to enable every category.
+* Enable individual categories with `ct`, `door`, `material`, `shape`, `filter`, or `face_hiding`.
+* Set `limit` to cap the number of messages printed by each category.
+* Search `latest.log` for `[Copycats Debug/` to find all diagnostic messages.
+* For development, categories can also be enabled with JVM options such as `-Dcopycats.debug.ct=true` or `-Dcopycats.debug=true`.
+
+---
 
 ## Notes
 
