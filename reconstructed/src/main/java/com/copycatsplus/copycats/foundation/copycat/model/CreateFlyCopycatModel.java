@@ -51,6 +51,7 @@ import com.copycatsplus.copycats.foundation.copycat.model.CopycatModelCore;
 import com.copycatsplus.copycats.compat.debug.CopycatsDebug;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
+import com.copycatsplus.copycats.mixin.foundation.copycat.FabricBlockStateModelWrapperAccessor;
 import com.zurrtum.create.AllBlocks;
 import com.zurrtum.create.api.behaviour.BlockEntityBehaviour;
 import com.zurrtum.create.client.foundation.model.BakedModelHelper;
@@ -63,6 +64,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
+import javax.annotation.Nullable;
+import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadEmitter;
+import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
@@ -92,6 +98,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class CreateFlyCopycatModel
 extends WrapperBlockStateModel {
+    private static final Map<BlockState, CreateFlyCopycatModel> BAKED_COPYCAT_MODELS = new ConcurrentHashMap<>();
+
     private ModelManager modelManager;
     private final CopycatModelCore core;
     private final List<CopycatModelCore.ModelEntry> entries = new ArrayList<CopycatModelCore.ModelEntry>();
@@ -106,7 +114,52 @@ extends WrapperBlockStateModel {
 
     public BlockStateModel bake(BlockState state, ModelBaker baker) {
         this.modelManager = Minecraft.getInstance().getModelManager();
-        return super.bake(state, baker);
+        BlockStateModel baked = super.bake(state, baker);
+        BAKED_COPYCAT_MODELS.put(state, this);
+        return baked;
+    }
+
+    /**
+     * CreateFly's injected implementation uses one thread-local parts list. A model wrapper such as
+     * Continuity can re-enter quad emission while processing a quad and clear that list underneath
+     * the outer invocation. Keep Copycats emission re-entrant by owning the list for this call.
+     */
+    public void emitQuads(QuadEmitter emitter, BlockAndTintGetter world, BlockPos pos, BlockState state,
+                          RandomSource random, Predicate<Direction> cullTest) {
+        List<BlockStateModelPart> parts = new ArrayList<>();
+        addPartsWithInfo(world, pos, state, random, parts);
+        if (parts.isEmpty()) {
+            return;
+        }
+
+        TriState ambientOcclusion = parts.getFirst().useAmbientOcclusion() ? TriState.DEFAULT : TriState.FALSE;
+        // Snapshot before emission because quad transforms are allowed to render other models recursively.
+        for (BlockStateModelPart part : List.copyOf(parts)) {
+            emitPart(emitter, part, ambientOcclusion, cullTest);
+        }
+    }
+
+    private static void emitPart(QuadEmitter emitter, BlockStateModelPart part, TriState ambientOcclusion,
+                                 Predicate<Direction> cullTest) {
+        for (Direction direction : Direction.values()) {
+            if (cullTest.test(direction)) {
+                continue;
+            }
+            for (BakedQuad quad : part.getQuads(direction)) {
+                emitter.cullFace(direction);
+                emitter.fromBakedQuad(quad);
+                emitter.ambientOcclusion(ambientOcclusion);
+                emitter.emit();
+            }
+        }
+        if (cullTest.test(null)) {
+            return;
+        }
+        for (BakedQuad quad : part.getQuads(null)) {
+            emitter.fromBakedQuad(quad);
+            emitter.ambientOcclusion(ambientOcclusion);
+            emitter.emit();
+        }
     }
 
     public void addPartsWithInfo(BlockAndTintGetter world, BlockPos pos, BlockState state, RandomSource random, List<BlockStateModelPart> output) {
@@ -145,12 +198,7 @@ extends WrapperBlockStateModel {
         BlockState material = CreateFlyCopycatModel.resolveMaterialForRender(world, pos, copycat.getMaterial());
         BlockStateModel materialModel = this.modelManager.getBlockStateModelSet().get(material);
         ArrayList<BlockStateModelPart> materialParts = new ArrayList<>();
-        if (materialModel instanceof WrapperBlockStateModel) {
-            WrapperBlockStateModel wrapper = (WrapperBlockStateModel)materialModel;
-            wrapper.addPartsWithInfo(world, pos, material, random, materialParts);
-        } else {
-            materialModel.collectParts(random, materialParts);
-        }
+        collectMaterialParts(materialModel, world, pos, material, random, materialParts);
         List boxes = state.getShape((BlockGetter)world, pos).toAabbs();
         if (boxes.isEmpty()) {
             CopycatsDebug.log("model", () -> "skip cropped render no boxes pos=" + pos
@@ -214,6 +262,7 @@ extends WrapperBlockStateModel {
                     + " key=" + entry.key() + " material=" + entryMaterial);
             BlockStateModel materialModel = entry.model() == null ? this.modelManager.getBlockStateModelSet().get(material2) : entry.model().getModel(state, material2);
             ArrayList<BlockStateModelPart> materialParts = new ArrayList<>();
+            materialModel = unwrapContinuityModel(materialModel);
             if (materialModel instanceof WrapperBlockStateModel) {
                 WrapperBlockStateModel wrapper = (WrapperBlockStateModel)materialModel;
                 CopycatsDebug.log("filter", () -> "material wrapper property=" + entry.key()
@@ -223,9 +272,16 @@ extends WrapperBlockStateModel {
             } else {
                 materialModel.collectParts(random, materialParts);
             }
+            if (materialParts.isEmpty()) {
+                BlockStateModel missingModel = this.modelManager.getBlockStateModelSet().missingModel();
+                if (materialModel != missingModel) {
+                    missingModel.collectParts(random, materialParts);
+                }
+            }
+            String materialModelClass = materialModel == null ? "null" : materialModel.getClass().getName();
             CopycatsDebug.log("model", () -> "entry material parts pos=" + pos
                     + " key=" + entry.key() + " material=" + entryMaterial
-                    + " model=" + materialModel.getClass().getName()
+                    + " model=" + materialModelClass
                     + " parts=" + materialParts.size());
             for (BlockStateModelPart part : materialParts) {
                 if (entry.part() == null) {
@@ -381,6 +437,97 @@ extends WrapperBlockStateModel {
             this.addCoreParts(world, pos, state, random, new ArrayList<BlockStateModelPart>(), copycat, true, this.core, this.entries, groupedOutput);
         }
         return groupedOutput;
+    }
+
+    /** Returns one kinetic section without merging sections that happen to use the same material. */
+    public List<BlockStateModelPart> getAnimationPartsForProperty(BlockAndTintGetter world, BlockPos pos,
+                                                                  BlockState state, RandomSource random,
+                                                                  ICopycatBlockEntity copycat, String property) {
+        if (this.core == null || this.modelManager == null) {
+            return List.of();
+        }
+        List<CopycatModelCore.ModelEntry> selectedEntries = this.entries.stream()
+                .filter(entry -> entry.key().equals(property))
+                .toList();
+        if (selectedEntries.isEmpty()) {
+            return List.of();
+        }
+        List<BlockStateModelPart> output = new ArrayList<>();
+        this.addCoreParts(world, pos, state, random, output, copycat, true,
+                this.core, selectedEntries, null);
+        return List.copyOf(output);
+    }
+
+    private void collectMaterialParts(BlockStateModel requestedModel, BlockAndTintGetter world, BlockPos pos,
+                                      BlockState material, RandomSource random,
+                                      List<BlockStateModelPart> output) {
+        BlockStateModel materialModel = unwrapContinuityModel(requestedModel);
+        if (materialModel instanceof WrapperBlockStateModel wrapper) {
+            wrapper.addPartsWithInfo(world, pos, material, random, output);
+        } else if (materialModel != null) {
+            materialModel.collectParts(random, output);
+        }
+        if (output.isEmpty() && this.modelManager != null) {
+            BlockStateModel missingModel = this.modelManager.getBlockStateModelSet().missingModel();
+            if (materialModel != missingModel) {
+                missingModel.collectParts(random, output);
+            }
+        }
+    }
+
+    /**
+     * Continuity wraps every baked block model. Its CT/emissive transforms cannot safely represent
+     * Copycats' block-entity-selected material, so unwrap only Continuity's optional wrappers.
+     */
+    public static BlockStateModel unwrapContinuityModel(BlockStateModel model) {
+        BlockStateModel current = model;
+        for (int depth = 0; current != null && depth < 8; depth++) {
+            if (!current.getClass().getName().startsWith("me.pepperbell.continuity.")) {
+                break;
+            }
+            if (!(current instanceof FabricBlockStateModelWrapperAccessor accessor)) {
+                break;
+            }
+            BlockStateModel wrapped = accessor.copycats$getWrapped();
+            if (wrapped == null || wrapped == current) {
+                break;
+            }
+            current = wrapped;
+        }
+        return current;
+    }
+
+    @Nullable
+    public static CreateFlyCopycatModel findCopycatModel(BlockStateModel model) {
+        BlockStateModel current = model;
+        for (int depth = 0; current != null && depth < 8; depth++) {
+            if (current instanceof CreateFlyCopycatModel copycatModel) {
+                return copycatModel;
+            }
+            if (!(current instanceof FabricBlockStateModelWrapperAccessor accessor)) {
+                break;
+            }
+            BlockStateModel wrapped = accessor.copycats$getWrapped();
+            if (wrapped == null || wrapped == current) {
+                break;
+            }
+            current = wrapped;
+        }
+        return null;
+    }
+
+    /**
+     * Optional renderer wrappers are not required to expose their delegate. Keep the model baked
+     * for each state as an authoritative fallback for block-entity animation renderers.
+     */
+    @Nullable
+    public static CreateFlyCopycatModel findCopycatModel(BlockStateModel model, BlockState state) {
+        CreateFlyCopycatModel unwrapped = findCopycatModel(model);
+        return unwrapped != null ? unwrapped : BAKED_COPYCAT_MODELS.get(state);
+    }
+
+    public boolean hasAnimationProperty(String property) {
+        return this.modelManager != null && this.entries.stream().anyMatch(entry -> entry.key().equals(property));
     }
 
     private static void prepareRenderData(BlockAndTintGetter world, BlockPos pos, BlockState state, CopycatModelCore renderCore) {

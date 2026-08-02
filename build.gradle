@@ -69,6 +69,13 @@ def prepareWorkingJar = tasks.register("prepareWorkingJar") {
         def output = preparedWorkingJar.get().asFile
         def overriddenClasses = [
                 "com/copycatsplus/copycats/foundation/copycat/model/CreateFlyCopycatModel.class",
+                "com/copycatsplus/copycats/foundation/copycat/model/CopycatKineticRenderBridge.class",
+                "com/copycatsplus/copycats/foundation/copycat/model/CopycatKineticRenderBridge\$RenderState.class",
+                "com/copycatsplus/copycats/foundation/copycat/model/CopycatKineticRenderBridge\$FixedPartsModel.class",
+                "com/copycatsplus/copycats/content/copycat/sliding_door/CopycatSlidingDoorRenderBridge.class",
+                "com/copycatsplus/copycats/content/copycat/sliding_door/CopycatSlidingDoorRenderBridge\$RenderState.class",
+                "com/copycatsplus/copycats/content/copycat/sliding_door/CopycatSlidingDoorRenderBridge\$FixedPartsModel.class",
+                "com/copycatsplus/copycats/fabric/CopycatsClientImpl.class",
                 "com/copycatsplus/copycats/foundation/tooltip/CopycatDescription.class",
                 "com/copycatsplus/copycats/fabric/CopycatsImpl.class",
                 "com/copycatsplus/copycats/content/copycat/slab/CopycatMultiSlabModelCore.class",
@@ -203,6 +210,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/foundation/copycat/model/CreateFlyCopycatModel.java"))
+compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/foundation/copycat/model/CopycatKineticRenderBridge.java"))
 compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/foundation/tooltip/CopycatDescription.java"))
 compileJava.source(file("patches/src/main/java/com/copycatsplus/copycats/fabric/CopycatsImpl.java"))
 compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/content/copycat/slab/CopycatMultiSlabModelCore.java"))

@@ -9,10 +9,13 @@
     "foundation.copycat.CopycatLightChunkMixin",
     "foundation.copycat.BlockStateBaseMixin",
     "foundation.copycat.CopycatBlockMixin",
-    "foundation.copycat.CopycatBlockEntityMixin"
+    "foundation.copycat.CopycatBlockEntityMixin",
+    "foundation.copycat.CopycatCogWheelMaterialMixin"
   ],
   "client": [
     "foundation.copycat.ConnectedTextureBehaviourMixin",
+    "foundation.copycat.FabricBlockStateModelWrapperAccessor",
+    "foundation.copycat.ContinuityCopycatModelMixin",
     "foundation.copycat.ScaledBlockAndTintGetterMixin",
     "foundation.copycat.CTModelMixin",
     "foundation.copycat.RotatedPillarCTBehaviourMixin",

@@ -33,6 +33,8 @@
 package com.copycatsplus.copycats.foundation.copycat.model;
 
 import com.copycatsplus.copycats.CopycatsClient;
+import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelBlockEntity;
+import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelVisuals;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.model.CreateFlyCopycatModel;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -77,17 +79,21 @@ implements BlockEntityRenderer<BracketedKineticBlockEntity, CopycatKineticRender
 
     public void extractRenderState(BracketedKineticBlockEntity blockEntity, RenderState renderState, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay breakProgress) {
         Level level = SmartBlockEntityRenderer.extractBase((BlockEntity)blockEntity, (BlockEntityRenderState)renderState, (ModelFeatureRenderer.CrumblingOverlay)breakProgress);
+        renderState.models.clear();
+        if (blockEntity instanceof CopycatCogWheelBlockEntity cogwheel
+                && CopycatCogWheelVisuals.shouldUseVisualization(cogwheel)) {
+            return;
+        }
         if (!(blockEntity instanceof ICopycatBlockEntity)) {
             return;
         }
         ICopycatBlockEntity copycat = (ICopycatBlockEntity)blockEntity;
         BlockState state = blockEntity.getBlockState();
         BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(state);
-        if (!(model instanceof CreateFlyCopycatModel)) {
+        CreateFlyCopycatModel copycatModel = CreateFlyCopycatModel.findCopycatModel(model, state);
+        if (copycatModel == null) {
             return;
         }
-        CreateFlyCopycatModel copycatModel = (CreateFlyCopycatModel)model;
-        renderState.models.clear();
         Map<BlockState, List<BlockStateModelPart>> partsByMaterial = copycatModel.getAnimationPartsByMaterial((BlockAndTintGetter)level, blockEntity.getBlockPos(), state, RandomSource.create((long)42L), copycat);
         if (partsByMaterial.isEmpty()) {
             return;

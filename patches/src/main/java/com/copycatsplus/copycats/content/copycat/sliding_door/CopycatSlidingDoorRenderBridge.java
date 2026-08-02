@@ -38,6 +38,7 @@
 package com.copycatsplus.copycats.content.copycat.sliding_door;
 
 import com.copycatsplus.copycats.CopycatsClient;
+import com.copycatsplus.copycats.compat.debug.CopycatsDebug;
 import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatFoldingDoorModelCore;
 import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.model.CreateFlyCopycatModel;
@@ -132,13 +133,16 @@ implements BlockEntityRenderer<CopycatSlidingDoorBlockEntity, CopycatSlidingDoor
 
     private static SuperByteBufferRenderState createModel(Level level, BlockPos pos, BlockState state, CopycatSlidingDoorBlockEntity blockEntity, Matrix4f lightTransform, int baseLight, int materialLight) {
         BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(state);
-        if (!(model instanceof CreateFlyCopycatModel)) {
+        CreateFlyCopycatModel copycatModel = CreateFlyCopycatModel.findCopycatModel(model, state);
+        if (copycatModel == null) {
+            CopycatsDebug.log("door", () -> "missing animated door model pos=" + pos
+                    + " state=" + state + " registered=" + model.getClass().getName());
             return null;
         }
-        CreateFlyCopycatModel copycatModel = (CreateFlyCopycatModel)model;
         ArrayList<BlockStateModelPart> parts = new ArrayList<BlockStateModelPart>();
         copycatModel.addAnimationParts((BlockAndTintGetter)level, pos, state, RandomSource.create((long)42L), parts, blockEntity);
         if (parts.isEmpty()) {
+            CopycatsDebug.log("door", () -> "empty animated door model pos=" + pos + " state=" + state);
             return null;
         }
         SuperByteBuffer buffer = CopycatsClient.withAnimatedTint(blockEntity.getMaterial(), (BlockAndTintGetter)level, pos, () -> SuperBufferFactory.getInstance().createForBlock((BlockStateModel)new FixedPartsModel(parts), state))
@@ -152,13 +156,16 @@ implements BlockEntityRenderer<CopycatSlidingDoorBlockEntity, CopycatSlidingDoor
 
     private static SuperByteBufferRenderState createModel(Level level, BlockPos pos, BlockState state, CopycatSlidingDoorBlockEntity blockEntity, Matrix4f lightTransform, int baseLight, int materialLight, CopycatFoldingDoorModelCore animationCore) {
         BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(state);
-        if (!(model instanceof CreateFlyCopycatModel)) {
+        CreateFlyCopycatModel copycatModel = CreateFlyCopycatModel.findCopycatModel(model, state);
+        if (copycatModel == null) {
+            CopycatsDebug.log("door", () -> "missing animated folding-door model pos=" + pos
+                    + " state=" + state + " registered=" + model.getClass().getName());
             return null;
         }
-        CreateFlyCopycatModel copycatModel = (CreateFlyCopycatModel)model;
         ArrayList<BlockStateModelPart> parts = new ArrayList<BlockStateModelPart>();
         copycatModel.addAnimationParts((BlockAndTintGetter)level, pos, state, RandomSource.create((long)42L), parts, blockEntity, animationCore);
         if (parts.isEmpty()) {
+            CopycatsDebug.log("door", () -> "empty animated folding-door model pos=" + pos + " state=" + state);
             return null;
         }
         SuperByteBuffer buffer = CopycatsClient.withAnimatedTint(blockEntity.getMaterial(), (BlockAndTintGetter)level, pos, () -> SuperBufferFactory.getInstance().createForBlock((BlockStateModel)new FixedPartsModel(parts), state))
