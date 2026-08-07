@@ -239,6 +239,24 @@ def relocateBundledApiClasses = { File archive ->
     )
 }
 
+// Keep the development client faithful to the release artifact.  Loom normally runs the
+// compiled classes and the reconstructed working JAR directly, bypassing the jar task above.
+def relocateBundledApiDirectory = { File classesDirectory ->
+    fileTree(classesDirectory).matching { include("**/*.class") }.files.each { classFile ->
+        byte[] bytes = classFile.bytes
+        def reader = new org.objectweb.asm.ClassReader(bytes)
+        def writer = new org.objectweb.asm.ClassWriter(0)
+        def remapper = new org.objectweb.asm.commons.Remapper() {
+            @Override
+            String map(String name) {
+                return relocateBundledApiName(name)
+            }
+        }
+        reader.accept(new org.objectweb.asm.commons.ClassRemapper(writer, remapper), 0)
+        classFile.bytes = writer.toByteArray()
+    }
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${minecraftVersion}"
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
@@ -319,5 +337,12 @@ jar {
     exclude("META-INF/MANIFEST.MF")
     doLast {
         relocateBundledApiClasses(archiveFile.get().asFile)
+    }
+}
+
+tasks.named("runClient") {
+    doFirst {
+        relocateBundledApiClasses(preparedWorkingJar.get().asFile)
+        sourceSets.main.output.classesDirs.files.each { relocateBundledApiDirectory(it) }
     }
 }
