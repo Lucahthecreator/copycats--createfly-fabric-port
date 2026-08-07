@@ -172,6 +172,73 @@ def prepareWorkingJar = tasks.register("prepareWorkingJar") {
 def preparedWorkingFiles = files(preparedWorkingJar)
 preparedWorkingFiles.builtBy(prepareWorkingJar)
 
+// Copycats needs a small set of Create/Registrate compatibility classes that are absent from
+// Create Fly. They must not be exposed under Create's public packages: other addons (such as
+// Steam 'n' Rails) ship their own, newer versions of those APIs.
+def bundledApiRelocations = [
+        "com/tterrag/registrate/"                    : "com/copycatsplus/copycats/internal/registrate/",
+        "com/zurrtum/create/foundation/data/"        : "com/copycatsplus/copycats/internal/create/foundation/data/"
+]
+
+def relocateBundledApiName = { String internalName ->
+    for (entry in bundledApiRelocations) {
+        if (internalName.startsWith(entry.key)) {
+            return entry.value + internalName.substring(entry.key.length())
+        }
+    }
+    if (internalName == "com/zurrtum/create/AllTags" || internalName.startsWith("com/zurrtum/create/AllTags\$")) {
+        return "com/copycatsplus/copycats/internal/create/" + internalName.substring("com/zurrtum/create/".length())
+    }
+    return internalName
+}
+
+def relocateBundledApiClasses = { File archive ->
+    def temporaryArchive = new File(archive.parentFile, archive.name + ".relocating")
+    def inputJar = new java.util.zip.ZipFile(archive)
+    def outputJar = new java.util.zip.ZipOutputStream(new FileOutputStream(temporaryArchive))
+    try {
+        inputJar.entries().each { entry ->
+            // Directory entries are optional in ZIP files. Omitting them avoids leaving empty
+            // public Create/Registrate packages behind after the contained classes are moved.
+            if (entry.directory) {
+                return
+            }
+            String entryName = entry.name
+            boolean classFile = entryName.endsWith(".class")
+            String internalName = classFile
+                    ? entryName.substring(0, entryName.length() - ".class".length())
+                    : entryName
+            String relocatedName = relocateBundledApiName(internalName)
+            String outputName = classFile ? relocatedName + ".class" : entryName
+            def outputEntry = new java.util.zip.ZipEntry(outputName)
+            outputEntry.time = entry.time
+            outputJar.putNextEntry(outputEntry)
+            byte[] bytes = inputJar.getInputStream(entry).readAllBytes()
+            if (classFile) {
+                def reader = new org.objectweb.asm.ClassReader(bytes)
+                def writer = new org.objectweb.asm.ClassWriter(0)
+                def remapper = new org.objectweb.asm.commons.Remapper() {
+                    @Override
+                    String map(String name) {
+                        return relocateBundledApiName(name)
+                    }
+                }
+                reader.accept(new org.objectweb.asm.commons.ClassRemapper(writer, remapper), 0)
+                bytes = writer.toByteArray()
+            }
+            outputJar.write(bytes)
+            outputJar.closeEntry()
+        }
+    } finally {
+        outputJar.close()
+        inputJar.close()
+    }
+    java.nio.file.Files.move(
+            temporaryArchive.toPath(), archive.toPath(),
+            java.nio.file.StandardCopyOption.REPLACE_EXISTING
+    )
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${minecraftVersion}"
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
@@ -250,4 +317,7 @@ jar {
     }
     exclude("assets/copycats/models/block/copycat_base/README.md")
     exclude("META-INF/MANIFEST.MF")
+    doLast {
+        relocateBundledApiClasses(archiveFile.get().asFile)
+    }
 }
