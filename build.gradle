@@ -11,7 +11,7 @@ def targetProfiles = [
         ],
         "26.2": [
                 minecraftVersion     : "26.2",
-                minecraftVersionRange: ">=26.2- <26.3-",
+                minecraftVersionRange: ">=26.2-",
                 fabricApiVersion     : "0.152.2+26.2",
                 createFlyCurseId     : "8245554"
         ]
@@ -284,6 +284,39 @@ processResources {
                 "minecraft_version_range": minecraftVersionRange,
                 "create_version_range": createVersionRange
         )
+    }
+
+    // Minecraft 26.2 resolves block and item names through separate translation keys.
+    // Most Copycats+ locales already translate the block keys, while the corresponding
+    // item keys are absent. Copy those locale-specific names into the item namespace
+    // in the processed resources so every translated block has a translated inventory
+    // item as well. Missing source translations still fall back to en_us normally.
+    doLast {
+        def languageDirectory = file("$destinationDir/assets/copycats/lang")
+        if (!languageDirectory.isDirectory()) {
+            return
+        }
+
+        def parser = new groovy.json.JsonSlurper()
+        def englishTranslations = parser.parse(new File(languageDirectory, "en_us.json")) as Map
+        def defaultItemTranslations = englishTranslations.findAll { key, value -> key.startsWith("item.copycats.") }
+
+        languageDirectory.listFiles({ file -> file.name.endsWith(".json") } as FileFilter).each { languageFile ->
+            def translations = parser.parse(languageFile) as Map
+            def itemTranslations = translations.collectEntries { key, value ->
+                if (key.startsWith("block.copycats.")) {
+                    return [("item.copycats." + key.substring("block.copycats.".length())): value]
+                }
+                return [:]
+            }
+            itemTranslations.each { key, value ->
+                if (!translations.containsKey(key)) translations[key] = value
+            }
+            defaultItemTranslations.each { key, value ->
+                if (!translations.containsKey(key)) translations[key] = value
+            }
+            languageFile.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(translations)) + "\n", "UTF-8")
+        }
     }
 }
 
