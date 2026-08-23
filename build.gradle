@@ -24,6 +24,9 @@ if (targetProfile == null) {
 }
 
 def minecraftVersion = providers.gradleProperty("minecraft_version").getOrElse(targetProfile.minecraftVersion)
+// Keep the precise version for dependency and compatibility metadata, but show the intended
+// 26.1+ support range in the published JAR/mod version.
+def releaseMinecraftLabel = targetVersion == "26.1.2" ? "26.1+" : minecraftVersion
 def minecraftVersionRange = providers.gradleProperty("minecraft_version_range").getOrElse(targetProfile.minecraftVersionRange)
 def fabricApiVersion = providers.gradleProperty("fabric_api_version").getOrElse(targetProfile.fabricApiVersion)
 def createFlyCurseId = providers.gradleProperty("create_fly_curse_id").getOrElse(targetProfile.createFlyCurseId)
@@ -36,7 +39,7 @@ repositories {
     maven { url "https://cursemaven.com" }
 }
 
-version = "3.0.7-createfly+mc.${minecraftVersion}"
+version = "3.0.7-createfly+mc.${releaseMinecraftLabel}"
 group = project.maven_group
 
 base {
