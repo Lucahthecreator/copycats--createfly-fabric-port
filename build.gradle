@@ -94,6 +94,10 @@ def prepareWorkingJar = tasks.register("prepareWorkingJar") {
             try {
                 inputJar.entries().each { entry ->
                     if (overriddenClasses.contains(entry.name)) return
+                    // This jar is a classpath overlay for the reconstructed sources, not a
+                    // second Copycats mod. Let the processed source-set metadata be the only
+                    // fabric.mod.json visible to Loom's development run.
+                    if (entry.name == "fabric.mod.json") return
                     def outputEntry = new java.util.zip.ZipEntry(entry.name)
                     outputEntry.time = entry.time
                     outputJar.putNextEntry(outputEntry)
@@ -112,6 +116,9 @@ def prepareWorkingJar = tasks.register("prepareWorkingJar") {
             try {
                 inputJar.entries().each { entry ->
                     if (overriddenClasses.contains(entry.name)) return
+                    // See the equivalent 26.1.x path above: retaining the original mod
+                    // metadata here makes Fabric load the working jar as a duplicate mod.
+                    if (entry.name == "fabric.mod.json") return
                     def outputEntry = new java.util.zip.ZipEntry(entry.name)
                     outputEntry.time = entry.time
                     outputJar.putNextEntry(outputEntry)

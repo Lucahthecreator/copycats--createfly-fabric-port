@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Fixed
+
+- Fixed ColorLight preventing connected textures on Copycats+ blocks.
+
+## 3.0.7 - 2026-08-10
+
+### Fixed
+
+- Fixed Copycats+ item names displaying untranslated language keys in inventories and item tooltips.
+- Added complete item-name key coverage for every bundled language file, preserving native translations where available and using the English fallback otherwise.
+
 ## 3.0.5 - 2026-02-15
 
 ### Added

@@ -21,7 +21,8 @@
     "foundation.copycat.RotatedPillarCTBehaviourMixin",
     "foundation.copycat.ModelBlockRendererMixin",
     "foundation.copycat.IndigoBlockRendererMixin",
-    "foundation.copycat.SodiumBlockRenderContextMixin"
+    "foundation.copycat.SodiumBlockRenderContextMixin",
+    "foundation.copycat.ColorLightTintedBakedModelAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

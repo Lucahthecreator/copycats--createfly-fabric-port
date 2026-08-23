@@ -52,6 +52,7 @@ import com.copycatsplus.copycats.compat.debug.CopycatsDebug;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.mixin.foundation.copycat.FabricBlockStateModelWrapperAccessor;
+import com.copycatsplus.copycats.mixin.foundation.copycat.ColorLightTintedBakedModelAccessor;
 import com.zurrtum.create.AllBlocks;
 import com.zurrtum.create.api.behaviour.BlockEntityBehaviour;
 import com.zurrtum.create.client.foundation.model.BakedModelHelper;
@@ -476,19 +477,23 @@ extends WrapperBlockStateModel {
     }
 
     /**
-     * Continuity wraps every baked block model. Its CT/emissive transforms cannot safely represent
-     * Copycats' block-entity-selected material, so unwrap only Continuity's optional wrappers.
+     * Some optional render mods wrap every baked block model. Copycats needs the underlying
+     * context-aware model when it renders a block-entity-selected material; otherwise a wrapped
+     * CT model only exposes its static parts and the connection information is lost.
      */
     public static BlockStateModel unwrapContinuityModel(BlockStateModel model) {
         BlockStateModel current = model;
         for (int depth = 0; current != null && depth < 8; depth++) {
-            if (!current.getClass().getName().startsWith("me.pepperbell.continuity.")) {
+            BlockStateModel wrapped;
+            if (current.getClass().getName().startsWith("me.pepperbell.continuity.")
+                    && current instanceof FabricBlockStateModelWrapperAccessor accessor) {
+                wrapped = accessor.copycats$getWrapped();
+            } else if (current.getClass().getName().equals("me.mrhikmen.colorlight.core.render.TintedBakedModel")
+                    && current instanceof ColorLightTintedBakedModelAccessor accessor) {
+                wrapped = accessor.copycats$getWrapped();
+            } else {
                 break;
             }
-            if (!(current instanceof FabricBlockStateModelWrapperAccessor accessor)) {
-                break;
-            }
-            BlockStateModel wrapped = accessor.copycats$getWrapped();
             if (wrapped == null || wrapped == current) {
                 break;
             }
