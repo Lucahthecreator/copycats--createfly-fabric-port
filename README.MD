@@ -6,6 +6,7 @@ An unofficial, Fabric-only port of **Create: Copycats+ 3.0.7** for **CreateFly**
 
 [![Minecraft 26.1+](https://img.shields.io/badge/Minecraft-26.1%2B-62b47a?style=flat-square)](#supported-versions)
 [![Minecraft 26.2](https://img.shields.io/badge/Minecraft-26.2-62b47a?style=flat-square)](#supported-versions)
+[![Future versions](https://img.shields.io/badge/Future_versions-Planned-4c8bf5?style=flat-square)](#future-version-support)
 [![Fabric](https://img.shields.io/badge/Loader-Fabric-d8c7a3?style=flat-square)](https://fabricmc.net/)
 [![Java 25](https://img.shields.io/badge/Java-25-e76f00?style=flat-square)](#requirements)
 [![GitHub](https://img.shields.io/badge/GitHub-Source-24292e?style=flat-square)](https://github.com/Lucahthecreator/copycats--createfly-fabric-port)
@@ -34,12 +35,25 @@ When ColorLight is installed, the port preserves connected textures by unwrappin
 
 ## Supported versions
 
-| JAR label | Build target | Minecraft compatibility | CreateFly compatibility | Build dependency |
+These are the newest Minecraft and CreateFly versions currently supported by the port:
+
+| Release | JAR label | Minecraft support | Newest supported CreateFly build | Accepted CreateFly range |
 | --- | --- | --- | --- | --- |
-| `mc.26.1+` | `26.1.2` | `>=26.1- <26.2-` | `>=6.0.9-1 <6.0.10` | CreateFly 6.0.9 build 4 |
-| `mc.26.2` | `26.2` | `>=26.2-` | `>=6.0.9-1 <6.0.10` | CreateFly 6.0.9 build 1 for 26.2 |
+| Current 26.1 line | `mc.26.1+` | Minecraft `26.1` through `26.1.2` | CreateFly 6.0.9 build 4 for 26.1.2 | `>=6.0.9-1 <6.0.10` |
+| Current newest line | `mc.26.2` | Minecraft `26.2` | CreateFly 6.0.9 build 1 for 26.2 | `>=6.0.9-1 <6.0.10` |
 
 The `mc.26.1+` name indicates support for the compatible 26.1 release line, not only Minecraft 26.1.2. It does not include Minecraft 26.2; use the `mc.26.2` JAR for that line.
+
+### Future version support
+
+This port is intended to continue supporting future stable Minecraft versions and newer CreateFly releases. A future version will be listed as supported after:
+
+- CreateFly publishes a compatible build for that Minecraft version.
+- The port compiles successfully against the new versions.
+- Core blocks, connected textures, contraptions, and known mod compatibility are tested.
+- A separate matching JAR is published on Modrinth and CurseForge.
+
+Newer Minecraft or CreateFly versions should not be assumed compatible until they appear in the table above. This avoids worlds being opened with an untested build while keeping the project committed to future version updates.
 
 ## Requirements
 
