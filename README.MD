@@ -1,197 +1,177 @@
-# Create: Copycats+ Fabric Port
+<div align="center">
 
-<p align="center">
-  <a href="https://github.com/Lucahthecreator/copycats--createfly-fabric-port">
-    <img alt="GitHub repo" src="https://img.shields.io/badge/GitHub-copycats--createfly--fabric--port-24292e?style=flat-square">
-  </a>
-</p>
+# Create: Copycats+ — CreateFly Fabric Port
 
-This is an **unofficial Fabric-only port** of **Create: Copycats+ 3.0.7** for **CreateFly**.
+An unofficial, Fabric-only port of **Create: Copycats+ 3.0.7** for **CreateFly**.
 
-This project is not an official Copycats+ release and is not maintained or supported by the official Copycats+ team.
+[![Minecraft 26.1+](https://img.shields.io/badge/Minecraft-26.1%2B-62b47a?style=flat-square)](#supported-versions)
+[![Minecraft 26.2](https://img.shields.io/badge/Minecraft-26.2-62b47a?style=flat-square)](#supported-versions)
+[![Fabric](https://img.shields.io/badge/Loader-Fabric-d8c7a3?style=flat-square)](https://fabricmc.net/)
+[![Java 25](https://img.shields.io/badge/Java-25-e76f00?style=flat-square)](#requirements)
+[![GitHub](https://img.shields.io/badge/GitHub-Source-24292e?style=flat-square)](https://github.com/Lucahthecreator/copycats--createfly-fabric-port)
 
-Support for this port is handled separately by **lucahTheCreator**.
+[Modrinth](https://modrinth.com/mod/copycats+-createfly-port) ·
+[CurseForge](https://www.curseforge.com/minecraft/mc-mods/copycats-createfly-port) ·
+[Source](https://github.com/Lucahthecreator/copycats--createfly-fabric-port) ·
+[Report an issue](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/issues)
 
----
+</div>
 
-## Permission
+> [!IMPORTANT]
+> This is not an official Copycats+ release. It is not maintained or supported by the official Copycats+ team. Support for this port is handled separately by **lucahTheCreator**.
 
-Permission to publish this unofficial port was granted by **Bennyboy1695** from the Copycats+ team.
+## Overview
 
-The permission was granted with these conditions:
+This port rebuilds the general Copycats+ feature set for CreateFly on Fabric. It includes:
 
-* The source code must be visible on GitHub.
-* This project should be archived or deprecated when Copycats+ officially supports this version.
+- A Fabric-only build and release setup
+- The Java changes required by the supported CreateFly versions
+- Copycat blocks, slabs, stairs, panes, doors, layers, boards, and more
+- CreateFly compatibility for the Fabric loader
+- Connected-texture compatibility with ColorLight
 
-Proof screenshot:
+When ColorLight is installed, the port preserves connected textures by unwrapping its model hook for Copycat materials. ColorLight-specific tinting or lighting may therefore look slightly different on Copycat surfaces than on regular blocks.
 
-![Permission proof](docs/permission.png)
+## Supported versions
 
----
+| JAR label | Build target | Minecraft compatibility | CreateFly compatibility | Build dependency |
+| --- | --- | --- | --- | --- |
+| `mc.26.1+` | `26.1.2` | `>=26.1- <26.2-` | `>=6.0.9-1 <6.0.10` | CreateFly 6.0.9 build 4 |
+| `mc.26.2` | `26.2` | `>=26.2-` | `>=6.0.9-1 <6.0.10` | CreateFly 6.0.9 build 1 for 26.2 |
 
-## Original Projects
+The `mc.26.1+` name indicates support for the compatible 26.1 release line, not only Minecraft 26.1.2. It does not include Minecraft 26.2; use the `mc.26.2` JAR for that line.
 
-* Copycats+: [GitHub](https://github.com/copycats-plus/copycats) | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/copycats) | [Modrinth](https://modrinth.com/mod/copycats)
-* Create Fly: [CurseForge](https://www.curseforge.com/minecraft/mc-mods/create-fly) | [Modrinth](https://modrinth.com/mod/create-fly)
+## Requirements
 
-All original Copycats+ code, assets, ideas, and features belong to the original Copycats+ developers.
+- [Fabric Loader](https://fabricmc.net/use/installer/) 0.19.2 or newer
+- Java 25
+- CreateFly 6.0.9 in the supported range shown above
+- Any other dependencies requested by your launcher for the same Minecraft version
 
----
-
-## What This Port Includes
-
-* Fabric-only build and release setup
-* Java code changes needed for the CreateFly target version
-* Copycat blocks, slabs, stairs, panes, doors, layers, boards, and more
-* CreateFly compatibility for the Fabric loader
-* The same general Copycats+ feature set rebuilt for this target
-
----
+Always keep Minecraft, CreateFly, this port, and its dependencies on the same supported version line.
 
 ## Installation
 
-### Supported versions
+### Modrinth App
 
-| Port jar    | Minecraft compatibility | CreateFly compatibility | Build dependency                 |
-| ----------- | ----------------------- | ----------------------- | -------------------------------- |
-| `mc.26.1.2` | `>=26.1- <26.2-`        | `>=6.0.9-1 <6.0.10`     | CreateFly 6.0.9 build 4          |
-| `mc.26.2`   | `>=26.2- <26.3-`        | `>=6.0.9-1 <6.0.10`     | CreateFly 6.0.9 build 1 for 26.2 |
+1. Open the [Copycats+ CreateFly Port Modrinth page](https://modrinth.com/mod/copycats+-createfly-port).
+2. Select **Install with Modrinth App**.
+3. Choose an existing Fabric profile or create a new Fabric profile.
+4. Confirm that the profile uses the correct Minecraft version for the port JAR.
+5. Install the required dependencies for that version, including Create Fly.
+6. Launch the game once so the mod can generate its configuration files.
 
-Use the jar for your Minecraft line. Do not use the `26.1.2` jar on `26.2`, or the `26.2` jar on `26.1.2`.
+### Modrinth manual installation
 
-### Option 1: Modrinth App
+1. Open the [Modrinth versions page](https://modrinth.com/mod/copycats+-createfly-port/versions).
+2. Download the Fabric `.jar` matching your Minecraft and CreateFly version.
+3. Install [Fabric Loader](https://fabricmc.net/use/installer/) for the same Minecraft version.
+4. Install the matching dependencies, including [Create Fly](https://modrinth.com/mod/create-fly).
+5. Put the downloaded `.jar` in your Minecraft `mods` folder.
+6. Start the game and confirm that the mod appears in the mod list.
 
-1. Open the Copycats+ CreateFly Port Modrinth page:
-   https://modrinth.com/mod/copycats+-createfly-port
-2. Click `Install with Modrinth App`.
-3. Select an existing Fabric profile or create a new Fabric profile.
-4. Make sure the profile uses the correct Minecraft version for the port jar you are installing.
-5. Install the required dependencies for the same Minecraft version, including Create Fly.
-6. Launch the game once so the mod can generate its config files.
+### CurseForge App
 
-### Option 2: Modrinth Manual Install
-
-1. Open the Copycats+ CreateFly Port Modrinth page:
-   https://modrinth.com/mod/copycats+-createfly-port
-2. Go to the `Versions` tab.
-3. Download the Fabric `.jar` that matches your Minecraft / CreateFly version.
-4. Install [Fabric Loader](https://fabricmc.net/use/installer/) for the matching Minecraft version.
-5. Install the required dependencies for the same Minecraft version, including [Create Fly](https://modrinth.com/mod/create-fly).
-6. Put the downloaded `.jar` into your `mods` folder.
-7. Start the game and confirm the mod appears in the mod list.
-
-### Option 3: CurseForge App
-
-1. Open the Copycats+ CreateFly Port CurseForge page:
-   https://www.curseforge.com/minecraft/mc-mods/copycats-createfly-port
-2. Pick the Fabric file for your Minecraft / CreateFly version.
+1. Open the [Copycats+ CreateFly Port CurseForge page](https://www.curseforge.com/minecraft/mc-mods/copycats-createfly-port).
+2. Select the Fabric file for your Minecraft and CreateFly version.
 3. Open your CurseForge Minecraft profile.
-4. Click `Add More Content`.
-5. Install the matching file and required dependencies.
-6. Launch the game once so the mod can generate its config files.
+4. Select **Add More Content**.
+5. Install the matching file and all required dependencies.
+6. Launch the game once so the mod can generate its configuration files.
 
-### Option 4: CurseForge Manual Install
+### CurseForge manual installation
 
-1. Open the Copycats+ CreateFly Port CurseForge page:
-   https://www.curseforge.com/minecraft/mc-mods/copycats-createfly-port
-2. Go to the `Files` tab.
-3. Download the Fabric `.jar` that matches your Minecraft / CreateFly version.
-4. Install [Fabric Loader](https://fabricmc.net/use/installer/) for the matching Minecraft version.
-5. Install the required dependencies for the same Minecraft version, including [Create Fly](https://www.curseforge.com/minecraft/mc-mods/create-fly).
-6. Put the downloaded `.jar` into your `mods` folder.
-7. Start the game and confirm the mod appears in the mod list.
+1. Open the [CurseForge files page](https://www.curseforge.com/minecraft/mc-mods/copycats-createfly-port/files).
+2. Download the Fabric `.jar` matching your Minecraft and CreateFly version.
+3. Install [Fabric Loader](https://fabricmc.net/use/installer/) for the same Minecraft version.
+4. Install the matching dependencies, including [Create Fly](https://www.curseforge.com/minecraft/mc-mods/create-fly).
+5. Put the downloaded `.jar` in your Minecraft `mods` folder.
+6. Start the game and confirm that the mod appears in the mod list.
 
----
+## Building from source
 
-## Building From Source
+Install Java 25 before building.
 
-Install Java 25.
-
-Build the default Minecraft 26.1.2 target:
+The default target is Minecraft 26.1.2, and its output JAR uses the broader `mc.26.1+` compatibility label:
 
 ```bash
 ./gradlew clean build
 ```
 
-Build the Minecraft 26.2 target:
+Build the Minecraft 26.2 target with:
 
 ```bash
 ./gradlew clean build -Ptarget_version=26.2
 ```
 
-Build both release jars on Windows:
+Build every supported release JAR on Windows with:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/build-supported.ps1
 ```
 
-The built `.jar` files are placed in:
+Gradle places completed JARs in:
 
 ```text
 build/libs
 ```
 
----
-
-## Support
-
-Report issues for this unofficial port on this repository.
-
-Do **not** report issues from this port to the official Copycats+ issue tracker unless the same bug also happens on an official Copycats+ release.
-
-When reporting a bug, include:
-
-* Minecraft version
-* Fabric Loader version
-* CreateFly version
-* This port version
-* Crash report or latest log
-* Mod list, if possible
-* Whether the issue happens in singleplayer, multiplayer, or both
-
----
-
 ## Diagnostics
 
-Diagnostics are off by default. After starting the game once, edit `config/copycats-debug.properties`; changes reload while the game is running.
+Diagnostics are disabled by default. After starting the game once, edit `config/copycats-debug.properties`. Changes reload while the game is running.
 
-* Set `enabled=true` to enable every category.
-* Enable individual categories with `ct`, `door`, `material`, `shape`, `filter`, or `face_hiding`.
-* Set `limit` to cap the number of messages printed by each category.
-* Search `latest.log` for `[Copycats Debug/` to find all diagnostic messages.
-* For development, categories can also be enabled with JVM options such as `-Dcopycats.debug.ct=true` or `-Dcopycats.debug=true`.
+- Set `enabled=true` to enable every category.
+- Enable individual categories with `ct`, `door`, `material`, `shape`, `filter`, or `face_hiding`.
+- Set `limit` to cap the number of messages printed by each category.
+- Search `latest.log` for `[Copycats Debug/` to find diagnostic messages.
+- During development, categories can also be enabled with JVM options such as `-Dcopycats.debug.ct=true` or `-Dcopycats.debug=true`.
 
----
+## Support and bug reports
 
-## Notes
+Report issues with this unofficial port in this repository.
 
-* This repository is intentionally Fabric-only.
-* If you want the upstream multi-loader project, use the original Copycats+ repository.
-* Support and updates for this port are handled separately from the official Copycats+ project.
-* This project will be archived or deprecated when official Copycats+ support for this version becomes available.
+Do **not** report port-specific issues to the official Copycats+ issue tracker unless the same problem also occurs in an official Copycats+ release.
 
----
+Include the following information in bug reports:
+
+- Minecraft version
+- Fabric Loader version
+- CreateFly version
+- This port's version
+- Crash report or latest log
+- Mod list, when possible
+- Whether the issue occurs in singleplayer, multiplayer, or both
+
+## Permission and project policy
+
+**Bennyboy1695** from the Copycats+ team granted permission to publish this unofficial port under these conditions:
+
+- The source code must remain visible on GitHub.
+- This project should be archived or deprecated when Copycats+ officially supports this version.
+
+![Permission proof](docs/permission.png)
+
+This repository is intentionally Fabric-only. For the upstream multi-loader project, use the original Copycats+ repository. Support and updates for this port are handled separately from the official project.
+
+## Original projects
+
+- **Copycats+:** [GitHub](https://github.com/copycats-plus/copycats) · [CurseForge](https://www.curseforge.com/minecraft/mc-mods/copycats) · [Modrinth](https://modrinth.com/mod/copycats)
+- **Create Fly:** [CurseForge](https://www.curseforge.com/minecraft/mc-mods/create-fly) · [Modrinth](https://modrinth.com/mod/create-fly)
+
+All original Copycats+ code, assets, ideas, and features belong to the original Copycats+ developers.
 
 ## Contributing
 
-Bug reports and pull requests for this Fabric port are welcome here.
-
-If you want to contribute to the official project, use the upstream Copycats+ repository instead.
-
----
+Bug reports and pull requests for this Fabric port are welcome here. Contributions intended for the official project should be submitted to the upstream Copycats+ repository instead.
 
 ## Credits
 
-* Original mod: Create: Copycats+
-* Original developers: Copycats+ team
-* CreateFly project and its developers
-* Create community and addon contributors
-* Unofficial port: lucahTheCreator
-* OpenAI Codex for help
-
-Permission proof is shown above.
-
----
+- Original mod: Create: Copycats+
+- Original developers: Copycats+ team
+- CreateFly project and its developers
+- Create community and addon contributors
+- Unofficial port: lucahTheCreator
+- OpenAI Codex for help
 
 ## License
 
