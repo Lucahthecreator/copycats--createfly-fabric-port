@@ -39,7 +39,7 @@ repositories {
     maven { url "https://cursemaven.com" }
 }
 
-version = "3.0.7-createfly+mc.${releaseMinecraftLabel}"
+version = "3.0.7-createfly+mc.${releaseMinecraftLabel}-v1.12"
 group = project.maven_group
 
 base {

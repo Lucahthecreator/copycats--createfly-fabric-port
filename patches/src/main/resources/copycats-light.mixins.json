@@ -10,7 +10,9 @@
     "foundation.copycat.BlockStateBaseMixin",
     "foundation.copycat.CopycatBlockMixin",
     "foundation.copycat.CopycatBlockEntityMixin",
-    "foundation.copycat.CopycatCogWheelMaterialMixin"
+    "foundation.copycat.CopycatCogWheelMaterialMixin",
+    "foundation.copycat.CopycatSlidingDoorBlockMixin",
+    "foundation.copycat.CopycatSlidingDoorBlockEntityMixin"
   ],
   "client": [
     "foundation.copycat.ConnectedTextureBehaviourMixin",
@@ -22,7 +24,9 @@
     "foundation.copycat.ModelBlockRendererMixin",
     "foundation.copycat.IndigoBlockRendererMixin",
     "foundation.copycat.SodiumBlockRenderContextMixin",
-    "foundation.copycat.ColorLightTintedBakedModelAccessor"
+    "foundation.copycat.ColorLightTintedBakedModelAccessor",
+    "foundation.copycat.CopycatSlidingDoorModelCoreMixin",
+    "foundation.copycat.CopycatFoldingDoorModelCoreMixin"
   ],
   "injectors": {
     "defaultRequire": 1
