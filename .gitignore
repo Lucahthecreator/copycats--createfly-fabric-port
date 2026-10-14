@@ -37,3 +37,14 @@ compile-common.log
 compile-core.log
 
 create-imports.txt
+
+# Local test clients and prepared downloads
+run-dev-*/
+run-new/
+run-old/
+dev-client-logs/
+logs/
+dist/
+releases/
+backport-1.21.11/build/
+.github-publish/

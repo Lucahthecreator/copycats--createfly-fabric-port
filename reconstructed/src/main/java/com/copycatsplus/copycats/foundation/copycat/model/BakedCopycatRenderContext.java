@@ -15,6 +15,7 @@
  */
 package com.copycatsplus.copycats.foundation.copycat.model;
 
+import com.copycatsplus.copycats.compat.render.CreateFlyNormals;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.AssemblyTransform;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.CopycatRenderContext;
 import com.copycatsplus.copycats.foundation.copycat.model.assembly.MutableAABB;
@@ -56,7 +57,7 @@ extends CopycatRenderContext.Base<List<BakedCopycatRenderContext.SourceQuad>, Qu
         transform.apply(cull);
         AABB crop = select.toAABB();
         Vec3 move = offset.toVec3().subtract(select.minX, select.minY, select.minZ);
-        for (SourceQuad source : (List)this.source()) {
+        for (SourceQuad source : this.source()) {
             if (cull.isCulled(source.quad().direction())) continue;
             this.assembleQuad(source, crop, move, transform, transforms);
         }
@@ -64,7 +65,7 @@ extends CopycatRenderContext.Base<List<BakedCopycatRenderContext.SourceQuad>, Qu
 
     @Override
     public void assembleAll() {
-        for (SourceQuad source : (List)this.source()) {
+        for (SourceQuad source : this.source()) {
             this.add(source.quad(), source.cullFace());
         }
     }
@@ -76,7 +77,7 @@ extends CopycatRenderContext.Base<List<BakedCopycatRenderContext.SourceQuad>, Qu
 
     @Override
     public void assembleRaw(AABB crop, Vec3 move, QuadTransform ... transforms) {
-        for (SourceQuad source : (List)this.source()) {
+        for (SourceQuad source : this.source()) {
             this.assembleQuad(source, crop, move, AssemblyTransform.IDENTITY, transforms);
         }
     }
@@ -98,7 +99,7 @@ extends CopycatRenderContext.Base<List<BakedCopycatRenderContext.SourceQuad>, Qu
         BakedQuad baked = new BakedQuad((Vector3fc)quad.vertices.get((int)0).xyz.toVec3().toVector3f(), (Vector3fc)quad.vertices.get((int)1).xyz.toVec3().toVector3f(), (Vector3fc)quad.vertices.get((int)2).xyz.toVec3().toVector3f(), (Vector3fc)quad.vertices.get((int)3).xyz.toVec3().toVector3f(), UVPair.pack((float)quad.vertices.get((int)0).uv.u, (float)quad.vertices.get((int)0).uv.v), UVPair.pack((float)quad.vertices.get((int)1).uv.u, (float)quad.vertices.get((int)1).uv.v), UVPair.pack((float)quad.vertices.get((int)2).uv.u, (float)quad.vertices.get((int)2).uv.v), UVPair.pack((float)quad.vertices.get((int)3).uv.u, (float)quad.vertices.get((int)3).uv.v), lightFace, cropped.materialInfo());
         MutableVec3 normal = quad.computeFaceNormal();
         Vector3f vector = new Vector3f((float)normal.x, (float)normal.y, (float)normal.z);
-        BakedModelHelper.setNormals((BakedQuad)baked, (Vector3f[])new Vector3f[]{vector, vector, vector, vector});
+        CreateFlyNormals.setNormal(baked, vector);
         this.add(baked, quad.cullFace);
     }
 

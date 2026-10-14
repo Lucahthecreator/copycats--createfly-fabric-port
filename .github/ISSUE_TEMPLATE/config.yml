@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Installation and compatibility guide
+    url: https://github.com/Lucahthecreator/copycats--createfly-fabric-port#installation
+    about: Check supported versions, dependencies, and setup steps.
+  - name: Existing reports and suggestions
+    url: https://github.com/Lucahthecreator/copycats--createfly-fabric-port/issues
+    about: Search before opening a new report.

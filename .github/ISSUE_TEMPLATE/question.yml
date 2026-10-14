@@ -1,0 +1,29 @@
+name: Question or installation help
+description: Ask about setup, supported versions, or how to use this port.
+title: "[Question] "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The README has installation steps and a compatibility table. If those do not answer your question, describe what you need help with below.
+  - type: textarea
+    id: question
+    attributes:
+      label: What do you need help with?
+    validations:
+      required: true
+  - type: textarea
+    id: tried
+    attributes:
+      label: What have you tried?
+      description: Include any error message or the step where you got stuck.
+  - type: textarea
+    id: versions
+    attributes:
+      label: Your versions and setup
+      description: For setup questions, include Minecraft, Copycats+, Create Fly, Fabric Loader/API, and your launcher.
+  - type: textarea
+    id: context
+    attributes:
+      label: Screenshots or additional details

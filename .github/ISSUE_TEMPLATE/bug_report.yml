@@ -1,0 +1,87 @@
+name: Bug or crash
+description: Report a crash, broken block behavior, or rendering problem.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Report problems with this unofficial Create Fly port here. Search existing issues first, and include exact versions so we can reproduce your setup.
+  - type: input
+    id: minecraft
+    attributes:
+      label: Minecraft version
+      placeholder: "26.2"
+    validations:
+      required: true
+  - type: input
+    id: copycats
+    attributes:
+      label: Copycats+ version or full JAR filename
+      placeholder: "Copycats+-Fabric-26.2-v1.16.jar"
+    validations:
+      required: true
+  - type: input
+    id: createfly
+    attributes:
+      label: Exact Create Fly version
+      description: Include the Minecraft version and build number. Copy the JAR filename if unsure.
+      placeholder: "create-fly-26.2-6.0.9-2.jar"
+    validations:
+      required: true
+  - type: input
+    id: fabric
+    attributes:
+      label: Fabric Loader and Fabric API versions
+      description: These are listed in your launcher or latest.log.
+      placeholder: "Loader 0.19.3; Fabric API 0.152.2+26.2"
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Where does it happen?
+      options:
+        - Singleplayer
+        - Multiplayer
+        - Both singleplayer and multiplayer
+        - During startup or in menus
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: What happened, and what should happen?
+      description: Include the affected Copycats+ block and its copied material.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Place a Copycat Board.
+        2. Apply oak planks as its material.
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Crash report or latest.log
+      description: Attach the file, link to a log, or paste the relevant section. For rendering issues, add screenshots in the field below.
+      render: text
+  - type: textarea
+    id: other_mods
+    attributes:
+      label: Other mods, screenshots, and anything else
+      description: Mention Sodium, Iris, shaders, ColorLight, resource packs, and other rendering mods if installed. Attach images here.
+  - type: dropdown
+    id: minimal
+    attributes:
+      label: Have you tried a minimal setup?
+      description: This is optional; do not remove mods from your existing world to test.
+      options:
+        - Not tested yet
+        - Also happens with only Fabric API, Create Fly, and Copycats+
+        - Only happens with additional mods or resource packs

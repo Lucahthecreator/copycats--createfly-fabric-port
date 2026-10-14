@@ -1,0 +1,71 @@
+name: Mod compatibility
+description: Report a problem involving another mod, shader, or resource pack.
+title: "[Compatibility] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Exact versions and a small reproduction setup help us identify which integration needs work. Please use a separate test instance when removing mods.
+  - type: input
+    id: minecraft
+    attributes:
+      label: Minecraft version
+      placeholder: "26.2"
+    validations:
+      required: true
+  - type: input
+    id: copycats
+    attributes:
+      label: Copycats+ version or full JAR filename
+      placeholder: "Copycats+-Fabric-26.2-v1.16.jar"
+    validations:
+      required: true
+  - type: input
+    id: createfly
+    attributes:
+      label: Exact Create Fly version
+      placeholder: "create-fly-26.2-6.0.9-2.jar"
+    validations:
+      required: true
+  - type: input
+    id: fabric
+    attributes:
+      label: Fabric Loader and Fabric API versions
+    validations:
+      required: true
+  - type: input
+    id: integration
+    attributes:
+      label: Other mod, shader, or resource pack and its version
+      description: Add a project link if there are multiple projects with similar names.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: What breaks?
+      description: Include the affected blocks/materials and the expected result.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps and smallest known reproduction setup
+      description: Tell us whether it also happens without the other mod or pack, if you have tested that.
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      options:
+        - Singleplayer
+        - Multiplayer
+        - Both
+        - Startup or menus
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs, crash report, screenshots, and mod list
+      description: Attach files or paste links. Mention shader settings and resource packs for rendering issues.

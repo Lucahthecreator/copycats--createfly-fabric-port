@@ -1,0 +1,45 @@
+name: Enhancement or feature
+description: Suggest a new feature, improvement, or better user experience.
+title: "[Enhancement] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the problem or building task you want to improve. Search existing suggestions first so related ideas can stay together.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What would you like to improve?
+      description: Explain your use case and what is difficult or missing today.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe what the feature should do. Examples or sketches help.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Building blocks and materials
+        - Rendering or connected textures
+        - Create machines or contraptions
+        - Performance
+        - Installation or documentation
+        - Development tools
+        - Something else
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives or workarounds
+      description: What have you tried? Would a smaller change solve the same problem?
+  - type: textarea
+    id: context
+    attributes:
+      label: Examples and additional context
+      description: Include relevant Minecraft/Create Fly versions, screenshots, or links if helpful.

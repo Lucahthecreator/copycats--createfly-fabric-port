@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v1.16 - 2026-10-13
+
+### Fixed
+
+- Fixed placing Copycats+ blocks crashing on Create Fly 26.2-6.0.9-2 beta. Normal assignment supports both the new single-normal API and the previous four-normal API.
+- The shared baked render context is now compiled from source and replaces its stale class in the binary overlay.
+
+### Development
+
+- Added separate development clients for Create Fly 26.2 builds 1 and 2, with launchers at the project root.
+
 ## Unreleased
 
 ### Fixed

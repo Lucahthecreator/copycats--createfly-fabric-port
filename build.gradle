@@ -13,7 +13,8 @@ def targetProfiles = [
                 minecraftVersion     : "26.2",
                 minecraftVersionRange: ">=26.2-",
                 fabricApiVersion     : "0.152.2+26.2",
-                createFlyCurseId     : "8245554"
+                createFlyCurseId     : "8245554",
+                createFlyVersion     : "26.2-6.0.9-2"
         ]
 ]
 
@@ -30,6 +31,9 @@ def releaseMinecraftLabel = targetVersion == "26.1.2" ? "26.1+" : minecraftVersi
 def minecraftVersionRange = providers.gradleProperty("minecraft_version_range").getOrElse(targetProfile.minecraftVersionRange)
 def fabricApiVersion = providers.gradleProperty("fabric_api_version").getOrElse(targetProfile.fabricApiVersion)
 def createFlyCurseId = providers.gradleProperty("create_fly_curse_id").getOrElse(targetProfile.createFlyCurseId)
+// A Maven version can select the beta or the previous stable build for compatibility testing.
+def createFlyVersion = providers.gradleProperty("create_fly_version").getOrElse(
+        providers.gradleProperty("create_fly_curse_id").isPresent() ? "" : (targetProfile.createFlyVersion ?: ""))
 def createVersionRange = providers.gradleProperty("create_version_range").getOrElse(">=6.0.9-1 <6.0.10")
 
 repositories {
@@ -39,7 +43,7 @@ repositories {
     maven { url "https://cursemaven.com" }
 }
 
-version = "3.0.7-createfly+mc.${releaseMinecraftLabel}-v1.12"
+version = "3.0.7-createfly+mc.${releaseMinecraftLabel}-v1.16"
 group = project.maven_group
 
 base {
@@ -48,6 +52,12 @@ base {
 
 loom {
     accessWidenerPath = file("reconstructed/src/main/resources/copycats.accesswidener")
+    runs {
+        client {
+            runDir = providers.gradleProperty("dev_run_dir").getOrElse("run-dev-${targetVersion}")
+            programArgs("--username", "CopycatsDev")
+        }
+    }
 }
 
 sourceSets {
@@ -58,6 +68,10 @@ sourceSets {
         resources {
             srcDirs = ["patches/src/main/resources", "reconstructed/src/main/resources"]
         }
+    }
+    compatibilityCheck {
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.runtimeClasspath
     }
 }
 
@@ -71,6 +85,8 @@ def prepareWorkingJar = tasks.register("prepareWorkingJar") {
         def source = file("reconstructed/working.jar")
         def output = preparedWorkingJar.get().asFile
         def overriddenClasses = [
+                "com/copycatsplus/copycats/foundation/copycat/model/BakedCopycatRenderContext.class",
+                "com/copycatsplus/copycats/foundation/copycat/model/BakedCopycatRenderContext\$SourceQuad.class",
                 "com/copycatsplus/copycats/foundation/copycat/model/CreateFlyCopycatModel.class",
                 "com/copycatsplus/copycats/foundation/copycat/model/CopycatKineticRenderBridge.class",
                 "com/copycatsplus/copycats/foundation/copycat/model/CopycatKineticRenderBridge\$RenderState.class",
@@ -271,7 +287,11 @@ dependencies {
     minecraft "com.mojang:minecraft:${minecraftVersion}"
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}"
-    implementation "curse.maven:create-fly-1346281:${createFlyCurseId}"
+    if (createFlyVersion) {
+        implementation "maven.modrinth:create-fly:${createFlyVersion}"
+    } else {
+        implementation "curse.maven:create-fly-1346281:${createFlyCurseId}"
+    }
     implementation preparedWorkingFiles
     compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 
@@ -338,6 +358,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/foundation/copycat/model/CreateFlyCopycatModel.java"))
+compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/foundation/copycat/model/BakedCopycatRenderContext.java"))
 compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/foundation/copycat/model/CopycatKineticRenderBridge.java"))
 compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/foundation/tooltip/CopycatDescription.java"))
 compileJava.source(file("patches/src/main/java/com/copycatsplus/copycats/fabric/CopycatsImpl.java"))
@@ -357,6 +378,21 @@ java {
 
 tasks.named("sourcesJar") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from("reconstructed/src/main/java") {
+        include "com/copycatsplus/copycats/foundation/copycat/model/BakedCopycatRenderContext.java"
+    }
+}
+
+tasks.register("verifyNormalsCompatibility", JavaExec) {
+    group = "verification"
+    description = "Checks normal setter linkage against the selected real Create Fly dependency."
+    dependsOn(compatibilityCheckClasses)
+    classpath = sourceSets.compatibilityCheck.runtimeClasspath
+    mainClass = "com.copycatsplus.copycats.compat.render.CreateFlyNormalsLinkageCheck"
+}
+
+tasks.named("check") {
+    dependsOn("verifyNormalsCompatibility")
 }
 
 jar {
