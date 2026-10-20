@@ -1,0 +1,151 @@
+package com.copycatsplus.copycats.content.copycat.layer;
+
+import com.copycatsplus.copycats.CCShapes;
+import net.minecraft.util.Prediction;
+import com.copycatsplus.copycats.Copycats;
+import com.copycatsplus.copycats.foundation.copycat.CCWaterloggedCopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.ICopycatBlock;
+import com.copycatsplus.copycats.foundation.copycat.IStateType;
+import com.copycatsplus.copycats.utility.BlockUtils;
+import com.zurrtum.create.api.schematic.requirement.SpecialBlockItemRequirement;
+import com.zurrtum.create.content.contraptions.StructureTransform;
+import com.zurrtum.create.content.equipment.wrench.IWrenchable;
+import com.zurrtum.create.content.schematics.requirement.ItemRequirement;
+import javax.annotation.ParametersAreNonnullByDefault;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
+
+@ParametersAreNonnullByDefault
+public class CopycatLayerBlock extends CCWaterloggedCopycatBlock implements SpecialBlockItemRequirement, IStateType {
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
+    public static final IntegerProperty LAYERS = BlockStateProperties.LAYERS;
+
+    public CopycatLayerBlock(Properties pProperties) {
+        super(pProperties);
+        this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.UP));
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockState stateForPlacement = super.getStateForPlacement(context);
+        if (stateForPlacement == null) {
+            return null;
+        } else {
+            BlockPos blockPos = context.getClickedPos();
+            BlockState state = context.getLevel().getBlockState(blockPos);
+            if (state.is(this)) {
+                if (state.getValue(LAYERS) < 8) {
+                    return state.cycle(LAYERS);
+                } else {
+                    Copycats.LOGGER.warn("Can't figure out where to place a layer! Please file an issue if you see this.");
+                    return state;
+                }
+            } else {
+                return stateForPlacement.setValue(FACING, context.getNearestLookingDirection().getOpposite());
+            }
+        }
+    }
+
+    @Override
+    public boolean canBeReplaced(@NotNull BlockState pState, BlockPlaceContext pUseContext) {
+        ItemStack itemstack = pUseContext.getItemInHand();
+        if (!itemstack.is(this.asItem())) {
+            return false;
+        } else {
+            return pState.getValue(LAYERS) == 8 ? false : pState.getValue(FACING) == pUseContext.getClickedFace();
+        }
+    }
+
+    @Override
+    public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
+        if (state.getValue(LAYERS) <= 1) {
+            return super.onSneakWrenched(state, context);
+        } else {
+            Level world = context.getLevel();
+            BlockPos pos = context.getClickedPos();
+            Player player = context.getPlayer();
+            if (world instanceof ServerLevel serverLevel) {
+                if (player != null && !player.isCreative()) {
+                    for (ItemStack drop : Block.getDrops(
+                        state.setValue(LAYERS, 1), serverLevel, pos, world.getBlockEntity(pos), player, context.getItemInHand()
+                    )) {
+                        player.getInventory().placeItemBackInInventory(drop, Prediction.SERVER_ONLY);
+                    }
+                }
+
+                BlockPos up = pos.relative(Direction.UP);
+                world.setBlockAndUpdate(pos, state.setValue(LAYERS, state.getValue(LAYERS) - 1));
+                IWrenchable.playRemoveSound(world, pos);
+            }
+
+            return InteractionResult.SUCCESS;
+        }
+    }
+
+    @Override
+    public ItemRequirement getRequiredItems(BlockState state, BlockEntity blockEntity) {
+        return ICopycatBlock.getRequiredItemsForLayer(state, LAYERS);
+    }
+
+    @Override
+    public BlockState transform(BlockState state, StructureTransform transform) {
+        return state.setValue(FACING, BlockUtils.transformFacing(transform, state.getValue(FACING)));
+    }
+
+    @Override
+    public boolean isPathfindable(BlockState pState, PathComputationType pType) {
+        return switch (pType) {
+            case LAND -> pState.getValue(LAYERS) < 5 && pState.getValue(FACING).equals(Direction.UP);
+            default -> false;
+        };
+    }
+
+    @Override
+    protected void createBlockStateDefinition(Builder<Block, BlockState> pBuilder) {
+        super.createBlockStateDefinition(pBuilder.add(FACING).add(LAYERS));
+    }
+
+    @NotNull
+    @Override
+    public VoxelShape getShape(BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+        return CCShapes.LAYER.get(pState.getValue(FACING)).get(pState.getValue(LAYERS)).toShape();
+    }
+
+    public boolean supportsExternalFaceHiding(BlockState state) {
+        return true;
+    }
+
+    public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState, Direction dir) {
+        return ICopycatBlock.hidesNeighborFace(level, pos, state, neighborState, dir);
+    }
+
+    @Override
+    public boolean useShapeForLightOcclusion(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
+        return state.getValue(LAYERS) == 8 ? 0.2F : 1.0F;
+    }
+}

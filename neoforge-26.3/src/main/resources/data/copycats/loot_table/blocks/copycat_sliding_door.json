@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0,
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "condition": {
+            "type": "minecraft:match_block",
+            "blocks": "copycats:copycat_sliding_door",
+            "state": {
+              "half": "lower"
+            }
+          },
+          "name": "copycats:copycat_sliding_door"
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "copycats:blocks/copycat_sliding_door"
+}

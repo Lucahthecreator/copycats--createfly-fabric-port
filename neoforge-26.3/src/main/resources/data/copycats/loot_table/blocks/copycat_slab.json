@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "modifier": [
+            {
+              "type": "minecraft:set_count",
+              "add": false,
+              "condition": {
+                "type": "minecraft:match_block",
+                "blocks": "copycats:copycat_slab",
+                "state": {
+                  "type": "double"
+                }
+              },
+              "count": 2
+            },
+            {
+              "type": "minecraft:explosion_decay"
+            }
+          ],
+          "name": "copycats:copycat_slab"
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "copycats:blocks/copycat_slab"
+}

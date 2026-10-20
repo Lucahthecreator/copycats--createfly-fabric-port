@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "s": "#copycats:copycat_board"
+  },
+  "pattern": [
+    "ss ",
+    "s s",
+    " ss"
+  ],
+  "result": {
+    "id": "copycats:copycat_box"
+  },
+  "show_notification": true
+}

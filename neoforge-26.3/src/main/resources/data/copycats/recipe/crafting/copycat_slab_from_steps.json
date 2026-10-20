@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "s": "create:copycat_step"
+  },
+  "pattern": [
+    "ss"
+  ],
+  "result": {
+    "id": "copycats:copycat_slab"
+  },
+  "show_notification": true
+}

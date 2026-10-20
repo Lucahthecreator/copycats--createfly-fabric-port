@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v1.17 - 2026-10-20
+
+### Added
+
+- Added the NeoForge 26.3 development port, with help from the Zoompack 5 community project.
+- Added a NeoForge development build and game-test workflow.
+
+### Fixed
+
+- Fixed a stack overflow during block rendering caused by two render-context overloads calling themselves recursively.
+- Preserved copycat material textures for break particles when the block entity has already been removed.
+- Kept the glass texture's outer border visible on small copycat buttons.
+
 ## v1.16 - 2026-10-13
 
 ### Fixed

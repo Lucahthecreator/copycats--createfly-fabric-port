@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "#c:ingots/zinc",
+  "result": {
+    "id": "copycats:copycat_corner_slice",
+    "count": 16
+  }
+}
