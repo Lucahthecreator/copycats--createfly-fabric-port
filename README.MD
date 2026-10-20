@@ -75,7 +75,7 @@ The Windows build menu saves selected JARs in `dist/` with these names:
 - `Copycats-CreateFly-1.21.11-beta.1.jar`
 - `Copycats-CreateFly-26.1+-v1.16.jar` — target 26.1.2; supports the 26.1 release line.
 - `Copycats-CreateFly-26.2-beta-v1.16.jar`
-- `Copycats-CreateFly-26.2-stable-v1.16.jar` — compatibility build for the earlier Create Fly API.
+- `Copycats-CreateFly-26.2-compat-v1.16.jar` — compatibility build for the earlier Create Fly API.
 
 The 1.21.11 beta is a gameplay-testing build. It is built from this repository and is not yet listed as a released download on CurseForge or Modrinth.
 

@@ -11,14 +11,14 @@ echo Build a selected JAR (saved in dist):
 echo   1. Minecraft 1.21.11 beta - Java 21
 echo   2. Minecraft 26.1 release line (26.1.2 target) - Java 25
 echo   3. Minecraft 26.2 with Create Fly 6.0.9-2 beta - Java 25
-echo   4. Minecraft 26.2 with Create Fly 6.0.9-1 - Java 25
+echo   4. Minecraft 26.2 compatibility with Create Fly 6.0.9-1 - Java 25
 echo   5. Build all four JAR variants
 echo.
 echo Launch a development test client:
 echo   6. Minecraft 1.21.11 beta
 echo   7. Minecraft 26.1.2
 echo   8. Minecraft 26.2 with Create Fly 6.0.9-2 beta
-echo   9. Minecraft 26.2 with Create Fly 6.0.9-1
+echo   9. Minecraft 26.2 compatibility with Create Fly 6.0.9-1
 echo   0. Exit
 echo.
 set "choice="
@@ -48,7 +48,7 @@ goto menu
 call :build "26.2-beta"
 goto menu
 :build262stable
-call :build "26.2-stable"
+call :build "26.2-compat"
 goto menu
 :buildall
 call :build "all"
