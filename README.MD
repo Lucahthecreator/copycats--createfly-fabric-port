@@ -5,14 +5,13 @@
 
 # Copycats+ · Create Fly Port
 
-**More shapes. Your materials. Fabric & NeoForge.**
+**More shapes. Your materials. Multiple loaders and Minecraft versions.**
 
-An unofficial port of **Create: Copycats+ 3.0.7** for **Create Fly**.
+An unofficial port of **Create: Copycats+** for **Create Fly**. Supported versions, loaders, dependencies, and build paths are listed in the [compatibility guide](docs/COMPATIBILITY.md).
 
-[![Fabric](https://img.shields.io/badge/Loader-Fabric-dbd4c5?style=flat-square)](#compatibility)
-[![NeoForge](https://img.shields.io/badge/NeoForge-26.3_Development-orange?style=flat-square)](#neoforge-compatibility)
-[![Minecraft](https://img.shields.io/badge/Minecraft-1.21.11–26.3-62b47a?style=flat-square)](#compatibility)
-[![Java](https://img.shields.io/badge/Java-21%20and%2025-e76f00?style=flat-square)](#compatibility)
+[![Loaders](https://img.shields.io/badge/Loaders-multiple-dbd4c5?style=flat-square)](docs/COMPATIBILITY.md)
+[![Minecraft](https://img.shields.io/badge/Minecraft-multiple%20targets-62b47a?style=flat-square)](docs/COMPATIBILITY.md)
+[![Java](https://img.shields.io/badge/Java-see%20compatibility%20guide-e76f00?style=flat-square)](docs/COMPATIBILITY.md)
 [![Compatibility checks](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/actions/workflows/compatibility.yml/badge.svg)](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/actions/workflows/compatibility.yml)
 
 [**CurseForge**](https://www.curseforge.com/minecraft/mc-mods/createfly-copycats-port) ·
@@ -39,96 +38,35 @@ Multi-material blocks let you customize individual parts, while functional block
 
 With ColorLight installed, this port unwraps its model hook to preserve connected textures. ColorLight-specific tinting or lighting may appear differently on copycat surfaces.
 
-## What's new in v1.16
+## Latest changes
 
-**Fixed the placement crash with Create Fly 26.2-6.0.9-2 beta.**
-
-The renderer now supports both Create Fly's newer single-normal API and its older four-normal API.
-
-Additional improvements:
-
-- Shared renderer compiles directly from source.
-- Normal adapter compatibility is checked against real Create Fly dependencies.
-- Development launchers support both newer and older Create Fly versions.
-- Improved compatibility checks during builds.
-
-See the [changelog](CHANGELOG.md) for more information.
+See the [changelog](CHANGELOG.md) for changes by release and target.
 
 > [!IMPORTANT]
 > This is the current source version. CurseForge and Modrinth may have an earlier published build.
 
-## Compatibility
+## Compatibility and downloads
 
-All supported Minecraft targets and the 1.21.11 beta backport are kept in this repository branch. Select a target from `Copycats Build and Test.bat` on Windows, or use the Gradle commands below.
+The [compatibility guide](docs/COMPATIBILITY.md) is the single list of Minecraft targets, loaders, support status, required dependencies, artifact locations, and build instructions. Use the Windows build menu to see the targets configured for this checkout, or follow the guide to build from a terminal. Add new targets and backports to that matrix and their build tooling; the general installation and development guidance here applies across targets.
 
-| Minecraft target | Status | Java | Fabric Loader | Fabric API | Create Fly |
-| :--- | :--- | :---: | :--- | :--- | :--- |
-| **1.21.11** | Beta; gameplay testing | 21 | 0.19.2+ (development client uses 0.19.3) | 0.141.6 | 1.21.11-6.0.9-5 |
-| **26.1–26.1.2** | Supported (v1.16) | 25 | 0.19.2+ | 0.152.1+26.1.2 | 6.0.9-4 tested |
-| **26.2** | Supported (v1.16) | 25 | 0.19.2+ | 0.152.2+26.2 | 26.2-6.0.9-2 beta; 26.2-rc-2-6.0.9-1 compatibility build |
-| **26.3 Fabric** | Planned; waiting for official Create Fly support | 25 | — | — | — |
-
-### NeoForge compatibility
-
-| Minecraft | State | Java | Loader | Create Fly |
-| :--- | :--- | :---: | :--- | :--- |
-| **26.3** | Development port v1.17; requires Zoompack's NeoForge Create Fly build | 25 | NeoForge 26.3.0.89 | [Create Fly NeoForge 6.0.9](https://github.com/zoom-packers/Create-Fly/tree/neoforge-26.3) |
-
-### Build outputs
-
-The Windows build menu saves selected JARs in `dist/` with these names:
-
-- `Copycats-CreateFly-1.21.11-beta.1.jar`
-- `Copycats-CreateFly-26.1+-v1.16.jar` — target 26.1.2; supports the 26.1 release line.
-- `Copycats-CreateFly-26.2-beta-v1.16.jar`
-- `Copycats-CreateFly-26.2-compat-v1.16.jar` — compatibility build for the earlier Create Fly API.
-- NeoForge 26.3 output: `neoforge-26.3/build/libs/copycats-neoforge-*.jar`.
-
-The 1.21.11 beta is a gameplay-testing build. It is built from this repository and is not yet listed as a released download on CurseForge or Modrinth.
+Download published builds from [CurseForge](https://www.curseforge.com/minecraft/mc-mods/createfly-copycats-port/files) or [Modrinth](https://modrinth.com/mod/copycats+-createfly-port/versions). Targets that are still in development may only be available as source builds; follow their module instructions in the compatibility guide.
 
 > [!WARNING]
-> **NeoForge 26.3 is a development port, not an official release.**
+> Development and community ports may have different support and release status.
 >
-> Fabric and NeoForge require separate builds. Do not load a Fabric JAR using NeoForge. Permission for public distribution of this port has been confirmed; the source must remain public and the port should be archived or deprecated when Copycats+ officially supports this version. See [`neoforge-26.3/PORTING.md`](neoforge-26.3/PORTING.md).
+> Build for the loader listed for your target in the compatibility guide. Fabric and NeoForge JARs cannot be used interchangeably. Check the relevant porting notes for attribution and distribution conditions.
 
-## Upcoming support
+## Port modules and community work
 
-Work is planned to expand support across both Fabric and NeoForge.
+The repository contains the main Fabric project and may include separate modules or backports for other loaders and Minecraft versions. Each target's source, dependency links, build steps, and testing notes are documented in its module and in the [compatibility guide](docs/COMPATIBILITY.md).
 
-| Version | Planned development |
-| :--- | :--- |
-| **26.3 Fabric** | New Minecraft version support |
-| **26.2 NeoForge** | NeoForge adaptation |
-| **26.1 NeoForge** | NeoForge adaptation |
-
-Release dates have not been confirmed. Support depends on compatible Create Fly builds, successful compilation, and gameplay testing.
-
-### NeoForge 26.3 development port
-
-The **Zoompack 5 team** has developed a community adaptation for Minecraft 26.3 using NeoForge.
-
-Their work includes:
-
-- A NeoForge 26.3 port based on this project's source.
-- Compatibility work for Create Fly on NeoForge.
-- Build and static compatibility checks.
-- Dedicated server and client startup testing.
-
-**Community resources:**
-
-- [NeoForge 26.3 source branch](https://github.com/zoom-packers/copycats-createfly/tree/zp5/26.3)
-- [Porting documentation](https://github.com/zoom-packers/copycats-createfly/blob/zp5/26.3/neoforge-26.3/PORTING.md)
-- [Public Create Fly NeoForge 26.3 source](https://github.com/zoom-packers/Create-Fly/tree/neoforge-26.3)
-
-The port source was contributed by the Zoompack 5 team. It builds as a separate NeoForge module and leaves the Fabric project at the repository root unchanged. It is not an official release maintained by lucahTheCreator.
-
-Both the Copycats+ NeoForge port source and its required Create Fly NeoForge source are publicly available. This repository does not publish a NeoForge JAR release; use the linked sources and build instructions below.
+Community adaptations and their contributors are listed in the [compatibility guide](docs/COMPATIBILITY.md) and the notes for each module.
 
 ## Installation
 
-1. Choose the Minecraft target you want to play.
-2. Install the matching Java version, loader, and Create Fly dependency from the compatibility table. Use Fabric Loader and Fabric API for Fabric, or NeoForge for the NeoForge 26.3 build. Minecraft 1.21.11 uses Java 21; Minecraft 26.x uses Java 25.
-3. For Fabric, download the matching Copycats+ release from [CurseForge](https://www.curseforge.com/minecraft/mc-mods/createfly-copycats-port/files) or [Modrinth](https://modrinth.com/mod/copycats+-createfly-port/versions). For NeoForge 26.3, use the public community sources linked above and follow the separate build instructions below.
+1. Choose a target and loader listed in the [compatibility guide](docs/COMPATIBILITY.md).
+2. Install the Java version, loader, APIs, and Create Fly build listed for that target.
+3. Download a published Copycats+ build from [CurseForge](https://www.curseforge.com/minecraft/mc-mods/createfly-copycats-port/files) or [Modrinth](https://modrinth.com/mod/copycats+-createfly-port/versions). For source-only targets, build the matching module using its documented instructions.
 4. Place the JAR in that Minecraft instance's `mods` folder.
 5. Remove older Copycats+ JARs from the same instance before updating.
 6. Launch Minecraft and test in a creative world. For multiplayer, install matching required mods on both the client and server.
@@ -148,27 +86,17 @@ Include Minecraft version, loader version, Create Fly version, reproduction step
 
 ## Development
 
-A **Java 25 JDK** is required.
-
-The [1.21.11 beta backport](backport-1.21.11/README.md) is included in this same branch. It targets Java 21 and Create Fly 1.21.11-6.0.9-5. Minecraft 26.x targets use Java 25.
+A JDK version supported by the target is required. See the [compatibility guide](docs/COMPATIBILITY.md) for each target's Java requirement.
 
 ```bash
-# Build Minecraft 1.21.11 beta with Java 21
-./gradlew -p backport-1.21.11 build
+# Build the default target configured in gradle.properties
+./gradlew build
 
-# Build Minecraft 26.1.2
-./gradlew build -Ptarget_version=26.1.2
+# Select a different root-project target
+./gradlew build -Ptarget_version=YOUR_TARGET
 
-# Build Minecraft 26.2
-./gradlew build -Ptarget_version=26.2
-
-# Verify compatibility with the older Create Fly API
-./gradlew verifyNormalsCompatibility -Ptarget_version=26.2 -Pcreate_fly_version=26.2-rc-2-6.0.9-1
-
-# Build the NeoForge 26.3 development port (use a local Zoompack Create Fly checkout)
-./gradlew -p neoforge-26.3 build \
-  -Pcreate_jar=/path/to/create-fly-neoforge-6.0.9+neoforge-26.3.jar \
-  -Pcreate_interfaces=/path/to/create-fly-neoforge/interfaces.json
+# Backports and alternate loaders use their module-specific instructions
+# See docs/COMPATIBILITY.md for current module paths
 ```
 
 On Windows, use `gradlew.bat` instead of `./gradlew`.
@@ -177,42 +105,9 @@ Compiled JAR files are located in `build/libs`.
 
 ### Windows build and test menu
 
-Double-click **`Copycats Build and Test.bat`** to choose a build or launch a development test client. Build selections copy the completed JAR into `dist/`; the “build all” option creates all four listed variants. The menu selects Java 21 for 1.21.11 and Java 25 for 26.x. Install Eclipse Temurin JDK 21 and JDK 25, or set `JAVA_HOME` to the required JDK before using the menu.
+Double-click **`Copycats Build and Test.bat`** to choose from the build and test actions configured for this checkout. Build artifacts are saved to the location shown by the menu. For automation, use the build scripts and the target-specific commands in the [compatibility guide](docs/COMPATIBILITY.md). Each development launcher documents its required JDK and dependencies alongside its module.
 
-The menu offers these builds:
-
-- Minecraft 1.21.11 beta.
-- Minecraft 26.1 release line, built with target 26.1.2.
-- Minecraft 26.2 with Create Fly 6.0.9-2 beta.
-- Minecraft 26.2 with Create Fly 6.0.9-1 for compatibility testing.
-
-It also launches isolated development clients for 1.21.11, 26.1.2, and both 26.2/Create Fly combinations. Close an existing client for a target before launching it again. You can also build all versions from PowerShell with `scripts/build-supported.ps1`.
-
-The menu also builds and launches the NeoForge 26.3 port and runs its game tests. It requires Java 25 and the Create Fly NeoForge 26.3 branch built as a jar. Set `CREATE_FLY_NEOFORGE_HOME` to that checkout, or call `scripts/neoforge-26.3.ps1` with `-CreateFlyProject` and `-CreateFlyJar`. The build expects the checkout's `interfaces.json` alongside its Gradle project.
-
-### Development clients
-
-| Launcher | Minecraft / Create Fly |
-| :--- | :--- |
-| `Copycats Build and Test.bat` | Menu for all supported builds and test clients |
-| `Test Copycats.cmd` | 26.2 / Create Fly 6.0.9-2 beta |
-| `Test Copycats - Older Create Fly.cmd` | 26.2 / Create Fly 6.0.9-1 |
-| `backport-1.21.11/run-test-client.bat` | 1.21.11 beta / Create Fly 6.0.9-5 |
-| `scripts/neoforge-26.3.ps1 -Action client` | NeoForge 26.3 / Zoompack Create Fly NeoForge port |
-
-The menu and launch scripts select a matching installed Eclipse Temurin JDK: Java 21 for 1.21.11 and Java 25 for 26.x. The 26.x script also uses `JAVA_HOME` when it points to Java 25.
-
-For Minecraft 26.1.2:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts/run-dev-client.ps1 -Minecraft 26.1.2
-```
-
-In a development client, run `/copycats_test` in a world to place a gallery of
-every public Copycats block near the player. A barrel beside the gallery holds
-the item-only box and catwalk components, plus grass, stone, and glass for
-material checks. The command looks for empty space and raises the gallery if
-the nearby ground is occupied. It is unavailable in normal mod installations.
+Development-only utilities, including the `/copycats_test` gallery where available, are not included in normal mod installations.
 
 ### Rendering diagnostics
 
@@ -235,9 +130,10 @@ Search logs for `[Copycats Debug/` or `Create Fly normals compatibility:`.
 
 ### Source layout
 
-- `patches/src/main/java` — Active compatibility patches.
-- `reconstructed/src/main/java` — Reconstructed source files.
-- `reconstructed/working.jar` — Remaining precompiled classes.
+- `patches/src/main/java` — Active compatibility patches for the main project.
+- `reconstructed/src/main/java` — Reconstructed source files for the main project.
+- `backport-*` and loader-specific module directories — Separate targets with their own build files and notes.
+- `scripts/` — Build, test, and development-client helpers.
 
 Not all reconstructed Java files are automatically compiled into releases. Changes to unselected files may not affect the final JAR.
 
@@ -248,7 +144,7 @@ Not all reconstructed Java files are automatically compiled into releases. Chang
 | **Original Copycats+** | Lysine, Bennyboy1695, Redcat_XVIII, and the Copycats+ team |
 | **Create Fly** | ZurrTum and contributors |
 | **Fabric port** | lucahTheCreator |
-| **NeoForge 26.3 port** | lucahTheCreator and the [Zoompack 5 team](https://github.com/zoom-packers/copycats-createfly/tree/zp5/26.3) |
+| **Community ports and adaptations** | Contributors credited in the [compatibility guide](docs/COMPATIBILITY.md) and each module's notes |
 
 [Original Copycats+](https://github.com/copycats-plus/copycats) ·
 [Create Fly](https://github.com/ZurrTum/Create-Fly) ·
@@ -280,6 +176,6 @@ Additional public forks or adaptations should obtain the necessary permission fr
 
 *Unofficial Copycats+ port for Create Fly.*
 
-**Fabric releases · NeoForge 26.3 development port · More versions coming**
+**Unofficial community port · See the compatibility guide for current targets**
 
 </div>
