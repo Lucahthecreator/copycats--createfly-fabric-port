@@ -1,4 +1,4 @@
-# Minecraft 1.21.11 backport test client
+# Minecraft 1.21.11 beta backport
 
 This project builds Copycats+ against Minecraft 1.21.11, Fabric Loader 0.19.3,
 Fabric API 0.141.6, and Create Fly 6.0.9-5. It compiles for Java 21.
@@ -9,7 +9,8 @@ The world, options, and logs are stored under `run-1.21.11/`. Close an existing
 test client before starting another one.
 
 The installable jar is produced by running `gradlew.bat -p backport-1.21.11 build`
-from the repository root; find it under `build/libs/` in this folder.
+from the repository root; find it under `build/libs/` in this folder. The beta
+artifact is `Copycats-CreateFly-1.21.11-beta.1.jar`.
 
 In the development client, run `/copycats_test` to place every public Copycats
 block near your position. A barrel beside the gallery contains the box and
@@ -18,10 +19,10 @@ space and does not register in normal mod installations.
 
 ## In-game checks
 
-Confirmed in the Java 21 test client: the full copycat block renders copied
-grass correctly, and an unfilled copycat block shows the transparent base
-texture. The material render layer now follows the copied block, so glass and
-other transparent materials still need a separate gameplay check.
+Confirmed in the Java 21 client: the full copycat block renders copied grass
+correctly, an unfilled copycat block shows the transparent base texture, and a
+glass copycat button shows its glass border. Gameplay testing continues for the
+remaining blocks and materials.
 
 - Place a basic copycat block, slab, stair, board, pane, ladder, and slope.
 - Apply several materials, including a tinted block and glass, then wrench them off.
@@ -35,4 +36,4 @@ If a test fails, note the block, material, action, and whether it happens again.
 Crash reports are saved in `run-1.21.11/crash-reports/`; the ongoing game log is
 `run-1.21.11/logs/latest.log`.
 
-This is a development backport. In-game checks are still in progress.
+This is a beta backport. In-game checks are still in progress.

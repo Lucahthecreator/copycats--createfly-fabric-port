@@ -66,12 +66,13 @@ See the [changelog](CHANGELOG.md) for more information.
 | **26.1.2** | Supported (v1.16) | Planned |
 | **26.1.1** | Supported (v1.16) | Planned |
 | **26.1** | Supported (v1.16) | Planned |
-| **1.21.11** | Development build (gameplay testing) | Under consideration |
+| **1.21.11** | Beta (gameplay testing) | Under consideration |
 
 ### Currently supported builds
 
 | Minecraft | File | Tested Create Fly version |
 | :--- | :--- | :--- |
+| 1.21.11 | `Copycats-CreateFly-1.21.11-beta.1.jar` | `6.0.9-5` |
 | 26.2 | `Copycats+-Fabric-26.2-v1.16.jar` | `26.2-rc-2-6.0.9-1` / `26.2-6.0.9-2` beta |
 | 26.1–26.1.2 | `Copycats+-Fabric-26.1+-v1.16.jar` | `26.1.2-6.0.9-4` |
 
@@ -92,7 +93,6 @@ Work is planned to expand support across both Fabric and NeoForge.
 | **26.3 NeoForge** | NeoForge adaptation |
 | **26.2 NeoForge** | NeoForge adaptation |
 | **26.1 NeoForge** | NeoForge adaptation |
-| **1.21.11 Fabric** | Backport builds and starts; gameplay testing in progress |
 
 Release dates have not been confirmed. Support depends on compatible Create Fly builds, successful compilation, and gameplay testing.
 
@@ -144,7 +144,7 @@ Include Minecraft version, loader version, Create Fly version, reproduction step
 
 A **Java 25 JDK** is required.
 
-The separate [1.21.11 backport test project](backport-1.21.11/README.md) targets Java 21 and Create Fly 6.0.9-5. It is a development build pending gameplay testing.
+The separate [1.21.11 beta backport project](backport-1.21.11/README.md) targets Java 21 and Create Fly 6.0.9-5. Gameplay testing is ongoing.
 
 ```bash
 # Build Minecraft 26.1.2
