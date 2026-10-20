@@ -49,6 +49,17 @@ See the [changelog](CHANGELOG.md) for changes by release and target.
 
 The [compatibility guide](docs/COMPATIBILITY.md) is the single list of Minecraft targets, loaders, support status, required dependencies, artifact locations, and build instructions. Use the Windows build menu to see the targets configured for this checkout, or follow the guide to build from a terminal. Add new targets and backports to that matrix and their build tooling; the general installation and development guidance here applies across targets.
 
+### Current targets
+
+| Minecraft | Loader | Copycats+ status | Java |
+| :--- | :--- | :--- | :---: |
+| **1.21.11** | Fabric | Beta · gameplay testing | 21 |
+| **26.1** (tested on 26.1.2) | Fabric | Supported · v1.16 | 25 |
+| **26.2** | Fabric | Supported · v1.16 | 25 |
+| **26.3** | NeoForge | Community port · v1.17 | 25 |
+
+See the [full compatibility matrix](docs/COMPATIBILITY.md) for exact loader and Create Fly versions, build artifacts, and target-specific instructions.
+
 Download published builds from [CurseForge](https://www.curseforge.com/minecraft/mc-mods/createfly-copycats-port/files) or [Modrinth](https://modrinth.com/mod/copycats+-createfly-port/versions). Targets that are still in development may only be available as source builds; follow their module instructions in the compatibility guide.
 
 > [!WARNING]
