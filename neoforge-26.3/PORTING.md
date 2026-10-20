@@ -16,9 +16,9 @@ All Rights Reserved. Both upstream Copycats+ ([copycats-plus/copycats](https://g
 permission (`docs/permission.png`). The permission was given to that port's author, on condition that the source is
 public on GitHub and that the port is archived once Copycats+ officially supports that version.
 
-So this port may be built and tested privately, but **publishing it needs permission first**. That covers a public
-fork, a GitHub release, or a packwiz `url` entry that downloads the jar. Ask the Copycats+ team (Bennyboy1695 on their
-Discord, as the port's author did) and tell lucahTheCreator.
+Permission for public distribution of this adaptation has been confirmed by the port maintainer. Keep the source public
+on GitHub and archive or deprecate the port once Copycats+ officially supports the corresponding version. This
+permission applies to this adaptation; other public forks or releases should obtain their own permission.
 
 ## Route: native NeoForge, not Connector
 

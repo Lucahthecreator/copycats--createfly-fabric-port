@@ -72,7 +72,7 @@ All supported Minecraft targets and the 1.21.11 beta backport are kept in this r
 
 | Minecraft | State | Java | Loader | Create Fly |
 | :--- | :--- | :---: | :--- | :--- |
-| **26.3** | Development port v1.17; requires Zoompack's NeoForge Create Fly build | 25 | NeoForge 26.3.0.89 | Create Fly NeoForge 6.0.9 |
+| **26.3** | Development port v1.17; requires Zoompack's NeoForge Create Fly build | 25 | NeoForge 26.3.0.89 | [Create Fly NeoForge 6.0.9](https://github.com/zoom-packers/Create-Fly/tree/neoforge-26.3) |
 
 ### Build outputs
 
@@ -89,7 +89,7 @@ The 1.21.11 beta is a gameplay-testing build. It is built from this repository a
 > [!WARNING]
 > **NeoForge 26.3 is a development port, not an official release.**
 >
-> Fabric and NeoForge require separate builds. Do not load a Fabric JAR using NeoForge. Public redistribution of the NeoForge port needs permission from the original Copycats+ team; see [`neoforge-26.3/PORTING.md`](neoforge-26.3/PORTING.md).
+> Fabric and NeoForge require separate builds. Do not load a Fabric JAR using NeoForge. Permission for public distribution of this port has been confirmed; the source must remain public and the port should be archived or deprecated when Copycats+ officially supports this version. See [`neoforge-26.3/PORTING.md`](neoforge-26.3/PORTING.md).
 
 ## Upcoming support
 
@@ -118,16 +118,17 @@ Their work includes:
 
 - [NeoForge 26.3 source branch](https://github.com/zoom-packers/copycats-createfly/tree/zp5/26.3)
 - [Porting documentation](https://github.com/zoom-packers/copycats-createfly/blob/zp5/26.3/neoforge-26.3/PORTING.md)
+- [Public Create Fly NeoForge 26.3 source](https://github.com/zoom-packers/Create-Fly/tree/neoforge-26.3)
 
 The port source was contributed by the Zoompack 5 team. It builds as a separate NeoForge module and leaves the Fabric project at the repository root unchanged. It is not an official release maintained by lucahTheCreator.
 
-The porting notes require permission from the original Copycats+ developers before public redistribution. This local development build is not published from this repository.
+Both the Copycats+ NeoForge port source and its required Create Fly NeoForge source are publicly available. This repository does not publish a NeoForge JAR release; use the linked sources and build instructions below.
 
 ## Installation
 
 1. Choose the Minecraft target you want to play.
-2. Install the matching Java version, Fabric Loader, Fabric API, and Create Fly from the compatibility table. Minecraft 1.21.11 uses Java 21; Minecraft 26.x uses Java 25.
-3. Download the matching released Copycats+ build from [CurseForge](https://www.curseforge.com/minecraft/mc-mods/createfly-copycats-port/files) or [Modrinth](https://modrinth.com/mod/copycats+-createfly-port/versions). The NeoForge 26.3 port is currently a private development build; follow its build instructions below.
+2. Install the matching Java version, loader, and Create Fly dependency from the compatibility table. Use Fabric Loader and Fabric API for Fabric, or NeoForge for the NeoForge 26.3 build. Minecraft 1.21.11 uses Java 21; Minecraft 26.x uses Java 25.
+3. For Fabric, download the matching Copycats+ release from [CurseForge](https://www.curseforge.com/minecraft/mc-mods/createfly-copycats-port/files) or [Modrinth](https://modrinth.com/mod/copycats+-createfly-port/versions). For NeoForge 26.3, use the public community sources linked above and follow the separate build instructions below.
 4. Place the JAR in that Minecraft instance's `mods` folder.
 5. Remove older Copycats+ JARs from the same instance before updating.
 6. Launch Minecraft and test in a creative world. For multiplayer, install matching required mods on both the client and server.
