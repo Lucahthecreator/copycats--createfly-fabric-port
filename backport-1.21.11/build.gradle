@@ -1,0 +1,59 @@
+plugins {
+    id 'net.fabricmc.fabric-loom-remap' version '1.16.3'
+}
+
+version = '3.0.7-createfly+mc.1.21.11-v1.17-beta.1'
+group = 'com.copycatsplus'
+
+base {
+    archivesName = 'copycats-createfly'
+}
+
+repositories {
+    maven { url 'https://maven.fabricmc.net/' }
+    mavenCentral()
+    maven { url 'https://api.modrinth.com/maven' }
+}
+
+loom {
+    accessWidenerPath = file('src/main/resources/copycats.accesswidener')
+    runs {
+        client {
+            runDir = 'run-1.21.11'
+            programArgs('--username', 'CopycatsTest')
+        }
+    }
+}
+
+dependencies {
+    minecraft 'com.mojang:minecraft:1.21.11'
+    mappings loom.officialMojangMappings()
+    modImplementation 'net.fabricmc:fabric-loader:0.19.3'
+    modImplementation 'net.fabricmc.fabric-api:fabric-api:0.141.6+1.21.11'
+    modImplementation 'maven.modrinth:create-fly:1.21.11-6.0.9-5'
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+    annotationProcessor implementation('io.github.llamalad7:mixinextras-fabric:0.4.1')
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+    options.compilerArgs += ['-Xmaxerrs', '1000']
+}
+
+processResources {
+    inputs.property('version', project.version)
+    filesMatching('fabric.mod.json') {
+        expand(
+            version: project.version,
+            minecraft_version: '1.21.11',
+            minecraft_version_range: '1.21.11',
+            create_version_range: '>=6.0.9-5 <6.0.10'
+        )
+    }
+}

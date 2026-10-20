@@ -2,10 +2,12 @@ package com.copycatsplus.copycats.fabric;
 
 import com.copycatsplus.copycats.CCBlocks;
 import com.copycatsplus.copycats.Copycats;
+import com.copycatsplus.copycats.dev.CopycatsDevGalleryCommand;
 import com.copycatsplus.copycats.config.FeatureCategory;
 import com.copycatsplus.copycats.config.FeatureToggle;
 import com.copycatsplus.copycats.utility.LogicalSidedProvider;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.core.Registry;
@@ -22,6 +24,9 @@ import net.minecraft.world.level.ItemLike;
 public class CopycatsImpl implements ModInitializer {
     public void onInitialize() {
         Copycats.init();
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+            CopycatsDevGalleryCommand.register();
+        }
         this.registerCreativeTabs();
         ServerLifecycleEvents.SERVER_STARTING.register(this::serverStarting);
     }

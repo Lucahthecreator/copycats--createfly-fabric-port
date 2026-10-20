@@ -66,7 +66,7 @@ See the [changelog](CHANGELOG.md) for more information.
 | **26.1.2** | Supported (v1.16) | Planned |
 | **26.1.1** | Supported (v1.16) | Planned |
 | **26.1** | Supported (v1.16) | Planned |
-| **1.21.11** | Under consideration | Under consideration |
+| **1.21.11** | Development build (gameplay testing) | Under consideration |
 
 ### Currently supported builds
 
@@ -92,7 +92,7 @@ Work is planned to expand support across both Fabric and NeoForge.
 | **26.3 NeoForge** | NeoForge adaptation |
 | **26.2 NeoForge** | NeoForge adaptation |
 | **26.1 NeoForge** | NeoForge adaptation |
-| **1.21.11** | Possible future backport |
+| **1.21.11 Fabric** | Backport builds and starts; gameplay testing in progress |
 
 Release dates have not been confirmed. Support depends on compatible Create Fly builds, successful compilation, and gameplay testing.
 
@@ -144,6 +144,8 @@ Include Minecraft version, loader version, Create Fly version, reproduction step
 
 A **Java 25 JDK** is required.
 
+The separate [1.21.11 backport test project](backport-1.21.11/README.md) targets Java 21 and Create Fly 6.0.9-5. It is a development build pending gameplay testing.
+
 ```bash
 # Build Minecraft 26.1.2
 ./gradlew build -Ptarget_version=26.1.2
@@ -175,6 +177,12 @@ For Minecraft 26.1.2:
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/run-dev-client.ps1 -Minecraft 26.1.2
 ```
+
+In a development client, run `/copycats_test` in a world to place a gallery of
+every public Copycats block near the player. A barrel beside the gallery holds
+the item-only box and catwalk components, plus grass, stone, and glass for
+material checks. The command looks for empty space and raises the gallery if
+the nearby ground is occupied. It is unavailable in normal mod installations.
 
 ### Rendering diagnostics
 

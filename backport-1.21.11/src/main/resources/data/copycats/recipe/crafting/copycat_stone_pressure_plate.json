@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "#c:ingots/zinc",
+  "result": {
+    "id": "copycats:copycat_stone_pressure_plate",
+    "count": 4
+  }
+}

@@ -1,0 +1,6 @@
+.gradle/
+build/
+run-1.21.11/
+compile.log
+run-client.log
+java21-build.log
