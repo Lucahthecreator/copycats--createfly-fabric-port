@@ -4,6 +4,10 @@ This project builds Copycats+ against Minecraft 1.21.11, Fabric Loader 0.19.3,
 Fabric API 0.141.6, and Create Fly 6.0.9-5. It compiles for Java 21.
 The launcher selects the installed Eclipse Temurin JDK 21.
 
+The backport is maintained alongside the 26.x Fabric targets on the same Git
+branch. From the repository root, `Copycats Build and Test.bat` lets you build
+or launch a client for each target version.
+
 Double-click `run-test-client.bat` to launch the isolated development client.
 The world, options, and logs are stored under `run-1.21.11/`. Close an existing
 test client before starting another one.

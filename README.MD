@@ -11,8 +11,8 @@ An unofficial port of **Create: Copycats+ 3.0.7** for **Create Fly**.
 
 [![Fabric](https://img.shields.io/badge/Loader-Fabric-dbd4c5?style=flat-square)](#compatibility)
 [![NeoForge](https://img.shields.io/badge/NeoForge-Coming_Soon-orange?style=flat-square)](#upcoming-support)
-[![Minecraft](https://img.shields.io/badge/Minecraft-26.1–26.3-62b47a?style=flat-square)](#compatibility)
-[![Java](https://img.shields.io/badge/Java-25-e76f00?style=flat-square)](#development)
+[![Minecraft](https://img.shields.io/badge/Minecraft-1.21.11–26.3-62b47a?style=flat-square)](#compatibility)
+[![Java](https://img.shields.io/badge/Java-21%20and%2025-e76f00?style=flat-square)](#compatibility)
 [![Compatibility checks](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/actions/workflows/compatibility.yml/badge.svg)](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/actions/workflows/compatibility.yml)
 
 [**CurseForge**](https://www.curseforge.com/minecraft/mc-mods/createfly-copycats-port) ·
@@ -59,24 +59,25 @@ See the [changelog](CHANGELOG.md) for more information.
 
 ## Compatibility
 
-| Minecraft | Fabric | NeoForge |
-| :--- | :---: | :---: |
-| **26.3** | Planned | Planned |
-| **26.2** | Supported (v1.16) | Planned |
-| **26.1.2** | Supported (v1.16) | Planned |
-| **26.1.1** | Supported (v1.16) | Planned |
-| **26.1** | Supported (v1.16) | Planned |
-| **1.21.11** | Beta (gameplay testing) | Under consideration |
+All supported Minecraft targets and the 1.21.11 beta backport are kept in this repository branch. Select a target from `Copycats Build and Test.bat` on Windows, or use the Gradle commands below.
 
-### Currently supported builds
+| Minecraft target | Status | Java | Fabric Loader | Fabric API | Create Fly |
+| :--- | :--- | :---: | :--- | :--- | :--- |
+| **1.21.11** | Beta; gameplay testing | 21 | 0.19.2+ (development client uses 0.19.3) | 0.141.6 | 1.21.11-6.0.9-5 |
+| **26.1–26.1.2** | Supported (v1.16) | 25 | 0.19.2+ | 0.152.1+26.1.2 | 6.0.9-4 tested |
+| **26.2** | Supported (v1.16) | 25 | 0.19.2+ | 0.152.2+26.2 | 26.2-6.0.9-2 beta; 26.2-rc-2-6.0.9-1 compatibility build |
+| **26.3** | Planned | 25 | — | — | — |
 
-| Minecraft | File | Tested Create Fly version |
-| :--- | :--- | :--- |
-| 1.21.11 | `Copycats-CreateFly-1.21.11-beta.1.jar` | `6.0.9-5` |
-| 26.2 | `Copycats+-Fabric-26.2-v1.16.jar` | `26.2-rc-2-6.0.9-1` / `26.2-6.0.9-2` beta |
-| 26.1–26.1.2 | `Copycats+-Fabric-26.1+-v1.16.jar` | `26.1.2-6.0.9-4` |
+### Build outputs
 
-The 26.1+ file supports the 26.1 release line through 26.1.2, although 26.1 and 26.1.1 have not been individually retested with this patch.
+The Windows build menu saves selected JARs in `dist/` with these names:
+
+- `Copycats-CreateFly-1.21.11-beta.1.jar`
+- `Copycats-CreateFly-26.1+-v1.16.jar` — target 26.1.2; supports the 26.1 release line.
+- `Copycats-CreateFly-26.2-beta-v1.16.jar`
+- `Copycats-CreateFly-26.2-stable-v1.16.jar` — compatibility build for the earlier Create Fly API.
+
+The 1.21.11 beta is a gameplay-testing build. It is built from this repository and is not yet listed as a released download on CurseForge or Modrinth.
 
 > [!WARNING]
 > **NeoForge builds are not officially available yet.**
@@ -118,14 +119,12 @@ The Zoompack 5 team has been advised to request permission from the original Cop
 
 ## Installation
 
-1. Install **Fabric Loader 0.19.2 or newer** and **Java 25**.
-2. Install **Create Fly** and the matching **Fabric API**.
-3. Download the correct Copycats+ version from [CurseForge](https://www.curseforge.com/minecraft/mc-mods/createfly-copycats-port/files) or [Modrinth](https://modrinth.com/mod/copycats+-createfly-port/versions).
-4. Place the downloaded JAR into your Minecraft instance's `mods` folder.
-5. Remove any previous Copycats+ JAR before updating.
-6. Launch Minecraft and test the blocks in a creative world.
-
-For multiplayer, install matching required mods on both the client and dedicated server.
+1. Choose the Minecraft target you want to play.
+2. Install the matching Java version, Fabric Loader, Fabric API, and Create Fly from the compatibility table. Minecraft 1.21.11 uses Java 21; Minecraft 26.x uses Java 25.
+3. Download the matching released Copycats+ build from [CurseForge](https://www.curseforge.com/minecraft/mc-mods/createfly-copycats-port/files) or [Modrinth](https://modrinth.com/mod/copycats+-createfly-port/versions). For the 1.21.11 beta, build it from this branch with the Windows menu and use the JAR from `dist/`.
+4. Place the JAR in that Minecraft instance's `mods` folder.
+5. Remove older Copycats+ JARs from the same instance before updating.
+6. Launch Minecraft and test in a creative world. For multiplayer, install matching required mods on both the client and server.
 
 ## Help and feedback
 
@@ -144,9 +143,12 @@ Include Minecraft version, loader version, Create Fly version, reproduction step
 
 A **Java 25 JDK** is required.
 
-The separate [1.21.11 beta backport project](backport-1.21.11/README.md) targets Java 21 and Create Fly 6.0.9-5. Gameplay testing is ongoing.
+The [1.21.11 beta backport](backport-1.21.11/README.md) is included in this same branch. It targets Java 21 and Create Fly 1.21.11-6.0.9-5. Minecraft 26.x targets use Java 25.
 
 ```bash
+# Build Minecraft 1.21.11 beta with Java 21
+./gradlew -p backport-1.21.11 build
+
 # Build Minecraft 26.1.2
 ./gradlew build -Ptarget_version=26.1.2
 
@@ -161,16 +163,29 @@ On Windows, use `gradlew.bat` instead of `./gradlew`.
 
 Compiled JAR files are located in `build/libs`.
 
-The script `scripts/build-supported.ps1` builds both currently supported Minecraft targets into `dist`.
+### Windows build and test menu
+
+Double-click **`Copycats Build and Test.bat`** to choose a build or launch a development test client. Build selections copy the completed JAR into `dist/`; the “build all” option creates all four listed variants. The menu selects Java 21 for 1.21.11 and Java 25 for 26.x. Install Eclipse Temurin JDK 21 and JDK 25, or set `JAVA_HOME` to the required JDK before using the menu.
+
+The menu offers these builds:
+
+- Minecraft 1.21.11 beta.
+- Minecraft 26.1 release line, built with target 26.1.2.
+- Minecraft 26.2 with Create Fly 6.0.9-2 beta.
+- Minecraft 26.2 with Create Fly 6.0.9-1 for compatibility testing.
+
+It also launches isolated development clients for 1.21.11, 26.1.2, and both 26.2/Create Fly combinations. Close an existing client for a target before launching it again. You can also build all versions from PowerShell with `scripts/build-supported.ps1`.
 
 ### Development clients
 
 | Launcher | Minecraft / Create Fly |
 | :--- | :--- |
+| `Copycats Build and Test.bat` | Menu for all supported builds and test clients |
 | `Test Copycats.cmd` | 26.2 / Create Fly 6.0.9-2 beta |
 | `Test Copycats - Older Create Fly.cmd` | 26.2 / Create Fly 6.0.9-1 |
+| `backport-1.21.11/run-test-client.bat` | 1.21.11 beta / Create Fly 6.0.9-5 |
 
-Set `JAVA_HOME` to your Java 25 JDK.
+The menu and launch scripts select a matching installed Eclipse Temurin JDK: Java 21 for 1.21.11 and Java 25 for 26.x. The 26.x script also uses `JAVA_HOME` when it points to Java 25.
 
 For Minecraft 26.1.2:
 

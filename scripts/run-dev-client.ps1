@@ -7,13 +7,30 @@ param(
 
 $ErrorActionPreference = "Stop"
 $projectRoot = Split-Path -Parent $PSScriptRoot
+$java25Candidates = @()
+if ($env:JAVA_HOME) { $java25Candidates += $env:JAVA_HOME }
 $bundledJava = Join-Path $env:USERPROFILE ".cache\copycats-dev\jdk-25.0.4.1+1"
-if (-not $env:JAVA_HOME -and (Test-Path -LiteralPath (Join-Path $bundledJava "bin\java.exe"))) {
-    $env:JAVA_HOME = $bundledJava
+$java25Candidates += $bundledJava
+$adoptium = Join-Path $env:ProgramFiles "Eclipse Adoptium"
+$java25Candidates += Get-ChildItem -LiteralPath $adoptium -Directory -Filter "jdk-25*" -ErrorAction SilentlyContinue |
+    Sort-Object Name -Descending |
+    ForEach-Object { $_.FullName }
+
+$java25Home = $null
+foreach ($candidate in $java25Candidates) {
+    $java = Join-Path $candidate "bin\java.exe"
+    if (Test-Path -LiteralPath $java) {
+        $versionText = (& $java -version 2>&1 | Out-String)
+        if ($versionText -match 'version "25\.') {
+            $java25Home = $candidate
+            break
+        }
+    }
 }
-if (-not $env:JAVA_HOME -or -not (Test-Path -LiteralPath (Join-Path $env:JAVA_HOME "bin\java.exe"))) {
-    throw "Java 25 is required. Set JAVA_HOME to your Java 25 JDK directory."
+if (-not $java25Home) {
+    throw "Java 25 is required. Install Eclipse Temurin JDK 25 or set JAVA_HOME to your Java 25 JDK directory."
 }
+$env:JAVA_HOME = $java25Home
 
 $devArguments = @("runClient", "-Ptarget_version=$Minecraft", "--console=plain")
 if ($Minecraft -eq "26.2") {
