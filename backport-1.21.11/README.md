@@ -14,7 +14,16 @@ test client before starting another one.
 
 The installable jar is produced by running `gradlew.bat -p backport-1.21.11 build`
 from the repository root; find it under `build/libs/` in this folder. The beta
-artifact is `Copycats-CreateFly-1.21.11-beta.1.jar`.
+fix candidate is `Copycats-CreateFly-1.21.11-beta.2.jar`.
+
+The previous beta.1 release was archived while investigating startup crashes
+reported with larger modpacks. Issues [#10](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/issues/10)
+and [#11](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/issues/11)
+show the same `CreateRegistrate.create(String)` linkage failure during Steam 'n'
+Rails initialization. This candidate relocates Copycats' bundled Create and
+Registrate compatibility classes so they do not shadow APIs used by other mods.
+Test it with Steam 'n' Rails and other Create addons before publishing another
+release.
 
 In the development client, run `/copycats_test` to place every public Copycats
 block near your position. A barrel beside the gallery contains the box and

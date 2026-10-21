@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fixed ColorLight preventing connected textures on Copycats+ blocks.
+- Relocated the 1.21.11 backport's bundled Create/Registrate compatibility classes to prevent Steam 'n' Rails and other add-ons from loading Copycats' reduced compatibility stubs; see startup issues [#10](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/issues/10) and [#11](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/issues/11).
 
 ## 3.0.7 - 2026-08-10
 

@@ -6,7 +6,7 @@ This file is the version-specific index for the repository. The root [README](..
 
 | Minecraft | Loader | Status | Java | Loader/API requirements | Create Fly | Build source / notes |
 | :--- | :--- | :--- | :---: | :--- | :--- | :--- |
-| 1.21.11 | Fabric | Beta; gameplay testing | 21 | Fabric Loader 0.19.2+ (development client uses 0.19.3); Fabric API 0.141.6 | 1.21.11-6.0.9-5 | [`backport-1.21.11`](../backport-1.21.11/README.md) |
+| 1.21.11 | Fabric | Beta.1 archived; beta.2 compatibility fix candidate | 21 | Fabric Loader 0.19.2+ (development client uses 0.19.3); Fabric API 0.141.6 | 1.21.11-6.0.9-5 | [`backport-1.21.11`](../backport-1.21.11/README.md); known [startup issue #10](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/issues/10) and [#11](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/issues/11) |
 | 26.1–26.1.2 | Fabric | Supported (v1.16) | 25 | Fabric Loader 0.19.2+; Fabric API 0.152.1+26.1.2 | 6.0.9-4 tested | Root Gradle project; target 26.1.2 |
 | 26.2 | Fabric | Supported (v1.16) | 25 | Fabric Loader 0.19.2+; Fabric API 0.152.2+26.2 | 26.2-6.0.9-2 beta; 26.2-rc-2-6.0.9-1 compatibility build | Root Gradle project |
 | 26.3 | NeoForge | Community development port v1.17 | 25 | NeoForge 26.3.0.89 | [Create Fly NeoForge 6.0.9 source](https://github.com/zoom-packers/Create-Fly/tree/neoforge-26.3) | [Zoompack 5 community port branch](https://github.com/zoom-packers/copycats-createfly/tree/zp5/26.3); [`neoforge-26.3` porting notes](../neoforge-26.3/PORTING.md) |
