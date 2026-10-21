@@ -8,9 +8,9 @@ modId = "${mod_id}"
 version = "${mod_version}"
 displayName = "Create: Copycats+ (Create Fly, NeoForge)"
 iconFile = "copycats_icon.png"
-authors = "Lysine, Bennyboy1695, Redcat_XVIII; Create Fly port by lucahTheCreator; NeoForge 26.3 port by lucahTheCreator with help from the Zoompack 5 community project"
+authors = "Lysine, Bennyboy1695, Redcat_XVIII; Create Fly port by lucahTheCreator; NeoForge 26.3 port by lucahTheCreator"
 description = '''
-Create: Copycats+ 3.0.7 for Create Fly, ported to NeoForge 26.3 by lucahTheCreator with help from the Zoompack 5 community project. Unofficial; based on lucahTheCreator's
+Create: Copycats+ 3.0.7 for Create Fly, ported to NeoForge 26.3 by lucahTheCreator. Unofficial; based on lucahTheCreator's
 Create Fly port, which is published with permission from the Copycats+ team.
 '''
 

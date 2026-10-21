@@ -19,9 +19,6 @@ echo   6. Minecraft 1.21.11 beta
 echo   7. Minecraft 26.1.2
 echo   8. Minecraft 26.2 with Create Fly 6.0.9-2 beta
 echo   9. Minecraft 26.2 compatibility with Create Fly 6.0.9-1
-echo  10. Build NeoForge 26.3
-echo  11. Launch NeoForge 26.3 test client
-echo  12. Run NeoForge 26.3 game tests
 echo   0. Exit
 echo.
 set "choice="
@@ -36,9 +33,6 @@ if "%choice%"=="6" goto test121
 if "%choice%"=="7" goto test261
 if "%choice%"=="8" goto test262beta
 if "%choice%"=="9" goto test262stable
-if "%choice%"=="10" goto buildneo263
-if "%choice%"=="11" goto testneo263
-if "%choice%"=="12" goto testneo263server
 if "%choice%"=="0" goto done
 echo Invalid selection.
 pause
@@ -82,21 +76,5 @@ goto menu
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\run-dev-client.ps1" -Minecraft 26.2 -CreateFly stable
 pause
 goto menu
-:buildneo263
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\neoforge-26.3.ps1" -Action build
-if errorlevel 1 echo NeoForge build failed. See the Gradle output above.
-pause
-goto menu
-:testneo263
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\neoforge-26.3.ps1" -Action client
-if errorlevel 1 echo NeoForge client failed. See the Gradle output above.
-pause
-goto menu
-:testneo263server
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\neoforge-26.3.ps1" -Action gametest
-if errorlevel 1 echo NeoForge game tests failed. See the Gradle output above.
-pause
-goto menu
-
 :done
 endlocal

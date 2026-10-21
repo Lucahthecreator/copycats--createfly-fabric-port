@@ -5,11 +5,11 @@
 
 # Copycats+ · Create Fly Port
 
-**More shapes. Your materials. Multiple loaders and Minecraft versions.**
+**More shapes. Your materials. Multiple Minecraft versions.**
 
 An unofficial port of **Create: Copycats+** for **Create Fly**. Supported versions, loaders, dependencies, and build paths are listed in the [compatibility guide](docs/COMPATIBILITY.md).
 
-[![Loaders](https://img.shields.io/badge/Loaders-multiple-dbd4c5?style=flat-square)](docs/COMPATIBILITY.md)
+[![Loader](https://img.shields.io/badge/Loader-Fabric-dbd4c5?style=flat-square)](docs/COMPATIBILITY.md)
 [![Minecraft](https://img.shields.io/badge/Minecraft-multiple%20targets-62b47a?style=flat-square)](docs/COMPATIBILITY.md)
 [![Java](https://img.shields.io/badge/Java-see%20compatibility%20guide-e76f00?style=flat-square)](docs/COMPATIBILITY.md)
 [![Compatibility checks](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/actions/workflows/compatibility.yml/badge.svg)](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/actions/workflows/compatibility.yml)
@@ -56,7 +56,6 @@ The [compatibility guide](docs/COMPATIBILITY.md) is the single list of Minecraft
 | **1.21.11** | Fabric | Beta.1 archived · beta.2 fix candidate | 21 |
 | **26.1** (tested on 26.1.2) | Fabric | Supported · v1.16 | 25 |
 | **26.2** | Fabric | Supported · v1.16 | 25 |
-| **26.3** | NeoForge | Community port · v1.17 | 25 |
 
 See the [full compatibility matrix](docs/COMPATIBILITY.md) for exact loader and Create Fly versions, build artifacts, and target-specific instructions.
 
@@ -65,13 +64,13 @@ Download published builds from [CurseForge](https://www.curseforge.com/minecraft
 > [!WARNING]
 > Development and community ports may have different support and release status.
 >
-> Build for the loader listed for your target in the compatibility guide. Fabric and NeoForge JARs cannot be used interchangeably. Check the relevant porting notes for attribution and distribution conditions.
+> Current build targets in this repository use Fabric.
 
 ## Port modules and community work
 
-The repository contains the main Fabric project and may include separate modules or backports for other loaders and Minecraft versions. Each target's source, dependency links, build steps, and testing notes are documented in its module and in the [compatibility guide](docs/COMPATIBILITY.md).
+The repository contains the main Fabric project and may include backports for other Minecraft versions. Historical work on other loaders is kept as reference documentation in the [compatibility guide](docs/COMPATIBILITY.md).
 
-Community adaptations and their contributors are listed in the [compatibility guide](docs/COMPATIBILITY.md) and the notes for each module.
+The NeoForge 26.3 community port is linked in the compatibility guide as a reference; this repository no longer includes its build module.
 
 ## Installation
 
@@ -143,7 +142,8 @@ Search logs for `[Copycats Debug/` or `Create Fly normals compatibility:`.
 
 - `patches/src/main/java` — Active compatibility patches for the main project.
 - `reconstructed/src/main/java` — Reconstructed source files for the main project.
-- `backport-*` and loader-specific module directories — Separate targets with their own build files and notes.
+- `backport-*` — Separate Fabric targets with their own build files and notes.
+- `neoforge-26.3/src` — Archived NeoForge source and data retained for reference; no build configuration is included.
 - `scripts/` — Build, test, and development-client helpers.
 
 Not all reconstructed Java files are automatically compiled into releases. Changes to unselected files may not affect the final JAR.
@@ -155,7 +155,6 @@ Not all reconstructed Java files are automatically compiled into releases. Chang
 | **Original Copycats+** | Lysine, Bennyboy1695, Redcat_XVIII, and the Copycats+ team |
 | **Create Fly** | ZurrTum and contributors |
 | **Fabric port** | lucahTheCreator |
-| **Community ports and adaptations** | Contributors credited in the [compatibility guide](docs/COMPATIBILITY.md) and each module's notes |
 
 [Original Copycats+](https://github.com/copycats-plus/copycats) ·
 [Create Fly](https://github.com/ZurrTum/Create-Fly) ·
@@ -187,6 +186,6 @@ Additional public forks or adaptations should obtain the necessary permission fr
 
 *Unofficial Copycats+ port for Create Fly.*
 
-**Unofficial community port · See the compatibility guide for current targets**
+**Unofficial Fabric port · See the compatibility guide for current targets**
 
 </div>

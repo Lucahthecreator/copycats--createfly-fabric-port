@@ -9,8 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added the NeoForge 26.3 development port, with help from the Zoompack 5 community project.
-- Added a NeoForge development build and game-test workflow.
+- Recorded NeoForge 26.3 community porting work for historical reference; it is not a build target in this repository.
 
 ### Fixed
 

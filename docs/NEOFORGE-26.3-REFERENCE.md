@@ -1,12 +1,11 @@
-# Porting notes: Copycats+ (Create Fly port) → NeoForge 26.3
+# Archived reference: Copycats+ (Create Fly port) → NeoForge 26.3
 
-Written 2026-10-18. Checked against MC 26.3, NeoForge 26.3.0.89, Java 25.0.1, and ZP5's NeoForge Create Fly port
+Historical notes from work written 2026-10-18, checked against MC 26.3, NeoForge 26.3.0.89, Java 25.0.1, and the NeoForge Create Fly port
 `create-fly-neoforge-6.0.9+neoforge-26.3` (ZP5 `mods/create-fly-neoforge`, branch `neoforge-26.3`, `8da5b8c6`).
 
-This directory is a NeoForge 26.3 build of **Create: Copycats+ 3.0.7** for Zoompack 5. It sits on branch `zp5/26.3` of
-a clone of [Lucahthecreator/copycats--createfly-fabric-port](https://github.com/Lucahthecreator/copycats--createfly-fabric-port),
-off `codex/createfly-fabric-port` at `d5a9c99f` (port v1.16). The upstream Fabric build files at the repository root
-are left as they are.
+This repository retains the NeoForge port's source and data under `neoforge-26.3/` for possible future reference.
+Its build configuration and launch tools have been removed, so this checkout cannot build or launch that port. The
+community source branch is available at [Zoompack 5's NeoForge 26.3 port](https://github.com/zoom-packers/copycats-createfly/tree/zp5/26.3).
 
 ## License
 
@@ -22,7 +21,7 @@ permission applies to this adaptation; other public forks or releases should obt
 
 ## Route: native NeoForge, not Connector
 
-| | Native port (this directory) | Fabric jar under Sinytra Connector |
+| | Archived native port source | Fabric jar under Sinytra Connector |
 |---|---|---|
 | Linkage | Compiles against MC 26.3, NeoForge and the Create port | The 26.2 jar resolves every `com.zurrtum.create` symbol in our Create port. It misses `PoseStack.mulPose(Quaternionfc)`, `BlockItem.updateCustomBlockEntityTag` (instance) and `Inventory.placeItemBackInInventory(ItemStack)` (16 call sites; the link check script missed this one, javac found it) |
 | Fabric API surface | Replaced: entrypoints, creative tabs, server/client lifecycle, `BlockEntityRendererRegistry`, FRAPI `emitQuads`, Fabric Loader | 8 classes on FFAPI |
@@ -79,24 +78,7 @@ renamed loop variable in `CopycatPaneModelCore`.
 | `BlockPos(Vec3i)` constructor is gone | `BlockPos.ZERO.offset(vec)` |
 | Loot table format | `create-fly-neoforge/tools/data_26_3.py` converted all 44 loot tables (conditions → `condition`, `functions` → `modifier`, `block_state_property` → `match_block`). Its lint finds 0 leftover 26.2 constructs. Recipes and models needed no changes |
 
-## Build
-
-The build mirrors the Create port: ModDevGradle 2.0.148, NeoForge 26.3.0.89, Java 25. It compiles against the Create
-port's jar (`create_jar` in `gradle.properties`; the default is the jar in a sibling `ZP5` checkout) and borrows
-that port's access transformer and `interfaces.json`, so it sees Create's widened Minecraft members.
-
-```bash
-./gradlew build
-```
-
-```bash
-./gradlew runGameTestServer
-```
-
-Set `JAVA_HOME` to a JDK 25 first. The jar lands in `build/libs/copycats-neoforge-<version>.jar`. Mod id `copycats`.
-It depends on `create` `[6.0.9,6.0.10)`.
-
-## Verified
+## Historical verification record
 
 - **Build.** `./gradlew build` compiles all 233 source files with no errors.
 - **Static mixin check.** The Create port's `tools/check_mixins.py`, adapted for package-qualified config entries,
