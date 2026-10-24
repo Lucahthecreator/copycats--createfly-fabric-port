@@ -1,0 +1,205 @@
+plugins {
+    id 'net.fabricmc.fabric-loom-remap' version '1.16.3'
+}
+
+version = '3.0.7-createfly+mc.1.21.10-v1.17-beta.1'
+group = 'com.copycatsplus'
+
+base {
+    archivesName = 'copycats-createfly'
+}
+
+repositories {
+    maven { url 'https://maven.fabricmc.net/' }
+    mavenCentral()
+    maven { url 'https://api.modrinth.com/maven' }
+}
+
+loom {
+    accessWidenerPath = file('src/main/resources/copycats.accesswidener')
+    runs {
+        client {
+            runDir = 'run-1.21.10'
+            programArgs('--username', 'CopycatsTest')
+        }
+    }
+}
+
+dependencies {
+    minecraft 'com.mojang:minecraft:1.21.10'
+    mappings loom.officialMojangMappings()
+    modImplementation 'net.fabricmc:fabric-loader:0.19.3'
+    modImplementation 'net.fabricmc.fabric-api:fabric-api:0.137.0+1.21.10'
+    modImplementation 'maven.modrinth:create-fly:1.21.10-6.0.8-6'
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+    annotationProcessor implementation('io.github.llamalad7:mixinextras-fabric:0.4.1')
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+// This backport includes a small set of Create/Registrate compatibility classes that
+// Create Fly does not provide. Keep them private to Copycats so they cannot shadow the
+// versions supplied by other mods such as Steam 'n' Rails.
+def bundledApiRelocations = [
+    'com/tterrag/registrate/': 'com/copycatsplus/copycats/internal/registrate/',
+    'com/zurrtum/create/foundation/data/': 'com/copycatsplus/copycats/internal/create/foundation/data/'
+]
+
+def relocateBundledApiName = { String internalName ->
+    for (entry in bundledApiRelocations) {
+        if (internalName.startsWith(entry.key)) {
+            return entry.value + internalName.substring(entry.key.length())
+        }
+    }
+    if (internalName == 'com/zurrtum/create/AllTags' || internalName.startsWith('com/zurrtum/create/AllTags$')) {
+        return 'com/copycatsplus/copycats/internal/create/' + internalName.substring('com/zurrtum/create/'.length())
+    }
+    return internalName
+}
+
+def remapBundledApiClass = { byte[] bytes ->
+    def reader = new org.objectweb.asm.ClassReader(bytes)
+    def writer = new org.objectweb.asm.ClassWriter(0)
+    def remapper = new org.objectweb.asm.commons.Remapper() {
+        @Override
+        String map(String name) {
+            return relocateBundledApiName(name)
+        }
+    }
+    reader.accept(new org.objectweb.asm.commons.ClassRemapper(writer, remapper), 0)
+    return writer.toByteArray()
+}
+
+def relocateBundledApiJar = { File archive ->
+    def temporaryArchive = new File(archive.parentFile, archive.name + '.relocating')
+    def inputJar = new java.util.zip.ZipFile(archive)
+    def outputJar = new java.util.zip.ZipOutputStream(new FileOutputStream(temporaryArchive))
+    try {
+        inputJar.entries().each { entry ->
+            if (entry.directory) {
+                return
+            }
+            String entryName = entry.name
+            boolean classFile = entryName.endsWith('.class')
+            String internalName = classFile ? entryName.substring(0, entryName.length() - '.class'.length()) : entryName
+            String relocatedName = relocateBundledApiName(internalName)
+            def outputEntry = new java.util.zip.ZipEntry(classFile ? relocatedName + '.class' : entryName)
+            outputEntry.time = entry.time
+            outputJar.putNextEntry(outputEntry)
+            byte[] bytes = inputJar.getInputStream(entry).readAllBytes()
+            if (classFile) {
+                bytes = remapBundledApiClass(bytes)
+            }
+            outputJar.write(bytes)
+            outputJar.closeEntry()
+        }
+    } finally {
+        outputJar.close()
+        inputJar.close()
+    }
+    java.nio.file.Files.move(temporaryArchive.toPath(), archive.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+}
+
+def relocateBundledApiDirectory = { File classesDirectory ->
+    fileTree(classesDirectory).matching { include('**/*.class') }.files.each { classFile ->
+        byte[] bytes = remapBundledApiClass(classFile.bytes)
+        def reader = new org.objectweb.asm.ClassReader(bytes)
+        String relocatedPath = reader.className + '.class'
+        File relocatedFile = new File(classesDirectory, relocatedPath)
+        if (relocatedFile != classFile) {
+            relocatedFile.parentFile.mkdirs()
+            relocatedFile.bytes = bytes
+            classFile.delete()
+        } else {
+            classFile.bytes = bytes
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+    options.compilerArgs += ['-Xmaxerrs', '1000']
+}
+
+processResources {
+    inputs.property('version', project.version)
+    filesMatching('fabric.mod.json') {
+        expand(
+            version: project.version,
+            minecraft_version: '1.21.10',
+            minecraft_version_range: '1.21.10',
+            create_version_range: '>=6.0.8-6 <6.0.9'
+        )
+    }
+}
+
+tasks.named('jar') {
+    doLast {
+        relocateBundledApiJar(archiveFile.get().asFile)
+    }
+}
+
+tasks.named('runClient') {
+    doFirst {
+        sourceSets.main.output.classesDirs.files.each { classesDirectory ->
+            relocateBundledApiDirectory(classesDirectory)
+        }
+    }
+}
+
+tasks.register('verifyBundledApiIsolation') {
+    group = 'verification'
+    description = 'Ensures bundled Create/Registrate compatibility classes do not leak into public packages.'
+    dependsOn(tasks.named('jar'))
+    doLast {
+        def leakedClassPaths = { Set names ->
+            names.findAll { name ->
+                name.startsWith('com/tterrag/registrate/') ||
+                name.startsWith('com/zurrtum/create/foundation/data/') ||
+                name == 'com/zurrtum/create/AllTags.class'
+            }
+        }
+        def verifyRelocatedClasses = { Set names, String source ->
+            def leaked = leakedClassPaths(names)
+            if (!leaked.isEmpty()) {
+                throw new GradleException("Bundled Create/Registrate classes leaked into public packages in ${source}: ${leaked}")
+            }
+            ['com/copycatsplus/copycats/internal/registrate/AbstractRegistrate.class',
+             'com/copycatsplus/copycats/internal/create/foundation/data/CreateRegistrate.class',
+             'com/copycatsplus/copycats/internal/create/AllTags.class'].each { expected ->
+                if (!names.contains(expected)) {
+                    throw new GradleException("Expected relocated compatibility class is missing from ${source}: ${expected}")
+                }
+            }
+        }
+
+        File archive = tasks.named('jar').get().archiveFile.get().asFile
+        def entries = new java.util.zip.ZipFile(archive)
+        try {
+            def names = entries.entries().collect { it.name } as Set
+            verifyRelocatedClasses(names, 'release JAR')
+        } finally {
+            entries.close()
+        }
+
+        File devClasses = layout.buildDirectory.dir('tmp/verify-relocated-dev-classes').get().asFile
+        delete(devClasses)
+        copy {
+            from(sourceSets.main.output.classesDirs)
+            into(devClasses)
+        }
+        relocateBundledApiDirectory(devClasses)
+        Set devNames = fileTree(devClasses).matching { include('**/*.class') }.files.collect { file ->
+            devClasses.toPath().relativize(file.toPath()).toString().replace('\\', '/')
+        } as Set
+        verifyRelocatedClasses(devNames, 'development classpath')
+    }
+}
+
+tasks.named('check') {
+    dependsOn(tasks.named('verifyBundledApiIsolation'))
+}

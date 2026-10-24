@@ -6,6 +6,7 @@ This file is the version-specific index for the repository. The root [README](..
 
 | Minecraft | Loader | Status | Java | Loader/API requirements | Create Fly | Build source / notes |
 | :--- | :--- | :--- | :---: | :--- | :--- | :--- |
+| 1.21.10 | Fabric | Experimental backport; beta testing required | 21 | Fabric Loader 0.19.3; Fabric API 0.137.0+1.21.10 | 1.21.10-6.0.8-6 | [`backport-1.21.10`](../backport-1.21.10/README.md) |
 | 1.21.11 | Fabric | Beta.1 archived; beta.2 compatibility fix candidate | 21 | Fabric Loader 0.19.2+ (development client uses 0.19.3); Fabric API 0.141.6 | 1.21.11-6.0.9-5 | [`backport-1.21.11`](../backport-1.21.11/README.md); known [startup issue #10](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/issues/10) and [#11](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/issues/11) |
 | 26.1–26.1.2 | Fabric | Supported (v1.16) | 25 | Fabric Loader 0.19.2+; Fabric API 0.152.1+26.1.2 | 6.0.9-4 tested | Root Gradle project; target 26.1.2 |
 | 26.2 | Fabric | Supported (v1.16) | 25 | Fabric Loader 0.19.2+; Fabric API 0.152.2+26.2 | 26.2-6.0.9-2 beta; 26.2-rc-2-6.0.9-1 compatibility build | Root Gradle project |
@@ -17,6 +18,7 @@ Targets not listed here are not currently represented as tested builds in this c
 | Target | Build output |
 | :--- | :--- |
 | Fabric root project | `build/libs/` |
+| 1.21.10 Fabric backport | `backport-1.21.10/build/libs/` |
 | 1.21.11 Fabric backport | `backport-1.21.11/build/libs/` |
 
 The Windows build menu copies selected Fabric JARs to `dist/`. Its displayed build names and options are authoritative for the current checkout. Development builds may not be published on CurseForge or Modrinth.
@@ -32,6 +34,9 @@ Use the Java version in the target row. On Windows, use `gradlew.bat` and the ma
 
 # Fabric 1.21.11 backport
 ./gradlew -p backport-1.21.11 build
+
+# Fabric 1.21.10 backport
+./gradlew -p backport-1.21.10 build
 
 ```
 

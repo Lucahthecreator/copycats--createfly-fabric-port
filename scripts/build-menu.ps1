@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet("1.21.11", "26.1+", "26.2-beta", "26.2-compat", "all")]
+    [ValidateSet("1.21.10", "1.21.11", "26.1+", "26.2-beta", "26.2-compat", "all")]
     [string]$Target
 )
 
@@ -11,8 +11,8 @@ $dist = Join-Path $projectRoot "dist"
 function Set-JavaHome([int]$Major) {
     $currentJava = if ($env:JAVA_HOME) { Join-Path $env:JAVA_HOME "bin\java.exe" } else { $null }
     if ($currentJava -and (Test-Path -LiteralPath $currentJava)) {
-        $versionText = (& $currentJava -version 2>&1 | Out-String)
-        if ($versionText -match "version `"$Major\.") {
+        $versionText = & $env:ComSpec /d /c "`"$currentJava`" -version 2>&1"
+        if (($versionText -join "`n") -match ('version "' + $Major + '\.')) {
             return
         }
     }
@@ -34,6 +34,12 @@ function Build-Target([string]$Name) {
     $distName = $null
 
     switch ($Name) {
+        "1.21.10" {
+            $javaMajor = 21
+            $buildDirectory = Join-Path $projectRoot "backport-1.21.10"
+            $gradleArguments = @("-p", "backport-1.21.10", "clean", "build", "--console=plain")
+            $distName = "Copycats-CreateFly-1.21.10-beta.1.jar"
+        }
         "1.21.11" {
             $javaMajor = 21
             $buildDirectory = Join-Path $projectRoot "backport-1.21.11"
@@ -83,7 +89,7 @@ function Build-Target([string]$Name) {
 
 try {
     if ($Target -eq "all") {
-        foreach ($name in @("1.21.11", "26.1+", "26.2-beta", "26.2-compat")) {
+        foreach ($name in @("1.21.10", "1.21.11", "26.1+", "26.2-beta", "26.2-compat")) {
             Build-Target $name
         }
     } else {

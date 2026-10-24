@@ -30,6 +30,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Added an experimental Minecraft 1.21.10 Fabric backport for beta testing.
+
 ### Fixed
 
 - Fixed ColorLight preventing connected textures on Copycats+ blocks.

@@ -1,0 +1,34 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.copycatsplus.copycats.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "foundation.copycat.CopycatLightEngineAccessor",
+    "foundation.copycat.CopycatBlockLightEngineMixin",
+    "foundation.copycat.CopycatLightChunkMixin",
+    "foundation.copycat.BlockStateBaseMixin",
+    "foundation.copycat.CopycatBlockMixin",
+    "foundation.copycat.CopycatBlockEntityMixin",
+    "foundation.copycat.CopycatCogWheelMaterialMixin",
+    "foundation.copycat.CopycatSlidingDoorBlockMixin",
+    "foundation.copycat.CopycatSlidingDoorBlockEntityMixin"
+  ],
+  "client": [
+    "foundation.copycat.ConnectedTextureBehaviourMixin",
+    "foundation.copycat.FabricBlockStateModelWrapperAccessor",
+    "foundation.copycat.ContinuityCopycatModelMixin",
+    "foundation.copycat.ScaledBlockAndTintGetterMixin",
+    "foundation.copycat.CTModelMixin",
+    "foundation.copycat.RotatedPillarCTBehaviourMixin",
+    "foundation.copycat.ModelBlockRendererMixin",
+    "foundation.copycat.IndigoBlockRendererMixin",
+    "foundation.copycat.SodiumBlockRenderContextMixin",
+    "foundation.copycat.ColorLightTintedBakedModelAccessor",
+    "foundation.copycat.CopycatSlidingDoorModelCoreMixin",
+    "foundation.copycat.CopycatFoldingDoorModelCoreMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
