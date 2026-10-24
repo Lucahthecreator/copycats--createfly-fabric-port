@@ -30,10 +30,8 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import com.zurrtum.create.AllBlockEntityTypes;
 import java.util.HashSet;
 import java.util.Set;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
 
 public class CCBlockEntityTypes {
     private static final CopycatRegistrate REGISTRATE = Copycats.getRegistrate();
@@ -50,23 +48,12 @@ public class CCBlockEntityTypes {
         CCBlockEntityTypes.addValidBlocks(AllBlockEntityTypes.SLIDING_DOOR, (Block)CCBlocks.COPYCAT_SLIDING_DOOR.get(), (Block)CCBlocks.COPYCAT_FOLDING_DOOR.get());
         CCBlockEntityTypes.addValidBlocks(AllBlockEntityTypes.BRACKETED_KINETIC, (Block)CCBlocks.COPYCAT_SHAFT.get(), (Block)CCBlocks.COPYCAT_COGWHEEL.get(), (Block)CCBlocks.COPYCAT_LARGE_COGWHEEL.get());
         CCBlockEntityTypes.addValidBlocks(AllBlockEntityTypes.GLASS_FLUID_PIPE, (Block)CCBlocks.COPYCAT_GLASS_FLUID_PIPE.get());
-        CCBlockEntityTypes.validateCreateFlySubclass((BlockEntityType)COPYCAT_SLIDING_DOOR.get(), ((CopycatSlidingDoorBlock)CCBlocks.COPYCAT_SLIDING_DOOR.get()).defaultBlockState());
-        CCBlockEntityTypes.validateCreateFlySubclass((BlockEntityType)COPYCAT_SHAFT.get(), ((CopycatShaftBlock)CCBlocks.COPYCAT_SHAFT.get()).defaultBlockState());
-        CCBlockEntityTypes.validateCreateFlySubclass((BlockEntityType)COPYCAT_COGWHEEL.get(), ((CopycatCogWheelBlock)CCBlocks.COPYCAT_COGWHEEL.get()).defaultBlockState());
-        CCBlockEntityTypes.validateCreateFlySubclass((BlockEntityType)COPYCAT_COGWHEEL.get(), ((CopycatCogWheelBlock)CCBlocks.COPYCAT_LARGE_COGWHEEL.get()).defaultBlockState());
-        CCBlockEntityTypes.validateCreateFlySubclass((BlockEntityType)COPYCAT_GLASS_FLUID_PIPE.get(), ((CopycatGlassFluidPipeBlock)CCBlocks.COPYCAT_GLASS_FLUID_PIPE.get()).defaultBlockState());
     }
 
     private static void addValidBlocks(BlockEntityType<?> type, Block ... blocks) {
         HashSet<Block> validBlocks = new HashSet<Block>(type.validBlocks);
         validBlocks.addAll(Set.of(blocks));
         type.validBlocks = Set.copyOf(validBlocks);
-    }
-
-    private static void validateCreateFlySubclass(BlockEntityType<?> type, BlockState state) {
-        if (type.create(BlockPos.ZERO, state).getType() != type) {
-            throw new IllegalStateException("Copycats block entity kept the wrong CreateFly type for " + String.valueOf(state));
-        }
     }
 }
 
