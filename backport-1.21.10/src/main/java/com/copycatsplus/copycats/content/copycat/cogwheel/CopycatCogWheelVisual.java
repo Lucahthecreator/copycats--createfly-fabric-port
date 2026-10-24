@@ -84,8 +84,7 @@ public class CopycatCogWheelVisual extends KineticBlockEntityVisual<CopycatCogWh
                 blockEntity.getBlockPos(), () -> new BakedModelBuilder(fixedModel)
                         .level((BlockAndTintGetter) level)
                         .pos(blockEntity.getBlockPos())
-                        .materialFunc((layer, shaded) -> property.equals(CopycatCogWheelBlock.Part.COGWHEEL.getSerializedName())
-                                && layer == ChunkSectionLayer.SOLID
+                        .materialFunc((layer, shaded) -> layer == ChunkSectionLayer.SOLID
                                 ? shaded ? Materials.CUTOUT_MIPPED_BLOCK : Materials.CUTOUT_MIPPED_UNSHADED_BLOCK
                                 : ModelUtil.getMaterial(layer, shaded))
                         .build());
