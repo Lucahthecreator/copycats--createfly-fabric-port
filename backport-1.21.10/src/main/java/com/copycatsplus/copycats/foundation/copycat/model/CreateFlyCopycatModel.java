@@ -134,23 +134,29 @@ extends WrapperBlockStateModel {
         Map<BlockState, List<BlockModelPart>> partsByMaterial = new LinkedHashMap<>();
         addPartsWithInfo(world, pos, state, random, parts, partsByMaterial);
         for (Map.Entry<BlockState, List<BlockModelPart>> entry : partsByMaterial.entrySet()) {
-            ChunkSectionLayer layer = renderLayer(entry.getKey());
+            ChunkSectionLayer layer = renderLayer(entry.getKey(), state);
             for (BlockModelPart part : List.copyOf(entry.getValue())) {
                 emitPart(emitter, part, layer, cullTest);
             }
         }
         // The vanilla fallback has no block entity material to group by.
         for (BlockModelPart part : List.copyOf(parts)) {
-            emitPart(emitter, part, renderLayer(state), cullTest);
+            emitPart(emitter, part, renderLayer(state, state), cullTest);
         }
     }
 
-    private static ChunkSectionLayer renderLayer(BlockState material) {
+    private static ChunkSectionLayer renderLayer(BlockState material, BlockState copycatState) {
         // Create's unfilled copycat base has transparent pixels, even though its block
         // is not registered as a cutout block in vanilla's render layer map.
-        return material.is(AllBlocks.COPYCAT_BASE)
+        ChunkSectionLayer layer = material.is(AllBlocks.COPYCAT_BASE)
                 ? ChunkSectionLayer.CUTOUT
                 : ItemBlockRenderTypes.getChunkRenderType(material);
+        // Copycat cogwheel geometry contains transparent teeth gaps. Keep those pixels
+        // cut out even when the copied material itself normally renders as solid.
+        if (copycatState.getBlock() instanceof CopycatCogWheelBlock && layer == ChunkSectionLayer.SOLID) {
+            return ChunkSectionLayer.CUTOUT;
+        }
+        return layer;
     }
 
     private static void emitPart(QuadEmitter emitter, BlockModelPart part, ChunkSectionLayer layer,

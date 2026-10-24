@@ -9,8 +9,11 @@ import com.zurrtum.create.client.flywheel.api.instance.Instance;
 import com.zurrtum.create.client.flywheel.api.model.Model;
 import com.zurrtum.create.client.flywheel.api.visualization.VisualizationContext;
 import com.zurrtum.create.client.flywheel.lib.model.baked.BakedModelBuilder;
+import com.zurrtum.create.client.flywheel.lib.model.ModelUtil;
+import com.zurrtum.create.client.flywheel.lib.material.Materials;
 import com.zurrtum.create.client.foundation.render.AllInstanceTypes;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.block.model.BlockModelPart;
@@ -81,6 +84,10 @@ public class CopycatCogWheelVisual extends KineticBlockEntityVisual<CopycatCogWh
                 blockEntity.getBlockPos(), () -> new BakedModelBuilder(fixedModel)
                         .level((BlockAndTintGetter) level)
                         .pos(blockEntity.getBlockPos())
+                        .materialFunc((layer, shaded) -> property.equals(CopycatCogWheelBlock.Part.COGWHEEL.getSerializedName())
+                                && layer == ChunkSectionLayer.SOLID
+                                ? shaded ? Materials.CUTOUT_MIPPED_BLOCK : Materials.CUTOUT_MIPPED_UNSHADED_BLOCK
+                                : ModelUtil.getMaterial(layer, shaded))
                         .build());
     }
 
