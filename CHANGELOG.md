@@ -36,6 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Render transparent grass pixels correctly on animated copycat cogwheel shafts and gears in the 1.21.10 backport.
+- Avoid constructing Create block entities during early Copycats registration, preventing a startup crash in the 1.21.10 dev client.
 - Fixed ColorLight preventing connected textures on Copycats+ blocks.
 - Relocated the 1.21.11 backport's bundled Create/Registrate compatibility classes to prevent Steam 'n' Rails and other add-ons from loading Copycats' reduced compatibility stubs; see startup issues [#10](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/issues/10) and [#11](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/issues/11).
 

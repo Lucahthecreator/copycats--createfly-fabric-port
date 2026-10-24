@@ -53,7 +53,7 @@ The [compatibility guide](docs/COMPATIBILITY.md) is the single list of Minecraft
 
 | Minecraft | Loader | Copycats+ status | Java |
 | :--- | :--- | :--- | :---: |
-| **1.21.10** | Fabric | Experimental backport · beta testing | 21 |
+| **1.21.10** | Fabric | Beta.1 · gameplay testing in progress | 21 |
 | **1.21.11** | Fabric | Beta.1 archived · beta.2 fix candidate | 21 |
 | **26.1** (tested on 26.1.2) | Fabric | Supported · v1.16 | 25 |
 | **26.2** | Fabric | Supported · v1.16 | 25 |
