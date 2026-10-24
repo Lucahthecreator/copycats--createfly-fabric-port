@@ -593,17 +593,36 @@ extends WrapperBlockStateModel {
         }
         CopycatFluidPipeModelCore fluidPipe = (CopycatFluidPipeModelCore)renderCore;
         CopycatFluidPipeModelCore.PipeModelData data = new CopycatFluidPipeModelCore.PipeModelData();
-        FluidTransportBehaviour transport = (FluidTransportBehaviour)BlockEntityBehaviour.get((BlockGetter)world, (BlockPos)pos, (BehaviourType)FluidTransportBehaviour.TYPE);
+        FluidTransportBehaviour transport = (FluidTransportBehaviour)getBehaviour(world, pos, FluidTransportBehaviour.TYPE);
         if (transport != null) {
             for (Direction direction : Direction.values()) {
             data.putAttachment(direction, transport.getRenderedRimAttachment(world, pos, state, direction));
             }
         }
-        if ((bracket = (BracketedBlockEntityBehaviour)BlockEntityBehaviour.get((BlockGetter)world, (BlockPos)pos, (BehaviourType)BracketedBlockEntityBehaviour.TYPE)) != null) {
+        if ((bracket = (BracketedBlockEntityBehaviour)getBehaviour(world, pos, BracketedBlockEntityBehaviour.TYPE)) != null) {
             data.putBracket(bracket.getBracket());
         }
         data.setEncased(FluidPipeBlock.shouldDrawCasing(world, pos, state));
         fluidPipe.setData(data);
+    }
+
+    /** BlockEntityBehaviour moved packages between Create Fly 6.0.8 and 6.0.9. */
+    @Nullable
+    private static Object getBehaviour(BlockGetter world, BlockPos pos, BehaviourType<?> type) {
+        for (String className : List.of(
+                "com.zurrtum.create.api.behaviour.BlockEntityBehaviour",
+                "com.zurrtum.create.foundation.blockEntity.behaviour.BlockEntityBehaviour")) {
+            try {
+                Class<?> behaviourClass = Class.forName(className);
+                return behaviourClass.getMethod("get", BlockGetter.class, BlockPos.class, BehaviourType.class)
+                        .invoke(null, world, pos, type);
+            } catch (ClassNotFoundException ignored) {
+                // Try the other package used by supported Create Fly releases.
+            } catch (ReflectiveOperationException exception) {
+                throw new IllegalStateException("Unable to query Create Fly block entity behaviour", exception);
+            }
+        }
+        throw new IllegalStateException("Supported Create Fly BlockEntityBehaviour class was not found");
     }
 
     private static void addCroppedQuads(QuadCollection.Builder builder, List<BakedQuad> quads, List<AABB> boxes) {

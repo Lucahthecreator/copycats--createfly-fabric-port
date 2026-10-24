@@ -2,12 +2,14 @@ plugins {
     id 'net.fabricmc.fabric-loom-remap' version '1.16.3'
 }
 
-version = '3.0.7-createfly+mc.1.21.10-v1.17-beta.2'
+version = '3.0.7-createfly+mc.1.21.10-v1.17-beta.3'
 group = 'com.copycatsplus'
 
 base {
     archivesName = 'copycats-createfly'
 }
+
+def createFlyRuntimeVersion = project.findProperty('createFlyRuntimeVersion') ?: '1.21.10-6.0.9-2'
 
 repositories {
     maven { url 'https://maven.fabricmc.net/' }
@@ -30,7 +32,8 @@ dependencies {
     mappings loom.officialMojangMappings()
     modImplementation 'net.fabricmc:fabric-loader:0.19.3'
     modImplementation 'net.fabricmc.fabric-api:fabric-api:0.138.4+1.21.10'
-    modImplementation 'maven.modrinth:create-fly:1.21.10-6.0.9-2'
+    modCompileOnly 'maven.modrinth:create-fly:1.21.10-6.0.9-2'
+    modRuntimeOnly "maven.modrinth:create-fly:${createFlyRuntimeVersion}"
     compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
     annotationProcessor implementation('io.github.llamalad7:mixinextras-fabric:0.4.1')
 }
@@ -127,12 +130,13 @@ tasks.withType(JavaCompile).configureEach {
 
 processResources {
     inputs.property('version', project.version)
+    inputs.property('create_version_range', '>=6.0.8-6 <6.0.10')
     filesMatching('fabric.mod.json') {
         expand(
             version: project.version,
             minecraft_version: '1.21.10',
             minecraft_version_range: '1.21.10',
-            create_version_range: '>=6.0.9-2 <6.0.10'
+            create_version_range: '>=6.0.8-6 <6.0.10'
         )
     }
 }

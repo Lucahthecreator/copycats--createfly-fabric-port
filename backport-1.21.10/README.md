@@ -6,13 +6,13 @@ This experimental target is based on the project's 1.21.11 backport and builds a
 - Java 21
 - Fabric Loader 0.19.3
 - Fabric API 0.138.4+1.21.10
-- Create Fly 1.21.10-6.0.9-2
+- Create Fly 1.21.10-6.0.8-6 or 1.21.10-6.0.9-2
 
 The 1.21.10 build uses the Create Fly release for that Minecraft version. It is a separate project from the 1.21.11 target because the Minecraft and Create Fly APIs differ between releases.
 
 ## Beta status
 
-The current local beta is `Copycats-CreateFly-1.21.10-beta.2.jar`. The build menu places a copy in `dist/`; this workspace also copies the beta JAR to the user's Downloads folder. It targets Create Fly 6.0.9-2 and Fabric API 0.138.4+1.21.10, required by the current Steam 'n' Rails Fly 1.21.10 beta. Recent fixes include cutout rendering for the animated copycat cogwheel shaft and gear, and avoiding early Create block-entity construction during startup. The smoke test loaded all four mods and entered a singleplayer world; rail and copycat gameplay interactions still need testing.
+The current local beta is `Copycats-CreateFly-1.21.10-beta.3.jar`. One JAR is compatible with Create Fly 6.0.8-6 and 6.0.9-2. It compiles against 6.0.9-2 and uses compatibility lookups for APIs that moved between those releases. Fabric metadata allows `>=6.0.8-6 <6.0.10`. Select the runtime used for the development client with `-P createFlyRuntimeVersion=1.21.10-6.0.8-6` or `-P createFlyRuntimeVersion=1.21.10-6.0.9-2`; the default is 6.0.9-2. Steam 'n' Rails Fly requires the newer version. Both versions reached client startup in smoke tests; with 6.0.9-2, Steam 'n' Rails also initialized. Train/copycat gameplay interactions still need testing.
 
 Build it from the repository root:
 
@@ -20,7 +20,7 @@ Build it from the repository root:
 ./gradlew.bat -p backport-1.21.10 clean build
 ```
 
-The JAR is written to `build/libs/` in this folder. The Windows build menu copies `Copycats-CreateFly-1.21.10-beta.2.jar` into `dist/`.
+The JAR is written to `build/libs/` in this folder. The Windows build menu copies `Copycats-CreateFly-1.21.10-beta.3.jar` into `dist/`.
 
 To launch the isolated development client, use `run-test-client.bat` or choose it in `Copycats Build and Test.bat`. Its world and logs are kept in `run-1.21.10/`.
 

@@ -30,6 +30,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+- Load the 1.21.10 backport with either Create Fly 6.0.8-6 or 6.0.9-2, including compatibility for the moved block-entity behaviour class and changed material helper signature.
+
 ### Added
 
 - Added an experimental Minecraft 1.21.10 Fabric backport for beta testing.

@@ -26,6 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.lang.reflect.Method;
 
 /** Two independently refreshed rotating instances for the shaft and cogwheel material slots. */
 public class CopycatCogWheelVisual extends KineticBlockEntityVisual<CopycatCogWheelBlockEntity> {
@@ -86,8 +87,30 @@ public class CopycatCogWheelVisual extends KineticBlockEntityVisual<CopycatCogWh
                         .pos(blockEntity.getBlockPos())
                         .materialFunc((layer, shaded) -> layer == ChunkSectionLayer.SOLID
                                 ? shaded ? Materials.CUTOUT_MIPPED_BLOCK : Materials.CUTOUT_MIPPED_UNSHADED_BLOCK
-                                : ModelUtil.getMaterial(layer, shaded, true))
+                                : materialForLayer(layer, shaded))
                         .build());
+    }
+
+    /** Create Fly changed this helper from a two-argument to a three-argument method in 6.0.9. */
+    private static com.zurrtum.create.client.flywheel.api.material.Material materialForLayer(
+            ChunkSectionLayer layer, boolean shaded) {
+        try {
+            for (Method method : ModelUtil.class.getMethods()) {
+                if (method.getName().equals("getMaterial")) {
+                    if (method.getParameterCount() == 3) {
+                        return (com.zurrtum.create.client.flywheel.api.material.Material)
+                                method.invoke(null, layer, shaded, true);
+                    }
+                    if (method.getParameterCount() == 2) {
+                        return (com.zurrtum.create.client.flywheel.api.material.Material)
+                                method.invoke(null, layer, shaded);
+                    }
+                }
+            }
+            throw new NoSuchMethodException("ModelUtil.getMaterial");
+        } catch (ReflectiveOperationException exception) {
+            throw new IllegalStateException("Unable to resolve Create Fly material for " + layer, exception);
+        }
     }
 
     private BlockState material(String property) {
