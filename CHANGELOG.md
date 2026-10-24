@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Load the 1.21.10 backport with either Create Fly 6.0.8-6 or 6.0.9-2, including compatibility for the moved block-entity behaviour class and changed material helper signature.
+- Smoke-tested the current Create Fly builds for 1.21.11, 26.1.2, and both 26.2 variants; the 26.x normals compatibility check passes with the newer and older APIs.
 
 ### Added
 
