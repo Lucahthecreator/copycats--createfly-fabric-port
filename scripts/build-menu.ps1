@@ -38,7 +38,7 @@ function Build-Target([string]$Name) {
             $javaMajor = 21
             $buildDirectory = Join-Path $projectRoot "backport-1.21.10"
             $gradleArguments = @("-p", "backport-1.21.10", "clean", "build", "--console=plain")
-            $distName = "Copycats-CreateFly-1.21.10-beta.1.jar"
+            $distName = "Copycats-CreateFly-1.21.10-beta.2.jar"
         }
         "1.21.11" {
             $javaMajor = 21

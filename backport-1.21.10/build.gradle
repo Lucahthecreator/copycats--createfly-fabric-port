@@ -2,7 +2,7 @@ plugins {
     id 'net.fabricmc.fabric-loom-remap' version '1.16.3'
 }
 
-version = '3.0.7-createfly+mc.1.21.10-v1.17-beta.1'
+version = '3.0.7-createfly+mc.1.21.10-v1.17-beta.2'
 group = 'com.copycatsplus'
 
 base {
@@ -29,8 +29,8 @@ dependencies {
     minecraft 'com.mojang:minecraft:1.21.10'
     mappings loom.officialMojangMappings()
     modImplementation 'net.fabricmc:fabric-loader:0.19.3'
-    modImplementation 'net.fabricmc.fabric-api:fabric-api:0.137.0+1.21.10'
-    modImplementation 'maven.modrinth:create-fly:1.21.10-6.0.8-6'
+    modImplementation 'net.fabricmc.fabric-api:fabric-api:0.138.4+1.21.10'
+    modImplementation 'maven.modrinth:create-fly:1.21.10-6.0.9-2'
     compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
     annotationProcessor implementation('io.github.llamalad7:mixinextras-fabric:0.4.1')
 }
@@ -132,7 +132,7 @@ processResources {
             version: project.version,
             minecraft_version: '1.21.10',
             minecraft_version_range: '1.21.10',
-            create_version_range: '>=6.0.8-6 <6.0.9'
+            create_version_range: '>=6.0.9-2 <6.0.10'
         )
     }
 }

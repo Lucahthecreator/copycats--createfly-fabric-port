@@ -86,7 +86,7 @@ public class CopycatCogWheelVisual extends KineticBlockEntityVisual<CopycatCogWh
                         .pos(blockEntity.getBlockPos())
                         .materialFunc((layer, shaded) -> layer == ChunkSectionLayer.SOLID
                                 ? shaded ? Materials.CUTOUT_MIPPED_BLOCK : Materials.CUTOUT_MIPPED_UNSHADED_BLOCK
-                                : ModelUtil.getMaterial(layer, shaded))
+                                : ModelUtil.getMaterial(layer, shaded, true))
                         .build());
     }
 

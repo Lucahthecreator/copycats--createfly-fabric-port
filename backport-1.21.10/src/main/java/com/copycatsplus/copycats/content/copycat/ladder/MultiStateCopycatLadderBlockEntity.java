@@ -2,7 +2,7 @@
  * Decompiled with CFR 0.152.
  * 
  * Could not load the following classes:
- *  com.zurrtum.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
+ *  com.zurrtum.create.api.behaviour.BlockEntityBehaviour
  *  net.minecraft.core.BlockPos
  *  net.minecraft.world.level.block.entity.BlockEntityType
  *  net.minecraft.world.level.block.state.BlockState
@@ -10,7 +10,7 @@
 package com.copycatsplus.copycats.content.copycat.ladder;
 
 import com.copycatsplus.copycats.foundation.copycat.multistate.MultiStateCopycatBlockEntity;
-import com.zurrtum.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.zurrtum.create.api.behaviour.BlockEntityBehaviour;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;

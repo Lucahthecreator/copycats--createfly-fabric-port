@@ -3,7 +3,7 @@
  * 
  * Could not load the following classes:
  *  com.zurrtum.create.AllBlocks
- *  com.zurrtum.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
+ *  com.zurrtum.create.api.behaviour.BlockEntityBehaviour
  *  com.zurrtum.create.client.foundation.model.BakedModelHelper
  *  com.zurrtum.create.client.infrastructure.model.WrapperBlockStateModel
  *  com.zurrtum.create.content.decoration.bracket.BracketedBlockEntityBehaviour
@@ -54,7 +54,7 @@ import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopyca
 import com.copycatsplus.copycats.mixin.foundation.copycat.FabricBlockStateModelWrapperAccessor;
 import com.copycatsplus.copycats.mixin.foundation.copycat.ColorLightTintedBakedModelAccessor;
 import com.zurrtum.create.AllBlocks;
-import com.zurrtum.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.zurrtum.create.api.behaviour.BlockEntityBehaviour;
 import com.zurrtum.create.client.foundation.model.BakedModelHelper;
 import com.zurrtum.create.client.infrastructure.model.WrapperBlockStateModel;
 import com.zurrtum.create.content.decoration.bracket.BracketedBlockEntityBehaviour;

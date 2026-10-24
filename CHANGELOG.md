@@ -33,9 +33,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added an experimental Minecraft 1.21.10 Fabric backport for beta testing.
+- Added a development smoke-test setup for Steam 'n' Rails Fly 0.1.5j on Minecraft 1.21.10.
 
 ### Fixed
 
+- Updated the 1.21.10 backport to Create Fly 6.0.9-2 and Fabric API 0.138.4+1.21.10, the required versions for Steam 'n' Rails Fly 0.1.5j.
+- Verified Copycats, Create Fly, Fabric API, and Steam 'n' Rails load together and reach a singleplayer world in the development client; gameplay interactions remain to be tested.
 - Render transparent grass pixels correctly on animated copycat cogwheel shafts and gears in the 1.21.10 backport.
 - Avoid constructing Create block entities during early Copycats registration, preventing a startup crash in the 1.21.10 dev client.
 - Fixed ColorLight preventing connected textures on Copycats+ blocks.

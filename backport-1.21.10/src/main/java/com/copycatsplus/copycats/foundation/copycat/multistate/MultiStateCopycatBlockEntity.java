@@ -2,7 +2,7 @@
  * Decompiled with CFR 0.152.
  * 
  * Could not load the following classes:
- *  com.zurrtum.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
+ *  com.zurrtum.create.api.behaviour.BlockEntityBehaviour
  *  com.zurrtum.create.content.schematics.requirement.ItemRequirement
  *  com.zurrtum.create.foundation.blockEntity.SmartBlockEntity
  *  javax.annotation.ParametersAreNonnullByDefault
@@ -25,7 +25,7 @@ import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopyca
 import com.copycatsplus.copycats.foundation.copycat.multistate.MaterialItemStorage;
 import com.copycatsplus.copycats.foundation.copycat.multistate.MultiStateCopycatBlock;
 import com.copycatsplus.copycats.utility.BlockEntityUtils;
-import com.zurrtum.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.zurrtum.create.api.behaviour.BlockEntityBehaviour;
 import com.zurrtum.create.content.schematics.requirement.ItemRequirement;
 import com.zurrtum.create.foundation.blockEntity.SmartBlockEntity;
 import java.util.List;
