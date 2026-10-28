@@ -53,10 +53,10 @@ The [compatibility guide](docs/COMPATIBILITY.md) is the single list of Minecraft
 
 | Minecraft | Loader | Copycats+ status | Java |
 | :--- | :--- | :--- | :---: |
-| **1.21.10** | Fabric | Beta.3 · Create Fly 6.0.8-6 and 6.0.9-2 startup tested | 21 |
-| **1.21.11** | Fabric | Beta.1 archived · beta.2 fix candidate | 21 |
-| **26.1** (tested on 26.1.2) | Fabric | Supported · v1.16 | 25 |
-| **26.2** | Fabric | Supported · v1.16 | 25 |
+| **1.21.10** | Fabric | Beta · v1.18 · Create Fly 6.0.8-6 and 6.0.9-2 startup tested | 21 |
+| **1.21.11** | Fabric | Beta · v1.18 · Create Fly 6.0.9-5 startup tested | 21 |
+| **26.1** (tested on 26.1.2) | Fabric | Supported · v1.18 | 25 |
+| **26.2** | Fabric | Supported · v1.18 | 25 |
 
 See the [full compatibility matrix](docs/COMPATIBILITY.md) for exact loader and Create Fly versions, build artifacts, and target-specific instructions.
 

@@ -5,11 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## v1.18 - 2026-10-27
 
 ### Fixed
 
-- Fixed a server freeze when block light is recalculated next to a copycat block whose chunk is not loaded yet. The light engine no longer loads chunks to read the copycat material and only looks at chunks that are already loaded.
+- Fixed a potential server freeze during block light recalculation next to copycat blocks in chunks that are not loaded yet. The light engine now reads copycat materials only from chunks already available to lighting.
 
 ## v1.17 - 2026-10-20
 

@@ -13,8 +13,8 @@ The world, options, and logs are stored under `run-1.21.11/`. Close an existing
 test client before starting another one.
 
 The installable jar is produced by running `gradlew.bat -p backport-1.21.11 build`
-from the repository root; find it under `build/libs/` in this folder. The beta
-fix candidate is `Copycats-CreateFly-1.21.11-beta.2.jar`.
+from the repository root; find it under `build/libs/` in this folder. The current
+beta fix candidate is `Copycats-CreateFly-1.21.11-v1.18.jar`.
 
 The previous beta.1 release was archived while investigating startup crashes
 reported with larger modpacks. Issues [#10](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/issues/10)

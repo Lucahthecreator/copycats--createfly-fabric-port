@@ -38,25 +38,25 @@ function Build-Target([string]$Name) {
             $javaMajor = 21
             $buildDirectory = Join-Path $projectRoot "backport-1.21.10"
             $gradleArguments = @("-p", "backport-1.21.10", "clean", "build", "--console=plain")
-            $distName = "Copycats-CreateFly-1.21.10-beta.3.jar"
+            $distName = "Copycats-CreateFly-1.21.10-v1.18.jar"
         }
         "1.21.11" {
             $javaMajor = 21
             $buildDirectory = Join-Path $projectRoot "backport-1.21.11"
             $gradleArguments = @("-p", "backport-1.21.11", "clean", "build", "--console=plain")
-            $distName = "Copycats-CreateFly-1.21.11-beta.2.jar"
+            $distName = "Copycats-CreateFly-1.21.11-v1.18.jar"
         }
         "26.1+" {
             $gradleArguments += @("-Ptarget_version=26.1.2")
-            $distName = "Copycats-CreateFly-26.1+-v1.16.jar"
+            $distName = "Copycats-CreateFly-26.1+-v1.18.jar"
         }
         "26.2-beta" {
             $gradleArguments += @("-Ptarget_version=26.2", "-Pcreate_fly_version=26.2-6.0.9-2")
-            $distName = "Copycats-CreateFly-26.2-beta-v1.16.jar"
+            $distName = "Copycats-CreateFly-26.2-beta-v1.18.jar"
         }
         "26.2-compat" {
             $gradleArguments += @("-Ptarget_version=26.2", "-Pcreate_fly_version=26.2-rc-2-6.0.9-1")
-            $distName = "Copycats-CreateFly-26.2-compat-v1.16.jar"
+            $distName = "Copycats-CreateFly-26.2-compat-v1.18.jar"
         }
         default { throw "Unknown build target: $Name" }
     }

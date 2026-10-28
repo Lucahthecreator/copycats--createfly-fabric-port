@@ -37,10 +37,10 @@ if ($Minecraft -eq "26.2") {
     $createVersion = if ($CreateFly -eq "beta") { "26.2-6.0.9-2" } else { "26.2-rc-2-6.0.9-1" }
     $devArguments += "-Pcreate_fly_version=$createVersion"
     $devArguments += "-Pdev_run_dir=run-dev-26.2-$CreateFly"
-    Write-Host "Launching Minecraft 26.2 with Create Fly $createVersion and Copycats+ v1.16."
+    Write-Host "Launching Minecraft 26.2 with Create Fly $createVersion and Copycats+ v1.18."
 } else {
     $devArguments += "-Pdev_run_dir=run-dev-26.1.2-stable"
-    Write-Host "Launching Minecraft 26.1.2 with Create Fly 6.0.9-4 and Copycats+ v1.16."
+    Write-Host "Launching Minecraft 26.1.2 with Create Fly 6.0.9-4 and Copycats+ v1.18."
 }
 Write-Host "Use a creative test world. Cheats let you place blocks with /setblock."
 Write-Host "The client uses a separate world/config/mods directory for this combination."
