@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet("1.21.10", "1.21.11", "26.1+", "26.2-beta", "26.2-compat", "all")]
+    [ValidateSet("1.21.10", "1.21.11", "26.1+", "26.2", "all")]
     [string]$Target
 )
 
@@ -50,13 +50,9 @@ function Build-Target([string]$Name) {
             $gradleArguments += @("-Ptarget_version=26.1.2")
             $distName = "Copycats-CreateFly-26.1+-v1.18.jar"
         }
-        "26.2-beta" {
+        "26.2" {
             $gradleArguments += @("-Ptarget_version=26.2", "-Pcreate_fly_version=26.2-6.0.9-2")
-            $distName = "Copycats-CreateFly-26.2-beta-v1.18.jar"
-        }
-        "26.2-compat" {
-            $gradleArguments += @("-Ptarget_version=26.2", "-Pcreate_fly_version=26.2-rc-2-6.0.9-1")
-            $distName = "Copycats-CreateFly-26.2-compat-v1.18.jar"
+            $distName = "Copycats-CreateFly-26.2-v1.18.jar"
         }
         default { throw "Unknown build target: $Name" }
     }
@@ -89,7 +85,7 @@ function Build-Target([string]$Name) {
 
 try {
     if ($Target -eq "all") {
-        foreach ($name in @("1.21.10", "1.21.11", "26.1+", "26.2-beta", "26.2-compat")) {
+        foreach ($name in @("1.21.10", "1.21.11", "26.1+", "26.2")) {
             Build-Target $name
         }
     } else {

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## v1.18 - 2026-10-27
 
+### Changed
+
+- Combined the Minecraft 26.2 beta and compatibility packages into one jar compatible with Create Fly 6.0.9-1 and 6.0.9-2.
+
 ### Fixed
 
 - Fixed a potential server freeze during block light recalculation next to copycat blocks in chunks that are not loaded yet. The light engine now reads copycat materials only from chunks already available to lighting.

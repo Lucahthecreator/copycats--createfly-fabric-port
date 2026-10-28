@@ -11,16 +11,15 @@ echo Build a selected JAR (saved in dist):
 echo   1. Minecraft 1.21.10 beta - Java 21
 echo   2. Minecraft 1.21.11 beta - Java 21
 echo   3. Minecraft 26.1 release line (26.1.2 target) - Java 25
-echo   4. Minecraft 26.2 with Create Fly 6.0.9-2 beta - Java 25
-echo   5. Minecraft 26.2 compatibility with Create Fly 6.0.9-1 - Java 25
-echo   6. Build all five Fabric JAR variants
+echo   4. Minecraft 26.2 universal (Create Fly 6.0.9-1 through 6.0.9-2) - Java 25
+echo   5. Build all four Fabric JAR targets
 echo.
 echo Launch a development test client:
-echo   7. Minecraft 1.21.10 beta
-echo   8. Minecraft 1.21.11 beta
-echo   9. Minecraft 26.1.2
-echo  10. Minecraft 26.2 with Create Fly 6.0.9-2 beta
-echo  11. Minecraft 26.2 compatibility with Create Fly 6.0.9-1
+echo   6. Minecraft 1.21.10 beta
+echo   7. Minecraft 1.21.11 beta
+echo   8. Minecraft 26.1.2
+echo   9. Minecraft 26.2 with Create Fly 6.0.9-2 beta
+echo  10. Minecraft 26.2 compatibility with Create Fly 6.0.9-1
 echo   0. Exit
 echo.
 set "choice="
@@ -29,14 +28,13 @@ set /p "choice=Choose an option: "
 if "%choice%"=="1" goto build12110
 if "%choice%"=="2" goto build12111
 if "%choice%"=="3" goto build261
-if "%choice%"=="4" goto build262beta
-if "%choice%"=="5" goto build262stable
-if "%choice%"=="6" goto buildall
-if "%choice%"=="7" goto test12110
-if "%choice%"=="8" goto test12111
-if "%choice%"=="9" goto test261
-if "%choice%"=="10" goto test262beta
-if "%choice%"=="11" goto test262stable
+if "%choice%"=="4" goto build262
+if "%choice%"=="5" goto buildall
+if "%choice%"=="6" goto test12110
+if "%choice%"=="7" goto test12111
+if "%choice%"=="8" goto test261
+if "%choice%"=="9" goto test262beta
+if "%choice%"=="10" goto test262stable
 if "%choice%"=="0" goto done
 echo Invalid selection.
 pause
@@ -51,11 +49,8 @@ goto menu
 :build261
 call :build "26.1+"
 goto menu
-:build262beta
-call :build "26.2-beta"
-goto menu
-:build262stable
-call :build "26.2-compat"
+:build262
+call :build "26.2"
 goto menu
 :buildall
 call :build "all"

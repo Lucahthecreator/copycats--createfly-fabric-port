@@ -9,7 +9,7 @@ This file is the version-specific index for the repository. The root [README](..
 | 1.21.10 | Fabric | Beta (v1.18); client startup tested with Create Fly 6.0.8-6 and 6.0.9-2 | 21 | Fabric Loader 0.19.3; Fabric API 0.138.4+1.21.10 | 1.21.10-6.0.8-6 or 1.21.10-6.0.9-2 | [`backport-1.21.10`](../backport-1.21.10/README.md) |
 | 1.21.11 | Fabric | Beta (v1.18); client startup tested with Create Fly 6.0.9-5 | 21 | Fabric Loader 0.19.2+ (development client uses 0.19.3); Fabric API 0.141.6 | 1.21.11-6.0.9-5 | [`backport-1.21.11`](../backport-1.21.11/README.md); see prior [startup issue #10](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/issues/10) and [#11](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/issues/11) |
 | 26.1–26.1.2 | Fabric | Supported (v1.18); client startup tested with Create Fly 6.0.9-4 | 25 | Fabric Loader 0.19.2+; Fabric API 0.152.1+26.1.2 | 6.0.9-4 tested | Root Gradle project; target 26.1.2 |
-| 26.2 | Fabric | Supported (v1.18); client startup tested with both configured builds | 25 | Fabric Loader 0.19.2+; Fabric API 0.152.2+26.2 | 26.2-6.0.9-2 beta; 26.2-rc-2-6.0.9-1 compatibility build | Root Gradle project |
+| 26.2 | Fabric | Supported (v1.18); one jar tested with both Create Fly builds | 25 | Fabric Loader 0.19.2+; Fabric API 0.152.2+26.2 | 26.2-6.0.9-2 beta and 26.2-rc-2-6.0.9-1 | Root Gradle project; one jar accepts `>=6.0.9-1 <6.0.10` |
 
 Targets not listed here are not currently represented as tested builds in this checkout. Support depends on compatible Minecraft, loader, and Create Fly releases and successful build and gameplay testing. The repository may also contain experimental or unlisted modules; use their local notes when present.
 
