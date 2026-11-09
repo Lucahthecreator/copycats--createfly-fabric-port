@@ -38,6 +38,8 @@ Multi-material blocks let you customize individual parts, while functional block
 
 With ColorLight installed, this port unwraps its model hook to preserve connected textures. ColorLight-specific tinting or lighting may appear differently on copycat surfaces.
 
+Connected-texture rendering also has compatibility handling for Continuity-wrapped models. This integration is being checked across targets and mod combinations; if connected textures fail in your setup, include the Minecraft version, Create Fly version, connected-texture mod and its version, and a screenshot or log in a bug report.
+
 ## Latest changes
 
 See the [changelog](CHANGELOG.md) for changes by release and target.
@@ -57,7 +59,7 @@ The [compatibility guide](docs/COMPATIBILITY.md) is the single list of Minecraft
 | **1.21.11** | Fabric | Beta · v1.18 · Create Fly 6.0.9-5 startup tested | 21 |
 | **26.1** (tested on 26.1.2) | Fabric | Supported · v1.18 | 25 |
 | **26.2** | Fabric | Supported · v1.18 | 25 |
-| **26.3** | Fabric | In progress · Create Fly 26.3-6.0.9-2 | 25 |
+| **26.3** | Fabric | Beta · v1.18 · development client reaches a world; gameplay checks ongoing | 25 |
 
 See the [full compatibility matrix](docs/COMPATIBILITY.md) for exact loader and Create Fly versions, build artifacts, and target-specific instructions.
 
