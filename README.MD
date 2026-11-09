@@ -72,9 +72,7 @@ Download published builds from [CurseForge](https://www.curseforge.com/minecraft
 
 ## Port modules and community work
 
-The repository contains the main Fabric project and may include backports for other Minecraft versions. Historical work on other loaders is kept as reference documentation in the [compatibility guide](docs/COMPATIBILITY.md).
-
-The NeoForge 26.3 community port is linked in the compatibility guide as a reference; this repository no longer includes its build module.
+The repository contains the main Fabric project and may include backports for other Minecraft versions. The compatibility guide lists the active targets and their build instructions.
 
 ## Installation
 
@@ -147,7 +145,6 @@ Search logs for `[Copycats Debug/` or `Create Fly normals compatibility:`.
 - `patches/src/main/java` — Active compatibility patches for the main project.
 - `reconstructed/src/main/java` — Reconstructed source files for the main project.
 - `backport-*` — Separate Fabric targets with their own build files and notes.
-- `neoforge-26.3/src` — Archived NeoForge source and data retained for reference; no build configuration is included.
 - `scripts/` — Build, test, and development-client helpers.
 
 Not all reconstructed Java files are automatically compiled into releases. Changes to unselected files may not affect the final JAR.

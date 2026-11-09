@@ -17,10 +17,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## v1.17 - 2026-10-20
 
-### Added
-
-- Recorded NeoForge 26.3 community porting work for historical reference; it is not a build target in this repository.
-
 ### Fixed
 
 - Fixed a stack overflow during block rendering caused by two render-context overloads calling themselves recursively.
@@ -101,7 +97,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - X-ray exploit with copycat ghost blocks
-- Crash due to an API update in Neoforge causing null pointer exceptions during CT connectivity checks
 - Error in schematics due to attempts to update light in schematic levels
 - Crash due to changes in placement assist rendering in Create 6.0.6
 

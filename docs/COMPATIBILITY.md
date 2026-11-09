@@ -46,14 +46,4 @@ Use the Java version in the target row. On Windows, use `gradlew.bat` and the ma
 
 ```
 
-## Archived loader references
-
-The NeoForge 26.3 source and data are retained for reference, but this repository does not provide a NeoForge build. If an official Create Fly NeoForge build becomes available, these archived notes can help identify prior porting work.
-
-| Minecraft | Loader | Reference material |
-| :--- | :--- | :--- |
-| 26.3 | NeoForge | [Create Fly NeoForge source](https://github.com/zoom-packers/Create-Fly/tree/neoforge-26.3); [community port branch](https://github.com/zoom-packers/copycats-createfly/tree/zp5/26.3); [archived porting notes](NEOFORGE-26.3-REFERENCE.md) |
-
 ## Distribution and attribution
-
-The archived NeoForge links point to the community port and its Create Fly dependency as references. They do not describe a build target or release from this repository.
