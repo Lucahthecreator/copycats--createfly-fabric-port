@@ -1,7 +1,7 @@
 param(
     [ValidateSet("beta", "stable")]
     [string]$CreateFly = "beta",
-    [ValidateSet("26.2", "26.1.2")]
+    [ValidateSet("26.3", "26.2", "26.1.2")]
     [string]$Minecraft = "26.2"
 )
 
@@ -33,7 +33,13 @@ if (-not $java25Home) {
 $env:JAVA_HOME = $java25Home
 
 $devArguments = @("runClient", "-Ptarget_version=$Minecraft", "--console=plain")
-if ($Minecraft -eq "26.2") {
+if ($Minecraft -eq "26.3") {
+    $createVersion = "26.3-6.0.9-2"
+    $devArguments += "-Pfabric_loader_version=0.20.1"
+    $devArguments += "-Pcreate_fly_version=$createVersion"
+    $devArguments += "-Pdev_run_dir=run-dev-26.3"
+    Write-Host "Launching Minecraft 26.3 with Create Fly $createVersion and Copycats+ v1.18."
+} elseif ($Minecraft -eq "26.2") {
     $createVersion = if ($CreateFly -eq "beta") { "26.2-6.0.9-2" } else { "26.2-rc-2-6.0.9-1" }
     $devArguments += "-Pcreate_fly_version=$createVersion"
     $devArguments += "-Pdev_run_dir=run-dev-26.2-$CreateFly"

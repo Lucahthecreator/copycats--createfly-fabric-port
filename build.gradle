@@ -15,6 +15,14 @@ def targetProfiles = [
                 fabricApiVersion     : "0.152.2+26.2",
                 createFlyCurseId     : "8245554",
                 createFlyVersion     : "26.2-6.0.9-2"
+        ],
+        "26.3": [
+                minecraftVersion     : "26.3",
+                minecraftVersionRange: ">=26.3-",
+                fabricApiVersion     : "0.165.2+26.3",
+                fabricLoaderVersion  : "0.20.1",
+                fabricLoaderRange    : ">=0.20.1",
+                createFlyVersion     : "26.3-6.0.9-2"
         ]
 ]
 
@@ -30,6 +38,8 @@ def minecraftVersion = providers.gradleProperty("minecraft_version").getOrElse(t
 def releaseMinecraftLabel = targetVersion == "26.1.2" ? "26.1+" : minecraftVersion
 def minecraftVersionRange = providers.gradleProperty("minecraft_version_range").getOrElse(targetProfile.minecraftVersionRange)
 def fabricApiVersion = providers.gradleProperty("fabric_api_version").getOrElse(targetProfile.fabricApiVersion)
+def fabricLoaderVersion = providers.gradleProperty("fabric_loader_version").getOrElse(targetProfile.fabricLoaderVersion ?: "0.19.3")
+def fabricLoaderRange = providers.gradleProperty("fabric_loader_range").getOrElse(targetProfile.fabricLoaderRange ?: ">=0.19.2")
 def createFlyCurseId = providers.gradleProperty("create_fly_curse_id").getOrElse(targetProfile.createFlyCurseId)
 // A Maven version can select the beta or the previous stable build for compatibility testing.
 def createFlyVersion = providers.gradleProperty("create_fly_version").getOrElse(
@@ -107,7 +117,7 @@ def prepareWorkingJar = tasks.register("prepareWorkingJar") {
         ] as Set
         output.parentFile.mkdirs()
 
-        if (targetVersion != "26.2") {
+        if (targetVersion != "26.2" && targetVersion != "26.3") {
             def inputJar = new java.util.zip.ZipFile(source)
             def outputJar = new java.util.zip.ZipOutputStream(new FileOutputStream(output))
             try {
@@ -285,7 +295,7 @@ def relocateBundledApiDirectory = { File classesDirectory ->
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraftVersion}"
-    implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    implementation "net.fabricmc:fabric-loader:${fabricLoaderVersion}"
     implementation "net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}"
     if (createFlyVersion) {
         implementation "maven.modrinth:create-fly:${createFlyVersion}"
@@ -304,6 +314,7 @@ processResources {
             "version": project.version,
             "minecraft_version": minecraftVersion,
             "minecraft_version_range": minecraftVersionRange,
+            "fabric_loader_range": fabricLoaderRange,
             "create_version_range": createVersionRange
     )
 
@@ -312,6 +323,7 @@ processResources {
                 "version": project.version,
                 "minecraft_version": minecraftVersion,
                 "minecraft_version_range": minecraftVersionRange,
+                "fabric_loader_range": fabricLoaderRange,
                 "create_version_range": createVersionRange
         )
     }

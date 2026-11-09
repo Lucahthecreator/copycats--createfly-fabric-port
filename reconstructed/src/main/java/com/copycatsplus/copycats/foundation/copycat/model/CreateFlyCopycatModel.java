@@ -52,7 +52,7 @@ import com.copycatsplus.copycats.compat.debug.CopycatsDebug;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.mixin.foundation.copycat.FabricBlockStateModelWrapperAccessor;
-import com.copycatsplus.copycats.mixin.foundation.copycat.ColorLightTintedBakedModelAccessor;
+import com.copycatsplus.copycats.mixin.foundation.copycat.TextureAtlasAccessor;
 import com.zurrtum.create.AllBlocks;
 import com.zurrtum.create.api.behaviour.BlockEntityBehaviour;
 import com.zurrtum.create.client.foundation.model.BakedModelHelper;
@@ -69,11 +69,18 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadEmitter;
+import net.fabricmc.fabric.api.client.renderer.v1.Renderer;
+import net.fabricmc.fabric.api.client.renderer.v1.mesh.MutableMesh;
+import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadView;
+import net.fabricmc.fabric.api.client.renderer.v1.model.FabricBlockStateModel;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.renderer.texture.AbstractTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.client.resources.model.SimpleModelWrapper;
@@ -263,16 +270,17 @@ extends WrapperBlockStateModel {
                     + " key=" + entry.key() + " material=" + entryMaterial);
             BlockStateModel materialModel = entry.model() == null ? this.modelManager.getBlockStateModelSet().get(material2) : entry.model().getModel(state, material2);
             ArrayList<BlockStateModelPart> materialParts = new ArrayList<>();
-            materialModel = unwrapContinuityModel(materialModel);
-            if (materialModel instanceof WrapperBlockStateModel) {
-                WrapperBlockStateModel wrapper = (WrapperBlockStateModel)materialModel;
+            BlockAndTintGetter materialWorld = CreateFlyCopycatModel.createMaterialWorld(world, pos, state, entry, copycat);
+            boolean continuityEmitted = collectContinuityMaterialParts(materialModel, materialWorld, pos, material2, random, materialParts);
+            BlockStateModel unwrappedMaterialModel = unwrapContinuityModel(materialModel);
+            if (!continuityEmitted && unwrappedMaterialModel instanceof WrapperBlockStateModel wrapper) {
                 CopycatsDebug.log("filter", () -> "material wrapper property=" + entry.key()
                         + " material=" + material2 + " modelClass=" + wrapper.getClass().getName());
-                BlockAndTintGetter materialWorld = CreateFlyCopycatModel.createMaterialWorld(world, pos, state, entry, copycat);
                 wrapper.addPartsWithInfo(materialWorld, pos, material2, random, materialParts);
-            } else {
-                materialModel.collectParts(random, materialParts);
+            } else if (!continuityEmitted) {
+                unwrappedMaterialModel.collectParts(random, materialParts);
             }
+            materialModel = unwrappedMaterialModel;
             if (materialParts.isEmpty()) {
                 BlockStateModel missingModel = this.modelManager.getBlockStateModelSet().missingModel();
                 if (materialModel != missingModel) {
@@ -462,6 +470,9 @@ extends WrapperBlockStateModel {
     private void collectMaterialParts(BlockStateModel requestedModel, BlockAndTintGetter world, BlockPos pos,
                                       BlockState material, RandomSource random,
                                       List<BlockStateModelPart> output) {
+        if (collectContinuityMaterialParts(requestedModel, world, pos, material, random, output)) {
+            return;
+        }
         BlockStateModel materialModel = unwrapContinuityModel(requestedModel);
         if (materialModel instanceof WrapperBlockStateModel wrapper) {
             wrapper.addPartsWithInfo(world, pos, material, random, output);
@@ -477,6 +488,101 @@ extends WrapperBlockStateModel {
     }
 
     /**
+     * Continuity runs connected-texture processors from emitQuads. Copycats normally gathers
+     * material models as static parts, so preserve the wrapper long enough to let Continuity
+     * resolve the copied material and neighboring blocks before Copycats crops the geometry.
+     */
+    private static boolean collectContinuityMaterialParts(BlockStateModel model, BlockAndTintGetter world,
+                                                          BlockPos pos, BlockState material,
+                                                          RandomSource random,
+                                                          List<BlockStateModelPart> output) {
+        if (!(model instanceof FabricBlockStateModel fabricModel) || !hasContinuityWrapper(model)) {
+            return false;
+        }
+        Renderer renderer = Renderer.get();
+        if (renderer == null) {
+            return false;
+        }
+
+        MutableMesh mesh = renderer.mutableMesh();
+        fabricModel.emitQuads(mesh.emitter(), world, pos, material, random, direction -> false);
+        if (mesh.size() == 0) {
+            return false;
+        }
+
+        List<BlockStateModelPart> sourceParts = new ArrayList<>();
+        BlockStateModel sourceModel = unwrapContinuityModel(model);
+        sourceModel.collectParts(RandomSource.create(material.getSeed(pos)), sourceParts);
+        if (sourceParts.isEmpty()) {
+            return false;
+        }
+        Material.Baked particleMaterial = sourceParts.getFirst().particleMaterial();
+        boolean ambientOcclusion = sourceParts.getFirst().useAmbientOcclusion();
+        QuadCollection.Builder builder = new QuadCollection.Builder();
+        int[] convertedQuads = {0};
+        mesh.forEach(quad -> {
+            TextureAtlasSprite sprite = findSprite(quad, particleMaterial.sprite());
+            if (sprite == null) {
+                return;
+            }
+            BakedQuad baked = quad.toBakedQuad(sprite);
+            Direction cullFace = quad.cullFace();
+            if (cullFace == null) {
+                builder.addUnculledFace(baked);
+            } else {
+                builder.addCulledFace(cullFace, baked);
+            }
+            convertedQuads[0]++;
+        });
+        if (convertedQuads[0] == 0) {
+            return false;
+        }
+        output.add(new SimpleModelWrapper(builder.build(), ambientOcclusion, particleMaterial));
+        return true;
+    }
+
+    private static boolean hasContinuityWrapper(BlockStateModel model) {
+        BlockStateModel current = model;
+        for (int depth = 0; current != null && depth < 8; depth++) {
+            if (current.getClass().getName().equals("me.pepperbell.continuity.client.model.CtmBlockStateModel")) {
+                return true;
+            }
+            BlockStateModel wrapped;
+            if (current instanceof FabricBlockStateModelWrapperAccessor accessor) {
+                wrapped = accessor.copycats$getWrapped();
+            } else if (current.getClass().getName().equals("me.mrhikmen.colorlight.core.render.TintedBakedModel")) {
+                wrapped = getColorLightWrapped(current);
+            } else {
+                return false;
+            }
+            if (wrapped == null || wrapped == current) {
+                return false;
+            }
+            current = wrapped;
+        }
+        return false;
+    }
+
+    @Nullable
+    private static TextureAtlasSprite findSprite(QuadView quad, TextureAtlasSprite fallbackSprite) {
+        AbstractTexture texture = Minecraft.getInstance().getTextureManager().getTexture(quad.atlas().getTextureLocation());
+        if (!(texture instanceof TextureAtlas atlas)) {
+            return fallbackSprite;
+        }
+        if (!(atlas instanceof TextureAtlasAccessor accessor)) {
+            return fallbackSprite;
+        }
+        float u = (quad.u(0) + quad.u(1) + quad.u(2) + quad.u(3)) * 0.25f;
+        float v = (quad.v(0) + quad.v(1) + quad.v(2) + quad.v(3)) * 0.25f;
+        for (TextureAtlasSprite sprite : accessor.copycats$getSprites()) {
+            if (u >= sprite.getU0() && u <= sprite.getU1() && v >= sprite.getV0() && v <= sprite.getV1()) {
+                return sprite;
+            }
+        }
+        return fallbackSprite;
+    }
+
+    /**
      * Some optional render mods wrap every baked block model. Copycats needs the underlying
      * context-aware model when it renders a block-entity-selected material; otherwise a wrapped
      * CT model only exposes its static parts and the connection information is lost.
@@ -488,9 +594,8 @@ extends WrapperBlockStateModel {
             if (current.getClass().getName().startsWith("me.pepperbell.continuity.")
                     && current instanceof FabricBlockStateModelWrapperAccessor accessor) {
                 wrapped = accessor.copycats$getWrapped();
-            } else if (current.getClass().getName().equals("me.mrhikmen.colorlight.core.render.TintedBakedModel")
-                    && current instanceof ColorLightTintedBakedModelAccessor accessor) {
-                wrapped = accessor.copycats$getWrapped();
+            } else if (current.getClass().getName().equals("me.mrhikmen.colorlight.core.render.TintedBakedModel")) {
+                wrapped = getColorLightWrapped(current);
             } else {
                 break;
             }
@@ -500,6 +605,21 @@ extends WrapperBlockStateModel {
             current = wrapped;
         }
         return current;
+    }
+
+    /**
+     * ColorLight is optional and its accessor is a mixin, so referencing that accessor class
+     * directly causes Fabric to reject the class load when ColorLight is absent. Resolve the
+     * injected method only after the wrapped model is confirmed to be ColorLight's model.
+     */
+    @Nullable
+    private static BlockStateModel getColorLightWrapped(BlockStateModel model) {
+        try {
+            Object wrapped = model.getClass().getMethod("copycats$getWrapped").invoke(model);
+            return wrapped instanceof BlockStateModel blockStateModel ? blockStateModel : null;
+        } catch (ReflectiveOperationException | SecurityException exception) {
+            return null;
+        }
     }
 
     @Nullable

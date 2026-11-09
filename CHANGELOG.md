@@ -40,6 +40,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Added an initial Fabric 26.3 build target for the released Create Fly 26.3-6.0.9-2. It compiles, but needs in-game verification before support is marked complete.
+
 ### Changed
 
 - Removed a machine-specific local artifact path from the compatibility guide.

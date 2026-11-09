@@ -262,7 +262,7 @@ implements BlockEntityRenderer<CopycatSlidingDoorBlockEntity, CopycatSlidingDoor
     }
 
     private static void rotateY(PoseStack poseStack, float degrees) {
-        poseStack.mulPose((Quaternionfc)new Quaternionf().rotationY(AngleHelper.rad((double)degrees)));
+        poseStack.rotate((Quaternionfc)new Quaternionf().rotationY(AngleHelper.rad((double)degrees)));
     }
 
     public static class RenderState

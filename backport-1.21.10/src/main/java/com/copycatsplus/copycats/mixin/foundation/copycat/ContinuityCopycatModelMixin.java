@@ -18,12 +18,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.function.Predicate;
 
 /**
- * Continuity's CT and emissive wrappers do not know which block-entity material a Copycat section
- * represents. Bypass only those optional wrappers for Copycat states and retain the wrapped model.
+ * Continuity's CT wrapper must process the final Copycat quads: BlockState#getAppearance maps
+ * Copycat faces back to the copied material for its connected-texture lookups. Emissive wrapping
+ * still needs bypassing because its material lookup is based on the Copycat state itself.
  */
 @Pseudo
 @Mixin(targets = {
-        "me.pepperbell.continuity.client.model.CtmBlockStateModel",
         "me.pepperbell.continuity.client.model.EmissiveBlockStateModel"
 }, remap = false)
 public abstract class ContinuityCopycatModelMixin {

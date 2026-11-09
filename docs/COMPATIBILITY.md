@@ -10,6 +10,7 @@ This file is the version-specific index for the repository. The root [README](..
 | 1.21.11 | Fabric | Beta (v1.18); client startup tested with Create Fly 6.0.9-5 | 21 | Fabric Loader 0.19.2+ (development client uses 0.19.3); Fabric API 0.141.6 | 1.21.11-6.0.9-5 | [`backport-1.21.11`](../backport-1.21.11/README.md); see prior [startup issue #10](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/issues/10) and [#11](https://github.com/Lucahthecreator/copycats--createfly-fabric-port/issues/11) |
 | 26.1–26.1.2 | Fabric | Supported (v1.18); client startup tested with Create Fly 6.0.9-4 | 25 | Fabric Loader 0.19.2+; Fabric API 0.152.1+26.1.2 | 6.0.9-4 tested | Root Gradle project; target 26.1.2 |
 | 26.2 | Fabric | Supported (v1.18); one jar tested with both Create Fly builds | 25 | Fabric Loader 0.19.2+; Fabric API 0.152.2+26.2 | 26.2-6.0.9-2 beta and 26.2-rc-2-6.0.9-1 | Root Gradle project; one jar accepts `>=6.0.9-1 <6.0.10` |
+| 26.3 | Fabric | In progress | 25 | Fabric Loader 0.20.1+; Fabric API 0.165.2+26.3 | Create Fly 26.3-6.0.9-2 | Root Gradle project; target 26.3 |
 
 Targets not listed here are not currently represented as tested builds in this checkout. Support depends on compatible Minecraft, loader, and Create Fly releases and successful build and gameplay testing. The repository may also contain experimental or unlisted modules; use their local notes when present.
 
@@ -35,6 +36,7 @@ Use the Java version in the target row. On Windows, use `gradlew.bat` and the ma
 # Fabric root project, selecting the Minecraft target
 ./gradlew build -Ptarget_version=26.1.2
 ./gradlew build -Ptarget_version=26.2
+./gradlew build -Ptarget_version=26.3
 
 # Fabric 1.21.11 backport
 ./gradlew -p backport-1.21.11 build
@@ -46,7 +48,7 @@ Use the Java version in the target row. On Windows, use `gradlew.bat` and the ma
 
 ## Archived loader references
 
-The NeoForge 26.3 source and data are retained for reference, but this repository does not currently provide a NeoForge build. If an official NeoForge version becomes available, use its official files and instructions; these archived notes can help identify prior porting work.
+The NeoForge 26.3 source and data are retained for reference, but this repository does not provide a NeoForge build. If an official Create Fly NeoForge build becomes available, these archived notes can help identify prior porting work.
 
 | Minecraft | Loader | Reference material |
 | :--- | :--- | :--- |

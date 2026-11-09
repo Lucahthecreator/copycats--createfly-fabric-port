@@ -17,6 +17,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -91,7 +92,7 @@ public abstract class CopycatSlidingDoorBlockMixin implements IMultiStateCopycat
         MaterialItemStorage.MaterialItem slot = be.getMaterialItemStorage().getMaterialItem(property);
         if (slot == null || !slot.hasCustomMaterial()) return;
         Player player = context.getPlayer();
-        if (!player.isCreative()) player.getInventory().placeItemBackInInventory(slot.consumedItem());
+        if (!player.isCreative()) player.getInventory().placeItemBackInInventory(slot.consumedItem(), Prediction.SERVER_ONLY);
         context.getLevel().levelEvent(2001, context.getClickedPos(), Block.getId(slot.material()));
         be.setMaterial(property, AllBlocks.COPYCAT_BASE.defaultBlockState());
         be.setConsumedItem(property, ItemStack.EMPTY);
