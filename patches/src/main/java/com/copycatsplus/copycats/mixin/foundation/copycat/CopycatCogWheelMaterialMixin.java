@@ -4,6 +4,7 @@ import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlock;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.multistate.MaterialItemStorage;
+import com.copycatsplus.copycats.utility.CopycatInventoryCompat;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -12,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.util.Prediction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.BlockHitResult;
 import org.spongepowered.asm.mixin.Mixin;
@@ -80,7 +80,7 @@ public abstract class CopycatCogWheelMaterialMixin {
 
         blockEntity.setConsumedItem(property, ItemStack.EMPTY);
         if (!player.isCreative() && !refund.isEmpty()) {
-            player.getInventory().placeItemBackInInventory(refund, Prediction.SERVER_ONLY);
+            CopycatInventoryCompat.returnItem(player, refund);
         }
 
         blockEntity.setMaterial(property, material);

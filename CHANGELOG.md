@@ -36,6 +36,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+- Restored compilation across Minecraft 26.1.2, 26.2, and 26.3 by selecting the matching inventory-return and pose-stack APIs for each target.
+
 ### Added
 
 - Added an initial Fabric 26.3 build target for the released Create Fly 26.3-6.0.9-2. It compiles, but needs in-game verification before support is marked complete.

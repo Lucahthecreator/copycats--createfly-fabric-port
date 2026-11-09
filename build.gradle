@@ -381,6 +381,9 @@ compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/c
 compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/content/copycat/fluid_pipe/CopycatGlassFluidPipeBlock.java"))
 compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/content/copycat/fence/CopycatFenceBlock.java"))
 compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/content/copycat/fence_gate/CopycatFenceGateBlock.java"))
+def versionCompatDir = targetVersion == "26.3" ? "patches/compat/26.3" : "patches/compat/pre-26.3"
+compileJava.source(file("${versionCompatDir}/com/copycatsplus/copycats/utility/CopycatInventoryCompat.java"))
+compileJava.source(file("${versionCompatDir}/com/copycatsplus/copycats/utility/CopycatPoseStackCompat.java"))
 
 java {
     withSourcesJar()

@@ -43,6 +43,7 @@ import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatFoldingDoor
 import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoorBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.model.CreateFlyCopycatModel;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
+import com.copycatsplus.copycats.utility.CopycatPoseStackCompat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.zurrtum.create.catnip.math.AngleHelper;
 import com.zurrtum.create.client.catnip.render.SuperBufferFactory;
@@ -262,7 +263,8 @@ implements BlockEntityRenderer<CopycatSlidingDoorBlockEntity, CopycatSlidingDoor
     }
 
     private static void rotateY(PoseStack poseStack, float degrees) {
-        poseStack.rotate((Quaternionfc)new Quaternionf().rotationY(AngleHelper.rad((double)degrees)));
+        Quaternionfc rotation = new Quaternionf().rotationY(AngleHelper.rad((double)degrees));
+        CopycatPoseStackCompat.rotate(poseStack, rotation);
     }
 
     public static class RenderState
