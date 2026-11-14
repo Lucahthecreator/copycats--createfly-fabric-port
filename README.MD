@@ -156,6 +156,7 @@ Not all reconstructed Java files are automatically compiled into releases. Chang
 | **Original Copycats+** | Lysine, Bennyboy1695, Redcat_XVIII, and the Copycats+ team |
 | **Create Fly** | ZurrTum and contributors |
 | **Fabric port** | lucahTheCreator |
+| **Bug testing** | [E-Thang](https://github.com/E-Thang) |
 
 [Original Copycats+](https://github.com/copycats-plus/copycats) ·
 [Create Fly](https://github.com/ZurrTum/Create-Fly) ·
