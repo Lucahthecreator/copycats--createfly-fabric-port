@@ -3,6 +3,7 @@ package com.copycatsplus.copycats.content.copycat.cogwheel;
 import com.copycatsplus.copycats.CopycatsClient;
 import com.copycatsplus.copycats.foundation.copycat.model.CreateFlyCopycatModel;
 import com.copycatsplus.copycats.foundation.copycat.multistate.MaterialItemStorage;
+import com.copycatsplus.copycats.utility.CopycatTranslucentRendering;
 import com.zurrtum.create.client.content.kinetics.base.KineticBlockEntityVisual;
 import com.zurrtum.create.client.content.kinetics.base.RotatingInstance;
 import com.zurrtum.create.client.flywheel.api.instance.Instance;
@@ -44,6 +45,9 @@ public class CopycatCogWheelVisual extends KineticBlockEntityVisual<CopycatCogWh
 
     private PartInstance createPart(String property) {
         BlockState material = material(property);
+        if (CopycatTranslucentRendering.isTranslucent(material)) {
+            return null;
+        }
         Model model = createModel(property, material);
         if (model == null) {
             return null;
@@ -121,15 +125,28 @@ public class CopycatCogWheelVisual extends KineticBlockEntityVisual<CopycatCogWh
 
     @Override
     public void update(float partialTick) {
-        for (Map.Entry<String, PartInstance> entry : instances.entrySet()) {
-            String property = entry.getKey();
-            PartInstance current = entry.getValue();
+        for (String property : List.of(CopycatCogWheelBlock.Part.SHAFT.getSerializedName(),
+                CopycatCogWheelBlock.Part.COGWHEEL.getSerializedName())) {
+            PartInstance current = instances.get(property);
             BlockState material = material(property);
+            if (CopycatTranslucentRendering.isTranslucent(material)) {
+                if (current != null) {
+                    current.instance().delete();
+                    instances.remove(property);
+                }
+                continue;
+            }
+            if (current == null) {
+                addPart(property);
+                PartInstance added = instances.get(property);
+                if (added != null) relight(added.instance());
+                continue;
+            }
             if (current.state() != blockEntity.getBlockState() || current.material() != material) {
                 PartInstance replacement = createPart(property);
                 if (replacement != null) {
                     current.instance().delete();
-                    entry.setValue(replacement);
+                    instances.put(property, replacement);
                     relight(replacement.instance());
                 } else {
                     current.instance().setup(blockEntity).setChanged();

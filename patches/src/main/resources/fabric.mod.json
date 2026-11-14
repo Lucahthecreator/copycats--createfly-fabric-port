@@ -23,11 +23,11 @@
     ]
   },
   "mixins": [
-    "copycats-light.mixins.json"
+    "copycats-light.mixins.json"${late_copycat_mixin_entry}
   ],
   "depends": {
     "fabricloader": "${fabric_loader_range}",
-    "minecraft": "${minecraft_version_range}",
+    "minecraft": ${minecraft_version_range},
     "java": ">=25",
     "create": "${create_version_range}"
   }

@@ -10,6 +10,9 @@
     "foundation.copycat.BlockStateBaseMixin",
     "foundation.copycat.CopycatBlockMixin",
     "foundation.copycat.CopycatBlockEntityMixin",
+    "foundation.copycat.LegacySingleMaterialMixin",
+    "foundation.copycat.LegacyMultiMaterialMixin",
+    "foundation.copycat.CopycatPreassembledPlacementMixin",
     "foundation.copycat.CopycatCogWheelMaterialMixin",
     "foundation.copycat.CopycatSlidingDoorBlockMixin",
     "foundation.copycat.CopycatSlidingDoorBlockEntityMixin"

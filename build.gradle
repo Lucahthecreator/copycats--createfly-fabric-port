@@ -5,20 +5,20 @@ plugins {
 def targetProfiles = [
         "26.1.2": [
                 minecraftVersion     : "26.1.2",
-                minecraftVersionRange: ">=26.1- <26.2-",
+                minecraftVersionRange: ["26.1", "26.1.1", "26.1.2"],
                 fabricApiVersion     : "0.152.1+26.1.2",
                 createFlyCurseId     : "8250336"
         ],
         "26.2": [
                 minecraftVersion     : "26.2",
-                minecraftVersionRange: ">=26.2-",
+                minecraftVersionRange: "26.2",
                 fabricApiVersion     : "0.152.2+26.2",
                 createFlyCurseId     : "8245554",
                 createFlyVersion     : "26.2-6.0.9-2"
         ],
         "26.3": [
                 minecraftVersion     : "26.3",
-                minecraftVersionRange: ">=26.3-",
+                minecraftVersionRange: "26.3",
                 fabricApiVersion     : "0.165.2+26.3",
                 fabricLoaderVersion  : "0.20.1",
                 fabricLoaderRange    : ">=0.20.1",
@@ -36,7 +36,8 @@ def minecraftVersion = providers.gradleProperty("minecraft_version").getOrElse(t
 // Keep the precise version for dependency and compatibility metadata, but show the intended
 // 26.1+ support range in the published JAR/mod version.
 def releaseMinecraftLabel = targetVersion == "26.1.2" ? "26.1+" : minecraftVersion
-def minecraftVersionRange = providers.gradleProperty("minecraft_version_range").getOrElse(targetProfile.minecraftVersionRange)
+def minecraftVersionRange = groovy.json.JsonOutput.toJson(targetProfile.minecraftVersionRange)
+def lateCopycatMixinEntry = targetVersion == "26.3" ? ', "copycats-translucency-26.3.mixins.json"' : ''
 def fabricApiVersion = providers.gradleProperty("fabric_api_version").getOrElse(targetProfile.fabricApiVersion)
 def fabricLoaderVersion = providers.gradleProperty("fabric_loader_version").getOrElse(targetProfile.fabricLoaderVersion ?: "0.19.3")
 def fabricLoaderRange = providers.gradleProperty("fabric_loader_range").getOrElse(targetProfile.fabricLoaderRange ?: ">=0.19.2")
@@ -314,6 +315,7 @@ processResources {
             "version": project.version,
             "minecraft_version": minecraftVersion,
             "minecraft_version_range": minecraftVersionRange,
+            "late_copycat_mixin_entry": lateCopycatMixinEntry,
             "fabric_loader_range": fabricLoaderRange,
             "create_version_range": createVersionRange
     )
@@ -323,6 +325,7 @@ processResources {
                 "version": project.version,
                 "minecraft_version": minecraftVersion,
                 "minecraft_version_range": minecraftVersionRange,
+                "late_copycat_mixin_entry": lateCopycatMixinEntry,
                 "fabric_loader_range": fabricLoaderRange,
                 "create_version_range": createVersionRange
         )
@@ -384,6 +387,10 @@ compileJava.source(file("reconstructed/src/main/java/com/copycatsplus/copycats/c
 def versionCompatDir = targetVersion == "26.3" ? "patches/compat/26.3" : "patches/compat/pre-26.3"
 compileJava.source(file("${versionCompatDir}/com/copycatsplus/copycats/utility/CopycatInventoryCompat.java"))
 compileJava.source(file("${versionCompatDir}/com/copycatsplus/copycats/utility/CopycatPoseStackCompat.java"))
+compileJava.source(file("${versionCompatDir}/com/copycatsplus/copycats/utility/CopycatTranslucentRendering.java"))
+if (targetVersion == "26.3") {
+    compileJava.source(file("patches/compat/26.3/com/copycatsplus/copycats/mixin/foundation/copycat/LateCopycatGeometryMixin.java"))
+}
 
 java {
     withSourcesJar()
@@ -393,8 +400,10 @@ java {
 
 tasks.named("sourcesJar") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from(versionCompatDir)
     from("reconstructed/src/main/java") {
         include "com/copycatsplus/copycats/foundation/copycat/model/BakedCopycatRenderContext.java"
+        include "com/copycatsplus/copycats/foundation/copycat/model/CopycatKineticRenderBridge.java"
     }
 }
 

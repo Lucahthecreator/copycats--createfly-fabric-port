@@ -1,0 +1,8 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.copycatsplus.copycats.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": ["foundation.copycat.LateCopycatGeometryMixin"],
+  "injectors": {"defaultRequire": 1}
+}

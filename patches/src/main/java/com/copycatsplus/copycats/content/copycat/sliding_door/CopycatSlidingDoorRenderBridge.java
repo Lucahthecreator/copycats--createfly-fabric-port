@@ -44,6 +44,7 @@ import com.copycatsplus.copycats.content.copycat.sliding_door.CopycatSlidingDoor
 import com.copycatsplus.copycats.foundation.copycat.model.CreateFlyCopycatModel;
 import com.copycatsplus.copycats.foundation.copycat.multistate.IMultiStateCopycatBlockEntity;
 import com.copycatsplus.copycats.utility.CopycatPoseStackCompat;
+import com.copycatsplus.copycats.utility.CopycatTranslucentRendering;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.zurrtum.create.catnip.math.AngleHelper;
 import com.zurrtum.create.client.catnip.render.SuperBufferFactory;
@@ -97,6 +98,8 @@ implements BlockEntityRenderer<CopycatSlidingDoorBlockEntity, CopycatSlidingDoor
         Level level = blockEntity.getLevel();
         BlockState lowerState = (BlockState)((BlockState)blockEntity.getBlockState().setValue((Property)DoorBlock.HALF, (Comparable)DoubleBlockHalf.LOWER)).setValue((Property)DoorBlock.OPEN, (Comparable)Boolean.valueOf(false));
         BlockState upperState = (BlockState)lowerState.setValue((Property)DoorBlock.HALF, (Comparable)DoubleBlockHalf.UPPER);
+        renderState.lowerTranslucent = CopycatTranslucentRendering.isTranslucent(getMaterialForHalf(blockEntity, lowerState));
+        renderState.upperTranslucent = CopycatTranslucentRendering.isTranslucent(getMaterialForHalf(blockEntity, upperState));
         Direction facing = (Direction)lowerState.getValue((Property)DoorBlock.FACING);
         BlockPos lowerPos = blockEntity.getBlockPos();
         BlockPos upperPos = lowerPos.above();
@@ -217,13 +220,13 @@ implements BlockEntityRenderer<CopycatSlidingDoorBlockEntity, CopycatSlidingDoor
         poseStack.pushPose();
         poseStack.translate(renderState.offsetX, 0.0f, renderState.offsetZ);
         if (renderState.lower != null) {
-            renderState.lower.submit(poseStack, (OrderedSubmitNodeCollector)submitNodeCollector);
+            CopycatTranslucentRendering.submit(renderState.lower, renderState.lowerTranslucent, poseStack, (OrderedSubmitNodeCollector)submitNodeCollector);
         }
         poseStack.popPose();
         poseStack.pushPose();
         poseStack.translate(renderState.offsetX, 1.0f, renderState.offsetZ);
         if (renderState.upper != null) {
-            renderState.upper.submit(poseStack, (OrderedSubmitNodeCollector)submitNodeCollector);
+            CopycatTranslucentRendering.submit(renderState.upper, renderState.upperTranslucent, poseStack, (OrderedSubmitNodeCollector)submitNodeCollector);
         }
         poseStack.popPose();
     }
@@ -249,11 +252,11 @@ implements BlockEntityRenderer<CopycatSlidingDoorBlockEntity, CopycatSlidingDoor
         SuperByteBufferRenderState lower = left ? renderState.lowerLeft : renderState.lowerRight;
         SuperByteBufferRenderState superByteBufferRenderState = upper = left ? renderState.upperLeft : renderState.upperRight;
         if (lower != null) {
-            lower.submit(poseStack, (OrderedSubmitNodeCollector)submitNodeCollector);
+            CopycatTranslucentRendering.submit(lower, renderState.lowerTranslucent, poseStack, (OrderedSubmitNodeCollector)submitNodeCollector);
         }
         poseStack.translate(0.0f, 1.0f, 0.0f);
         if (upper != null) {
-            upper.submit(poseStack, (OrderedSubmitNodeCollector)submitNodeCollector);
+            CopycatTranslucentRendering.submit(upper, renderState.upperTranslucent, poseStack, (OrderedSubmitNodeCollector)submitNodeCollector);
         }
         poseStack.popPose();
     }
@@ -277,6 +280,8 @@ implements BlockEntityRenderer<CopycatSlidingDoorBlockEntity, CopycatSlidingDoor
         SuperByteBufferRenderState upperRight;
         Direction facing = Direction.NORTH;
         boolean folding;
+        boolean lowerTranslucent;
+        boolean upperTranslucent;
         boolean flip;
         float progress;
         float forwardOffset;

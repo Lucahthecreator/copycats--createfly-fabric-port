@@ -1,6 +1,7 @@
 package com.copycatsplus.copycats.content.copycat.cogwheel;
 
 import com.copycatsplus.copycats.CCBlockEntityTypes;
+import com.copycatsplus.copycats.utility.CopycatTranslucentRendering;
 import com.zurrtum.create.client.flywheel.api.visual.BlockEntityVisual;
 import com.zurrtum.create.client.flywheel.api.visualization.BlockEntityVisualizer;
 import com.zurrtum.create.client.flywheel.api.visualization.VisualizationContext;
@@ -24,7 +25,7 @@ public final class CopycatCogWheelVisuals {
 
             @Override
             public boolean skipVanillaRender(CopycatCogWheelBlockEntity blockEntity) {
-                return shouldUseVisualization(blockEntity);
+                return shouldUseVisualization(blockEntity) && !hasTranslucentMaterials(blockEntity);
             }
         });
     }
@@ -33,5 +34,10 @@ public final class CopycatCogWheelVisuals {
         return blockEntity.getLevel() != null
                 && VisualizationManager.supportsVisualization(blockEntity.getLevel())
                 && CopycatCogWheelVisual.canVisualize(blockEntity);
+    }
+
+    public static boolean hasTranslucentMaterials(CopycatCogWheelBlockEntity blockEntity) {
+        return blockEntity.getMaterialItemStorage().getAllMaterials().stream()
+                .anyMatch(CopycatTranslucentRendering::isTranslucent);
     }
 }

@@ -38,6 +38,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Preserved copied materials when loading 26.2 worlds in Minecraft 26.3.
+- Restored the full placed shapes of Copycat Boxes and Catwalks on Minecraft 26.3.
+- Fixed glass behind translucent Copycat sliding doors, folding doors, and animated kinetic parts disappearing with regular transparency on Minecraft 26.3.
+- Restricted each build to its intended Minecraft versions, preventing incompatible jars from loading on other releases.
 - Restored compilation across Minecraft 26.1.2, 26.2, and 26.3 by selecting the matching inventory-return and pose-stack APIs for each target.
 
 ### Added

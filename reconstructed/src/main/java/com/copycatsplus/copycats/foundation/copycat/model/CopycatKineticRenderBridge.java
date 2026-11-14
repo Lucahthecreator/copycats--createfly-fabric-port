@@ -37,6 +37,7 @@ import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelBlockEn
 import com.copycatsplus.copycats.content.copycat.cogwheel.CopycatCogWheelVisuals;
 import com.copycatsplus.copycats.foundation.copycat.ICopycatBlockEntity;
 import com.copycatsplus.copycats.foundation.copycat.model.CreateFlyCopycatModel;
+import com.copycatsplus.copycats.utility.CopycatTranslucentRendering;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.zurrtum.create.client.catnip.render.SuperBufferFactory;
 import com.zurrtum.create.client.catnip.render.SuperByteBuffer;
@@ -80,8 +81,9 @@ implements BlockEntityRenderer<BracketedKineticBlockEntity, CopycatKineticRender
     public void extractRenderState(BracketedKineticBlockEntity blockEntity, RenderState renderState, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay breakProgress) {
         Level level = SmartBlockEntityRenderer.extractBase((BlockEntity)blockEntity, (BlockEntityRenderState)renderState, (ModelFeatureRenderer.CrumblingOverlay)breakProgress);
         renderState.models.clear();
-        if (blockEntity instanceof CopycatCogWheelBlockEntity cogwheel
-                && CopycatCogWheelVisuals.shouldUseVisualization(cogwheel)) {
+        boolean flywheelActive = blockEntity instanceof CopycatCogWheelBlockEntity cogwheel
+                && CopycatCogWheelVisuals.shouldUseVisualization(cogwheel);
+        if (flywheelActive && !CopycatCogWheelVisuals.hasTranslucentMaterials((CopycatCogWheelBlockEntity) blockEntity)) {
             return;
         }
         if (!(blockEntity instanceof ICopycatBlockEntity)) {
@@ -99,17 +101,24 @@ implements BlockEntityRenderer<BracketedKineticBlockEntity, CopycatKineticRender
             return;
         }
         Direction.Axis axis = KineticBlockEntityRenderer.getRotationAxisOf((KineticBlockEntity)blockEntity);
-        partsByMaterial.forEach((material, parts) -> renderState.models.add(((SuperByteBuffer)CopycatsClient.withAnimatedTint(material, (BlockAndTintGetter)level, blockEntity.getBlockPos(), () -> SuperBufferFactory.getInstance().createForBlock((BlockStateModel)new FixedPartsModel((List<BlockStateModelPart>)parts), state)).cardinalLighting(level).rotateCentered(KineticBlockEntityRenderer.getAngleForBe((KineticBlockEntity)blockEntity, (BlockPos)blockEntity.getBlockPos(), (Direction.Axis)axis), axis.getPositive())).light(renderState.lightCoords).extractRenderState()));
+        partsByMaterial.forEach((material, parts) -> {
+            boolean translucent = CopycatTranslucentRendering.isTranslucent(material);
+            if (flywheelActive && !translucent) return;
+            SuperByteBufferRenderState modelState = ((SuperByteBuffer)CopycatsClient.withAnimatedTint(material, (BlockAndTintGetter)level, blockEntity.getBlockPos(), () -> SuperBufferFactory.getInstance().createForBlock((BlockStateModel)new FixedPartsModel((List<BlockStateModelPart>)parts), state)).cardinalLighting(level).rotateCentered(KineticBlockEntityRenderer.getAngleForBe((KineticBlockEntity)blockEntity, (BlockPos)blockEntity.getBlockPos(), (Direction.Axis)axis), axis.getPositive())).light(renderState.lightCoords).extractRenderState();
+            renderState.models.add(new MaterialModel(modelState, translucent));
+        });
     }
 
     public void submit(RenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
-        renderState.models.forEach(model -> model.submit(poseStack, (OrderedSubmitNodeCollector)submitNodeCollector));
+        renderState.models.forEach(model -> CopycatTranslucentRendering.submit(model.state(), model.translucent(), poseStack, (OrderedSubmitNodeCollector)submitNodeCollector));
     }
 
     public static class RenderState
     extends BlockEntityRenderState {
-        final List<SuperByteBufferRenderState> models = new ArrayList<SuperByteBufferRenderState>();
+        final List<MaterialModel> models = new ArrayList<>();
     }
+
+    private record MaterialModel(SuperByteBufferRenderState state, boolean translucent) { }
 
     private record FixedPartsModel(List<BlockStateModelPart> parts) implements BlockStateModel
     {

@@ -14,6 +14,8 @@ This file is the version-specific index for the repository. The root [README](..
 
 Targets not listed here are not currently represented as tested builds in this checkout. Support depends on compatible Minecraft, loader, and Create Fly releases and successful build and gameplay testing. The repository may also contain experimental or unlisted modules; use their local notes when present.
 
+Each jar declares its intended Minecraft versions: the 26.1+ jar accepts 26.1, 26.1.1 and 26.1.2; the 1.21.10, 1.21.11, 26.2 and 26.3 jars each accept their named version only. Fabric Loader rejects other Minecraft versions.
+
 ## Create Fly version compatibility
 
 Use the Create Fly file made for the same Minecraft version as the Copycats+ target. Current Copycats metadata accepts all 6.0.9 build revisions within the listed bounds, so new builds in that API line can load without a Copycats release. The 1.21.10 target additionally accepts the older 6.0.8-6 build and has a runtime compatibility shim for the API changes between 6.0.8 and 6.0.9. The exact builds smoke-tested are listed above; a new API line such as 6.0.10 needs a compatibility check before it is included in the accepted range.
